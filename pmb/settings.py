@@ -1,8 +1,8 @@
 import os
-from pathlib import Path
+import pmb.tasks  # noqa: F401
 
+from pathlib import Path
 from celery.schedules import crontab
-import pmb.tasks
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apis_core.apis_labels',
     'apis_core.apis_tei',
     'guardian',
+    'dumper',
 ]
 
 MIDDLEWARE = [
@@ -74,14 +75,14 @@ WSGI_APPLICATION = 'pmb.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-   'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('APIS_DB_NAME', 'pmb'),
         'USER': os.environ.get('APIS_DB_USER', 'pmb'),
         'PASSWORD': os.environ.get('APIS_DB_PASSWORD'),
         'HOST': os.environ.get('APIS_DB_HOST', '127.0.0.1'),
         'PORT': os.environ.get('APIS_DB_PORT', '3306'),
-     }
+    }
 }
 
 
@@ -149,8 +150,8 @@ AUTHOR_RELS = [1049, ]
 CELERY_BROKER_URL = os.environ.get('amqp://')
 
 CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
-        "task": "pmb.tasks.sample_task",
+    "dump_to_tei": {
+        "task": "pmb.tasks.dump_to_tei",
         "schedule": crontab(minute="*/1"),
     },
 }
