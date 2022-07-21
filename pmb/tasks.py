@@ -14,6 +14,6 @@ def sample_task():
     logger.info("The sample task just ran.")
 
 
-@shared_task(name="Dump Entities")
+@shared_task()
 def dump_to_tei():
-    call_command("dump_entities", "-f")
+    call_command("dump_entities")

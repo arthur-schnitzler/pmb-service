@@ -150,8 +150,12 @@ AUTHOR_RELS = [1049, ]
 CELERY_BROKER_URL = os.environ.get('amqp://')
 
 CELERY_BEAT_SCHEDULE = {
+    # "sample_task": {
+    #     "task": "pmb.tasks.sample_task",
+    #     "schedule": crontab(minute="*/1"),
+    # },
     "dump_to_tei": {
         "task": "pmb.tasks.dump_to_tei",
-        "schedule": crontab(minute="*/1"),
+        "schedule": crontab(minute=0, hour='*/12'),
     },
 }
