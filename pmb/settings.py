@@ -159,3 +159,6 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=0, hour='*/12'),
     },
 }
+
+GHPAT = os.environ.get('GHPAT')
+GHREPO = os.environ.get('GHREPO', 'csae8092/whatever')
