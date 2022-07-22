@@ -20,647 +20,171 @@
            <p>Some text here.</p>
            <listBibl><bibl xml:id="work__51826">
   <title type="main">Entscheidung Nr. 1723</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51826/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51826</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51828">
   <title type="main">Entscheidung Nr. 1870</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51828/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51828</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51830">
   <title type="main">Entscheidung Nr. 1933</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51830/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51830</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51832">
   <title type="main">Entscheidung Nr. 2112</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51832/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51832</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51834">
   <title type="main">Entscheidung Nr. 2926</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51834/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51834</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51836">
   <title type="main">Entscheidung Nr. 3376</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51836/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51836</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51838">
   <title type="main">Entscheidung Nr. 3436</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51838/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51838</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51840">
   <title type="main">Entscheidung Nr. 3716</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51840/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51840</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51842">
   <title type="main">Entscheidung Nr. 4484</title>
-
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51842/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51842</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51852">
   <title type="main">Das &#246;sterreichische Strafgesetz &#252;ber Verbrechen, Vergehen und Uebertretungen und die Pre&#223;ordnung vom 27. Mai 1852</title>
-
-
-
-
   <author key="person__51851" role="hat-geschaffen">Hye von Glunek, Anton</author>
-
-
-
-
 <date notBefore-iso="1855-01-01" when-iso="1855-07-02">1855</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51852/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51852</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51855">
   <title type="main">Das &#246;sterreichische Strafrecht</title>
-
-
-
-
   <author key="person__51854" role="hat-geschaffen">Finger, August</author>
-
-
-
-
 <date from-iso="1891-01-01" to-iso="1891-12-31">1891  &#8211; 1910</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51855/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51855</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__51857">
   <title type="main">Lehrbuch des &#214;sterreichischen Strafrechts</title>
-
-
-
-
   <author key="person__51801" role="hat-geschaffen">Stoo&#223;, Karl</author>
-
-
-
-
 <date notBefore-iso="1913-01-01" when-iso="1913-07-02">1913</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/51857/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb51857</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__52121">
   <title type="main">Die Musik, 17. Jg., H. 5</title>
-
   <title type="bibliografische_angabe">Die Musik, Jg. 17, H. 5 (1925)</title>
-
   <title type="uri_worklink">https://archive.org/details/DieMusik17jg1hj1924-1925/page/n359/mode/2up</title>
-
-
-
-
-
 <date from-iso="1925-01-01" to-iso="1925-12-31">1925  &#8211; 1925</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/52121/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb52121</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__52232">
   <title type="main">&#214;sterreichisches Strafproze&#223;recht in systematischer Darstellung</title>
-
-
-
-
   <author key="person__52231" role="hat-geschaffen">Lohsing, Ernst</author>
-
-
-
-
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/52232/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb52232</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__52423">
   <title type="main">Das &#214;sterreichische Strafverfahren. Eine systematische Darstellung.</title>
-
   <title type="legacy-name-merge">Das &#214;sterreichische Strafverfahren. Eine systematische Darstellung.</title>
-
-
-
-
   <author key="person__52422" role="hat-geschaffen">von Gleispach, Wenzeslaus</author>
-
-
-
-
 <date notBefore-iso="1904-01-01" when-iso="1904-07-01">1904</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/52423/</idno>
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/52424/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb52423</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__52686">
   <title type="main">Ein Witz Kasmaders?</title>
-
-
-
-
-
 <date>1927-01-01  &#8211; 1927-01-01</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/52686/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb52686</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__53238">
   <title type="main">Das Reichsgesetz &#252;ber die Presse vom 7. Mai 1874</title>
-
-
-
-
   <author key="person__53237" role="hat-geschaffen">Kitzinger, Friedrich</author>
-
-
-
-
 <date notBefore-iso="1920-01-01" when-iso="1920-07-01">1920</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/53238/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb53238</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__56114">
   <title type="main">Arbeiter-Zeitung, 19.6.1927</title>
-
   <title type="bibliografische_angabe">Arbeiter-Zeitung, Nr. 167, 15.10.1927</title>
-
   <title type="uri_anno">https://anno.onb.ac.at/cgi-content/anno?aid=aze&amp;datum=19270619&amp;seite=9&amp;zoom=33&amp;query=%22arbeiter%22%2B%22zeitung%22%2B%2219.%22%2B%22juni%22%2B%221927%22&amp;ref=anno-search</title>
-
-
-
-
-
 <date>19-06-1927  &#8211; 19-06-1927</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56114/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56114</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="3">Manuell angelegt</bibl>
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__56137">
   <title type="main">Aus der Radiowoche</title>
-
   <title type="uri_anno">https://anno.onb.ac.at/cgi-content/anno?aid=aze&amp;datum=19270626&amp;seite=12&amp;zoom=33&amp;query=%22arbeiter%22%2B%22zeitung%22%2B%2226%22%2B%22Juni%22%2B%221927%22&amp;ref=anno-search</title>
-
   <title type="bibliografische_angabe">Aus der Radiowoche, in: Arbeiter-Zeitung, 26.06.1927, S. 12</title>
-
-
-
-
-
 <date>1927-06-26  &#8211; 1927-06-26</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56137/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56137</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="3">Manuell angelegt</bibl>
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
 </bibl><bibl xml:id="work__56345">
   <title type="main">[Von Karl Kraus und Oskar Samek geforderte Erkl&#228;rung]</title>
-
   <title type="bibliografische_angabe">[Von Karl Kraus und Oskar Samek geforderte Erkl&#228;rung], in: Der Gegen-Angriff, 2.6.1934, S. 4</title>
-
-
-
-
-
 <date>1934-06-02  &#8211; 1934-06-02</date>
-
-
   <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56345/</idno>
-
   <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56345</idno>
-
-
 <note type="collections">
-  
   <bibl type="collections" n="5">legalkraus</bibl>
-  
 </note>
-
-
-
-
-</bibl><bibl xml:id="work__56353">
-  <title type="main">[Von Karl Kraus und Oskar Samek geforderte Erkl&#228;rung]</title>
-
-  <title type="bibliografische_angabe">[Von Karl Kraus und Oskar Samek geforderte Erkl&#228;rung], in: Der Gegen-Angriff, Nr. 28, 14.7.1934</title>
-
-
-
-
-
-<date>1934-07-14  &#8211; 1934-07-14</date>
-
-
-  <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56353/</idno>
-
-  <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56353</idno>
-
-
-<note type="collections">
-  
-  <bibl type="collections" n="5">legalkraus</bibl>
-  
-</note>
-
-
-
-
-</bibl><bibl xml:id="work__56358">
-  <title type="main">Erkl&#228;rung</title>
-
-  <title type="bibliografische_angabe">Erkl&#228;rung, in: Der Gegen-Angriff, Nr. 29, 22.7.1934, S. 1</title>
-
-
-
-
-
-<date>1934-07-22  &#8211; 1934-07-22</date>
-
-
-  <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56358/</idno>
-
-  <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56358</idno>
-
-
-<note type="collections">
-  
-  <bibl type="collections" n="5">legalkraus</bibl>
-  
-</note>
-
-
-
-
-</bibl><bibl xml:id="work__56404">
-  <title type="main">Olleschauer Lesezeichen, Biographien bedeutender Schriftsteller</title>
-
-
-
-
-
-<date notBefore-iso="1933-01-01" when-iso="1933-07-02">1933</date>
-
-
-  <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56404/</idno>
-
-  <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56404</idno>
-
-
-<note type="collections">
-  
-  <bibl type="collections" n="5">legalkraus</bibl>
-  
-</note>
-
-
-
-
-</bibl><bibl xml:id="work__56804">
-  <title type="main">Motivenbericht zu &#167; 1330 Abgb. [Tschechoslowakei]</title>
-
-
-
-
-
-
-
-  <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/56804/</idno>
-
-  <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb56804</idno>
-
-
-<note type="collections">
-  
-  <bibl type="collections" n="5">legalkraus</bibl>
-  
-</note>
-
-
-
-
-</bibl><bibl xml:id="work__57695">
-  <title type="main">Berichtigung des Protokolles &#252;ber die Hauptverhandlung, Archiv der Rechts- und Staatswissenschaften</title>
-
-
-
-
-  <author key="person__57694" role="hat-geschaffen">Mi&#345;i&#269;ka, August</author>
-
-
-
-
-<date notBefore-iso="1903-01-01" when-iso="1903-07-02">1903</date>
-
-
-  <idno type="URL" subtype="apis-default">https://pmb.acdh.oeaw.ac.at/entity/57695/</idno>
-
-  <idno type="URL" subtype="krauswienbibliothekat">https://kraus.wienbibliothek.at/register/werke/pmb57695</idno>
-
-
-<note type="collections">
-  
-  <bibl type="collections" n="5">legalkraus</bibl>
-  
-</note>
-
-
-
-
 </bibl></listBibl>
         </body>
     </text>

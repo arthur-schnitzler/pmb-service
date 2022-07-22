@@ -81,7 +81,7 @@ class Command(BaseCommand):
             else:
                 items = value['model'].objects.all()
             if kwargs['limit']:
-                items = items[:25]
+                items = items[:20]
             print(f"serialize {items.count()} {key.capitalize()}s")
             for res in tqdm(items, total=len(items)):
                 item_node = get_node_from_template(
@@ -90,7 +90,9 @@ class Command(BaseCommand):
                 item_list.append(item_node)
 
             with open(save_path, 'w') as f:
-                print(ET.tostring(tei_doc).decode('utf-8'), file=f)
+                mystr = ET.tostring(tei_doc).decode('utf-8')
+                data = "".join([s for s in mystr.splitlines(True) if s.strip()])
+                print(data, file=f)
             print(f"done serializing {items.count()} {key.capitalize()}s to {save_path}")
             files = list()
             files.append(save_path)
