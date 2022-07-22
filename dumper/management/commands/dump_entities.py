@@ -94,6 +94,7 @@ class Command(BaseCommand):
             print(f"done serializing {items.count()} {key.capitalize()}s to {save_path}")
             files = list()
             files.append(save_path)
+            print(f"pushing {files[0].split('/')[-1]} to Github")
             try:
                 push_to_gh(
                     files,
