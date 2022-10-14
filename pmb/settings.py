@@ -158,9 +158,13 @@ CELERY_BEAT_SCHEDULE = {
     #     "task": "pmb.tasks.sample_task",
     #     "schedule": crontab(minute="*/1"),
     # },
+    "fix_the_domains": {
+        "task": "pmb.tasks.fix_the_domains",
+        "schedule": crontab(minute=0, hour='*/3'),
+    },
     "dump_to_tei": {
         "task": "pmb.tasks.dump_to_tei",
-        "schedule": crontab(minute=0, hour='*/12'),
+        "schedule": crontab(minute=10, hour='*/12'),
     },
 }
 

@@ -4,6 +4,22 @@ from github import Github
 from github import InputGitTreeElement
 
 
+DOMAIN_MAPPING = [
+    ("d-nb.info/gnd", "gnd"),
+    ("geonames", "geonames"),
+    ("wikidata", "wikidata"),
+    ("fackel.oeaw.ac.at", "fackel"),
+    ("schnitzler-tagebuch", "schnitzler-tagebuch"),
+    ("schnitzler-bahr", "schnitzler-bahr"),
+    ("schnitzler-briefe", "schnitzler-briefe"),
+    ("schnitzler-lektueren", "schnitzler-lektueren"),
+    ("doi.org/10.1553", "doi.org/10.1553"),
+    ("kraus.wienbibliothek.at", "legalkraus"),
+    ("kraus1933", "dritte-walpurgisnacht"),
+    ("pmb.acdh.oeaw.ac.at", "pmb"),
+]
+
+
 def push_to_gh(
     files,
     ghpat=settings.GHPAT,

@@ -17,3 +17,8 @@ def sample_task():
 @shared_task()
 def dump_to_tei():
     call_command("dump_entities")
+
+
+@shared_task()
+def fix_the_domains():
+    call_command("fix_domains")
