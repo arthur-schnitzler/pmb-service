@@ -158,6 +158,10 @@ CELERY_BEAT_SCHEDULE = {
     #     "task": "pmb.tasks.sample_task",
     #     "schedule": crontab(minute="*/1"),
     # },
+    "mint_wikidata_ids": {
+        "task": "pmb.tasks.mint_wikidata_ids",
+        "schedule": crontab(minute=30, hour='*/2'),
+    },
     "fix_the_domains": {
         "task": "pmb.tasks.fix_the_domains",
         "schedule": crontab(minute=0, hour='*/3'),

@@ -22,3 +22,8 @@ def dump_to_tei():
 @shared_task()
 def fix_the_domains():
     call_command("fix_domains")
+
+
+@shared_task()
+def mint_wikidata_ids():
+    call_command("wikidata_minter")
