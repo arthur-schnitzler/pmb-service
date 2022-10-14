@@ -36,3 +36,6 @@ vocabseditor/settings/pg_local.py
 .env_secret
 media/uploads/*.rdf
 media/uploads/*.ttl
+requirements_dev.txt
+
+*.ipynb
