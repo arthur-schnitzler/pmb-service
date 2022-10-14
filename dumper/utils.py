@@ -16,6 +16,7 @@ DOMAIN_MAPPING = [
     ("doi.org/10.1553", "doi.org/10.1553"),
     ("kraus.wienbibliothek.at", "legalkraus"),
     ("kraus1933", "dritte-walpurgisnacht"),
+    ("pmb.acdh.oeaw.ac.at", "pmb"),
 ]
 
 
