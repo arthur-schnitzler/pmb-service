@@ -23,4 +23,4 @@ class Command(BaseCommand):
         print("done fixing domains")
 
         wrong_domain = Uri.objects.exclude(domain__in=domains)
-        print(f"no I found {wrong_domain.count()} with wrong or without domains")
+        print(f"now I found {wrong_domain.count()} with wrong or without domains")
