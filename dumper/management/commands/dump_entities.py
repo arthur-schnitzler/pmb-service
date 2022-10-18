@@ -11,7 +11,7 @@ from apis_core.apis_entities.models import (
     Work
 )
 from apis_core.apis_tei.tei_utils import get_node_from_template, tei_header
-from dumper.utils import push_to_gh
+from dumper.utils import upload_files_to_owncloud
 
 ENTITY_MAP = {
     "person": {
@@ -96,14 +96,6 @@ class Command(BaseCommand):
             print(f"done serializing {items.count()} {key.capitalize()}s to {save_path}")
             files = list()
             files.append(save_path)
-            print(f"pushing {files[0].split('/')[-1]} to Github")
-            try:
-                push_to_gh(
-                    files,
-                    ghpat=settings.GHPAT,
-                    repo_name=settings.GHREPO,
-                    commit_message=f"automatic data update for {files[0].split('/')[-1]}"
-                )
-            except Exception as e:
-                print(f"pushing {files[0]} to GitHub failed due to {e}")
+            upload_files_to_owncloud(files)
+
         print("finally done")

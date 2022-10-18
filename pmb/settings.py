@@ -154,23 +154,19 @@ AUTHOR_RELS = [1049, ]
 CELERY_BROKER_URL = os.environ.get('amqp://')
 
 CELERY_BEAT_SCHEDULE = {
-    # "sample_task": {
-    #     "task": "pmb.tasks.sample_task",
-    #     "schedule": crontab(minute="*/1"),
-    # },
     "mint_wikidata_ids": {
         "task": "pmb.tasks.mint_wikidata_ids",
-        "schedule": crontab(minute=30, hour='*/2'),
+        "schedule": crontab(hour=23, minute=45),
     },
     "fix_the_domains": {
         "task": "pmb.tasks.fix_the_domains",
-        "schedule": crontab(minute=0, hour='*/3'),
+        "schedule": crontab(hour=5, minute=30),
     },
     "dump_to_tei": {
         "task": "pmb.tasks.dump_to_tei",
-        "schedule": crontab(minute=10, hour='*/12'),
+        "schedule": crontab(hour=2, minute=2),
     },
 }
 
-GHPAT = os.environ.get('GHPAT')
-GHREPO = os.environ.get('GHREPO', 'csae8092/whatever')
+OWNCLOUD_USER = os.environ.get('OWNCLOUD_USER')
+OWNCLOUD_PW = os.environ.get('OWNCLOUD_PW')
