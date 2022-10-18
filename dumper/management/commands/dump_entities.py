@@ -97,5 +97,5 @@ class Command(BaseCommand):
             files = list()
             files.append(save_path)
             upload_files_to_owncloud(files)
-            
+
         print("finally done")
