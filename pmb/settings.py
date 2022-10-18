@@ -168,5 +168,5 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-GHPAT = os.environ.get('GHPAT')
-GHREPO = os.environ.get('GHREPO', 'csae8092/whatever')
+OWNCLOUD_USER = os.environ.get('OWNCLOUD_USER')
+OWNCLOUD_PW = os.environ.get('OWNCLOUD_PW')
