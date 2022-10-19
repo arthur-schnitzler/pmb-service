@@ -1,15 +1,21 @@
+import os
 import time
+
+from datetime import datetime
 from acdh_id_reconciler import gnd_to_wikidata
 from tqdm import tqdm
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from apis_core.apis_metainfo.models import TempEntityClass, Uri, Collection
+from dumper.utils import write_report
 
 
 class Command(BaseCommand):
     help = 'mint WikiData IDs for GND-URIs'
 
     def handle(self, *args, **kwargs):
+        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
         LIMIT = 100
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(
@@ -37,4 +43,12 @@ class Command(BaseCommand):
             wd_uri.save()
         ents = TempEntityClass.objects.filter(uri__uri__icontains="d-nb.info").exclude(uri__uri__icontains="wikidata")
         uris_to_process = Uri.objects.filter(entity__in=ents).filter(uri__icontains="d-nb.info")
-        print(f"{uris_to_process.count()} GND-Entities without Wikidata left")
+        mgs = f"{uris_to_process.count()} left"
+        print(mgs)
+        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        report = [
+            os.path.basename(__file__),
+            start_time,
+            end_time
+        ]
+        write_report(report)
