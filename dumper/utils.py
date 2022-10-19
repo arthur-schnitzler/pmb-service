@@ -45,3 +45,9 @@ def upload_files_to_owncloud(
         owncloud_name = f'{collection}/{tail}'
         print(f"uploading {tail} to {owncloud_name}")
         oc.put_file(owncloud_name, x)
+
+
+def write_report(report, report_file=settings.PMB_LOG_FILE):
+    with open(report_file, 'a') as f:
+        f.write(f'{",".join(report)}\n')
+        return "done"
