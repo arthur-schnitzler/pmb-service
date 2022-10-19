@@ -152,6 +152,7 @@ ORG_LOCATED_IN = [1141, 970, 1160]
 AUTHOR_RELS = [1049, ]
 
 CELERY_BROKER_URL = os.environ.get('amqp://')
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 50
 
 CELERY_BEAT_SCHEDULE = {
     "mint_wikidata_ids": {
