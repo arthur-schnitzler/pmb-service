@@ -118,7 +118,7 @@ MEDIA_URL = 'media/'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Vienna'
 
 USE_I18N = True
 
@@ -170,3 +170,5 @@ CELERY_BEAT_SCHEDULE = {
 
 OWNCLOUD_USER = os.environ.get('OWNCLOUD_USER')
 OWNCLOUD_PW = os.environ.get('OWNCLOUD_PW')
+PMB_LOG_FILE = os.path.join(MEDIA_ROOT, "pmb-log.csv")
+PMB_TIME_PATTERN = "%Y-%m-%d::%H:%M:%S"

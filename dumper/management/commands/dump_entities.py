@@ -1,5 +1,7 @@
 import os
 import lxml.etree as ET
+from datetime import datetime
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
@@ -11,7 +13,7 @@ from apis_core.apis_entities.models import (
     Work
 )
 from apis_core.apis_tei.tei_utils import get_node_from_template, tei_header
-from dumper.utils import upload_files_to_owncloud
+from dumper.utils import upload_files_to_owncloud, write_report
 
 ENTITY_MAP = {
     "person": {
@@ -55,7 +57,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
+
         for key, value in ENTITY_MAP.items():
+            start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
             save_path = os.path.join(settings.MEDIA_ROOT, f'list{key}.xml')
             tei_doc = tei_header(
                 title=f"List{key.capitalize()}",
@@ -96,6 +100,14 @@ class Command(BaseCommand):
             print(f"done serializing {items.count()} {key.capitalize()}s to {save_path}")
             files = list()
             files.append(save_path)
-            upload_files_to_owncloud(files)
+            if full:
+                upload_files_to_owncloud(files)
+            end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+            report = [
+                f"{os.path.basename(__file__)}: {key}",
+                start_time,
+                end_time
+            ]
+            write_report(report)
 
         print("finally done")

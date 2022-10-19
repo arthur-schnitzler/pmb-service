@@ -39,3 +39,4 @@ media/uploads/*.ttl
 requirements_dev.txt
 
 *.ipynb
+media/pmb-log.csv
