@@ -20,8 +20,6 @@ DOMAIN_MAPPING = [
 
 
 PMB_ENTITIES = "pmb_entities"
-oc = owncloud.Client('https://oeawcloud.oeaw.ac.at')
-oc.login(os.environ.get('OWNCLOUD_USER'), os.environ.get('OWNCLOUD_PW'))
 
 
 def upload_files_to_owncloud(
