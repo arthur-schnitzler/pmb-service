@@ -5,7 +5,7 @@ echo "starting rabbitmq"
 rabbitmq-server > rabbit_mq.log 1>&1 &
 
 echo "starting celery server"
-celery -A pmb worker -l INFO  > celery.log 2>&1 &
+celery -A pmb worker --concurrency=4 -l INFO  > celery.log 2>&1 &
 celery -A pmb beat -l INFO > beat.log 2>&1  &
 
 python manage.py collectstatic --no-input
