@@ -86,6 +86,7 @@ class Command(BaseCommand):
                 items = value['model'].objects.all()
             if kwargs['limit']:
                 items = items[:20]
+            items = items[:10]
             print(f"serialize {items.count()} {key.capitalize()}s")
             for res in tqdm(items, total=len(items)):
                 item_node = get_node_from_template(
