@@ -100,6 +100,8 @@ class Command(BaseCommand):
             print(f"done serializing {items.count()} {key.capitalize()}s to {save_path}")
             files = list()
             files.append(save_path)
+            if not kwargs['limit']:
+                upload_files_to_owncloud(files)
             end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
             report = [
                 f"{os.path.basename(__file__)}: {key}",
