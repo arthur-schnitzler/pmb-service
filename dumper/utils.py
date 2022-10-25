@@ -12,7 +12,7 @@ DOMAIN_MAPPING = [
     ("schnitzler-bahr", "schnitzler-bahr"),
     ("schnitzler-briefe", "schnitzler-briefe"),
     ("schnitzler-lektueren", "schnitzler-lektueren"),
-    ("doi.org/10.1553", "doi.org/10.1553"),
+    ("doi.org/10.1553", "oebl"),
     ("kraus.wienbibliothek.at", "legalkraus"),
     ("kraus1933", "dritte-walpurgisnacht"),
     ("pmb.acdh.oeaw.ac.at", "pmb"),
