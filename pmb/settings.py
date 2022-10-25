@@ -1,8 +1,5 @@
 import os
-import pmb.tasks  # noqa: F401
-
 from pathlib import Path
-from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -150,24 +147,6 @@ PL_A_PART_OF = [1106, 1136]
 PL_B_LOCATED_IN = [971, ]
 ORG_LOCATED_IN = [1141, 970, 1160]
 AUTHOR_RELS = [1049, ]
-
-CELERY_BROKER_URL = os.environ.get('amqp://')
-CELERY_WORKER_MAX_TASKS_PER_CHILD = 50
-
-CELERY_BEAT_SCHEDULE = {
-    "mint_wikidata_ids": {
-        "task": "pmb.tasks.mint_wikidata_ids",
-        "schedule": crontab(hour=23, minute=45),
-    },
-    "fix_the_domains": {
-        "task": "pmb.tasks.fix_the_domains",
-        "schedule": crontab(hour=5, minute=30),
-    },
-    "dump_to_tei": {
-        "task": "pmb.tasks.dump_to_tei",
-        "schedule": crontab(hour=2, minute=2),
-    },
-}
 
 OWNCLOUD_USER = os.environ.get('OWNCLOUD_USER')
 OWNCLOUD_PW = os.environ.get('OWNCLOUD_PW')

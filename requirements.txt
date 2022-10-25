@@ -1,7 +1,4 @@
 acdh-id-reconciler
 apis-core>=0.18,<1
-celery>=5.2.7,<6
-django-celery-results==2.4.0
 gunicorn==20.1.0
 pyocclient==0.6
-psutil>=5.8.0,<6
