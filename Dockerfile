@@ -14,6 +14,8 @@ RUN pip install -U pip --no-cache-dir && pip install -r /opt/app/requirements.tx
 COPY . /opt/app
 WORKDIR /opt/app
 RUN chown -R www-data:www-data /opt/app && chmod -R 755 /opt/app/media
+ADD crontab /etc/cron.d/container_cronjob
+RUN chmod 0644 /etc/cron.d/container_cronjob
 
 # start server
 EXPOSE 80
