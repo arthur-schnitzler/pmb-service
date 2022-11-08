@@ -152,3 +152,11 @@ OWNCLOUD_USER = os.environ.get('OWNCLOUD_USER')
 OWNCLOUD_PW = os.environ.get('OWNCLOUD_PW')
 PMB_LOG_FILE = os.path.join(MEDIA_ROOT, "pmb-log.csv")
 PMB_TIME_PATTERN = "%Y-%m-%d::%H:%M:%S"
+PMB_DETAIL_VIEW_PATTERN = "https://pmb.acdh.oeaw.ac.at/apis/entities/entity/{}/{}/detail"
+APIS_ENTITIES = {
+    "Place": {},
+    "Person": {},
+    "Institution": {},
+    "Work": {},
+    "Event": {},
+}
