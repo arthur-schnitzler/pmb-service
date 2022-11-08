@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apis_core.apis_tei',
     'guardian',
     'dumper',
+    'archemd'
 ]
 
 if os.environ.get('DEV'):
