@@ -1,3 +1,4 @@
+import re
 from rdflib import Graph, Namespace, URIRef, RDF, Literal
 from apis_core.apis_metainfo.models import TempEntityClass
 from django.conf import settings
@@ -36,6 +37,11 @@ class ArcheMd:
             g.add((subj, self.ARCHE["hasLongitude"], Literal(f"{self.entity.lng}")))
         except AttributeError:
             pass
+        for x in self.other_ids:
+            other_uri = URIRef(
+                settings.PMB_DETAIL_VIEW_PATTERN.format(self.entity_class_name, x)
+            )
+            g.add((subj, self.ARCHE["hasIdentifier"], other_uri))
         return g
 
     def __init__(self, entity_id):
@@ -51,8 +57,15 @@ class ArcheMd:
             self.arche_class = "Organization"
         else:
             self.arche_class = self.entity_class_name.capitalize()
+        self.all_entity_uris = [x.uri for x in self.entity.uri_set.all()]
         self.entity_uris = [
-            x.uri
-            for x in self.entity.uri_set.all()
-            if "gnd" in x.uri or "geonames" in x.uri or "wikidata" in x.uri
+            x
+            for x in self.all_entity_uris
+            if "gnd" in x or "geonames" in x or "wikidata" in x
         ]
+        self.to_convert = [
+            x for x in self.all_entity_uris if "https://pmb.acdh.oeaw.ac.at" in x
+        ]
+        self.other_ids = []
+        for x in self.to_convert:
+            self.other_ids.append([re.findall(r"\d+", x)][0][0])

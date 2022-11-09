@@ -9,7 +9,7 @@ from .arche_md_utils import ArcheMd
 
 # ToDo: remove this function when updating apis-core package
 def get_object_from_pk_or_uri(request, pk):
-    """ checks if the given pk exists, if not checks if a matching apis-default uri exists
+    """checks if the given pk exists, if not checks if a matching apis-default uri exists
     and returns its entity"""
     try:
         instance = TempEntityClass.objects_inheritance.get_subclass(pk=pk)
@@ -34,7 +34,6 @@ def get_object_from_pk_or_uri(request, pk):
 
 def entity_as_arche(request, pk):
     res = get_object_from_pk_or_uri(request, pk)
-    print(res)
     try:
         res = ArcheMd(res.id)
     except ObjectDoesNotExist:
