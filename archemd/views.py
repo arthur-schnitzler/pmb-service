@@ -39,5 +39,5 @@ def entity_as_arche(request, pk):
     except ObjectDoesNotExist:
         return HttpResponseNotFound()
     return HttpResponse(
-        res.return_graph().serialize(), content_type="application/x-turtle"
+        res.return_graph().serialize(), content_type="text/turtle"
     )
