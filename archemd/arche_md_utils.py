@@ -1,4 +1,4 @@
-from rdflib import Graph, Namespace, URIRef, RDF, Literal
+from rdflib import Graph, Namespace, URIRef, RDF, Literal, XSD
 from apis_core.apis_metainfo.models import TempEntityClass
 from django.conf import settings
 
@@ -21,6 +21,7 @@ class ArcheMd:
                     ),
                 )
             )
+            g.add((subj, self.ARCHE["hasUrl"], Literal(self.detail_view_url, datatype=XSD.anyURI)))
         else:
             g.add(
                 (
