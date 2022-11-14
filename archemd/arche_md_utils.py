@@ -1,4 +1,3 @@
-import re
 from rdflib import Graph, Namespace, URIRef, RDF, Literal
 from apis_core.apis_metainfo.models import TempEntityClass
 from django.conf import settings
@@ -9,7 +8,7 @@ class ArcheMd:
 
     def return_graph(self):
         g = Graph()
-        subj = URIRef(self.detail_view_url)
+        subj = URIRef(self.uri)
         g.add((subj, RDF.type, self.ARCHE[self.arche_class]))
         g.add((subj, self.ARCHE["hasIdentifier"], subj))
         if self.entity_class_name == "person":
@@ -37,16 +36,14 @@ class ArcheMd:
             g.add((subj, self.ARCHE["hasLongitude"], Literal(f"{self.entity.lng}")))
         except AttributeError:
             pass
-        for x in self.other_ids:
-            other_uri = URIRef(
-                settings.PMB_DETAIL_VIEW_PATTERN.format(self.entity_class_name, x)
-            )
-            g.add((subj, self.ARCHE["hasIdentifier"], other_uri))
+        for x in self.other_pmb_ids:
+            g.add((subj, self.ARCHE["hasIdentifier"], URIRef(x)))
         return g
 
     def __init__(self, entity_id):
         self.ARCHE = Namespace("https://vocabs.acdh.oeaw.ac.at/schema#")
         self.entity_id = entity_id
+        self.uri = f"https://pmb.acdh.oeaw.ac.at/entity/{self.entity_id}/"
         self.item = TempEntityClass.objects.get(id=entity_id)
         self.entity = self.item.get_child_entity()
         self.entity_class_name = self.entity.__class__.__name__.lower()
@@ -63,9 +60,6 @@ class ArcheMd:
             for x in self.all_entity_uris
             if "gnd" in x or "geonames" in x or "wikidata" in x
         ]
-        self.to_convert = [
+        self.other_pmb_ids = [
             x for x in self.all_entity_uris if "https://pmb.acdh.oeaw.ac.at" in x
         ]
-        self.other_ids = []
-        for x in self.to_convert:
-            self.other_ids.append([re.findall(r"\d+", x)][0][0])
