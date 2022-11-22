@@ -7,6 +7,7 @@ DOMAIN_MAPPING = [
     ("d-nb.info/gnd", "gnd"),
     ("geonames", "geonames"),
     ("wikidata", "wikidata"),
+    ("wikipedia", "wikipedia"),
     ("fackel.oeaw.ac.at", "fackel"),
     ("schnitzler-tagebuch", "schnitzler-tagebuch"),
     ("schnitzler-bahr", "schnitzler-bahr"),
