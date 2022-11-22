@@ -3,6 +3,7 @@ import time
 
 from datetime import datetime
 from acdh_id_reconciler import gnd_to_wikidata
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from tqdm import tqdm
 
 from django.conf import settings
@@ -36,7 +37,7 @@ class Command(BaseCommand):
                 print(x, ent.id, e)
                 ent.collection.add(col)
                 continue
-            wd_url = results['wikidata'].replace('http://', 'https://')
+            wd_url = get_normalized_uri(results['wikidata'])
             wd_uri, _ = Uri.objects.get_or_create(uri=wd_url)
             wd_uri.entity = ent
             wd_uri.domain = 'wikidata'
