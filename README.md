@@ -4,3 +4,10 @@
 # PMB-SERVICE
 
 lightweight APIS-PMB instance to generate TEI/XML dumps
+
+
+## cheat-sheet
+
+### process gnd-beacon
+
+`python manage.py process_beacon --beacon=https://thun-korrespondenz.acdh.oeaw.ac.at/beacon.txt --domain=thun-korrespondenz`
