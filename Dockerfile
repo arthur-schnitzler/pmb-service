@@ -1,4 +1,4 @@
-FROM python:3.8.13-slim-bullseye
+FROM python:3.11
 
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install nginx g++ gcc libmariadb-dev vim cron tzdata -y
