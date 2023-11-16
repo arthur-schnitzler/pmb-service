@@ -209,7 +209,7 @@ function download_network_data(formData) {
 
       n.x = Math.random();
       n.y = Math.random();
-      n.size = 10*(1-1/$.ApisNet.instance.graph.degree(n.id));
+      n.size = 10*(1-1/.ApisNet.instance.graph.degree(n.id));
       if (n.type === 'person') {
         n.color = '#5FB404';
       } else if (n.type === 'institution') {
@@ -461,7 +461,7 @@ var config = {
     };
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
     $.ApisNet.tooltip = sigma.plugins.tooltips($.ApisNet.instance, $.ApisNet.instance.renderers[0], config);
-//$.ApisNet.instance.bind("rightClickNode", delete_nodes);
+//.ApisNet.instance.bind("rightClickNode", delete_nodes);
     $.ApisNet.instance.bind("rightClickNode", select_unselect_node);
 
 };
@@ -469,8 +469,8 @@ $('#id_select_relation').on("change", function(){
     var list_ent = $(this).val().split('-')
     console.log(list_ent);
     console.log("changed");
-    //$('#id_select_kind-autocomplete').yourlabsAutocomplete('destroy');
-    //$('#id_select_kind-autocomplete').yourlabsAutocomplete({'url': new_val, 'minimumCharacters': 2});
+    //('#id_select_kind-autocomplete').yourlabsAutocomplete('destroy');
+    //('#id_select_kind-autocomplete').yourlabsAutocomplete({'url': new_val, 'minimumCharacters': 2});
 
     $('#id_search_source').select2('destroy');
     $('#id_search_source').select2({
@@ -498,8 +498,8 @@ $('#id_select_relation').on("change", function(){
             // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
           }
         });
-    //$('#id_search_target-autocomplete').yourlabsAutocomplete('destroy');
-    //$('#id_search_target-autocomplete').yourlabsAutocomplete({'url': new_val_target, 'minimumCharacters': 2});
+    //('#id_search_target-autocomplete').yourlabsAutocomplete('destroy');
+    //('#id_search_target-autocomplete').yourlabsAutocomplete({'url': new_val_target, 'minimumCharacters': 2});
 })
 })
 </script>

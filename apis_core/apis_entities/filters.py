@@ -91,11 +91,6 @@ class GenericListFilter(django_filters.FilterSet):
             """
 
             enabled_filters = settings.APIS_ENTITIES[self.Meta.model.__name__]["list_filters"]
-            if "apis_ampel" in settings.INSTALLED_APPS:
-                from apis_ampel.helper_functions import is_ampel_active
-                from apis_ampel.models import AmpelTemp
-                if is_ampel_active(self.Meta.model.__name__):
-                    enabled_filters = ["ampel", "ampel_note", "ampel_notes_field", "ampel_references_field"] + enabled_filters
 
 
             filter_dict_tmp = {}

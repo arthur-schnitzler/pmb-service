@@ -12,57 +12,57 @@ app_name = "apis_entities"
 
 urlpatterns = [
     path(
-        "entity/(?P<entity>[a-z]+)/<int:pk>/edit",
+        "entity/<entity>/<int:pk>/edit",
         views2.GenericEntitiesEditView.as_view(),
         name="generic_entities_edit_view",
     ),
     path(
-        "entity/(?P<entity>[a-z]+)/<int:pk>/detail",
+        "entity/<entity>/<int:pk>/detail",
         detail_views.GenericEntitiesDetailView.as_view(),
         name="generic_entities_detail_view",
     ),
     path(
-        "entity/(?P<entity>[a-z]+)/create",
+        "entity/<entity>/create",
         views2.GenericEntitiesCreateView.as_view(),
         name="generic_entities_create_view",
     ),
     path(
-        "entity/(?P<entity>[a-z]+)/<int:pk>/delete",
+        "entity/<entity>/<int:pk>/delete",
         views2.GenericEntitiesDeleteView.as_view(),
         name="generic_entities_delete_view",
     ),
     path(
-        "entity/(?P<entity>[a-z]+)/list/",
+        "entity/<entity>/list/",
         views.GenericListViewNew.as_view(),
         name="generic_entities_list",
     ),
     path(
-        "autocomplete/createstanbol/(?P<entity>[a-zA-Z0-9-]+)/",
+        "autocomplete/createstanbol/<entity>/",
         GenericEntitiesCreateStanbolView.as_view(),
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/createstanbol/(?P<entity>[a-zA-Z0-9-]+)/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/createstanbol/<entity>/(?P<ent_merge_pk>[0-9]+)/",
         GenericEntitiesCreateStanbolView.as_view(),
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/(?P<entity>[a-zA-Z0-9-]+)/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/<entity>/(?P<ent_merge_pk>[0-9]+)/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
     path(
-        "autocomplete/(?P<entity>[a-zA-Z0-9-]+)/",
+        "autocomplete/<entity>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
     path(
-        "autocomplete/(?P<entity>[a-zA-Z0-9-]+)/(?P<db_include>[a-z]+)/",
+        "autocomplete/<entity>/(?P<db_include>[a-z]+)/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
     path(
-        "autocomplete-network/(?P<entity>[a-zA-Z0-9-]+)/",
+        "autocomplete-network/<entity>/",
         GenericNetworkEntitiesAutocomplete.as_view(),
         name="generic_network_entities_autocomplete",
     ),

@@ -203,7 +203,7 @@
             $('#tab_'+data.tab).find('div:eq(1)').remove();
             $('#tab_'+data.tab).append(data.form);
 	    $('#form_PersonInstitutionForm div:first div:first select').focus();
-            //$(".form.ajax_form").unbind()
+            //(".form.ajax_form").unbind()
         };
         if (!$.ApisForms) {
                         $.ApisForms = {}
@@ -247,7 +247,7 @@
     function EntityRelationForm_response(response){
         if (response.test == false) {
             $('#'+response.DivID).replaceWith(response.form);
-            //$(".form.ajax_form").unbind();
+            //(".form.ajax_form").unbind();
             if ($.ApisHigh.tt_instance_detail) {
             if ($.ApisHigh.tt_instance_detail["__state"] == 'stable') {
                 $.ApisHigh.tt_instance_detail.content(response.form);
@@ -279,7 +279,7 @@
     function HighlForm_response(response){
         if (response.test == false) {
             $.ApisHigh.tt_instance.content(response.form);
-            //$(".form.ajax_form").unbind()
+            //(".form.ajax_form").unbind()
         } else {
              $('#tab_'+response.tab+' div.table-container').remove();
              $('#tab_'+response.tab).prepend(response.table_html);
@@ -297,7 +297,7 @@
     function PAddRelation_response(response){
         if (response.test == false) {
             $.ApisHigh.tt_instance.content(response.form);
-            //$(".form.ajax_form").unbind()
+            //(".form.ajax_form").unbind()
         } else {
              $('#htxt_'+response.text.id).html($.parseHTML(response.text.text))
              $.ApisHigh.tt_instance.close()
