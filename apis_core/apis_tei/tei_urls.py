@@ -18,28 +18,28 @@ urlpatterns = [
         name='tei_completer_autocomplete'
     ),
     url(
-         r'^person/(?P<pk>[0-9]+)$',
+         r'^person/<int:pk>$',
         views.person_as_tei,
         name='person_as_tei'
     ),
     url(
-        r'^place/(?P<pk>[0-9]+)$',
+        r'^place/<int:pk>$',
         views.place_as_tei,
         name='place_as_tei'
     ),
     url(
-        r'^org/(?P<pk>[0-9]+)$',
+        r'^org/<int:pk>$',
         views.org_as_tei,
         name='org_as_tei'
     ),
     url(
-        r'^institution/(?P<pk>[0-9]+)$',
+        r'^institution/<int:pk>$',
         views.org_as_tei,
         name='org_as_tei'
     ),
     
     url(
-        r'^work/(?P<pk>[0-9]+)$',
+        r'^work/<int:pk>$',
         views.work_as_tei,
         name='work_as_tei'
     ),

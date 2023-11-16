@@ -13,12 +13,12 @@ app_name = "apis_entities"
 
 urlpatterns = [
     url(
-        r"^entity/(?P<entity>[a-z]+)/(?P<pk>[0-9]+)/edit$",
+        r"^entity/(?P<entity>[a-z]+)/<int:pk>/edit$",
         views2.GenericEntitiesEditView.as_view(),
         name="generic_entities_edit_view",
     ),
     url(
-        r"^entity/(?P<entity>[a-z]+)/(?P<pk>[0-9]+)/detail$",
+        r"^entity/(?P<entity>[a-z]+)/<int:pk>/detail$",
         detail_views.GenericEntitiesDetailView.as_view(),
         name="generic_entities_detail_view",
     ),
@@ -28,7 +28,7 @@ urlpatterns = [
         name="generic_entities_create_view",
     ),
     url(
-        r"^entity/(?P<entity>[a-z]+)/(?P<pk>[0-9]+)/delete$",
+        r"^entity/(?P<entity>[a-z]+)/<int:pk>/delete$",
         views2.GenericEntitiesDeleteView.as_view(),
         name="generic_entities_delete_view",
     ),
@@ -68,13 +68,13 @@ urlpatterns = [
         name="generic_network_entities_autocomplete",
     ),
     # TODO __sresch__ : This seems unused. Remove it once sure
-    # url(r'^detail/work/(?P<pk>[0-9]+)$',
+    # url(r'^detail/work/<int:pk>$',
     #     detail_views.WorkDetailView.as_view(), name='work_detail'),
     url(r"^place/geojson/$", views.getGeoJson, name="getGeoJson"),
     url(r"^place/geojson/list/$", views.getGeoJsonList, name="getGeoJsonList"),
     url(r"^place/network/list/$", views.getNetJsonList, name="getNetJsonList"),
     url(
-        r"^resolve/place/(?P<pk>[0-9]+)/(?P<uri>.+)$",
+        r"^resolve/place/<int:pk>/(?P<uri>.+)$",
         views.resolve_ambigue_place,
         name="resolve_ambigue_place",
     ),

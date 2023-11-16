@@ -1,41 +1,17 @@
 from functools import reduce
-import copy
-import importlib
-import inspect
-import typing
-
 from django.conf import settings
 
-# from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from rest_framework import pagination, serializers, viewsets
 from rest_framework import renderers
 from rest_framework.response import Response
 
-# from drf_spectacular.contrib.django_filters import (
-#    DjangoFilterBackend as DjangoFilterbackendSpectacular,
-# )
-from drf_spectacular.utils import (
-    extend_schema,
-    extend_schema_field,
-    OpenApiParameter,
-    extend_schema_serializer,
-)
-from drf_spectacular.types import OpenApiTypes
-from django import forms
+
 from django_filters import rest_framework as filters
 from rest_framework.filters import OrderingFilter
 from .apis_metainfo.models import TempEntityClass
 from .api_renderers import NetJsonRenderer
-from .apis_relations.models import AbstractRelation
 from apis_core.helper_functions.ContentType import GetContentTypes
-
-
-if "apis_highlighter" in getattr(settings, "INSTALLED_APPS"):
-    from apis_highlighter.highlighter import highlight_text_new
-    from apis_highlighter.serializer import annotationSerializer
-    from apis_highlighter.models import Annotation
-
 
 try:
     MAX_AGE = settings.MAX_AGE
@@ -75,16 +51,12 @@ class ApisBaseSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     label = serializers.SerializerMethodField(method_name="add_label")
     url = serializers.SerializerMethodField(method_name="add_uri")
-
-    @extend_schema_field(OpenApiTypes.INT)
     def add_id(self, obj):
         return obj.pk
 
-    @extend_schema_field(OpenApiTypes.STR)
     def add_label(self, obj):
         return str(obj)
 
-    @extend_schema_field(OpenApiTypes.URI)
     def add_uri(self, obj):
         return self.context["view"].request.build_absolute_uri(
             reverse(
@@ -93,7 +65,6 @@ class ApisBaseSerializer(serializers.ModelSerializer):
             )
         )
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
     def add_type(self, obj):
         lst_type = ["kind", "type", "collection_type", "relation_type"]
         lst_kind = [x for x in obj._meta.fields if x.name in lst_type and "apis_vocabularies" in str(x.related_model)]
@@ -139,8 +110,6 @@ class EntitySerializer(ApisBaseSerializer):
 
 class LabelSerializer(ApisBaseSerializer):
     parent_id = serializers.PrimaryKeyRelatedField(many=False, source="parent_class_id", read_only=True)
-
-    @extend_schema_field(OpenApiTypes.INT)
     def add_parent_id(self, obj):
         return obj.parent_class_id
 
@@ -158,7 +127,6 @@ class RelationObjectSerializer2(ApisBaseSerializer):
     relation_type = VocabsBaseSerializer(read_only=True)
     related_entity = serializers.SerializerMethodField(method_name="add_related_entity")
 
-    @extend_schema_field(EntitySerializer)
     def add_related_entity(self, instance):
         for at in dir(instance):
             if at.startswith("related_") and at.endswith("_id") and getattr(instance, at) != self._pk_instance:
@@ -170,16 +138,6 @@ class RelationObjectSerializer2(ApisBaseSerializer):
     def __init__(self, *args, **kwargs):
         self._pk_instance = kwargs.pop("pk_instance")
         super(RelationObjectSerializer2, self).__init__(*args, **kwargs)
-
-
-if "apis_highlighter" in getattr(settings, "INSTALLED_APPS"):
-
-    class AnnotationSerializer(serializers.ModelSerializer):
-        related_object = VocabsBaseSerializer(source="get_related_entity", read_only=True, many=False)
-
-        class Meta:
-            model = Annotation
-            fields = ["id", "start", "end", "related_object"]
 
 
 def generic_serializer_creation_factory():
@@ -491,7 +449,6 @@ def generic_serializer_creation_factory():
                     qs = qs.select_related(*self._select_related)
                 return qs
 
-            @extend_schema(responses=TemplateSerializer(many=True))
             def list_viewset(self, request):
                 res = super(self.__class__, self).list(request)
                 return res
@@ -499,56 +456,9 @@ def generic_serializer_creation_factory():
             def dispatch(self, request, *args, **kwargs):
                 return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
-            if entity_str.lower() == "text":
-
-                @extend_schema(
-                    parameters=[
-                        OpenApiParameter(
-                            name="highlight",
-                            description="Whether to add annotations or not, defaults to true",
-                            type=OpenApiTypes.BOOL,
-                        ),
-                        OpenApiParameter(
-                            name="inline_annotations",
-                            description="Whether to add html5 mark tags for annotations to the text, defaults to false",
-                            type=OpenApiTypes.BOOL,
-                        ),
-                        OpenApiParameter(
-                            name="ann_proj_pk",
-                            description="PK of the annotation project to use for annotations",
-                            type=OpenApiTypes.INT,
-                        ),
-                        OpenApiParameter(
-                            name="types",
-                            description="Content type pks of annotation types to show. E.g. PersonPlace relations (comma sperated list)",
-                            type=OpenApiTypes.STR,
-                        ),
-                        OpenApiParameter(
-                            name="users_show",
-                            description="Filter annotations for users. PKs of users, comma seperated list",
-                            type=OpenApiTypes.STR,
-                        ),
-                    ],
-                    responses={200: TemplateSerializerRetrieve},
-                )
-                def retrieve(self, request, pk=None):
-                    res = super(self.__class__, self).retrieve(request, pk=pk)
-                    return res
-
-            else:
-
-                @extend_schema(
-                    parameters=[
-                        OpenApiParameter(
-                            name="include_relations",
-                            description="Whether to include serialization of relations or not. Usefull to avoid timeouts on big objects. Defaults to true",
-                            type=OpenApiTypes.BOOL,
-                        )
-                    ]
-                )
-                def retrieve(self, request, pk=None):
-                    res = super(self.__class__, self).retrieve(request, pk=pk)
-                    return res
+            def retrieve(self, request, pk=None):
+                res = super(self.__class__, self).retrieve(request, pk=pk)
+                return res
 
         TemplateViewSet.__name__ = TemplateViewSet.__qualname__ = f"Generic{entity_str.title().replace(' ', '')}ViewSet"
 

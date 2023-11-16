@@ -6,7 +6,7 @@ from io import TextIOWrapper
 
 import requests
 from django.conf import settings
-from django.db.models import Q, Prefetch
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -22,7 +22,6 @@ from rest_framework.reverse import reverse_lazy
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
-from apis_core.apis_metainfo.api_renderers import PaginatedCSVRenderer
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations.models import (
     PersonPlace,
@@ -40,11 +39,6 @@ from apis_core.helper_functions.RDFParser import RDFParser
 from apis_core.helper_functions.stanbolQueries import find_loc
 from .api_renderers import (
     EntityToTEI,
-    EntityToCIDOCXML,
-    EntityToProsopogrAPhI,
-    EntityToCIDOCN3,
-    EntityToCIDOCNQUADS,
-    EntityToCIDOCTURTLE,
 )
 from .models import Event, Institution, Person, Place, Work, AbstractEntity
 from .serializers import (
@@ -76,11 +70,6 @@ class GetEntityGeneric(GenericAPIView):
     queryset = TempEntityClass.objects.all()
     renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (
         EntityToTEI,
-        EntityToCIDOCXML,
-        EntityToProsopogrAPhI,
-        EntityToCIDOCN3,
-        EntityToCIDOCNQUADS,
-        EntityToCIDOCTURTLE,
     )
     if getattr(settings, "APIS_RENDERERS", None) is not None:
         rend_add = tuple()
@@ -183,9 +172,9 @@ class PlaceViewSet(viewsets.ModelViewSet):
     depth = 2
     filter_fields = ("name", "kind__name", "collection__name")
     search_fields = ("name",)
-    renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (
-        PaginatedCSVRenderer,
-    )
+    # renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (
+    #     PaginatedCSVRenderer,
+    # )
 
 
 class EventViewSet(viewsets.ModelViewSet):

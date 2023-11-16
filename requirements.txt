@@ -1,4 +1,5 @@
 acdh-id-reconciler>=0.2,<1
+acdh-tei-pyutils>=0.34,<1
 Django>4.1,<5
 django-admin-csvexport
 django-autocomplete-light
@@ -11,4 +12,5 @@ celery>=5.2.7,<6
 pandas
 psycopg2
 pyocclient==0.6
+PyYAML>=6.0.1,<7
 rdflib
