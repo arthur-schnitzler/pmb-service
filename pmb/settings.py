@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     "apis_core.apis_vocabularies",
     "apis_core.apis_labels",
     "apis_core.apis_tei",
-    "guardian",
     "dumper",
     "archemd",
 ]
@@ -81,15 +80,15 @@ WSGI_APPLICATION = "pmb.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("APIS_DB_NAME", "pmb"),
-        "USER": os.environ.get("APIS_DB_USER", "pmb"),
-        "PASSWORD": os.environ.get("APIS_DB_PASSWORD"),
-        "HOST": os.environ.get("APIS_DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("APIS_DB_PORT", "3306"),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB", "pmb"),
+            "USER": os.environ.get("POSTGRES_USER", "postgres"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+            "PORT": os.environ.get("POSTEGRES_PORT", "5432"),
+        }
     }
-}
 
 
 # Password validation
@@ -145,7 +144,7 @@ APIS_BASE_URI = "https://pmb.acdh.oeaw.ac.at/"
 
 REDMINE_ID = "13424"
 APIS_RELATIONS_FILTER_EXCLUDE = []
-CSRF_TRUSTED_ORIGINS = ["pmb.acdh.oeaw.ac.at"]
+CSRF_TRUSTED_ORIGINS = ["https://pmb.acdh.oeaw.ac.at"]
 BIRTH_REL = [
     88,
 ]
