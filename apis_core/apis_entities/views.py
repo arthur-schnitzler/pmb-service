@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 
-import reversion
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -14,9 +13,6 @@ from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
 from django_tables2 import SingleTableView
 from django_tables2.export.views import ExportMixin
-
-# from reversion_compare.views import HistoryCompareDetailView
-
 from apis_core.apis_metainfo.models import Uri, UriCandidate, Text
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions.RDFParser import RDFParser
@@ -540,19 +536,17 @@ def getNetJsonListInstitution(request):
 @login_required
 def resolve_ambigue_place(request, pk, uri):
     """Only used to resolve place names."""
-    with reversion.create_revision():
-        uri = "http://" + uri
-        entity = Place.objects.get(pk=pk)
-        pl_n = RDFParser(uri, kind="Place")
-        pl_n.create_objct()
-        pl_n_1 = pl_n.save()
-        pl_n_1 = pl_n.merge(entity)
-        url = pl_n_1.get_absolute_url()
-        if pl_n.created:
-            pl_n_1.status = "distinct (manually resolved)"
-            pl_n_1.save()
-        UriCandidate.objects.filter(entity=entity).delete()
-        reversion.set_user(request.user)
+    uri = "http://" + uri
+    entity = Place.objects.get(pk=pk)
+    pl_n = RDFParser(uri, kind="Place")
+    pl_n.create_objct()
+    pl_n_1 = pl_n.save()
+    pl_n_1 = pl_n.merge(entity)
+    url = pl_n_1.get_absolute_url()
+    if pl_n.created:
+        pl_n_1.status = "distinct (manually resolved)"
+        pl_n_1.save()
+    UriCandidate.objects.filter(entity=entity).delete()
 
     return HttpResponseRedirect(url)
 

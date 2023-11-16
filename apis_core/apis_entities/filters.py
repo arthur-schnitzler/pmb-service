@@ -6,6 +6,7 @@ from django.conf import settings
 
 from apis_core.apis_entities.models import *
 from apis_core.apis_vocabularies.models import RelationBaseClass
+from apis_core.apis_metainfo.models import Collection
 
 
 # The following classes define the filter sets respective to their models.
