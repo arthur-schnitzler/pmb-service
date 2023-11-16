@@ -3,11 +3,8 @@ import re
 import sys
 import unicodedata
 
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils.functional import cached_property
-from django.conf import settings
-from django.contrib.contenttypes.fields import GenericRelation
 
 
 class VocabNames(models.Model):
@@ -38,17 +35,10 @@ class VocabsBaseClass(models.Model):
         on_delete=models.CASCADE
     )
     status = models.CharField(max_length=4, choices=choices_status, default='can')
-    userAdded = models.ForeignKey(
-        User, blank=True, null=True,
-        on_delete=models.SET_NULL
-    )
     vocab_name = models.ForeignKey(
         VocabNames, blank=True, null=True,
         on_delete=models.SET_NULL
     )
-    if 'apis_highlighter' in settings.INSTALLED_APPS:
-        from apis_highlighter.models import Annotation
-        annotation_set = GenericRelation(Annotation)
 
     def __str__(self):
         return self.label
