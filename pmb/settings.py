@@ -17,6 +17,9 @@ if os.environ.get("DEBUG"):
 
 ALLOWED_HOSTS = ["*"]
 
+APIS_LIST_VIEWS_ALLOWED = True
+APIS_DETAIL_VIEWS_ALLOWED = True
+
 
 # Application definition
 

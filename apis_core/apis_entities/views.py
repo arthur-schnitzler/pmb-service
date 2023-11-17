@@ -113,10 +113,7 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
     formhelper_class = GenericFilterFormHelper
     context_filter_name = "filter"
     paginate_by = 25
-    template_name = getattr(
-        settings, "APIS_LIST_VIEW_TEMPLATE", "apis:apis_entities/generic_list.html"
-    )
-    #login_url = "/accounts/login/"
+    template_name =  "apis_entities/generic_list.html"
 
     def get_model(self):
         model = ContentType.objects.get(
@@ -172,6 +169,7 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
         context = super(GenericListViewNew, self).get_context_data()
         context[self.context_filter_name] = self.filter
         context["entity"] = self.entity
+        print(f"#############{self.entity}")
         context["app_name"] = "apis_entities"
         entity = self.entity.title()
         context["entity_create_stanbol"] = GenericEntitiesStanbolForm(self.entity)
@@ -587,19 +585,3 @@ def generic_network_viz(request):
             "apis:apis_entities/generic_network_visualization.html",
             {"form": form},
         )
-
-
-############################################################################
-############################################################################
-#
-#  Reversion Views
-#
-############################################################################
-############################################################################
-# TODO: add again as soon as the module has been bumped to new django version
-# class ReversionCompareView(HistoryCompareDetailView):
-#    template_name = 'apis_entities/compare_base.html'
-
-#    def dispatch(self, request, app, kind, pk, *args, **kwargs):
-#        self.model = ContentType.objects.get(app_label=app, model=kind).model_class()
-#        return super(ReversionCompareView, self).dispatch(request, *args, **kwargs)

@@ -1,8 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from apis_core.apis_entities.api_views import GetEntityGeneric
+
+
 urlpatterns = [
-    path("apis/entities/", include("apis_core.apis_entities.urls")),
+    path("apis/", include("apis_core.urls", namespace="apis")),
+    path(r"entity/<int:pk>/", GetEntityGeneric.as_view(), name="GetEntityGenericRoot"),
     path("admin/", admin.site.urls),
     path("arche/", include("archemd.urls")),
     path("", include("dumper.urls")),
