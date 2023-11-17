@@ -30,8 +30,8 @@ def get_generic_relation_listview_table(relation_name):
     relation_class = AbstractRelation.get_relation_class_of_name(relation_name)
     related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
     related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
-    related_entity_field_name_a = relation_class.get_related_entity_field_nameA()
-    related_entity_field_name_b = relation_class.get_related_entity_field_nameB()
+    related_entity_field_name_a = relation_class.get_related_entity_field_namea()
+    related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
 
     class GenericRelationListViewTable(tables.Table):
 
@@ -105,8 +105,8 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
     entity_class_name = entity_instance.__class__.__name__.lower()
     related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
     related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
-    related_entity_field_name_a = relation_class.get_related_entity_field_nameA()
-    related_entity_field_name_b = relation_class.get_related_entity_field_nameB()
+    related_entity_field_name_a = relation_class.get_related_entity_field_namea()
+    related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
 
     # find out what other entity class the current entity instance in a given relation class is related to
     # (needed for linkg towards instances of related entities)

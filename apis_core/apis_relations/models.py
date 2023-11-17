@@ -332,6 +332,7 @@ class AbstractRelation(TempEntityClass):
         :return: the name of the field of the A side of the current relation class or instance
         E.g. PersonWork -> "related_person"
         """
+        print(dir(cls))
         return None
 
     @classmethod

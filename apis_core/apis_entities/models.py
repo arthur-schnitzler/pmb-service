@@ -367,10 +367,10 @@ class AbstractEntity(TempEntityClass):
             q_args = Q()
 
             if relation_class.get_related_entity_classa() == self.__class__:
-                q_args |= Q(**{relation_class.get_related_entity_field_nameA(): self})
+                q_args |= Q(**{relation_class.get_related_entity_field_namea(): self})
 
             if relation_class.get_related_entity_classb() == self.__class__:
-                q_args |= Q(**{relation_class.get_related_entity_field_nameB(): self})
+                q_args |= Q(**{relation_class.get_related_entity_field_nameb(): self})
 
             queryset = relation_class.objects.filter(q_args)
             queryset_list.extend(list(queryset))

@@ -166,3 +166,4 @@ tei/
 tmp/
 pmb_dump.sql
 .secret
+play.ipynb

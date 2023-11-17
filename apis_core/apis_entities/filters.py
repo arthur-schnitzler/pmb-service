@@ -227,8 +227,8 @@ class GenericListFilter(django_filters.FilterSet):
             # (e.g. for PersonWork: class Person, class Work, "related_person", "related_work")
             related_entity_classA = relation_class.get_related_entity_classa()
             related_entity_classB = relation_class.get_related_entity_classb()
-            related_entity_field_nameA = relation_class.get_related_entity_field_nameA()
-            related_entity_field_nameB = relation_class.get_related_entity_field_nameB()
+            related_entity_field_nameA = relation_class.get_related_entity_field_namea()
+            related_entity_field_nameB = relation_class.get_related_entity_field_nameb()
 
             # Within a relation class, there is two fields which relate to entities, check now which of the two
             # is the same as the current one.
@@ -303,8 +303,8 @@ class GenericListFilter(django_filters.FilterSet):
 
             related_entity_classA = relation_class.get_related_entity_classa()
             related_entity_classB = relation_class.get_related_entity_classb()
-            related_entity_field_nameA = relation_class.get_related_entity_field_nameA()
-            related_entity_field_nameB = relation_class.get_related_entity_field_nameB()
+            related_entity_field_nameA = relation_class.get_related_entity_field_namea()
+            related_entity_field_nameB = relation_class.get_related_entity_field_nameb()
 
             if queryset.model == related_entity_classA:
 

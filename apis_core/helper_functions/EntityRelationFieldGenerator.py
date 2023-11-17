@@ -165,10 +165,10 @@ def generate_all_fields():
                         relation_class.get_related_entity_classb = \
                             create_function_get_related_entity_class(entity_class_b)
 
-                        relation_class.get_related_entity_field_nameA = \
+                        relation_class.get_related_entity_field_namea = \
                             create_function_get_related_entity_field_name(relation_field_name_a)
 
-                        relation_class.get_related_entity_field_nameB = \
+                        relation_class.get_related_entity_field_nameb = \
                             create_function_get_related_entity_field_name(relation_field_name_b)
 
                         relation_class.add_relation_class_of_entity_class(entity_class_a)
@@ -300,10 +300,10 @@ def generate_all_fields():
                         relation_class.get_related_entity_classb = \
                             create_function_get_related_entity_class(entity_class)
 
-                        relation_class.get_related_entity_field_nameA = \
+                        relation_class.get_related_entity_field_namea = \
                             create_function_get_related_entity_field_name(relation_field_name_a)
 
-                        relation_class.get_related_entity_field_nameB = \
+                        relation_class.get_related_entity_field_nameb = \
                             create_function_get_related_entity_field_name(relation_field_name_b)
 
                         relation_class.add_relation_class_of_entity_class(entity_class)
