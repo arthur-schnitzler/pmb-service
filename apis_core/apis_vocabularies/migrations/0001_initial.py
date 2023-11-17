@@ -142,7 +142,7 @@ class Migration(migrations.Migration):
             name='EventEventRelation',
             fields=[
                 ('relationbaseclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_vocabularies.RelationBaseClass')),
-                ('eventB_set', models.ManyToManyField(blank=True, related_name='eventA_relationtype_set', through='apis_relations.EventEvent', to='apis_entities.Event')),
+                ('eventb_set', models.ManyToManyField(blank=True, related_name='eventa_relationtype_set', through='apis_relations.EventEvent', to='apis_entities.Event')),
             ],
             options={
                 'abstract': False,

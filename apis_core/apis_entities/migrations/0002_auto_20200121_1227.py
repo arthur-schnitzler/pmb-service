@@ -207,13 +207,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='event',
-            name='eventB_relationtype_set',
-            field=models.ManyToManyField(blank=True, related_name='eventA_set', through='apis_relations.EventEvent', to='apis_vocabularies.EventEventRelation'),
+            name='eventb_relationtype_set',
+            field=models.ManyToManyField(blank=True, related_name='eventa_set', through='apis_relations.EventEvent', to='apis_vocabularies.EventEventRelation'),
         ),
         migrations.AddField(
             model_name='event',
-            name='eventB_set',
-            field=models.ManyToManyField(blank=True, related_name='eventA_set', through='apis_relations.EventEvent', to='apis_entities.Event'),
+            name='eventb_set',
+            field=models.ManyToManyField(blank=True, related_name='eventa_set', through='apis_relations.EventEvent', to='apis_entities.Event'),
         ),
         migrations.AddField(
             model_name='event',

@@ -217,13 +217,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='eventevent',
-            name='related_eventA',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_eventB', to='apis_entities.Event'),
+            name='related_eventa',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_eventb', to='apis_entities.Event'),
         ),
         migrations.AddField(
             model_name='eventevent',
-            name='related_eventB',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_eventA', to='apis_entities.Event'),
+            name='related_eventb',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_eventa', to='apis_entities.Event'),
         ),
         migrations.AddField(
             model_name='eventevent',
