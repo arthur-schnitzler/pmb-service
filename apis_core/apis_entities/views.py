@@ -175,14 +175,6 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
         context["app_name"] = "apis_entities"
         entity = self.entity.title()
         context["entity_create_stanbol"] = GenericEntitiesStanbolForm(self.entity)
-        if "browsing" in settings.INSTALLED_APPS:
-            from browsing.models import BrowsConf
-
-            context["conf_items"] = list(
-                BrowsConf.objects.filter(model_name=self.entity).values_list(
-                    "field_path", "label"
-                )
-            )
         context["docstring"] = "{}".format(model.__doc__)
         if model._meta.verbose_name_plural:
             context["class_name"] = "{}".format(model._meta.verbose_name.title())

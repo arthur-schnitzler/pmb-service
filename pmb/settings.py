@@ -30,6 +30,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "browsing",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "django_tables2",
+    "django_filters",
     "apis_core.apis_entities",
     "apis_core.apis_metainfo",
     "apis_core.apis_relations",
@@ -40,8 +44,10 @@ INSTALLED_APPS = [
     "archemd",
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 if os.environ.get("DEV"):
-    print("HALLLLLLOOOOO")
     INSTALLED_APPS = INSTALLED_APPS + [
         "django_extensions",
     ]
