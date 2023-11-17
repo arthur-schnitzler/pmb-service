@@ -28,8 +28,8 @@ def get_generic_relation_listview_table(relation_name):
 
     # create all variables which save the foreign key fields which are different for each relation class
     relation_class = AbstractRelation.get_relation_class_of_name(relation_name)
-    related_entity_class_name_a = relation_class.get_related_entity_classA().__name__.lower()
-    related_entity_class_name_b = relation_class.get_related_entity_classB().__name__.lower()
+    related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
+    related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
     related_entity_field_name_a = relation_class.get_related_entity_field_nameA()
     related_entity_field_name_b = relation_class.get_related_entity_field_nameB()
 
@@ -84,12 +84,6 @@ def get_generic_relation_listview_table(relation_name):
                 ]
             )
 
-            if "apis_ampel" in settings.INSTALLED_APPS:
-                from apis_ampel.helper_functions import is_ampel_active
-                if is_ampel_active(relation_name):
-                    self.base_columns['ampel'] = tables.TemplateColumn(template_name = "ampel/ampel_template_column.html", verbose_name="Ampel")
-
-
             super().__init__(*args, **kwargs)
 
 
@@ -109,8 +103,8 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
     # create all variables which save the foreign key fields which are different for each relation class
     entity_class_name = entity_instance.__class__.__name__.lower()
-    related_entity_class_name_a = relation_class.get_related_entity_classA().__name__.lower()
-    related_entity_class_name_b = relation_class.get_related_entity_classB().__name__.lower()
+    related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
+    related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
     related_entity_field_name_a = relation_class.get_related_entity_field_nameA()
     related_entity_field_name_b = relation_class.get_related_entity_field_nameB()
 
@@ -180,11 +174,11 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
             :return: related instance
             """
 
-            if value == record.get_related_entity_instanceA().pk :
-                return record.get_related_entity_instanceA()
+            if value == record.get_related_entity_instancea().pk :
+                return record.get_related_entity_instancea()
 
-            elif value == record.get_related_entity_instanceB().pk :
-                return record.get_related_entity_instanceB()
+            elif value == record.get_related_entity_instanceb().pk :
+                return record.get_related_entity_instanceb()
 
             else:
                 raise Exception(
@@ -267,15 +261,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                     verbose_name="Related " + other_related_entity_class_name.title()
                 )
 
-                if "apis_ampel" in settings.INSTALLED_APPS:
-                    from apis_ampel.helper_functions import is_ampel_active
-               
-                    if is_ampel_active(relation_class.__name__):
-                        self.base_columns['ampel'] = tables.TemplateColumn(template_name = "ampel/edit_inline_table_column.html", verbose_name="Ampel")
-
-
-
-
 
                 super().__init__(data=data, *args, **kwargs)
 
@@ -297,9 +282,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
                 # This fields list also defines the order of the elements.
                 fields = ["delete"] + RelationTableBase.Meta.fields + ["edit"]
-
-                if 'apis_bibsonomy' in settings.INSTALLED_APPS:
-                    fields = ["ref"] + fields
 
                 # again reuse the fields list for ordering
                 sequence = tuple(fields)
@@ -325,21 +307,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 self.base_columns['edit'] = tables.TemplateColumn(
                     template_name='apis_relations/edit_button_generic_ajax_form.html'
                 )
-
-                # bibsonomy button
-                if 'apis_bibsonomy' in settings.INSTALLED_APPS:
-                    self.base_columns['ref'] = tables.TemplateColumn(
-                        template_name='apis_relations/references_button_generic_ajax_form.html'
-                    )
-
-                # __g.pirgie__ deactivated for now as it broke ajax forms
-                # if "apis_ampel" in settings.INSTALLED_APPS:
-                #         from apis_ampel.helper_functions import is_ampel_active
-               
-                #         if is_ampel_active(relation_class.__name__):
-                #             self.base_columns['ampel'] = tables.TemplateColumn(template_name = "ampel/ampel_edit_template_column.html", verbose_name="Ampel")
-
-
 
                 super().__init__(*args, **kwargs)
 

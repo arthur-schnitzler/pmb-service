@@ -20,9 +20,6 @@ from apis_core.helper_functions.utils import access_for_all
 from .models import TempEntityClass, BASE_URI
 from .views import get_highlighted_texts
 
-if "apis_ampel" in settings.INSTALLED_APPS:
-    from apis_ampel.helper_functions import is_ampel_active
-
 
 def get_object_from_pk_or_uri(request, pk):
     """checks if the given pk exists, if not checks if a matching apis-default uri exists
@@ -70,8 +67,8 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
         side_bar = []
         for rel in relations:
             match = [
-                rel.get_related_entity_classA().__name__.lower(),
-                rel.get_related_entity_classB().__name__.lower(),
+                rel.get_related_entity_classa().__name__.lower(),
+                rel.get_related_entity_classb().__name__.lower(),
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
             table = get_generic_relations_table(
@@ -81,16 +78,9 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
                 title_card = entity.title()
                 dict_1 = {"related_" + entity.lower() + "a": instance}
                 dict_2 = {"related_" + entity.lower() + "b": instance}
-                if "apis_highlighter" in settings.INSTALLED_APPS:
-                    objects = (
-                        rel.objects.filter_ann_proj(request=request)
-                        .filter_for_user()
-                        .filter(Q(**dict_1) | Q(**dict_2))
-                    )
-                else:
-                    objects = rel.objects.filter(Q(**dict_1) | Q(**dict_2))
-                    if callable(getattr(objects, "filter_for_user", None)):
-                        objects = objects.filter_for_user()
+                objects = rel.objects.filter(Q(**dict_1) | Q(**dict_2))
+                if callable(getattr(objects, "filter_for_user", None)):
+                    objects = objects.filter_for_user()
             else:
                 if match[0].lower() == entity.lower():
                     title_card = match[1].title()
@@ -175,16 +165,4 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
             "iiif_info_json": iiif_info_json,
             "iiif_server": iiif_server,
         }
-        if "apis_ampel" in settings.INSTALLED_APPS:
-            context["show_ampel"] = is_ampel_active(entity)
         return HttpResponse(template.render(request=request, context=context))
-
-
-# TODO __sresch__ : This seems unused. Remove it once sure
-# class WorkDetailView(DetailView):
-#     model = Work
-#     template_name = 'apis_entities/detail_views/work_detail.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(WorkDetailView, self).get_context_data(**kwargs)
-#         return context

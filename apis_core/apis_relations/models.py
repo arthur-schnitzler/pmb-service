@@ -54,14 +54,14 @@ class AbstractRelation(TempEntityClass):
         namea = self.get_related_entity_instancea().name
         nameb = self.get_related_entity_instanceb().name
 
-        if self.get_related_entity_classA() == Person:
+        if self.get_related_entity_classa() == Person:
             namea += ", "
             if self.get_related_entity_instancea().first_name is None:
                 namea += "-"
             else:
                 namea += self.get_related_entity_instancea().first_name
 
-        if self.get_related_entity_classB() == Person:
+        if self.get_related_entity_classb() == Person:
             nameb += ", "
             if self.get_related_entity_instanceb().first_name is None:
                 nameb += "-"
@@ -285,6 +285,7 @@ class AbstractRelation(TempEntityClass):
 
         :return: An entity instance related to the current relation instance
         """
+        print(f"{self.get_related_entity_field_namea()}")
         return getattr( self, self.get_related_entity_field_namea() )
 
 
@@ -310,7 +311,7 @@ class AbstractRelation(TempEntityClass):
 
 
     @classmethod
-    def get_related_entity_classA(cls):
+    def get_related_entity_classa(cls):
         """
         :return: the python class of the A side of the current relation class or instance
         E.g. PersonWork -> Person
@@ -318,7 +319,7 @@ class AbstractRelation(TempEntityClass):
         return None
 
     @classmethod
-    def get_related_entity_classB(cls):
+    def get_related_entity_classb(cls):
         """
         :return: the python class of the B side of the current relation class or instance
         E.g. PersonWork -> Work

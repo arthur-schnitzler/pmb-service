@@ -36,8 +36,8 @@ class GenericEntitiesEditView(View):
         side_bar = []
         for rel in relations:
             match = [
-                rel.get_related_entity_classA().__name__.lower(),
-                rel.get_related_entity_classB().__name__.lower(),
+                rel.get_related_entity_classa().__name__.lower(),
+                rel.get_related_entity_classb().__name__.lower(),
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
             table = get_generic_relations_table(

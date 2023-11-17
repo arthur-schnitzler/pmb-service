@@ -159,10 +159,10 @@ def generate_all_fields():
                         # Note that these methods are first defined as stumps within AbstractRelation for documentation
                         # purposes.
 
-                        relation_class.get_related_entity_classA = \
+                        relation_class.get_related_entity_classa = \
                             create_function_get_related_entity_class(entity_class_a)
 
-                        relation_class.get_related_entity_classB = \
+                        relation_class.get_related_entity_classb = \
                             create_function_get_related_entity_class(entity_class_b)
 
                         relation_class.get_related_entity_field_nameA = \
@@ -294,10 +294,10 @@ def generate_all_fields():
                         # Note that these methods are first defined as stumps within AbstractRelation for documentation
                         # purposes.
 
-                        relation_class.get_related_entity_classA = \
+                        relation_class.get_related_entity_classa = \
                             create_function_get_related_entity_class(entity_class)
 
-                        relation_class.get_related_entity_classB = \
+                        relation_class.get_related_entity_classb = \
                             create_function_get_related_entity_class(entity_class)
 
                         relation_class.get_related_entity_field_nameA = \

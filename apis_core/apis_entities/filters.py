@@ -225,8 +225,8 @@ class GenericListFilter(django_filters.FilterSet):
 
             # get the related classes and lookup names of the current relation
             # (e.g. for PersonWork: class Person, class Work, "related_person", "related_work")
-            related_entity_classA = relation_class.get_related_entity_classA()
-            related_entity_classB = relation_class.get_related_entity_classB()
+            related_entity_classA = relation_class.get_related_entity_classa()
+            related_entity_classB = relation_class.get_related_entity_classb()
             related_entity_field_nameA = relation_class.get_related_entity_field_nameA()
             related_entity_field_nameB = relation_class.get_related_entity_field_nameB()
 
@@ -301,8 +301,8 @@ class GenericListFilter(django_filters.FilterSet):
 
         for relation_class in queryset.model.get_related_relation_classes():
 
-            related_entity_classA = relation_class.get_related_entity_classA()
-            related_entity_classB = relation_class.get_related_entity_classB()
+            related_entity_classA = relation_class.get_related_entity_classa()
+            related_entity_classB = relation_class.get_related_entity_classb()
             related_entity_field_nameA = relation_class.get_related_entity_field_nameA()
             related_entity_field_nameB = relation_class.get_related_entity_field_nameB()
 
