@@ -11,7 +11,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.functional import cached_property
-# from model_utils.managers import InheritanceManager
+from model_utils.managers import InheritanceManager
 
 from apis_core.apis_entities.serializers_generic import EntitySerializer
 from apis_core.apis_labels.models import Label
@@ -68,7 +68,7 @@ class TempEntityClass(models.Model):
     notes = models.TextField(blank=True, null=True)
     published = models.BooleanField(default=False)
     objects = models.Manager()
-    # objects_inheritance = InheritanceManager()
+    objects_inheritance = InheritanceManager()
 
 
     def __str__(self):

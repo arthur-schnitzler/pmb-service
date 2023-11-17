@@ -74,13 +74,13 @@ class EntitySerializer(serializers.Serializer):
                         ).data
                     )
             else:
-                for t in ["A", "B"]:
+                for t in ["a", "b"]:
                     for rel2 in (
                         getattr(obj, "related_{}{}".format(mk.lower(), t))
                         .all()
                         .filter_for_user()
                     ):
-                        if t == "A":
+                        if t == "a":
                             ok = "{}B".format(mk.lower())
                             reverse = True
                         else:

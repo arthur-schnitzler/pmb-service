@@ -33,8 +33,8 @@ class AbstractRelation(TempEntityClass):
     def save(self, *args, **kwargs):
 
         if (
-            getattr(self, self.get_related_entity_field_nameA()) is None
-            or getattr(self, self.get_related_entity_field_nameB()) is None
+            getattr(self, self.get_related_entity_field_namea()) is None
+            or getattr(self, self.get_related_entity_field_nameb()) is None
             or self.relation_type is None
         ):
             raise Exception("One or more of the necessary related models are None")
@@ -46,33 +46,33 @@ class AbstractRelation(TempEntityClass):
     ####################################################################################################################
 
     def __str__(self):
-        return "{} ({}) {}".format(self.get_related_entity_instanceA(), self.relation_type, self.get_related_entity_instanceB())
+        return "{} ({}) {}".format(self.get_related_entity_instancea(), self.relation_type, self.get_related_entity_instanceb())
 
 
     def get_web_object(self):
 
-        nameA = self.get_related_entity_instanceA().name
-        nameB = self.get_related_entity_instanceB().name
+        namea = self.get_related_entity_instancea().name
+        nameb = self.get_related_entity_instanceb().name
 
         if self.get_related_entity_classA() == Person:
-            nameA += ", "
-            if self.get_related_entity_instanceA().first_name is None:
-                nameA += "-"
+            namea += ", "
+            if self.get_related_entity_instancea().first_name is None:
+                namea += "-"
             else:
-                nameA += self.get_related_entity_instanceA().first_name
+                namea += self.get_related_entity_instancea().first_name
 
         if self.get_related_entity_classB() == Person:
-            nameB += ", "
-            if self.get_related_entity_instanceB().first_name is None:
-                nameB += "-"
+            nameb += ", "
+            if self.get_related_entity_instanceb().first_name is None:
+                nameb += "-"
             else:
-                nameB += self.get_related_entity_instanceB().first_name
+                nameb += self.get_related_entity_instanceb().first_name
 
         result = {
             'relation_pk': self.pk,
             'relation_type': self.relation_type.name,
-            self.get_related_entity_field_nameA(): nameA,
-            self.get_related_entity_field_nameB(): nameB,
+            self.get_related_entity_field_namea(): namea,
+            self.get_related_entity_field_nameb(): nameb,
             'start_date': self.start_date_written,
             'end_date': self.end_date_written}
         return result
@@ -85,13 +85,13 @@ class AbstractRelation(TempEntityClass):
             and which one the related.
         :return:
         """
-        if self.get_related_entity_instanceA() == entity:
-            rel_other_key = self.get_related_entity_field_nameB()[:-1]
-            rel_other_value = self.get_related_entity_instanceB()
+        if self.get_related_entity_instancea() == entity:
+            rel_other_key = self.get_related_entity_field_nameb()[:-1]
+            rel_other_value = self.get_related_entity_instanceb()
             rel_type = self.relation_type.label
-        elif self.get_related_entity_instanceB() == entity:
-            rel_other_key = self.get_related_entity_field_nameA()[:-1]
-            rel_other_value = self.get_related_entity_instanceA()
+        elif self.get_related_entity_instanceb() == entity:
+            rel_other_key = self.get_related_entity_field_namea()[:-1]
+            rel_other_value = self.get_related_entity_instancea()
             rel_type = self.relation_type.label_reverse
         else:
             raise Exception("Did not find corresponding entity. Wiring of current relation to current entity is faulty.")
@@ -249,7 +249,7 @@ class AbstractRelation(TempEntityClass):
         :return: a list of relation class field names that are related to the entity class
 
         E.g. AbstractRelation.get_relation_names_of_entity_class( Person )
-        -> [ personevent_set, personinstitution_set, related_personA, related_personB, personplace_set, personwork_set ]
+        -> [ personevent_set, personinstitution_set, related_persona, related_personb, personplace_set, personwork_set ]
         """
 
         return cls._relation_field_names_of_entity_class[entity_class]
@@ -274,32 +274,32 @@ class AbstractRelation(TempEntityClass):
         cls._relation_field_names_of_entity_class[entity_class] = relation_names_list
 
 
-    def get_related_entity_instanceA(self):
+    def get_related_entity_instancea(self):
         """
         This method only works on the relation instance of a given relation class.
         There it returns the instance of an entity on the 'A' side of the given relation instance.
 
         Note that if your IDE complains about expecting a 'str' instead of 'None' this happens because
-        the method 'get_related_entity_field_nameA()' is only implemented and overridden at runtime in the
+        the method 'get_related_entity_field_namea()' is only implemented and overridden at runtime in the
         function 'generate_all_fields' in the class 'EntityRelationFieldGenerator'.
 
         :return: An entity instance related to the current relation instance
         """
-        return getattr( self, self.get_related_entity_field_nameA() )
+        return getattr( self, self.get_related_entity_field_namea() )
 
 
-    def get_related_entity_instanceB(self):
+    def get_related_entity_instanceb(self):
         """
         This method only works on the relation instance of a given relation class.
         There it returns the instance of an entity on the 'B' side of the given relation instance.
 
         Note that if your IDE complains about expecting a 'str' instead of 'None' this happens because
-        the method 'get_related_entity_field_nameB()' is only implemented and overridden at runtime in the
+        the method 'get_related_entity_field_nameb()' is only implemented and overridden at runtime in the
         function 'generate_all_fields' in the class 'EntityRelationFieldGenerator'.
 
         :return: An entity instance related to the current relation instance
         """
-        return getattr( self, self.get_related_entity_field_nameB() )
+        return getattr( self, self.get_related_entity_field_nameb() )
 
 
 
@@ -326,7 +326,7 @@ class AbstractRelation(TempEntityClass):
         return None
 
     @classmethod
-    def get_related_entity_field_nameA(cls):
+    def get_related_entity_field_namea(cls):
         """
         :return: the name of the field of the A side of the current relation class or instance
         E.g. PersonWork -> "related_person"
@@ -334,7 +334,7 @@ class AbstractRelation(TempEntityClass):
         return None
 
     @classmethod
-    def get_related_entity_field_nameB(cls):
+    def get_related_entity_field_nameb(cls):
         """
         :return: the name of the field of the B side of the current relation class or instance
         E.g. PersonWork -> "related_work"

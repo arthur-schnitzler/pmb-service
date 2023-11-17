@@ -165,7 +165,7 @@
             captureAutocompleteEvent('autocomplete-ort-uri');
         } else {
              
-             var tab_html = "<tr id='perper_"+response.instance.relation_pk+"'><td>"+response.instance.start_date+"</td><td>"+ response.instance.relation_type +"</td><td>"+ response.instance.related_personB +"</td><td><button type='button' class='btn btn-primary btn-sm' onclick=GetFormAjax('PersonPersonForm',"+response.instance.relation_pk+")>Edit</button></td></tr>"
+             var tab_html = "<tr id='perper_"+response.instance.relation_pk+"'><td>"+response.instance.start_date+"</td><td>"+ response.instance.relation_type +"</td><td>"+ response.instance.related_personb +"</td><td><button type='button' class='btn btn-primary btn-sm' onclick=GetFormAjax('PersonPersonForm',"+response.instance.relation_pk+")>Edit</button></td></tr>"
             if ($('#tab_'+response.tab+' table').find('#perper_'+response.instance.relation_pk).length) {
                 $('#tab_'+response.tab+' table').find('#perper_'+response.instance.relation_pk).replaceWith(tab_html);
             } else {

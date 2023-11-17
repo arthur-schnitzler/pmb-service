@@ -144,8 +144,8 @@
                                 <tr>
                                     <td>{{ x.start_date }}</td>
                                     <td>{{ x.relation_type.name_reverse }}</td>
-                                    <td><a onclick='popupCreateObject("{% url 'admin:relations_personperson_change' x.id %}")'>{{ x.related_personA }}</a></td>
-                                    <td><a href="{% url 'apis:apis_entities:person_edit' pk=x.related_personA.id %}"> reverse</a></td>
+                                    <td><a onclick='popupCreateObject("{% url 'admin:relations_personperson_change' x.id %}")'>{{ x.related_persona }}</a></td>
+                                    <td><a href="{% url 'apis:apis_entities:person_edit' pk=x.related_persona.id %}"> reverse</a></td>
                                 </tr>
                                 {% endfor %}
                             </table>

@@ -97,13 +97,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='personperson',
-            name='related_personA',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_personB', to='apis_entities.Person'),
+            name='related_persona',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_personb', to='apis_entities.Person'),
         ),
         migrations.AddField(
             model_name='personperson',
-            name='related_personB',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_personA', to='apis_entities.Person'),
+            name='related_personb',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_persona', to='apis_entities.Person'),
         ),
         migrations.AddField(
             model_name='personperson',

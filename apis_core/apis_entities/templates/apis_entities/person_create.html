@@ -120,7 +120,7 @@
                                 <tr id="perper_{{x.pk}}">
                                     <td>{{ x.start_date_written }}</td>
                                     <td>{{ x.relation_type }}</td>
-                                    <td>{{ x.related_personB }}</td>
+                                    <td>{{ x.related_personb }}</td>
                                     <td><button type='button' class='btn btn-primary btn-sm' onclick=GetFormAjax('PersonPersonForm','{{x.pk}}')>Edit</button></td>
                                 </tr>
                                 {% endfor %}
@@ -128,8 +128,8 @@
                                 <tr>
                                     <td>{{ x.start_date }}</td>
                                     <td>{{ x.relation_type.name_reverse }}</td>
-                                    <td><a onclick='popupCreateObject("{% url 'admin:relations_personperson_change' x.id %}")'>{{ x.related_personA }}</a></td>
-                                    <td><a href="{% url 'apis:apis_entities:person_edit' pk=x.related_personA.id %}"> reverse</a></td>
+                                    <td><a onclick='popupCreateObject("{% url 'admin:relations_personperson_change' x.id %}")'>{{ x.related_persona }}</a></td>
+                                    <td><a href="{% url 'apis:apis_entities:person_edit' pk=x.related_persona.id %}"> reverse</a></td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -294,7 +294,7 @@
             captureAutocompleteEvent('autocomplete-ort-uri');
         } else {
              
-             var tab_html = "<tr id='perper_"+response.instance.relation_pk+"'><td>"+response.instance.start_date+"</td><td>"+ response.instance.relation_type +"</td><td>"+ response.instance.related_personB +"</td><td><button type='button' class='btn btn-primary btn-sm' onclick=GetFormAjax('PersonPersonForm',"+response.instance.relation_pk+")>Edit</button></td></tr>"
+             var tab_html = "<tr id='perper_"+response.instance.relation_pk+"'><td>"+response.instance.start_date+"</td><td>"+ response.instance.relation_type +"</td><td>"+ response.instance.related_personb +"</td><td><button type='button' class='btn btn-primary btn-sm' onclick=GetFormAjax('PersonPersonForm',"+response.instance.relation_pk+")>Edit</button></td></tr>"
             if ($('#tab_'+response.tab+' table').find('#perper_'+response.instance.relation_pk).length) {
                 $('#tab_'+response.tab+' table').find('#perper_'+response.instance.relation_pk).replaceWith(tab_html);
             } else {

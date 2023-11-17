@@ -228,8 +228,8 @@ class NetJsonEdgeSerializer(serializers.BaseSerializer):
         rel_a = "related_" + ob_match.group(1).lower()
         rel_b = "related_" + ob_match.group(2).lower()
         if rel_a == rel_b:
-            rel_a += "A"
-            rel_b += "B"
+            rel_a += "a"
+            rel_b += "b"
         r = {
             "source": getattr(obj, rel_a).pk,
             "target": getattr(obj, rel_b).pk,

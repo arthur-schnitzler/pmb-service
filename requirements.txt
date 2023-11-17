@@ -6,6 +6,7 @@ django-admin-csvexport
 django-autocomplete-light
 django-crispy-forms
 django-extensions
+django-model-utils
 django-tables2
 djangorestframework
 gunicorn==20.1.0

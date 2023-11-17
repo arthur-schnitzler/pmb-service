@@ -10108,8 +10108,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92412,
-            "related_personB": 92603,
+            "related_persona": 92412,
+            "related_personb": 92603,
             "relation_type": 5608,
             "text": []
         },
@@ -10119,8 +10119,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 88902,
+            "related_persona": 92603,
+            "related_personb": 88902,
             "relation_type": 5608,
             "text": []
         },
@@ -10130,8 +10130,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 27245,
+            "related_persona": 92603,
+            "related_personb": 27245,
             "relation_type": 5608,
             "text": []
         },
@@ -10141,8 +10141,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 88219,
+            "related_persona": 92603,
+            "related_personb": 88219,
             "relation_type": 5608,
             "text": []
         },
@@ -10152,8 +10152,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 62757,
+            "related_persona": 92603,
+            "related_personb": 62757,
             "relation_type": 5608,
             "text": []
         },
@@ -10163,8 +10163,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 56248,
+            "related_persona": 92603,
+            "related_personb": 56248,
             "relation_type": 5608,
             "text": []
         },
@@ -10174,8 +10174,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 46414,
+            "related_persona": 92603,
+            "related_personb": 46414,
             "relation_type": 5608,
             "text": []
         },

@@ -281,8 +281,8 @@ class NetJsonViewSet(viewsets.GenericViewSet):
         q_dict = {}
         q_list = None
         if rel_a == rel_b:
-            rel_a += "A"
-            rel_b += "B"
+            rel_a += "a"
+            rel_b += "b"
         if "search_source" in request.data.keys():
             source = request.data["search_source"]
             if source.startswith("cl:"):
