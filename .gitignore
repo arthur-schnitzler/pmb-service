@@ -42,3 +42,5 @@ requirements_dev.txt
 media/pmb-log.csv
 media/professions.csv
 hansi.csv
+pmb_dump.sql
+apis_core/.DS_Store

@@ -29,13 +29,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "browsing",
     "apis_core.apis_entities",
     "apis_core.apis_metainfo",
     "apis_core.apis_relations",
     "apis_core.apis_vocabularies",
     "apis_core.apis_labels",
     "apis_core.apis_tei",
-    "guardian",
     "dumper",
     "archemd",
 ]
@@ -61,7 +61,7 @@ ROOT_URLCONF = "pmb.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -81,15 +81,15 @@ WSGI_APPLICATION = "pmb.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("APIS_DB_NAME", "pmb"),
-        "USER": os.environ.get("APIS_DB_USER", "pmb"),
-        "PASSWORD": os.environ.get("APIS_DB_PASSWORD"),
-        "HOST": os.environ.get("APIS_DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("APIS_DB_PORT", "3306"),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB", "pmb"),
+            "USER": os.environ.get("POSTGRES_USER", "postgres"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+            "PORT": os.environ.get("POSTEGRES_PORT", "5432"),
+        }
     }
-}
 
 
 # Password validation
@@ -145,7 +145,7 @@ APIS_BASE_URI = "https://pmb.acdh.oeaw.ac.at/"
 
 REDMINE_ID = "13424"
 APIS_RELATIONS_FILTER_EXCLUDE = []
-CSRF_TRUSTED_ORIGINS = ["pmb.acdh.oeaw.ac.at"]
+CSRF_TRUSTED_ORIGINS = ["https://pmb.acdh.oeaw.ac.at"]
 BIRTH_REL = [
     88,
 ]
@@ -169,9 +169,80 @@ PMB_DETAIL_VIEW_PATTERN = (
     "https://pmb.acdh.oeaw.ac.at/apis/entities/entity/{}/{}/detail"
 )
 APIS_ENTITIES = {
-    "Place": {},
-    "Person": {},
-    "Institution": {},
-    "Work": {},
-    "Event": {},
+    "Place": {
+        "merge": True,
+        "search": ["name"],
+        "form_order": ["name", "kind", "lat", "lng", "status", "collection"],
+        "table_fields": ["name"],
+        "additional_cols": ["id", "lat", "lng", "part_of"],
+        "list_filters": [
+            {"name": {"method": "name_label_filter"}},
+            {"collection": {"label": "Collection"}},
+            {"kind": {"label": "Kind of Place"}},
+            "related_entity_name",
+            "related_relationtype_name",
+            "lat",
+            "lng",
+        ],
+    },
+    "Person": {
+        "merge": True,
+        "search": ["name", "first_name"],
+        "form_order": ["first_name", "name", "start_date_written", "end_date_written", "profession", "status", "collection"],
+        "table_fields": ["name", "first_name", "start_date_written", "end_date_written"],
+        "additional_cols": ["id", "profession", "gender"],
+        "list_filters": [
+            "name",
+            {"gender": {"label": "Gender"}},
+            {"start_date": {"label": "Date of Birth"}},
+            {"end_date": {"label": "Date of Death"}},
+            {"profession": {"label": "Profession"}},
+            {"title": {"label": "Title"}},
+            {"collection": {"label": "Collection"}},
+            "related_entity_name",
+            "related_relationtype_name",
+        ],
+    },
+    "Institution": {
+        "merge": True,
+        "search": ["name"],
+        "form_order": ["name", "start_date_written", "end_date_written", "kind", "status", "collection"],
+        "additional_cols": ["id", "kind", ],
+        "list_filters": [
+            {"name": {"label": "Name or label of institution"}},
+            {"kind": {"label": "Kind of Institution"}},
+            {"start_date": {"label": "Date of foundation"}},
+            {"end_date": {"label": "Date of termination"}},
+            {"collection": {"label": "Collection"}},
+            "related_entity_name",
+            "related_relationtype_name",
+        ],
+    },
+    "Work": {
+        "merge": True,
+        "search": ["name"],
+        "additional_cols": ["id", "kind", ],
+        "list_filters": [
+            {"name": {"label": "Name of work"}},
+            {"kind": {"label": "Kind of Work"}},
+            {"start_date": {"label": "Date of creation"}},
+            {"collection": {"label": "Collection"}},
+            "related_entity_name",
+            "related_relationtype_name",
+        ],
+    },
+    "Event": {
+        "merge": True,
+        "search": ["name"],
+        "additional_cols": ["id", ],
+        "list_filters": [
+            {"name": {"label": "Name of event"}},
+            {"kind": {"label": "Kind of Event"}},
+            {"start_date": {"label": "Date of beginning"}},
+            {"end_date": {"label": "Date of end"}},
+            {"collection": {"label": "Collection"}},
+            "related_entity_name",
+            "related_relationtype_name",
+        ],
+    },
 }
