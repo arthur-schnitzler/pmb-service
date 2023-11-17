@@ -138,7 +138,6 @@ class AbstractRelation(TempEntityClass):
             # using python's reflective logic, the following loop iterates over all classes of this current module.
             for relation_name, relation_class in inspect.getmembers(
                     sys.modules[__name__], inspect.isclass):
-                print('inspecting classes')
                 # check for python classes not to be used.
                 if \
                         relation_class.__module__ == "apis_core.apis_relations.models" and \
