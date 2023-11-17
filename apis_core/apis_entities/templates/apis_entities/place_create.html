@@ -92,7 +92,7 @@
                             <tr>
                                 <td>{{ x.start_date_written }}</td>
                                 <td>{{ x.relation_type }}</td>
-                                <td>{% if x.related_placeA.pk == instance.pk %}<a href="{% url 'apis:apis_entities:place_edit' x.related_placeB.pk %}">{{x.related_placeB}}</a>{% else %}<a href="{% url 'apis:apis_entities:place_edit' x.related_placeA.pk %}">{{x.related_placeA}}</a>{% endif %}</td>
+                                <td>{% if x.related_placea.pk == instance.pk %}<a href="{% url 'apis:apis_entities:place_edit' x.related_placeb.pk %}">{{x.related_placeb}}</a>{% else %}<a href="{% url 'apis:apis_entities:place_edit' x.related_placea.pk %}">{{x.related_placea}}</a>{% endif %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

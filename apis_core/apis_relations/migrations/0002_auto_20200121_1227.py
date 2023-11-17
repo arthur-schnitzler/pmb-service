@@ -37,13 +37,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='placeplace',
-            name='related_placeA',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_placeB', to='apis_entities.Place'),
+            name='related_placea',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_placeb', to='apis_entities.Place'),
         ),
         migrations.AddField(
             model_name='placeplace',
-            name='related_placeB',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_placeA', to='apis_entities.Place'),
+            name='related_placeb',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_placea', to='apis_entities.Place'),
         ),
         migrations.AddField(
             model_name='placeplace',

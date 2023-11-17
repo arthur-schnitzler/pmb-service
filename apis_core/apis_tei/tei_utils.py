@@ -38,10 +38,10 @@ else:
 
 def get_part_of_relation(res):
     items = []
-    for x in PlacePlace.objects.filter(related_placeB=res).filter(relation_type__id__in=pl_b_located_in):
-        items.append(x.related_placeA)
-    for x in PlacePlace.objects.filter(related_placeA=res).filter(relation_type__id__in=pl_a_part_of):
-        items.append(x.related_placeB)
+    for x in PlacePlace.objects.filter(related_placeb=res).filter(relation_type__id__in=pl_b_located_in):
+        items.append(x.related_placea)
+    for x in PlacePlace.objects.filter(related_placea=res).filter(relation_type__id__in=pl_a_part_of):
+        items.append(x.related_placeb)
     return list(set(items))
 
 def get_context(res):
