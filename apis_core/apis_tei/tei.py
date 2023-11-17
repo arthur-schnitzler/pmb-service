@@ -168,7 +168,7 @@ class TeiEntCreator:
                 try:
                     node.attrib[
                         "{http://www.w3.org/XML/1998/namespace}lang"
-                    ] = "{}".format(x["isoCode_639_3"])
+                    ] = "{}".format(x["isocode_639_3"])
                 except KeyError:
                     pass
                 node.text = x["label"]
@@ -210,7 +210,7 @@ class TeiEntCreator:
                 try:
                     node.attrib[
                         "{http://www.w3.org/XML/1998/namespace}lang"
-                    ] = "{}".format(x["isoCode_639_3"])
+                    ] = "{}".format(x["isocode_639_3"])
                 except KeyError:
                     pass
                 node.text = x["label"]
@@ -256,7 +256,7 @@ class TeiEntCreator:
                 try:
                     node.attrib[
                         "{http://www.w3.org/XML/1998/namespace}lang"
-                    ] = "{}".format(x["isoCode_639_3"])
+                    ] = "{}".format(x["isocode_639_3"])
                 except KeyError:
                     pass
                 node.text = x["label"]

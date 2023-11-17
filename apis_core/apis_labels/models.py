@@ -11,7 +11,7 @@ from apis_core.helper_functions import DateParser
 class Label(models.Model):
     label = models.CharField(
         max_length=255, blank=True, help_text="The entities label or name.")
-    isoCode_639_3 = models.CharField(
+    isocode_639_3 = models.CharField(
         max_length=3, blank=True, null=True,
         help_text="The ISO 639-3 (or 2) code for the label's language.",
         verbose_name='ISO Code', default='deu')
@@ -44,7 +44,7 @@ class Label(models.Model):
         result = {
             'relation_pk': self.pk,
             'label': self.label,
-            'isoCode_639_3': self.isoCode_639_3,
+            'isocode_639_3': self.isocode_639_3,
             'label_type': self.label_type.name}
         return result
 

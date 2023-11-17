@@ -9,4 +9,4 @@ class LabelSerializerLegacy(serializers.ModelSerializer):
 
     class Meta:
         model = Label
-        fields = ('id', 'label', 'isoCode_639_3', 'label_type')
+        fields = ('id', 'label', 'isocode_639_3', 'label_type')

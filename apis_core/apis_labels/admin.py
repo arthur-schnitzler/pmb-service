@@ -10,7 +10,7 @@ class BaseAdmin(admin.ModelAdmin):
     
     search_fields = ('label',)
     list_filter = (
-        "isoCode_639_3",
+        "isocode_639_3",
         "label_type",
     )
     list_display = ('label', 'temp_entity', )

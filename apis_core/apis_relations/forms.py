@@ -18,14 +18,14 @@ class EntityLabelForm(forms.ModelForm):
 
     class Meta:
         model = Label
-        fields = ['label', 'isoCode_639_3', 'label_type', 'start_date_written', 'end_date_written']
+        fields = ['label', 'isocode_639_3', 'label_type', 'start_date_written', 'end_date_written']
 
     def save(self, site_instance, instance=None, commit=True):
         cd = self.cleaned_data
         if instance:
             x = Label.objects.get(pk=instance)
             x.label = cd['label']
-            x.isoCode_639_3 = cd['isoCode_639_3']
+            x.isocode_639_3 = cd['isocode_639_3']
             x.label_type = cd['label_type']
             x.start_date_written = cd['start_date_written']
             x.end_date_written = cd['end_date_written']

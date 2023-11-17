@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('label', models.CharField(blank=True, help_text='The entities label or name.', max_length=255)),
-                ('isoCode_639_3', models.CharField(blank=True, default='deu', help_text="The ISO 639-3 (or 2) code for the label's language.", max_length=3, null=True, verbose_name='ISO Code')),
+                ('isocode_639_3', models.CharField(blank=True, default='deu', help_text="The ISO 639-3 (or 2) code for the label's language.", max_length=3, null=True, verbose_name='ISO Code')),
             ],
         ),
     ]
