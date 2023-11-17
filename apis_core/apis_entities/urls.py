@@ -42,12 +42,12 @@ urlpatterns = [
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/createstanbol/<entity>/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/createstanbol/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesCreateStanbolView.as_view(),
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/<entity>/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
@@ -57,7 +57,7 @@ urlpatterns = [
         name="generic_entities_autocomplete",
     ),
     path(
-        "autocomplete/<entity>/(?P<db_include>[a-z]+)/",
+        "autocomplete/<entity>/<db_include>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
@@ -73,7 +73,7 @@ urlpatterns = [
     path("place/geojson/list/", views.getGeoJsonList, name="getGeoJsonList"),
     path("place/network/list/", views.getNetJsonList, name="getNetJsonList"),
     path(
-        "resolve/place/<int:pk>/(?P<uri>.+)",
+        "resolve/place/<int:pk>/<uri>",
         views.resolve_ambigue_place,
         name="resolve_ambigue_place",
     ),
