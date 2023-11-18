@@ -12,4 +12,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("arche/", include("archemd.urls")),
     path("", include("dumper.urls", namespace="dumper")),
+    path("browsing", include("browsing.urls", namespace="browsing")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
