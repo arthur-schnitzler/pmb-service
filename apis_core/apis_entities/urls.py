@@ -7,6 +7,7 @@ from .autocomplete3 import (
 )
 
 from .views2 import GenericEntitiesCreateStanbolView
+from .list_views import PersonListView
 
 app_name = "apis_entities"
 
@@ -30,6 +31,11 @@ urlpatterns = [
         "entity/<entity>/<int:pk>/delete",
         views2.GenericEntitiesDeleteView.as_view(),
         name="generic_entities_delete_view",
+    ),
+    path(
+        "entity/person/list/",
+        PersonListView.as_view(),
+        name="generic_entities_list",
     ),
     path(
         "entity/<entity>/list/",

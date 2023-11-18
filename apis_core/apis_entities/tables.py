@@ -4,6 +4,7 @@ from django_tables2.utils import A
 from django.conf import settings
 
 from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.tables import (
     generic_order_start_date_written,
     generic_order_end_date_written,
@@ -11,10 +12,20 @@ from apis_core.apis_metainfo.tables import (
     generic_render_end_date_written,
 )
 
+
 input_form = """
   <input type="checkbox" name="keep" value="{}" title="keep this"/> |
   <input type="checkbox" name="remove" value="{}" title="remove this"/>
 """
+
+
+class PersonTable(tables.Table):
+    id = tables.LinkColumn()
+
+    class Meta:
+        model = Person
+        sequence = ("id",)
+        attrs = {"class": "table table-responsive table-hover"}
 
 
 class MergeColumn(tables.Column):
