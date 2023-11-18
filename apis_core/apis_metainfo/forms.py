@@ -1,4 +1,5 @@
-from crispy_forms.bootstrap import Accordion, AccordionGroup
+from crispy_forms.bootstrap import AccordionGroup
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 from dal import autocomplete
@@ -35,16 +36,9 @@ class UriFilterFormHelper(FormHelper):
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"
-        self.helper.form_tag = False
-        self.add_input(Submit("Filter", "Search"))
+        self.form_tag = False
         self.layout = Layout(
-            Accordion(
-                AccordionGroup(
-                    "Filter",
-                    "uri",
-                    "domain",
-                    "entity__name",
-                    css_id="basic_search_fields",
-                ),
-            )
+            "uri",
+            "domain",
+            "entity__name",
         )

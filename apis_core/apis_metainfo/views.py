@@ -38,7 +38,7 @@ class UriListView(GenericListView):
         "uri",
         "entity",
     ]
-    enable_merge = True
+    enable_merge = False
 
 
 class UriDetailView(DetailView):
