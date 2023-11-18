@@ -373,11 +373,13 @@ class Text(models.Model):
 
 
 class Uri(models.Model):
-    uri = models.URLField(blank=True, null=True, unique=True, max_length=255)
-    domain = models.CharField(max_length=255, blank=True)
+    uri = models.URLField(blank=True, null=True, unique=True, max_length=255, verbose_name="URI", help_text="Eindeutiger Identifier")
+    domain = models.CharField(max_length=255, blank=True, verbose_name="Domain", help_text="Domain der Normdatenquelle, z.B. gnd, wikidata, geonames, ...")
     rdf_link = models.URLField(blank=True)
     entity = models.ForeignKey(
-        TempEntityClass, blank=True, null=True, on_delete=models.CASCADE
+        TempEntityClass, blank=True, null=True, on_delete=models.CASCADE,
+        verbose_name="Entität",
+        help_text="Entität die mit dieser URI verbunden ist"
     )
     # loaded set to True when RDF was loaded and parsed into the data model
     loaded = models.BooleanField(default=False)
