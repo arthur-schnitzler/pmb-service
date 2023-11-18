@@ -3,6 +3,8 @@ from django.conf import settings
 
 from dumper.views import HomePageView
 
+app_name = "dumper"
+
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
 ]

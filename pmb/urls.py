@@ -11,5 +11,5 @@ urlpatterns = [
     path("entity/<int:pk>/", GetEntityGeneric.as_view(), name="GetEntityGenericRoot"),
     path("admin/", admin.site.urls),
     path("arche/", include("archemd.urls")),
-    path("", include("dumper.urls")),
+    path("", include("dumper.urls", namespace="dumper")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
