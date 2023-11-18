@@ -1,4 +1,5 @@
 :root {
+    --pmb: #9B5F98;
     --person: #ad3f58;
     --place: #f5db9e;
     --work: #668cb9;
@@ -37,7 +38,7 @@
 }
 
 .navbar {
-    border-bottom: 5px solid #9B5F98;
+    border-bottom: 5px solid var(--pmb);
   }
 .navbar .navbar-brand img {
     max-height: none;

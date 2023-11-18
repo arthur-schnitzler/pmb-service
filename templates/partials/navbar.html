@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="{% static 'img/project-logo.svg' %}" alt="PMB-Logo" />
-              </a>          
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -18,11 +18,9 @@
                             Info
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">About the
-                                    Project</a>
+                            <li><a class="dropdown-item" href="#">Über das Projekt</a>
                             </li>
-                            <li><a class="dropdown-item"
-                                    href="#">Imprint</a></li>
+                            <li><a class="dropdown-item" href="#">Imprint</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -31,10 +29,44 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Browse
+                            Entitäten
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Personen</a>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'person' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'place' %}">
+                                    <i class="bi bi-map apis-place"></i>
+                                    Orte
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'work' %}">
+                                    <i class="bi bi-book apis-work"></i>
+                                    Werke
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'event' %}">
+                                    <i class="bi bi-calendar3 apis-event"></i>
+                                    Ereignisse
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'institution' %}">
+                                    <i class="bi bi-building-gear apis-institution"></i>
+                                    Institutionen
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_metainfo:uri_browse' %}">
+                                    <i class="bi bi-link-45deg apis-uri"></i>URIs
+                                </a>
                             </li>
                         </ul>
                     </li>
