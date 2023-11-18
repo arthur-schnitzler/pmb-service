@@ -7,6 +7,10 @@
     --institution: #c57f7f;
     --uri: #e7e1bf;
   }
+
+main {
+    padding-top: 5.50em;
+}
 /* COLORS FOR ENTITIES */
 
 .apis-person {
@@ -81,20 +85,3 @@
     margin-left: .75rem;
 }
 
-
-
-.icon-flex,
-.icon-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.icon-wrapper {
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid red;
-    font-size: 5rem;
-    width: 8rem;
-    height: 8rem;
-}
