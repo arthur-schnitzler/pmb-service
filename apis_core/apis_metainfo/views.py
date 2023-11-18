@@ -38,6 +38,7 @@ class UriListView(GenericListView):
         "uri",
         "entity",
     ]
+    exclude_columns = ["loaded", "loaded_time", "rdf_link"]
     enable_merge = False
 
 
