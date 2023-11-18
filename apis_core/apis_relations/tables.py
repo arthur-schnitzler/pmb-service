@@ -9,11 +9,11 @@ from apis_core.apis_metainfo.tables import (
     generic_order_start_date_written,
     generic_order_end_date_written,
     generic_render_start_date_written,
-    generic_render_end_date_written
+    generic_render_end_date_written,
 )
 from apis_core.apis_relations.models import AbstractRelation
-empty_text_default = 'There are currently no relations'
 
+empty_text_default = "There are currently no relations"
 
 
 def get_generic_relation_listview_table(relation_name):
@@ -25,11 +25,14 @@ def get_generic_relation_listview_table(relation_name):
     :return: a django-tables2 Table Class tailored for the respective relation class
     """
 
-
     # create all variables which save the foreign key fields which are different for each relation class
     relation_class = AbstractRelation.get_relation_class_of_name(relation_name)
-    related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
-    related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
+    related_entity_class_name_a = (
+        relation_class.get_related_entity_classa().__name__.lower()
+    )
+    related_entity_class_name_b = (
+        relation_class.get_related_entity_classb().__name__.lower()
+    )
     related_entity_field_name_a = relation_class.get_related_entity_field_namea()
     related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
 
@@ -43,7 +46,6 @@ def get_generic_relation_listview_table(relation_name):
         render_start_date_written = generic_render_start_date_written
         render_end_date_written = generic_render_end_date_written
 
-
         class Meta:
             model = relation_class
 
@@ -51,9 +53,9 @@ def get_generic_relation_listview_table(relation_name):
             fields = [
                 related_entity_field_name_a,
                 related_entity_field_name_b,
-                'relation_type',
-                'start_date_written',
-                'end_date_written',
+                "relation_type",
+                "start_date_written",
+                "end_date_written",
             ]
             # reuse the list for ordering
             sequence = tuple(fields)
@@ -66,29 +68,27 @@ def get_generic_relation_listview_table(relation_name):
             # LinkColumn objects provied hyperlinking to the related entities
             self.base_columns[related_entity_field_name_a] = tables.LinkColumn(
                 # which url to use:
-                'apis:apis_entities:generic_entities_detail_view',
+                "apis:apis_entities:generic_entities_detail_view",
                 args=[
                     # which entity sub-url to load from:
                     related_entity_class_name_a,
                     # which instance identifier to use:
-                    A(related_entity_field_name_a + ".pk")
-                ]
+                    A(related_entity_field_name_a + ".pk"),
+                ],
             )
 
             # same as above
             self.base_columns[related_entity_field_name_b] = tables.LinkColumn(
-                'apis:apis_entities:generic_entities_detail_view',
+                "apis:apis_entities:generic_entities_detail_view",
                 args=[
                     related_entity_class_name_b,
-                    A(related_entity_field_name_b + ".pk")
-                ]
+                    A(related_entity_field_name_b + ".pk"),
+                ],
             )
 
             super().__init__(*args, **kwargs)
 
-
     return GenericRelationListViewTable
-
 
 
 def get_generic_relations_table(relation_class, entity_instance, detail=None):
@@ -103,8 +103,12 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
     # create all variables which save the foreign key fields which are different for each relation class
     entity_class_name = entity_instance.__class__.__name__.lower()
-    related_entity_class_name_a = relation_class.get_related_entity_classa().__name__.lower()
-    related_entity_class_name_b = relation_class.get_related_entity_classb().__name__.lower()
+    related_entity_class_name_a = (
+        relation_class.get_related_entity_classa().__name__.lower()
+    )
+    related_entity_class_name_b = (
+        relation_class.get_related_entity_classb().__name__.lower()
+    )
     related_entity_field_name_a = relation_class.get_related_entity_field_namea()
     related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
 
@@ -121,10 +125,9 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
     else:
         raise Exception(
-            "Did not find the entity instance in the given relation class fields!" +
-            "Either a wrong entity instance or wrong relation class was passed to this function."
+            "Did not find the entity instance in the given relation class fields!"
+            + "Either a wrong entity instance or wrong relation class was passed to this function."
         )
-
 
     class RelationTableBase(tables.Table):
         """
@@ -149,10 +152,10 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
             # the fields list also serves as the defining order of them, as to avoid duplicated definitions
             fields = [
-                'start_date_written',
-                'end_date_written',
-                'other_relation_type',
-                "other_related_entity"
+                "start_date_written",
+                "end_date_written",
+                "other_relation_type",
+                "other_related_entity",
             ]
             # reuse the list for ordering
             sequence = tuple(fields)
@@ -160,7 +163,9 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
             # This attrs dictionary I took over from the tables implementation before. No idea if and where it would be needed.
             attrs = {
                 "class": "table table-hover table-striped table-condensed",
-                "id": related_entity_class_name_a.title()[:2] + related_entity_class_name_b.title()[:2] + "_conn"
+                "id": related_entity_class_name_a.title()[:2]
+                + related_entity_class_name_b.title()[:2]
+                + "_conn",
             }
 
         def render_other_related_entity(self, record, value):
@@ -174,18 +179,17 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
             :return: related instance
             """
 
-            if value == record.get_related_entity_instancea().pk :
+            if value == record.get_related_entity_instancea().pk:
                 return record.get_related_entity_instancea()
 
-            elif value == record.get_related_entity_instanceb().pk :
+            elif value == record.get_related_entity_instanceb().pk:
                 return record.get_related_entity_instanceb()
 
             else:
                 raise Exception(
-                    "Did not find the entity this relation is supposed to come from!" +
-                    "Something must have went wrong when annotating for the related instance."
+                    "Did not find the entity this relation is supposed to come from!"
+                    + "Something must have went wrong when annotating for the related instance."
                 )
-
 
         def __init__(self, data, *args, **kwargs):
 
@@ -203,14 +207,18 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 # even in case two entities are of the same class.
                 other_related_entity=Case(
                     # **kwargs pattern is needed here as the key-value pairs change with each relation class and entity instance.
-                    When(**{
-                        related_entity_field_name_a + "__pk": entity_instance.pk,
-                        "then": related_entity_field_name_b
-                    }),
-                    When(**{
-                        related_entity_field_name_b + "__pk": entity_instance.pk,
-                        "then": related_entity_field_name_a
-                    }),
+                    When(
+                        **{
+                            related_entity_field_name_a + "__pk": entity_instance.pk,
+                            "then": related_entity_field_name_b,
+                        }
+                    ),
+                    When(
+                        **{
+                            related_entity_field_name_b + "__pk": entity_instance.pk,
+                            "then": related_entity_field_name_a,
+                        }
+                    ),
                 )
             ).annotate(
                 # Get the correct side of the relation type given the current entity instance.
@@ -219,27 +227,32 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 # guarantees that the other related entity is always correctly picked,
                 # even in case two entities are of the same class.
                 other_relation_type=Case(
-                When(**{
-                    # A->B relation and current entity instance is A, hence take forward name
-                    related_entity_field_name_a + "__pk": entity_instance.pk,
-                    "then": "relation_type__name"
-                }),
-                When(**{
-                    # A->B relation and current entity instance is B, hence take reverse name.
-                    related_entity_field_name_b + "__pk": entity_instance.pk,
-                    "then": "relation_type__name_reverse"
-                }),
-            )
+                    When(
+                        **{
+                            # A->B relation and current entity instance is A, hence take forward name
+                            related_entity_field_name_a + "__pk": entity_instance.pk,
+                            "then": "relation_type__name",
+                        }
+                    ),
+                    When(
+                        **{
+                            # A->B relation and current entity instance is B, hence take reverse name.
+                            related_entity_field_name_b + "__pk": entity_instance.pk,
+                            "then": "relation_type__name_reverse",
+                        }
+                    ),
+                )
             )
             for an in data:
-                if getattr(an, f"{related_entity_field_name_a}_id") == entity_instance.pk:
+                if (
+                    getattr(an, f"{related_entity_field_name_a}_id")
+                    == entity_instance.pk
+                ):
                     an.other_relation_type = getattr(an.relation_type, "label")
                 else:
                     an.other_relation_type = getattr(an.relation_type, "label_reverse")
 
- 
             super().__init__(data, *args, **kwargs)
-
 
     if detail:
 
@@ -253,20 +266,14 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 # Only addition with respect to parent class is which main url is to be used when clicking on a
                 # related entity column.
                 self.base_columns["other_related_entity"] = tables.LinkColumn(
-                    'apis:apis_entities:generic_entities_detail_view',
-                    args=[
-                        other_related_entity_class_name,
-                        A("other_related_entity")
-                    ],
-                    verbose_name="Related " + other_related_entity_class_name.title()
+                    "apis:apis_entities:generic_entities_detail_view",
+                    args=[other_related_entity_class_name, A("other_related_entity")],
+                    verbose_name="Related " + other_related_entity_class_name.title(),
                 )
-
 
                 super().__init__(data=data, *args, **kwargs)
 
-
         return RelationTableDetail
-
 
     else:
 
@@ -286,48 +293,46 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 # again reuse the fields list for ordering
                 sequence = tuple(fields)
 
-
             def __init__(self, *args, **kwargs):
 
                 # Clicking on a related entity will lead also the edit view of the related entity instance
                 self.base_columns["other_related_entity"] = tables.LinkColumn(
-                    'apis:apis_entities:generic_entities_edit_view',
-                    args=[
-                        other_related_entity_class_name, A("other_related_entity")
-                    ],
-                    verbose_name="Related " + other_related_entity_class_name.title()
+                    "apis:apis_entities:generic_entities_edit_view",
+                    args=[other_related_entity_class_name, A("other_related_entity")],
+                    verbose_name="Related " + other_related_entity_class_name.title(),
                 )
 
                 # delete button
-                self.base_columns['delete'] = tables.TemplateColumn(
-                    template_name='apis_relations/delete_button_generic_ajax_form.html'
+                self.base_columns["delete"] = tables.TemplateColumn(
+                    template_name="apis_relations/delete_button_generic_ajax_form.html"
                 )
 
                 # edit button
-                self.base_columns['edit'] = tables.TemplateColumn(
-                    template_name='apis_relations/edit_button_generic_ajax_form.html'
+                self.base_columns["edit"] = tables.TemplateColumn(
+                    template_name="apis_relations/edit_button_generic_ajax_form.html"
                 )
 
                 super().__init__(*args, **kwargs)
 
-
         return RelationTableEdit
-
 
 
 class EntityUriTable(tables.Table):
 
-    delete = tables.TemplateColumn(template_name='apis_relations/delete_button_Uri_ajax_form.html')
+    delete = tables.TemplateColumn(
+        template_name="apis_relations/delete_button_Uri_ajax_form.html"
+    )
 
     class Meta:
         empty_text = empty_text_default
         model = Uri
-        fields = ['uri']
-        sequence = ('delete', 'uri')
+        fields = ["uri"]
+        sequence = ("delete", "uri")
         # add class="paleblue" to <table> tag
-        attrs = {"class": "table table-hover table-striped table-condensed",
-                 "id": "PURI_conn"}
-
+        attrs = {
+            "class": "table table-hover table-striped table-condensed",
+            "id": "PURI_conn",
+        }
 
 
 class LabelTableBase(tables.Table):
@@ -349,22 +354,35 @@ class LabelTableBase(tables.Table):
 
         # Note that as the next attribute 'sequence' builds on this list 'fields', the order defined within this list
         # will be reused for the tuple 'sequence'. So if the order needs to be changed, better do it here in the list 'fields'.
-        fields = ['start_date_written', 'end_date_written', 'label_type', 'isocode_639_3']
-        sequence = ('label',) + tuple(fields)
+        fields = [
+            "start_date_written",
+            "end_date_written",
+            "label_type",
+            "isocode_639_3",
+        ]
+        sequence = ("label",) + tuple(fields)
 
         # add class="paleblue" to <table> tag
         attrs = {
             "class": "table table-hover table-striped table-condensed",
             "id": "PL_conn",
-            "style": "table-layout: fixed;"
+            "style": "table-layout: fixed;",
         }
-    
-    def __init__(self, **kwargs):
-        self.base_columns["start_date_written"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
-        self.base_columns["end_date_written"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
-        self.base_columns["isocode_639_3"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
-        super().__init__(**kwargs)
 
+    def __init__(self, **kwargs):
+        self.base_columns["start_date_written"].attrs = {
+            "th": {"class": "d-none d-lg-table-cell"},
+            "td": {"class": "d-none d-lg-table-cell"},
+        }
+        self.base_columns["end_date_written"].attrs = {
+            "th": {"class": "d-none d-lg-table-cell"},
+            "td": {"class": "d-none d-lg-table-cell"},
+        }
+        self.base_columns["isocode_639_3"].attrs = {
+            "th": {"class": "d-none d-lg-table-cell"},
+            "td": {"class": "d-none d-lg-table-cell"},
+        }
+        super().__init__(**kwargs)
 
 
 class LabelTableEdit(LabelTableBase):
@@ -372,8 +390,9 @@ class LabelTableEdit(LabelTableBase):
     Reuse most of the base table class for labels. Only addition is editing functionality.
     """
 
-    edit = tables.TemplateColumn(template_name='apis_relations/edit_button_persLabel_ajax_form.html')
+    edit = tables.TemplateColumn(
+        template_name="apis_relations/edit_button_persLabel_ajax_form.html"
+    )
 
     class Meta(LabelTableBase.Meta):
         sequence = LabelTableBase.Meta.sequence + ("edit",)
-

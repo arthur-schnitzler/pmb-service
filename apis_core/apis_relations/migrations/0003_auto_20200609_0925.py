@@ -6,143 +6,128 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis_relations', '0002_auto_20200121_1227'),
+        ("apis_relations", "0002_auto_20200121_1227"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='eventevent',
-            options={'default_manager_name': 'objects'},
+            name="eventevent",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='eventwork',
-            options={'default_manager_name': 'objects'},
+            name="eventwork",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='institutionevent',
-            options={'default_manager_name': 'objects'},
+            name="institutionevent",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='institutioninstitution',
-            options={'default_manager_name': 'objects'},
+            name="institutioninstitution",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='institutionplace',
-            options={'default_manager_name': 'objects'},
+            name="institutionplace",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='institutionwork',
-            options={'default_manager_name': 'objects'},
+            name="institutionwork",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='personevent',
-            options={'default_manager_name': 'objects'},
+            name="personevent",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='personinstitution',
-            options={'default_manager_name': 'objects'},
+            name="personinstitution",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='personperson',
-            options={'default_manager_name': 'objects'},
+            name="personperson",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='personplace',
-            options={'default_manager_name': 'objects'},
+            name="personplace",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='personwork',
-            options={'default_manager_name': 'objects'},
+            name="personwork",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='placeevent',
-            options={'default_manager_name': 'objects'},
+            name="placeevent",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='placeplace',
-            options={'default_manager_name': 'objects'},
+            name="placeplace",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='placework',
-            options={'default_manager_name': 'objects'},
+            name="placework",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelOptions(
-            name='workwork',
-            options={'default_manager_name': 'objects'},
+            name="workwork",
+            options={"default_manager_name": "objects"},
         ),
         migrations.AlterModelManagers(
-            name='eventevent',
-            managers=[
-            ],
+            name="eventevent",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='eventwork',
-            managers=[
-            ],
+            name="eventwork",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='institutionevent',
-            managers=[
-            ],
+            name="institutionevent",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='institutioninstitution',
-            managers=[
-            ],
+            name="institutioninstitution",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='institutionplace',
-            managers=[
-            ],
+            name="institutionplace",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='institutionwork',
-            managers=[
-            ],
+            name="institutionwork",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='personevent',
-            managers=[
-            ],
+            name="personevent",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='personinstitution',
-            managers=[
-            ],
+            name="personinstitution",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='personperson',
-            managers=[
-            ],
+            name="personperson",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='personplace',
-            managers=[
-            ],
+            name="personplace",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='personwork',
-            managers=[
-            ],
+            name="personwork",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='placeevent',
-            managers=[
-            ],
+            name="placeevent",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='placeplace',
-            managers=[
-            ],
+            name="placeplace",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='placework',
-            managers=[
-            ],
+            name="placework",
+            managers=[],
         ),
         migrations.AlterModelManagers(
-            name='workwork',
-            managers=[
-            ],
+            name="workwork",
+            managers=[],
         ),
     ]

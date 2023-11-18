@@ -307,7 +307,13 @@ class LifePathSerializer(serializers.BaseSerializer):
     def get_place(self, obj):
         if isinstance(obj, PersonInstitution):
             inst = obj.related_institution
-            rel_type = getattr(settings, "APIS_LOCATED_IN_ATTR", ["situated in",])
+            rel_type = getattr(
+                settings,
+                "APIS_LOCATED_IN_ATTR",
+                [
+                    "situated in",
+                ],
+            )
             rel_type_inst = getattr(settings, "APIS_INSTITUTION_PRECEEDING", [160, 161])
             ipl_rel = InstitutionPlaceRelation.objects.filter(
                 name__in=rel_type

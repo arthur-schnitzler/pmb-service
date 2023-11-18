@@ -38,6 +38,4 @@ def entity_as_arche(request, pk):
         res = ArcheMd(res.id)
     except ObjectDoesNotExist:
         return HttpResponseNotFound()
-    return HttpResponse(
-        res.return_graph().serialize(), content_type="text/turtle"
-    )
+    return HttpResponse(res.return_graph().serialize(), content_type="text/turtle")

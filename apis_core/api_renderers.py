@@ -23,9 +23,9 @@ class NetJsonRenderer(renderers.JSONRenderer):
                     rel2 = re.match("^{}[a-z]*".format(r2), rel)
                     if rel2:
                         source = r
-                    elif r.endswith('A'):
+                    elif r.endswith("A"):
                         source = r
-                    elif r.endswith('B'):
+                    elif r.endswith("B"):
                         target = r
                     rel2 = re.match("^[a-z]*?{}$".format(r2), rel)
                     if rel2:
@@ -42,7 +42,9 @@ class NetJsonRenderer(renderers.JSONRenderer):
                         for k, v in d.items()
                     ]
                 )
-                if d2["source"] is None or d2["target"] is None:    #fix needed to not get 500s if relations without source or target exist in the data
+                if (
+                    d2["source"] is None or d2["target"] is None
+                ):  # fix needed to not get 500s if relations without source or target exist in the data
                     continue
                 target_type = d2["target"]["url"].split("/")[-3].title()
                 source_type = d2["source"]["url"].split("/")[-3].title()
@@ -50,5 +52,7 @@ class NetJsonRenderer(renderers.JSONRenderer):
                 d2["source"]["type"] = source_type
                 results2.append(d2)
             data["results"] = results2
-            res3 = super().render(data, accepted_media_type=media_type, renderer_context=renderer_context)
+            res3 = super().render(
+                data, accepted_media_type=media_type, renderer_context=renderer_context
+            )
             return res3

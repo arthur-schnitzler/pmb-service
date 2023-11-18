@@ -9,7 +9,7 @@ from dumper.utils import DOMAIN_MAPPING, write_report
 
 
 class Command(BaseCommand):
-    help = 'Command to harmonize URL-Domains'
+    help = "Command to harmonize URL-Domains"
 
     def handle(self, *args, **kwargs):
         start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
@@ -29,9 +29,5 @@ class Command(BaseCommand):
         wrong_domain = Uri.objects.exclude(domain__in=domains)
         print(f"now I found {wrong_domain.count()} with wrong or without domains")
         end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
-        report = [
-            os.path.basename(__file__),
-            start_time,
-            end_time
-        ]
+        report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

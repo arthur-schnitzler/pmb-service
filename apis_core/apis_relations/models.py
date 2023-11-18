@@ -9,8 +9,6 @@ from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import TempEntityClass
 
 
-
-
 #######################################################################
 #
 # AbstractRelation
@@ -24,11 +22,11 @@ class AbstractRelation(TempEntityClass):
     relating to either all or specific relations.
     """
 
-    #annotation_links = AnnotationRelationLinkManager()
+    # annotation_links = AnnotationRelationLinkManager()
 
     class Meta:
         abstract = True
-        default_manager_name = 'objects'
+        default_manager_name = "objects"
 
     def save(self, *args, **kwargs):
 
@@ -41,13 +39,15 @@ class AbstractRelation(TempEntityClass):
 
         super().save(*args, **kwargs)
 
-
     # Methods dealing with individual data retrievals of instances
     ####################################################################################################################
 
     def __str__(self):
-        return "{} ({}) {}".format(self.get_related_entity_instancea(), self.relation_type, self.get_related_entity_instanceb())
-
+        return "{} ({}) {}".format(
+            self.get_related_entity_instancea(),
+            self.relation_type,
+            self.get_related_entity_instanceb(),
+        )
 
     def get_web_object(self):
 
@@ -69,14 +69,14 @@ class AbstractRelation(TempEntityClass):
                 nameb += self.get_related_entity_instanceb().first_name
 
         result = {
-            'relation_pk': self.pk,
-            'relation_type': self.relation_type.name,
+            "relation_pk": self.pk,
+            "relation_type": self.relation_type.name,
             self.get_related_entity_field_namea(): namea,
             self.get_related_entity_field_nameb(): nameb,
-            'start_date': self.start_date_written,
-            'end_date': self.end_date_written}
+            "start_date": self.start_date_written,
+            "end_date": self.end_date_written,
+        }
         return result
-
 
     def get_table_dict(self, entity):
         """Dict for the tabels in the html view
@@ -94,31 +94,29 @@ class AbstractRelation(TempEntityClass):
             rel_other_value = self.get_related_entity_instancea()
             rel_type = self.relation_type.label_reverse
         else:
-            raise Exception("Did not find corresponding entity. Wiring of current relation to current entity is faulty.")
+            raise Exception(
+                "Did not find corresponding entity. Wiring of current relation to current entity is faulty."
+            )
 
         result = {
-            'relation_pk': self.pk,
-            'relation_type': rel_type,
+            "relation_pk": self.pk,
+            "relation_type": rel_type,
             rel_other_key: rel_other_value,
-            'start_date_written': self.start_date_written,
-            'end_date_written': self.end_date_written,
-            'start_date': self.start_date,
-            'end_date': self.end_date}
+            "start_date_written": self.start_date_written,
+            "end_date_written": self.end_date_written,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+        }
         return result
-
-
 
     # Various Methods enabling convenient shortcuts between entities, relations, fields, etc
     ####################################################################################################################
 
-
     # Methods dealing with all relations
     ####################################################################################################################
 
-
     _all_relation_classes = None
     _all_relation_names = None
-
 
     @classmethod
     def get_all_relation_classes(cls):
@@ -137,15 +135,17 @@ class AbstractRelation(TempEntityClass):
 
             # using python's reflective logic, the following loop iterates over all classes of this current module.
             for relation_name, relation_class in inspect.getmembers(
-                    sys.modules[__name__], inspect.isclass):
+                sys.modules[__name__], inspect.isclass
+            ):
                 # check for python classes not to be used.
-                if \
-                        relation_class.__module__ == "apis_core.apis_relations.models" and \
-                        relation_class.__name__ != "AnnotationRelationLinkManager" and \
-                        relation_class.__name__ != "BaseRelationManager" and \
-                        relation_class.__name__ != "RelationPublishedQueryset" and \
-                        relation_class.__name__ != "AbstractRelation" and \
-                        relation_name != "ent_class":
+                if (
+                    relation_class.__module__ == "apis_core.apis_relations.models"
+                    and relation_class.__name__ != "AnnotationRelationLinkManager"
+                    and relation_class.__name__ != "BaseRelationManager"
+                    and relation_class.__name__ != "RelationPublishedQueryset"
+                    and relation_class.__name__ != "AbstractRelation"
+                    and relation_name != "ent_class"
+                ):
 
                     relation_classes.append(relation_class)
                     relation_names.append(relation_name.lower())
@@ -154,7 +154,6 @@ class AbstractRelation(TempEntityClass):
             cls._all_relation_names = relation_names
 
         return cls._all_relation_classes
-
 
     @classmethod
     def get_relation_class_of_name(cls, relation_name):
@@ -168,7 +167,6 @@ class AbstractRelation(TempEntityClass):
                 return relation_class
 
         raise Exception("Could not find relation class of name:", relation_name)
-
 
     @classmethod
     def get_all_relation_names(cls):
@@ -184,16 +182,12 @@ class AbstractRelation(TempEntityClass):
 
         return cls._all_relation_names
 
-
-
     # Methods dealing with related relations and entities
     ####################################################################################################################
-
 
     _relation_classes_of_entity_class = {}
     _relation_classes_of_entity_name = {}
     _relation_field_names_of_entity_class = {}
-
 
     @classmethod
     def get_relation_classes_of_entity_class(cls, entity_class):
@@ -207,7 +201,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_classes_of_entity_class[entity_class]
 
-
     @classmethod
     def get_relation_classes_of_entity_name(cls, entity_name):
         """
@@ -220,7 +213,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_classes_of_entity_name[entity_name.lower()]
 
-
     @classmethod
     def add_relation_class_of_entity_class(cls, entity_class):
         """
@@ -232,15 +224,18 @@ class AbstractRelation(TempEntityClass):
         """
 
         # get the list of the class dictionary, create if not yet exists.
-        relation_class_list = cls._relation_classes_of_entity_class.get(entity_class, [])
+        relation_class_list = cls._relation_classes_of_entity_class.get(
+            entity_class, []
+        )
 
         # append the current relation class to the list.
         relation_class_list.append(cls)
 
         # save into the dictionary, which uses the entity class as key and the extended list above as value.
         cls._relation_classes_of_entity_class[entity_class] = relation_class_list
-        cls._relation_classes_of_entity_name[entity_class.__name__.lower()] = relation_class_list
-
+        cls._relation_classes_of_entity_name[
+            entity_class.__name__.lower()
+        ] = relation_class_list
 
     @classmethod
     def get_relation_field_names_of_entity_class(cls, entity_class):
@@ -254,7 +249,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_field_names_of_entity_class[entity_class]
 
-
     @classmethod
     def add_relation_field_name_of_entity_class(cls, relation_name, entity_class):
         """
@@ -266,13 +260,16 @@ class AbstractRelation(TempEntityClass):
         """
 
         # get the list of the class dictionary, create if not yet exists.
-        relation_names_list = cls._relation_field_names_of_entity_class.get(entity_class, [])
+        relation_names_list = cls._relation_field_names_of_entity_class.get(
+            entity_class, []
+        )
         # append the current relation field name to the list.
-        if relation_name not in relation_names_list: 
-            relation_names_list.append(relation_name) #TODO: this is a workaround, find out why it is called several times
+        if relation_name not in relation_names_list:
+            relation_names_list.append(
+                relation_name
+            )  # TODO: this is a workaround, find out why it is called several times
         # save into the dictionary, which uses the entity class as key and the extended list above as value.
         cls._relation_field_names_of_entity_class[entity_class] = relation_names_list
-
 
     def get_related_entity_instancea(self):
         """
@@ -286,8 +283,7 @@ class AbstractRelation(TempEntityClass):
         :return: An entity instance related to the current relation instance
         """
         print(f"{self.get_related_entity_field_namea()}")
-        return getattr( self, self.get_related_entity_field_namea() )
-
+        return getattr(self, self.get_related_entity_field_namea())
 
     def get_related_entity_instanceb(self):
         """
@@ -300,15 +296,12 @@ class AbstractRelation(TempEntityClass):
 
         :return: An entity instance related to the current relation instance
         """
-        return getattr( self, self.get_related_entity_field_nameb() )
-
-
+        return getattr(self, self.get_related_entity_field_nameb())
 
     # method stumps
     ####################################################################################################################
     # These stumps merely serve as placeholders so that both IDE and developers know that these methods exist.
     # They are implemented programmatically in the function 'generate_all_fields' in the class 'EntityRelationFieldGenerator'.
-
 
     @classmethod
     def get_related_entity_classa(cls):
@@ -342,8 +335,6 @@ class AbstractRelation(TempEntityClass):
         E.g. PersonWork -> "related_work"
         """
         return None
-
-
 
 
 #######################################################################

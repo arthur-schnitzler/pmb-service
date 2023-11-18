@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis_metainfo', '0003_tempentityclass_published'),
+        ("apis_metainfo", "0003_tempentityclass_published"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='published',
+            model_name="collection",
+            name="published",
             field=models.BooleanField(default=False),
         ),
     ]

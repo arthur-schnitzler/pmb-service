@@ -1,5 +1,6 @@
 from django.db import models
 
+
 def generate_all_fields():
     """
     This function goes through every entity, relation, and relationtype model and automatically wires them together
@@ -27,8 +28,6 @@ def generate_all_fields():
     from apis_core.apis_relations.models import AbstractRelation
     from apis_core.apis_vocabularies.models import AbstractRelationType
 
-
-
     def create_function_get_related_entity_class(related_entity_class):
         """
         :param related_entity_class: the class which the generated class method shall return
@@ -42,9 +41,6 @@ def generate_all_fields():
         :return: an anonymous function which is assigned as method with a label respective to relation and entity classes.
         """
         return classmethod(lambda cls: related_entity_field_name)
-
-
-
 
     def pair_up_relations_relationtypes(relation_classes, relationtype_classes):
         """
@@ -80,21 +76,23 @@ def generate_all_fields():
 
             message = ""
             for cls in no_pairing_found:
-                message += "Found no corresponding Relation or RelationType class to: \n" + str(cls) + "!"
+                message += (
+                    "Found no corresponding Relation or RelationType class to: \n"
+                    + str(cls)
+                    + "!"
+                )
 
             raise Exception(message)
 
         return rc_rtc_pairs
 
-
     # all relation, relationtype classes to be iterated over:
     relation_relationtype_pairs = pair_up_relations_relationtypes(
         relation_classes=AbstractRelation.get_all_relation_classes(),
-        relationtype_classes=AbstractRelationType.get_all_relationtype_classes()
+        relationtype_classes=AbstractRelationType.get_all_relationtype_classes(),
     )
     # all entity classes to be iterated over:
     entity_classes = AbstractEntity.get_all_entity_classes()
-
 
     # Iterate over all entity classes, twice, so that all relations between all entity classes are covered.
     for entity_class_a in entity_classes:
@@ -106,15 +104,15 @@ def generate_all_fields():
             # inner loop iterating over each of the relation_class and relationtype at the same time
             for relation_class, relationtype_class in relation_relationtype_pairs:
 
-
                 # Check if current relation related to both entities
                 # Note that this way two entites are checked twice, such as person-place and place-person
                 # but however in the relation model only one of these two exists. Thus the right one will be picked.
-                if entity_class_name_a + entity_class_name_b == relation_class.__name__.lower():
+                if (
+                    entity_class_name_a + entity_class_name_b
+                    == relation_class.__name__.lower()
+                ):
 
                     if entity_class_a != entity_class_b:
-
-
 
                         # On relation models: generate fields from relation to entity and from relation to relationtype
                         ################################################################################################
@@ -125,7 +123,9 @@ def generate_all_fields():
                         # To stick to common Django ORM Syntax, set the field name in the related entity class to
                         # the current relation name and add '_set' to it (since going from the entity one would have
                         # multiple relation instances possibly.)
-                        relation_field_name_in_other_class = entity_class_name_a + entity_class_name_b + "_set"
+                        relation_field_name_in_other_class = (
+                            entity_class_name_a + entity_class_name_b + "_set"
+                        )
 
                         # Create the related entity field A.
                         models.ForeignKey(
@@ -133,7 +133,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class
+                            related_name=relation_field_name_in_other_class,
                         ).contribute_to_class(relation_class, relation_field_name_a)
 
                         # Create the related entity field B.
@@ -142,7 +142,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class
+                            related_name=relation_field_name_in_other_class,
                         ).contribute_to_class(relation_class, relation_field_name_b)
 
                         # Create the related relationtype field
@@ -151,7 +151,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class
+                            related_name=relation_field_name_in_other_class,
                         ).contribute_to_class(relation_class, "relation_type")
 
                         # Implemented the following methods programmatically by setting the respective relations,
@@ -159,42 +159,72 @@ def generate_all_fields():
                         # Note that these methods are first defined as stumps within AbstractRelation for documentation
                         # purposes.
 
-                        relation_class.get_related_entity_classa = \
+                        relation_class.get_related_entity_classa = (
                             create_function_get_related_entity_class(entity_class_a)
+                        )
 
-                        relation_class.get_related_entity_classb = \
+                        relation_class.get_related_entity_classb = (
                             create_function_get_related_entity_class(entity_class_b)
+                        )
 
-                        relation_class.get_related_entity_field_namea = \
-                            create_function_get_related_entity_field_name(relation_field_name_a)
+                        relation_class.get_related_entity_field_namea = (
+                            create_function_get_related_entity_field_name(
+                                relation_field_name_a
+                            )
+                        )
 
-                        relation_class.get_related_entity_field_nameb = \
-                            create_function_get_related_entity_field_name(relation_field_name_b)
+                        relation_class.get_related_entity_field_nameb = (
+                            create_function_get_related_entity_field_name(
+                                relation_field_name_b
+                            )
+                        )
 
-                        relation_class.add_relation_class_of_entity_class(entity_class_a)
-                        relation_class.add_relation_class_of_entity_class(entity_class_b)
+                        relation_class.add_relation_class_of_entity_class(
+                            entity_class_a
+                        )
+                        relation_class.add_relation_class_of_entity_class(
+                            entity_class_b
+                        )
                         relation_class.add_relation_field_name_of_entity_class(
-                            relation_name=relation_field_name_in_other_class, entity_class=entity_class_a)
+                            relation_name=relation_field_name_in_other_class,
+                            entity_class=entity_class_a,
+                        )
                         relation_class.add_relation_field_name_of_entity_class(
-                            relation_name=relation_field_name_in_other_class, entity_class=entity_class_b)
-
-
+                            relation_name=relation_field_name_in_other_class,
+                            entity_class=entity_class_b,
+                        )
 
                         # On entity models: generate fields from entity to entity and from entity to relationtype
                         ################################################################################################
 
                         field_name_to_entity_a = entity_class_name_a + "_set"
                         field_name_to_entity_b = entity_class_name_b + "_set"
-                        field_name_to_entity_b_relationtype = entity_class_name_b + "_relationtype_set"
-                        field_name_to_entity_a_relationtype = entity_class_name_a + "_relationtype_set"
+                        field_name_to_entity_b_relationtype = (
+                            entity_class_name_b + "_relationtype_set"
+                        )
+                        field_name_to_entity_a_relationtype = (
+                            entity_class_name_a + "_relationtype_set"
+                        )
 
                         # Add those names already into the respective class's list of field names
-                        entity_class_a.add_related_entity_field_name(field_name_to_entity_b)
-                        entity_class_b.add_related_entity_field_name(field_name_to_entity_a)
-                        entity_class_a.add_related_relationtype_field_name(field_name_to_entity_b_relationtype)
-                        entity_class_b.add_related_relationtype_field_name(field_name_to_entity_a_relationtype)
-                        relationtype_class.add_related_entity_field_name(field_name_to_entity_b)
-                        relationtype_class.add_related_entity_field_name(field_name_to_entity_a)
+                        entity_class_a.add_related_entity_field_name(
+                            field_name_to_entity_b
+                        )
+                        entity_class_b.add_related_entity_field_name(
+                            field_name_to_entity_a
+                        )
+                        entity_class_a.add_related_relationtype_field_name(
+                            field_name_to_entity_b_relationtype
+                        )
+                        entity_class_b.add_related_relationtype_field_name(
+                            field_name_to_entity_a_relationtype
+                        )
+                        relationtype_class.add_related_entity_field_name(
+                            field_name_to_entity_b
+                        )
+                        relationtype_class.add_related_entity_field_name(
+                            field_name_to_entity_a
+                        )
 
                         # entity A to entity B, and B back to A
                         models.ManyToManyField(
@@ -210,7 +240,9 @@ def generate_all_fields():
                             through=relation_class,
                             related_name=field_name_to_entity_a,
                             blank=True,
-                        ).contribute_to_class(entity_class_a, field_name_to_entity_b_relationtype)
+                        ).contribute_to_class(
+                            entity_class_a, field_name_to_entity_b_relationtype
+                        )
 
                         # entity B to RelationType via entity A, and RelationType back to B
                         models.ManyToManyField(
@@ -218,13 +250,11 @@ def generate_all_fields():
                             through=relation_class,
                             related_name=field_name_to_entity_b,
                             blank=True,
-                        ).contribute_to_class(entity_class_b, field_name_to_entity_a_relationtype)
-
-
+                        ).contribute_to_class(
+                            entity_class_b, field_name_to_entity_a_relationtype
+                        )
 
                     else:
-
-
 
                         # On relation models: generate fields from relation to entity and from relation to relationtype
                         ################################################################################################
@@ -232,7 +262,6 @@ def generate_all_fields():
                         # now that both entity classes are the same, just take the values from the class 'a'
                         entity_class_name = entity_class_name_a
                         entity_class = entity_class_a
-
 
                         relation_field_name_a = "related_" + entity_class_name + "a"
                         relation_field_name_b = "related_" + entity_class_name + "b"
@@ -249,7 +278,9 @@ def generate_all_fields():
                         # generated as before.
                         relation_field_name_in_other_class_a = relation_field_name_b
                         relation_field_name_in_other_class_b = relation_field_name_a
-                        relation_field_name_in_other_class = entity_class_name_a + entity_class_name_b + "_set"
+                        relation_field_name_in_other_class = (
+                            entity_class_name_a + entity_class_name_b + "_set"
+                        )
 
                         # TODO __sresch__ : use the following related name for consistency reasons once most code breaking parts due to this change are identified.
                         #
@@ -268,7 +299,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class_a
+                            related_name=relation_field_name_in_other_class_a,
                         ).contribute_to_class(relation_class, relation_field_name_a)
 
                         # Create the related entity field B.
@@ -277,7 +308,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class_b
+                            related_name=relation_field_name_in_other_class_b,
                         ).contribute_to_class(relation_class, relation_field_name_b)
 
                         # Create the related relaiontype field
@@ -286,7 +317,7 @@ def generate_all_fields():
                             blank=True,
                             null=True,
                             on_delete=models.CASCADE,
-                            related_name=relation_field_name_in_other_class
+                            related_name=relation_field_name_in_other_class,
                         ).contribute_to_class(relation_class, "relation_type")
 
                         # Implemented the following methods programmatically by setting the respective relations,
@@ -294,25 +325,35 @@ def generate_all_fields():
                         # Note that these methods are first defined as stumps within AbstractRelation for documentation
                         # purposes.
 
-                        relation_class.get_related_entity_classa = \
+                        relation_class.get_related_entity_classa = (
                             create_function_get_related_entity_class(entity_class)
+                        )
 
-                        relation_class.get_related_entity_classb = \
+                        relation_class.get_related_entity_classb = (
                             create_function_get_related_entity_class(entity_class)
+                        )
 
-                        relation_class.get_related_entity_field_namea = \
-                            create_function_get_related_entity_field_name(relation_field_name_a)
+                        relation_class.get_related_entity_field_namea = (
+                            create_function_get_related_entity_field_name(
+                                relation_field_name_a
+                            )
+                        )
 
-                        relation_class.get_related_entity_field_nameb = \
-                            create_function_get_related_entity_field_name(relation_field_name_b)
+                        relation_class.get_related_entity_field_nameb = (
+                            create_function_get_related_entity_field_name(
+                                relation_field_name_b
+                            )
+                        )
 
                         relation_class.add_relation_class_of_entity_class(entity_class)
                         relation_class.add_relation_field_name_of_entity_class(
-                            relation_name=relation_field_name_in_other_class_a, entity_class=entity_class)
+                            relation_name=relation_field_name_in_other_class_a,
+                            entity_class=entity_class,
+                        )
                         relation_class.add_relation_field_name_of_entity_class(
-                            relation_name=relation_field_name_in_other_class_b, entity_class=entity_class)
-
-
+                            relation_name=relation_field_name_in_other_class_b,
+                            entity_class=entity_class,
+                        )
 
                         # On entity models: generate fields from entity to entity and from entity to relationtype
                         ################################################################################################
@@ -320,16 +361,32 @@ def generate_all_fields():
                         # Define all the names for the ManyToMany fields generated below
                         field_name_to_entity_a = entity_class_name_a + "a_set"
                         field_name_to_entity_b = entity_class_name_b + "b_set"
-                        field_name_to_entity_b_relationtype = entity_class_name_b + "b_relationtype_set"
-                        field_name_to_entity_a_relationtype = entity_class_name_a + "a_relationtype_set"
+                        field_name_to_entity_b_relationtype = (
+                            entity_class_name_b + "b_relationtype_set"
+                        )
+                        field_name_to_entity_a_relationtype = (
+                            entity_class_name_a + "a_relationtype_set"
+                        )
 
                         # Add those names already into the respective class's list of field names
-                        entity_class_a.add_related_entity_field_name(field_name_to_entity_b)
-                        entity_class_b.add_related_entity_field_name(field_name_to_entity_a)
-                        entity_class_a.add_related_relationtype_field_name(field_name_to_entity_b_relationtype)
-                        entity_class_b.add_related_relationtype_field_name(field_name_to_entity_a_relationtype)
-                        relationtype_class.add_related_entity_field_name(field_name_to_entity_b)
-                        relationtype_class.add_related_entity_field_name(field_name_to_entity_a)
+                        entity_class_a.add_related_entity_field_name(
+                            field_name_to_entity_b
+                        )
+                        entity_class_b.add_related_entity_field_name(
+                            field_name_to_entity_a
+                        )
+                        entity_class_a.add_related_relationtype_field_name(
+                            field_name_to_entity_b_relationtype
+                        )
+                        entity_class_b.add_related_relationtype_field_name(
+                            field_name_to_entity_a_relationtype
+                        )
+                        relationtype_class.add_related_entity_field_name(
+                            field_name_to_entity_b
+                        )
+                        relationtype_class.add_related_entity_field_name(
+                            field_name_to_entity_a
+                        )
 
                         # entity A to same entity B, and B back to A
                         models.ManyToManyField(
@@ -338,7 +395,10 @@ def generate_all_fields():
                             related_name=field_name_to_entity_a,
                             blank=True,
                             symmetrical=False,
-                            through_fields=("related_" + entity_class_name_a + "a", "related_" + entity_class_name_b + "b")
+                            through_fields=(
+                                "related_" + entity_class_name_a + "a",
+                                "related_" + entity_class_name_b + "b",
+                            ),
                         ).contribute_to_class(entity_class_a, field_name_to_entity_b)
 
                         # entity A to RelationType via entity B, and RelationType back to A
@@ -348,8 +408,13 @@ def generate_all_fields():
                             related_name=field_name_to_entity_a,
                             blank=True,
                             symmetrical=False,
-                            through_fields=("related_" + entity_class_name_a + "a", "relation_type")
-                        ).contribute_to_class(entity_class_a, field_name_to_entity_b_relationtype)
+                            through_fields=(
+                                "related_" + entity_class_name_a + "a",
+                                "relation_type",
+                            ),
+                        ).contribute_to_class(
+                            entity_class_a, field_name_to_entity_b_relationtype
+                        )
 
                         # entity B to RelationType via entity A, and RelationType back to B
                         models.ManyToManyField(
@@ -358,10 +423,13 @@ def generate_all_fields():
                             related_name=field_name_to_entity_a_relationtype,
                             blank=True,
                             symmetrical=False,
-                            through_fields=("relation_type", "related_" + entity_class_name_b + "b")
-                        ).contribute_to_class(relationtype_class, field_name_to_entity_b)
-
-
+                            through_fields=(
+                                "relation_type",
+                                "related_" + entity_class_name_b + "b",
+                            ),
+                        ).contribute_to_class(
+                            relationtype_class, field_name_to_entity_b
+                        )
 
                     # if entity_class_a_name + entity_class_b_name == relation_class.__name__.lower()
                     # equals to True, then for entity_class_a and entity_class_b, their respective relation class

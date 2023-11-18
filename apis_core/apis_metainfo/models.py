@@ -18,6 +18,7 @@ from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
 
 from django.contrib.contenttypes.fields import GenericRelation
+
 # from helper_functions.highlighter import highlight_text
 from apis_core.default_settings.NER_settings import autocomp_settings
 from apis_core.helper_functions import DateParser
@@ -69,7 +70,6 @@ class TempEntityClass(models.Model):
     published = models.BooleanField(default=False)
     objects = models.Manager()
     objects_inheritance = InheritanceManager()
-
 
     def __str__(self):
         if self.name != "" and hasattr(
@@ -310,7 +310,7 @@ class TempEntityClass(models.Model):
 
 
 class Source(models.Model):
-    """ Holds information about entities and their relations"""
+    """Holds information about entities and their relations"""
 
     orig_filename = models.CharField(max_length=255, blank=True)
     indexed = models.BooleanField(default=False)
@@ -326,7 +326,7 @@ class Source(models.Model):
 
 
 class Collection(models.Model):
-    """ Allows to group entities and relation. """
+    """Allows to group entities and relation."""
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -370,7 +370,6 @@ class Text(models.Model):
             return "ID: {} - {}".format(self.id, self.text[:25])
         else:
             return "ID: {}".format(self.id)
-
 
 
 class Uri(models.Model):

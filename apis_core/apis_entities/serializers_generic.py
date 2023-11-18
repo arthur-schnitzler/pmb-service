@@ -156,7 +156,7 @@ class RelationEntitySerializer(serializers.Serializer):
     start_date_written = serializers.DateField()
     end_date_written = serializers.DateField()
     relation_type = serializers.SerializerMethodField(method_name="add_relation_label")
-    
+
     def add_entity(self, obj):
         return EntitySerializer(
             getattr(obj, "related_{}".format(self.entity_type)), depth_ent=0

@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis_metainfo', '0005_text_lang'),
+        ("apis_metainfo", "0005_text_lang"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='text',
-            name='lang',
+            model_name="text",
+            name="lang",
         ),
     ]

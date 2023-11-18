@@ -35,44 +35,48 @@ from apis_core.apis_metainfo.models import Collection
 #
 #######################################################################
 
-class GenericListFilter(django_filters.FilterSet):
 
+class GenericListFilter(django_filters.FilterSet):
     class Meta:
-        model = None # must be overriden with entity specific Filter Classes
+        model = None  # must be overriden with entity specific Filter Classes
         exclude = getattr(settings, "APIS_RELATIONS_FILTER_EXCLUDE", [])
 
     name = django_filters.CharFilter(method="name_label_filter", label="Name or Label")
-    collection = django_filters.ModelMultipleChoiceFilter(queryset=Collection.objects.all())
+    collection = django_filters.ModelMultipleChoiceFilter(
+        queryset=Collection.objects.all()
+    )
 
     # TODO __sresch__ : look into how the date values can be intercepted so that they can be parsed with the same logic as in edit forms
     start_date = django_filters.DateFromToRangeFilter()
     end_date = django_filters.DateFromToRangeFilter()
 
     # TODO __sresch__ : look into how to change these into auto-complete fields
-    related_entity_name = django_filters.CharFilter(method="related_entity_name_filter", label="related entity")
-    related_relationtype_name = django_filters.CharFilter(method="related_relationtype_name_filter", label="relationtype")
+    related_entity_name = django_filters.CharFilter(
+        method="related_entity_name_filter", label="related entity"
+    )
+    related_relationtype_name = django_filters.CharFilter(
+        method="related_relationtype_name_filter", label="relationtype"
+    )
 
     if "apis_ampel" in settings.INSTALLED_APPS:
         from apis_ampel.models import AmpelTemp
-        ampel = django_filters.ChoiceFilter(choices=AmpelTemp.ampel_choices, field_name="ampel__status", label="Ampel", null_label="default")
-        ampel_note = django_filters.CharFilter(
-                        lookup_expr='icontains',
-                        field_name="ampel__note",
-                        label="Ampel note"
-                    )
-        ampel_notes_field = django_filters.CharFilter(
-                        lookup_expr='icontains',
-                        field_name="notes",
-                        label="notes"
-                    )
-        ampel_references_field = django_filters.CharFilter(
-                        lookup_expr='icontains',
-                        field_name="references",
-                        label="references"
-                    )
 
-    
-    
+        ampel = django_filters.ChoiceFilter(
+            choices=AmpelTemp.ampel_choices,
+            field_name="ampel__status",
+            label="Ampel",
+            null_label="default",
+        )
+        ampel_note = django_filters.CharFilter(
+            lookup_expr="icontains", field_name="ampel__note", label="Ampel note"
+        )
+        ampel_notes_field = django_filters.CharFilter(
+            lookup_expr="icontains", field_name="notes", label="notes"
+        )
+        ampel_references_field = django_filters.CharFilter(
+            lookup_expr="icontains", field_name="references", label="references"
+        )
+
     def __init__(self, *args, **kwargs):
 
         # call super init foremost to create dictionary of filters which will be processed further below
@@ -90,18 +94,23 @@ class GenericListFilter(django_filters.FilterSet):
                 are referenced in the settings file (and if there were methods or labels also referenced, using them)
             """
 
-            enabled_filters = settings.APIS_ENTITIES[self.Meta.model.__name__]["list_filters"]
-
+            enabled_filters = settings.APIS_ENTITIES[self.Meta.model.__name__][
+                "list_filters"
+            ]
 
             filter_dict_tmp = {}
 
             for enabled_filter in enabled_filters:
 
-                if type(enabled_filter) == str and enabled_filter in default_filter_dict:
+                if (
+                    type(enabled_filter) == str
+                    and enabled_filter in default_filter_dict
+                ):
                     # If string then just use it, if a filter with such a name is already defined
 
-                    filter_dict_tmp[enabled_filter] = default_filter_dict[enabled_filter]
-
+                    filter_dict_tmp[enabled_filter] = default_filter_dict[
+                        enabled_filter
+                    ]
 
                 elif type(enabled_filter) == dict:
                     # if a dictionary, then look further into if there is a method or label which overrides the defaults
@@ -111,25 +120,34 @@ class GenericListFilter(django_filters.FilterSet):
                     if enabled_filter_key in default_filter_dict:
 
                         # get the dictionary which contains potential method or label overrides
-                        enabled_filter_settings_dict = enabled_filter[enabled_filter_key]
+                        enabled_filter_settings_dict = enabled_filter[
+                            enabled_filter_key
+                        ]
 
                         if "method" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].method = enabled_filter_settings_dict["method"]
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].method = enabled_filter_settings_dict["method"]
 
                         if "label" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].label = enabled_filter_settings_dict["label"]
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].label = enabled_filter_settings_dict["label"]
 
-                        filter_dict_tmp[enabled_filter_key] = default_filter_dict[enabled_filter_key]
+                        filter_dict_tmp[enabled_filter_key] = default_filter_dict[
+                            enabled_filter_key
+                        ]
 
                 else:
-                    raise ValueError("Expected either str or dict as type for an individual filter in the settings file.",
-                            "\nGot instead:", type(enabled_filter))
+                    raise ValueError(
+                        "Expected either str or dict as type for an individual filter in the settings file.",
+                        "\nGot instead:",
+                        type(enabled_filter),
+                    )
 
             return filter_dict_tmp
 
         self.filters = eliminate_unused_filters(self.filters)
-
-
 
     def construct_lookup(self, value):
         """
@@ -167,25 +185,19 @@ class GenericListFilter(django_filters.FilterSet):
 
             return "__icontains", value
 
-
-
     def string_wildcard_filter(self, queryset, name, value):
         lookup, value = self.construct_lookup(value)
-        return queryset.filter(**{name + lookup : value})
-
-
+        return queryset.filter(**{name + lookup: value})
 
     def name_label_filter(self, queryset, name, value):
         # TODO __sresch__ : include alternative names queries
 
         lookup, value = self.construct_lookup(value)
 
-        queryset_related_label=queryset.filter(**{"label__label"+lookup : value})
-        queryset_self_name=queryset.filter(**{name+lookup : value})
+        queryset_related_label = queryset.filter(**{"label__label" + lookup: value})
+        queryset_self_name = queryset.filter(**{name + lookup: value})
 
-        return ( queryset_related_label | queryset_self_name ).distinct().all()
-
-
+        return (queryset_related_label | queryset_self_name).distinct().all()
 
     def related_entity_name_filter(self, queryset, name, value):
         """
@@ -214,7 +226,9 @@ class GenericListFilter(django_filters.FilterSet):
         # step 1
         # first find all tempentities where the lookup and value applies, select only their primary keys.
         lookup, value = self.construct_lookup(value)
-        tempentity_hit = TempEntityClass.objects.filter(**{"name" + lookup: value}).values_list("pk", flat=True)
+        tempentity_hit = TempEntityClass.objects.filter(
+            **{"name" + lookup: value}
+        ).values_list("pk", flat=True)
 
         # list for querysets where relations will be saved which are related to the primary keys of the tempentity list above
         related_relations_to_hit_list = []
@@ -257,22 +271,27 @@ class GenericListFilter(django_filters.FilterSet):
 
             # A safety check which should never arise. But if it does, we know there is something wrong with the automated wiring of
             # entities and their respective relation classes (e.g. for Person, there should never be EventWork arising here)
-            if queryset.model != related_entity_classA and queryset.model != related_entity_classB:
+            if (
+                queryset.model != related_entity_classA
+                and queryset.model != related_entity_classB
+            ):
 
-                raise ValueError("queryset model class has a wrong relation class associated!")
+                raise ValueError(
+                    "queryset model class has a wrong relation class associated!"
+                )
 
         # step 3
         # Filter the entity queryset for each of the resulting relation querysets produced in the loop before
-        queryset_filtered_list = [ queryset.filter(pk__in=related_relation) for related_relation in related_relations_to_hit_list ]
+        queryset_filtered_list = [
+            queryset.filter(pk__in=related_relation)
+            for related_relation in related_relations_to_hit_list
+        ]
 
         # step 4
         # merge them all
-        result = reduce( lambda a,b : a | b, queryset_filtered_list).distinct()
+        result = reduce(lambda a, b: a | b, queryset_filtered_list).distinct()
 
         return result
-
-
-
 
     def related_relationtype_name_filter(self, queryset, name, value):
         """
@@ -293,8 +312,12 @@ class GenericListFilter(django_filters.FilterSet):
 
         # look up through name and name_reverse of RelationBaseClass
         relationbaseclass_hit = (
-            RelationBaseClass.objects.filter(**{"name" + lookup: value}).values_list("pk", flat=True) |
-            RelationBaseClass.objects.filter(**{"name_reverse" + lookup: value}).values_list("pk", flat=True)
+            RelationBaseClass.objects.filter(**{"name" + lookup: value}).values_list(
+                "pk", flat=True
+            )
+            | RelationBaseClass.objects.filter(
+                **{"name_reverse" + lookup: value}
+            ).values_list("pk", flat=True)
         ).distinct()
 
         related_relations_to_hit_list = []
@@ -324,16 +347,23 @@ class GenericListFilter(django_filters.FilterSet):
                     ).values_list(related_entity_field_nameB + "_id", flat=True)
                 )
 
-            if queryset.model != related_entity_classA and queryset.model != related_entity_classB:
+            if (
+                queryset.model != related_entity_classA
+                and queryset.model != related_entity_classB
+            ):
 
-                raise ValueError("queryset model class has a wrong relation class associated!")
+                raise ValueError(
+                    "queryset model class has a wrong relation class associated!"
+                )
 
-        queryset_filtered_list = [ queryset.filter(pk__in=related_relation) for related_relation in related_relations_to_hit_list ]
+        queryset_filtered_list = [
+            queryset.filter(pk__in=related_relation)
+            for related_relation in related_relations_to_hit_list
+        ]
 
-        result = reduce( lambda a,b : a | b, queryset_filtered_list).distinct()
+        result = reduce(lambda a, b: a | b, queryset_filtered_list).distinct()
 
         return result
-
 
     def related_arbitrary_model_name(self, queryset, name, value):
         """
@@ -350,8 +380,7 @@ class GenericListFilter(django_filters.FilterSet):
         lookup, value = self.construct_lookup(value)
 
         # name variable is the name of the filter and needs the corresponding field within the model
-        return queryset.filter( **{ name + "__name" + lookup : value } )
-
+        return queryset.filter(**{name + "__name" + lookup: value})
 
 
 #######################################################################
@@ -362,89 +391,105 @@ class GenericListFilter(django_filters.FilterSet):
 
 
 class PersonListFilter(GenericListFilter):
-
     class Meta(GenericListFilter.Meta):
         model = Person
 
-    gender = django_filters.ChoiceFilter(choices=(('', 'any'), ('male', 'male'), ('female', 'female')))
+    gender = django_filters.ChoiceFilter(
+        choices=(("", "any"), ("male", "male"), ("female", "female"))
+    )
     profession = django_filters.CharFilter(method="related_arbitrary_model_name")
     title = django_filters.CharFilter(method="related_arbitrary_model_name")
-    name = django_filters.CharFilter(method="person_name_filter", label="Name or Label of person")
-  
-
+    name = django_filters.CharFilter(
+        method="person_name_filter", label="Name or Label of person"
+    )
 
     def person_name_filter(self, queryset, name, value):
 
         lookup, value = self.construct_lookup(value)
 
-        queryset_related_label=queryset.filter(**{"label__label"+lookup : value})
-        queryset_self_name=queryset.filter(**{name+lookup : value})
-        queryset_first_name=queryset.filter(**{"first_name"+lookup : value})
+        queryset_related_label = queryset.filter(**{"label__label" + lookup: value})
+        queryset_self_name = queryset.filter(**{name + lookup: value})
+        queryset_first_name = queryset.filter(**{"first_name" + lookup: value})
 
         # return QuerySet.union(queryset_related_label, queryset_self_name, queryset_first_name)
-        return (queryset_related_label | queryset_self_name | queryset_first_name).distinct().all()
+        return (
+            (queryset_related_label | queryset_self_name | queryset_first_name)
+            .distinct()
+            .all()
+        )
+
 
 Person.set_list_filter_class(PersonListFilter)
 
 
 class PlaceListFilter(GenericListFilter):
-
     class Meta(GenericListFilter.Meta):
         model = Place
 
     # TODO __sresch__ : decide on margin tolerance of input, for now the number must be precise
-    lng = django_filters.NumberFilter(label='Longitude')
-    lat = django_filters.NumberFilter(label='Latitude')
+    lng = django_filters.NumberFilter(label="Longitude")
+    lat = django_filters.NumberFilter(label="Latitude")
+
 
 Place.set_list_filter_class(PlaceListFilter)
 
 
 class InstitutionListFilter(GenericListFilter):
-
     class Meta(GenericListFilter.Meta):
         model = Institution
+
 
 Institution.set_list_filter_class(InstitutionListFilter)
 
 
 class EventListFilter(GenericListFilter):
-
     class Meta(GenericListFilter.Meta):
         model = Event
+
 
 Event.set_list_filter_class(EventListFilter)
 
 
 class WorkListFilter(GenericListFilter):
-
     class Meta(GenericListFilter.Meta):
         model = Work
 
     kind = django_filters.ModelChoiceFilter(queryset=WorkType.objects.all())
 
+
 Work.set_list_filter_class(WorkListFilter)
 
 
-a_ents = getattr(settings, 'APIS_ADDITIONAL_ENTITIES', False)
+a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
 
 if a_ents:
-    with open(a_ents, 'r') as ents_file:
+    with open(a_ents, "r") as ents_file:
         ents = yaml.load(ents_file, Loader=yaml.CLoader)
-        for ent in ents['entities']:
-            ent_class = getattr(importlib.import_module(f"apis_core.apis_entities.models"), ent['name'])
+        for ent in ents["entities"]:
+            ent_class = getattr(
+                importlib.import_module(f"apis_core.apis_entities.models"), ent["name"]
+            )
             vocabs = []
-            for v in ent.get('vocabs', []):
-                ent_class_type = getattr(importlib.import_module(f"apis_core.apis_vocabularies.models"), v)
+            for v in ent.get("vocabs", []):
+                ent_class_type = getattr(
+                    importlib.import_module(f"apis_core.apis_vocabularies.models"), v
+                )
                 vocabs.append((v, ent_class_type))
+
             class filterMeta:
                 model = ent_class
                 exclude = GenericListFilter.fields_to_exclude
+
             dict_fc = {
                 "Meta": filterMeta,
             }
             for v in vocabs:
-                dict_fc[v] =  django_filters.ModelChoiceFilter(queryset=ent_class_type.objects.all())
-            filterclass_ent = type(f"{ent['name'].title()}Filter", (GenericListFilter, ), dict_fc)
+                dict_fc[v] = django_filters.ModelChoiceFilter(
+                    queryset=ent_class_type.objects.all()
+                )
+            filterclass_ent = type(
+                f"{ent['name'].title()}Filter", (GenericListFilter,), dict_fc
+            )
             globals()[f"{ent['name'].title()}ListFilter"] = filterclass_ent
 
 
@@ -466,4 +511,6 @@ def get_list_filter_of_entity(entity):
         try:
             return globals()[f"{el}ListFilter"]
         except KeyError:
-            raise ValueError("Could not find respective filter for given entity type:", el)
+            raise ValueError(
+                "Could not find respective filter for given entity type:", el
+            )

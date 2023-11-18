@@ -113,7 +113,7 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
     formhelper_class = GenericFilterFormHelper
     context_filter_name = "filter"
     paginate_by = 25
-    template_name =  "apis_entities/generic_list.html"
+    template_name = "apis_entities/generic_list.html"
 
     def get_model(self):
         model = ContentType.objects.get(

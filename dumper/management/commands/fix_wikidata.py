@@ -10,12 +10,12 @@ from dumper.utils import write_report
 
 
 class Command(BaseCommand):
-    help = 'http for wikidata uris'
+    help = "http for wikidata uris"
 
     def handle(self, *args, **kwargs):
         start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
         print("start fixing http for wikidata")
-        to_fix = Uri.objects.filter(uri__startswith='https://www.wikidata')
+        to_fix = Uri.objects.filter(uri__startswith="https://www.wikidata")
         print(f"found {to_fix.count()} Uris with https")
         print("start fixing uris")
         failed = []
@@ -31,9 +31,5 @@ class Command(BaseCommand):
             print(x)
         print(f"found {len(failed)} potential http/https duplicates")
         end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
-        report = [
-            os.path.basename(__file__),
-            start_time,
-            end_time
-        ]
+        report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

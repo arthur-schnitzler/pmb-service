@@ -44,12 +44,10 @@ relation_type_to_tei_tag = {
 
 
 class TeiEntCreator:
-    def __init__(
-        self, ent_dict, base_url="entity/", include_entity_tagged_texts=False
-    ):
+    def __init__(self, ent_dict, base_url="entity/", include_entity_tagged_texts=False):
         """
         Entry point: called from apis_core/apis_entities/api_renderers.py
-        
+
         ent_dict is dict representing the entity
 
         This class is initialised, then has the serialize_full_doc method called
@@ -507,4 +505,3 @@ def stand_off_to_inline(text, annot):
         i = j
 
     return "".join(parts)
-

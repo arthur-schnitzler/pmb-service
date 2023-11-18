@@ -68,9 +68,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 class GetEntityGeneric(GenericAPIView):
     serializer_class = EntitySerializer
     queryset = TempEntityClass.objects.all()
-    renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (
-        EntityToTEI,
-    )
+    renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (EntityToTEI,)
     if getattr(settings, "APIS_RENDERERS", None) is not None:
         rend_add = tuple()
         for rd in settings.APIS_RENDERERS:
@@ -93,11 +91,15 @@ class GetEntityGeneric(GenericAPIView):
 
     def get(self, request, pk):
         ent = self.get_object(pk, request)
-        data_view = request.GET.get('data-view', False)
-        format_param = request.GET.get('format', False)
-        requested_format = request.META.get('HTTP_ACCEPT')
+        data_view = request.GET.get("data-view", False)
+        format_param = request.GET.get("format", False)
+        requested_format = request.META.get("HTTP_ACCEPT")
         if requested_format is not None:
-            if requested_format.startswith('text/html') and not data_view and not format_param:
+            if (
+                requested_format.startswith("text/html")
+                and not data_view
+                and not format_param
+            ):
                 return redirect(ent)
         res = EntitySerializer(ent, context={"request": request})
         return Response(res.data)

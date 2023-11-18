@@ -8,7 +8,7 @@ from apis_core.apis_metainfo.tables import (
     generic_order_start_date_written,
     generic_order_end_date_written,
     generic_render_start_date_written,
-    generic_render_end_date_written
+    generic_render_end_date_written,
 )
 
 input_form = """
@@ -18,24 +18,23 @@ input_form = """
 
 
 class MergeColumn(tables.Column):
-    """ renders a column with to checkbox - used to select objects for merging """
+    """renders a column with to checkbox - used to select objects for merging"""
 
     def __init__(self, *args, **kwargs):
         super(MergeColumn, self).__init__(*args, **kwargs)
 
     def render(self, value):
-        return mark_safe(
-            input_form.format(value, value)
-        )
+        return mark_safe(input_form.format(value, value))
 
 
 def get_entities_table(entity, edit_v, default_cols):
 
     if default_cols is None:
-        default_cols = ['name', ]
+        default_cols = [
+            "name",
+        ]
 
     class GenericEntitiesTable(tables.Table):
-
         def render_name(self, record, value):
             if value == "":
                 return "(No name provided)"
@@ -52,25 +51,25 @@ def get_entities_table(entity, edit_v, default_cols):
 
         if edit_v:
             name = tables.LinkColumn(
-                'apis:apis_entities:generic_entities_edit_view',
-                args=[entity.lower(), A('pk')],
-                empty_values=[]
+                "apis:apis_entities:generic_entities_edit_view",
+                args=[entity.lower(), A("pk")],
+                empty_values=[],
             )
         else:
             name = tables.LinkColumn(
-                'apis:apis_entities:generic_entities_detail_view',
-                args=[entity.lower(), A('pk')],
-                empty_values=[]
+                "apis:apis_entities:generic_entities_detail_view",
+                args=[entity.lower(), A("pk")],
+                empty_values=[],
             )
         export_formats = [
-            'csv',
-            'json',
-            'xls',
-            'xlsx',
+            "csv",
+            "json",
+            "xls",
+            "xlsx",
         ]
-        if 'merge' in default_cols:
-            merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
-        if 'id' in default_cols:
+        if "merge" in default_cols:
+            merge = MergeColumn(verbose_name="keep | remove", accessor="pk")
+        if "id" in default_cols:
             id = tables.LinkColumn()
 
         class Meta:
@@ -90,17 +89,18 @@ def get_entities_table(entity, edit_v, default_cols):
         def __init__(self, *args, **kwargs):
             if "apis_ampel" in settings.INSTALLED_APPS:
                 from apis_ampel.helper_functions import is_ampel_active
-                #as_instance = AmpelSettings.objects.get(content_type=ContentType.objects.get(model=entity))
+
+                # as_instance = AmpelSettings.objects.get(content_type=ContentType.objects.get(model=entity))
                 if is_ampel_active(entity):
-                    self.base_columns['ampel'] = tables.TemplateColumn(template_name = "ampel/ampel_template_column.html", verbose_name="Ampel")#todo: make the verbose name configurable?
+                    self.base_columns["ampel"] = tables.TemplateColumn(
+                        template_name="ampel/ampel_template_column.html",
+                        verbose_name="Ampel",
+                    )  # todo: make the verbose name configurable?
 
-                        #'<div class="ampel_dotted" style="background-color:'+ f"{get_ampel_color(entity, record.pk)}"+'></div>', verbose_name="Ampel"
+                    #'<div class="ampel_dotted" style="background-color:'+ f"{get_ampel_color(entity, record.pk)}"+'></div>', verbose_name="Ampel"
 
-                    
-                        # template_name = "ampel/ampel_template_column.html", verbose_name="Ampel" #todo: make the verbose name configurable?
+                    # template_name = "ampel/ampel_template_column.html", verbose_name="Ampel" #todo: make the verbose name configurable?
 
             super().__init__(*args, **kwargs)
 
     return GenericEntitiesTable
-
-

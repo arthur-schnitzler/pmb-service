@@ -9,206 +9,374 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('apis_entities', '0001_initial'),
-        ('apis_metainfo', '0001_initial'),
+        ("apis_entities", "0001_initial"),
+        ("apis_metainfo", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EventEvent',
+            name="EventEvent",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='EventWork',
+            name="EventWork",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='InstitutionEvent',
+            name="InstitutionEvent",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='InstitutionInstitution',
+            name="InstitutionInstitution",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='InstitutionPlace',
+            name="InstitutionPlace",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='InstitutionWork',
+            name="InstitutionWork",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonEvent',
+            name="PersonEvent",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonInstitution',
+            name="PersonInstitution",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonPerson',
+            name="PersonPerson",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonPlace',
+            name="PersonPlace",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PersonWork',
+            name="PersonWork",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PlaceEvent',
+            name="PlaceEvent",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PlacePlace',
+            name="PlacePlace",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='PlaceWork',
+            name="PlaceWork",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='WorkWork',
+            name="WorkWork",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
-                ('related_workA', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_workB', to='apis_entities.Work')),
-                ('related_workB', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_workA', to='apis_entities.Work')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
+                (
+                    "related_workA",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_workB",
+                        to="apis_entities.Work",
+                    ),
+                ),
+                (
+                    "related_workB",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_workA",
+                        to="apis_entities.Work",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
             managers=[
-                ('annotation_links', django.db.models.manager.Manager()),
+                ("annotation_links", django.db.models.manager.Manager()),
             ],
         ),
     ]

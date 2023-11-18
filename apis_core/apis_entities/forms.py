@@ -145,12 +145,12 @@ def get_entities_form(entity):
                     The sorted list if entity-specific ordering was defined, the same unordered list if not.
                 """
 
-                entity_settings = getattr(settings, 'APIS_ENTITIES', None)
+                entity_settings = getattr(settings, "APIS_ENTITIES", None)
 
                 if entity_settings is None:
                     return list_unsorted
 
-                sort_preferences = entity_settings[entity_label].get('form_order', None)
+                sort_preferences = entity_settings[entity_label].get("form_order", None)
                 sort_preferences_used = []
 
                 if sort_preferences is None:
@@ -167,7 +167,7 @@ def get_entities_form(entity):
                         else:
                             # if no ordering for the field was found, then give it 'Inf'
                             # so that it will be attached at the end.
-                            field_rank_pair = (field, float('Inf'))
+                            field_rank_pair = (field, float("Inf"))
                         field_rank_pair_list.append(field_rank_pair)
                     # Make a check if all items of sort_preferences were used. If not, this indicates an out of sync setting
                     # if len(sort_preferences) > 0:
@@ -189,7 +189,9 @@ def get_entities_form(entity):
                         )
                     # sort the list according to the second element in each tuple
                     # and then take the first elements from it and return as list
-                    return [ t[0] for t in sorted(field_rank_pair_list, key=lambda x: x[1]) ]
+                    return [
+                        t[0] for t in sorted(field_rank_pair_list, key=lambda x: x[1])
+                    ]
 
             # sort field list, iterate over it and append each element to the accordion group
             for f in sort_fields_list(fields_list_unsorted, entity):
@@ -482,4 +484,3 @@ class GenericFilterFormHelper(FormHelper):
         self.form_class = "genericFilterForm"
         self.form_method = "GET"
         self.add_input(Submit("Filter", "Filter"))
-
