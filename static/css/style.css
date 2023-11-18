@@ -2,6 +2,9 @@
     --person: #ad3f58;
     --place: #f5db9e;
     --work: #668cb9;
+    --event: #5c8c7c;
+    --institution: #c57f7f;
+    --uri: #e7e1bf;
   }
 /* COLORS FOR ENTITIES */
 
@@ -15,6 +18,18 @@
 
 .apis-work {
     color: var(--work)
+}
+
+.apis-event {
+    color: var(--event)
+}
+
+.apis-institution {
+    color: var(--institution)
+}
+
+.apis-uri {
+    color: var(--uri)
 }
 
 .big-icons {
