@@ -6,30 +6,19 @@ from dal import autocomplete
 from browsing.browsing_utils import GenericListView
 
 from apis_core.apis_entities.models import Person
-from apis_core.apis_vocabularies.models import ProfessionType, PersonPlaceRelation
+from apis_core.apis_vocabularies.models import ProfessionType
 from apis_core.apis_entities.tables import PersonTable
 from apis_core.apis_entities.forms import GenericFilterFormHelper
+from apis_core.apis_vocabularies.models import PersonPersonRelation, PersonPlaceRelation
+from apis_core.helper_functions.utils import birth_rel, death_rel, get_child_classes
 
-birth_rel = PersonPlaceRelation.objects.filter(name="geboren in")
-death_rel = PersonPlaceRelation.objects.filter(name="gestorben in")
+PERSON_PERSON_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()
+]
 
-
-def birth_place_filter(qs, name, value):
-    rels = birth_rel
-    qs = qs.filter(
-        personplace_set__related_place__name__icontains=value,
-        personplace_set__relation_type__in=rels,
-    )
-    return qs
-
-
-def death_place_filter(qs, name, value):
-    rels = death_rel
-    qs = qs.filter(
-        personplace_set__related_place__name__icontains=value,
-        personplace_set__relation_type__in=rels,
-    )
-    return qs
+PERSON_PLACE_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPlaceRelation.objects.all()
+]
 
 
 class PersonListFilter(django_filters.FilterSet):
@@ -39,16 +28,8 @@ class PersonListFilter(django_filters.FilterSet):
     birth_year = django_filters.NumberFilter(
         field_name="start_date__year", label="Geburtsjahr", help_text="z.B. 1880"
     )
-    birth_place = django_filters.CharFilter(
-        label="Geburtsort",
-        method=birth_place_filter,
-    )
     death_year = django_filters.NumberFilter(
         field_name="end_date__year", label="Todesjahr", help_text="z.B. 1955"
-    )
-    death_place = django_filters.CharFilter(
-        label="Sterbeort",
-        method=death_place_filter,
     )
     first_name = django_filters.CharFilter(
         lookup_expr="icontains",
@@ -63,6 +44,43 @@ class PersonListFilter(django_filters.FilterSet):
             url="/apis/vocabularies/autocomplete/professiontype/normal/",
         ),
     )
+    related_with_person = django_filters.LookupChoiceFilter(
+        lookup_choices=PERSON_PERSON_RELATION_CHOICES,
+        label="Bezugsperson",
+        help_text="Name einer Bezugsperson und die Art des Beziehung, z.B. 'Schnitzler' und 'arbeitet für'",
+        method="related_person_filter",
+    )
+    related_with_place = django_filters.LookupChoiceFilter(
+        lookup_choices=PERSON_PLACE_RELATION_CHOICES,
+        label="Bezugsort",
+        help_text="Name eines Ortes und die Art des Beziehung, z.B. 'Linz' und 'beerdigt in'",
+        method="related_place_filter",
+    )
+
+    def related_place_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            PersonPlaceRelation,
+        )
+        qs = qs.filter(
+            personplace_set__related_place__name__icontains=value.value,
+            personplace_set__relation_type__in=rels,
+        )
+        return qs
+
+    def related_person_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            PersonPersonRelation,
+        )
+        qs = qs.filter(
+            personb_set__name__icontains=value.value, personb_relationtype_set__in=rels
+        )
+        return qs
 
     class Meta:
         model = Person
