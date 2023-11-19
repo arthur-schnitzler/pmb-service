@@ -103,3 +103,4 @@ class PersonListView(GenericListView):
     ]
     exclude_columns = []
     enable_merge = False
+    template_name = "apis_entities/list_views/person_list.html"
