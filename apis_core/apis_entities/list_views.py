@@ -1,14 +1,32 @@
 import django_filters
+import django_tables2 as tables
+
 from dal import autocomplete
 
 from browsing.browsing_utils import GenericListView
 
 from apis_core.apis_entities.models import Person
 from apis_core.apis_vocabularies.models import ProfessionType
-from apis_core.apis_entities.tables import PersonTable
+# from apis_core.apis_entities.tables import PersonTable
 from apis_core.apis_entities.forms import GenericFilterFormHelper
 from apis_core.apis_vocabularies.models import PersonPersonRelation, PersonPlaceRelation
 from apis_core.helper_functions.utils import get_child_classes
+
+excluded_cols = [
+    "start_start_date",
+    "start_end_date",
+    "end_start_date",
+    "end_end_date",
+    "status",
+    "source",
+    "references",
+    "published",
+    "tempentityclass_ptr",
+    "review",
+]
+
+
+### Personen ###
 
 PERSON_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()
@@ -92,6 +110,15 @@ class PersonListFilter(django_filters.FilterSet):
         ]
 
 
+class PersonTable(tables.Table):
+    id = tables.LinkColumn(verbose_name="ID")
+   
+    class Meta:
+        model = Person
+        sequence = ("id", "name", "first_name")
+        attrs = {"class": "table table-responsive table-hover"}
+
+
 class PersonListView(GenericListView):
     model = Person
     filter_class = PersonListFilter
@@ -100,9 +127,11 @@ class PersonListView(GenericListView):
     init_columns = [
         "id",
         "name",
+        "first_name",
+        "uris",
         "start_date",
         "end_date",
     ]
-    exclude_columns = []
+    exclude_columns = excluded_cols
     enable_merge = False
     template_name = "apis_entities/list_views/person_list.html"
