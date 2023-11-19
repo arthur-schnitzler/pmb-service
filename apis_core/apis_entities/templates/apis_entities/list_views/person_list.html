@@ -8,18 +8,22 @@
 {% block content %}
 <style>
     a {
-        color: var(--person);
+        color: var(--{{ entity }});
     }
     .navbar {
-        border-bottom: 5px solid var(--person);
+        border-bottom: 5px solid var(--{{ entity }});
     }
     #searchpane {
-        border-right: 1px solid var(--person);
+        border-right: 1px solid var(--{{ entity }});
+    }
+
+    h1, h2 {
+        color: var(--{{ entity }});
     }
 </style>
 <div class="container">
-    <h1 class="display-1 text-center apis-person">
-        <i class="bi bi-people apis-person big-icons"></i>
+    <h1 class="display-1 text-center apis-{{ entity }}">
+        <i class="bi bi-people apis-{{ entity }} big-icons"></i>
         Personen
     </h1>
     <div class="row">

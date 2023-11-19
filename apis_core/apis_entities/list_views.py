@@ -1,6 +1,4 @@
 import django_filters
-from django.conf import settings
-
 from dal import autocomplete
 
 from browsing.browsing_utils import GenericListView
@@ -15,13 +13,17 @@ from apis_core.helper_functions.utils import get_child_classes
 PERSON_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()
 ]
-
 PERSON_PLACE_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPlaceRelation.objects.all()
 ]
 
 
 class PersonListFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(
+        lookup_expr="icontains",
+        label="Nachname",
+        help_text="eingegebene Zeichenkette muss im Nachnamen enthalten sein",
+    )
     gender = django_filters.ChoiceFilter(
         choices=(("", "egal"), ("male", "männlich"), ("female", "weiblich"))
     )
@@ -38,8 +40,8 @@ class PersonListFilter(django_filters.FilterSet):
     )
     profession = django_filters.ModelMultipleChoiceFilter(
         queryset=ProfessionType.objects.all(),
-        help_text=Person._meta.get_field("profession").help_text,
-        label=Person._meta.get_field("profession").verbose_name,
+        help_text="Beruf/Profession der Person, z.B. 'Kritiker'",
+        label="Beruf/Profession",
         widget=autocomplete.Select2Multiple(
             url="/apis/vocabularies/autocomplete/professiontype/normal/",
         ),
