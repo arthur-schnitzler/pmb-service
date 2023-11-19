@@ -1,16 +1,27 @@
 :root {
     --pmb: #9B5F98;
+    --pmb-hover: #9b5f98c2;
     --person: #ad3f58;
     --place: #f5db9e;
     --work: #668cb9;
     --event: #5c8c7c;
     --institution: #c57f7f;
     --uri: #e7e1bf;
-  }
+}
+
+
+a {
+    color: var(--pmb)
+}
+
+a:hover { 
+    color: var(--pmb-hover)
+} 
 
 main {
     padding-top: 5.50em;
 }
+
 /* COLORS FOR ENTITIES */
 
 .apis-person {
@@ -43,12 +54,13 @@ main {
 
 .navbar {
     border-bottom: 5px solid var(--pmb);
-  }
+}
+
 .navbar .navbar-brand img {
     max-height: none;
     height: 4rem;
     max-width: 100%;
-  }
+}
 
 /* CUSTOMIZE THE CAROUSEL
   -------------------------------------------------- */
@@ -84,4 +96,3 @@ main {
     margin-right: .75rem;
     margin-left: .75rem;
 }
-
