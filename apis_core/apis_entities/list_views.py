@@ -10,7 +10,7 @@ from apis_core.apis_vocabularies.models import ProfessionType
 from apis_core.apis_entities.tables import PersonTable
 from apis_core.apis_entities.forms import GenericFilterFormHelper
 from apis_core.apis_vocabularies.models import PersonPersonRelation, PersonPlaceRelation
-from apis_core.helper_functions.utils import birth_rel, death_rel, get_child_classes
+from apis_core.helper_functions.utils import get_child_classes
 
 PERSON_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()

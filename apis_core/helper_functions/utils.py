@@ -62,13 +62,3 @@ def get_child_classes(objids, obclass, labels=False):
         return (objids, labels_lst)
     else:
         return objids
-
-
-birth_rel = PersonPlaceRelation.objects.filter(name="geboren in")
-death_rel = PersonPlaceRelation.objects.filter(name="gestorben in")
-person_rel = get_child_classes(
-    [
-        1176,
-    ],
-    PersonPersonRelation,
-)
