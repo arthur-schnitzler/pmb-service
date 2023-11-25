@@ -16,7 +16,7 @@ from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     PersonWorkRelation,
     WorkWorkRelation,
-    WorkType
+    WorkType,
 )
 from apis_core.helper_functions.utils import get_child_classes
 
@@ -35,7 +35,8 @@ excluded_cols = [
 
 
 WORK_PERSON_RELATION_CHOICES = [
-    (f"{x.id}", f"{x.label_reverse} (ID: {x.id})") for x in PersonWorkRelation.objects.all()
+    (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
+    for x in PersonWorkRelation.objects.all()
 ]
 WORK_PLACE_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PlaceWorkRelation.objects.all()
@@ -99,7 +100,7 @@ class WorkListFilter(django_filters.FilterSet):
         )
         qs = qs.filter(
             personwork_set__related_person__name__icontains=value.value,
-            personwork_set__relation_type__in=rels
+            personwork_set__relation_type__in=rels,
         )
         return qs
 
@@ -132,10 +133,22 @@ class WorkFilterFormHelper(FormHelper):
 
 class WorkTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
+    personwork_set = tables.ManyToManyColumn(
+        verbose_name="AutorIn",
+        transform=lambda x: x.related_person,
+        filter=lambda qs: qs.filter(
+            relation_type__in=get_child_classes(
+                [
+                    1049,
+                ],
+                PersonWorkRelation,
+            )
+        ),  # ToDo: don't hardcode the realtion type id here
+    )
 
     class Meta:
         model = Work
-        sequence = ("id", "name", "start_date")
+        sequence = ("id", "name", "personwork_set", "start_date")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -147,10 +160,9 @@ class WorkListView(GenericListView):
     init_columns = [
         "id",
         "name",
-        "first_name",
-        "uris",
         "start_date",
-        "end_date",
+        "personwork_set",
+        "kind",
     ]
     exclude_columns = excluded_cols
     enable_merge = False
