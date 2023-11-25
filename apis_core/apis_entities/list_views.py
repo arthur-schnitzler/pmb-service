@@ -1,5 +1,10 @@
 import django_filters
 import django_tables2 as tables
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout
+from crispy_forms.bootstrap import AccordionGroup
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
 
 from dal import autocomplete
 
@@ -7,9 +12,15 @@ from browsing.browsing_utils import GenericListView
 
 from apis_core.apis_entities.models import Person
 from apis_core.apis_vocabularies.models import ProfessionType
+
 # from apis_core.apis_entities.tables import PersonTable
 from apis_core.apis_entities.forms import GenericFilterFormHelper
-from apis_core.apis_vocabularies.models import PersonPersonRelation, PersonPlaceRelation
+from apis_core.apis_vocabularies.models import (
+    PersonPersonRelation,
+    PersonPlaceRelation,
+    PersonWorkRelation,
+    PersonInstitutionRelation,
+)
 from apis_core.helper_functions.utils import get_child_classes
 
 excluded_cols = [
@@ -33,6 +44,12 @@ PERSON_PERSON_RELATION_CHOICES = [
 ]
 PERSON_PLACE_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPlaceRelation.objects.all()
+]
+PERSON_WORK_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonWorkRelation.objects.all()
+]
+PERSON_INSTITUTION_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonInstitutionRelation.objects.all()
 ]
 
 
@@ -76,6 +93,44 @@ class PersonListFilter(django_filters.FilterSet):
         help_text="Name eines Ortes und die Art des Beziehung, z.B. 'Linz' und 'beerdigt in'",
         method="related_place_filter",
     )
+    related_with_work = django_filters.LookupChoiceFilter(
+        lookup_choices=PERSON_WORK_RELATION_CHOICES,
+        label="Werk",
+        help_text="Name eines Werkes und die Art des Beziehung, z.B. 'Reigen' und 'hat geschaffen'",
+        method="related_work_filter",
+    )
+    related_with_institution = django_filters.LookupChoiceFilter(
+        lookup_choices=PERSON_INSTITUTION_RELATION_CHOICES,
+        label="Institution",
+        help_text="Name einer Institution und die Art des Beziehung, z.B. 'Znanie' und 'besitzt'",
+        method="related_institution_filter",
+    )
+
+    def related_institution_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            PersonInstitutionRelation,
+        )
+        qs = qs.filter(
+            personinstitution_set__related_institution__name__icontains=value.value,
+            personinstitution_set__relation_type__in=rels,
+        )
+        return qs
+
+    def related_work_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            PersonWorkRelation,
+        )
+        qs = qs.filter(
+            personwork_set__related_work__name__icontains=value.value,
+            personwork_set__relation_type__in=rels,
+        )
+        return qs
 
     def related_place_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -110,9 +165,33 @@ class PersonListFilter(django_filters.FilterSet):
         ]
 
 
+class PersonFilterFormHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(PersonFilterFormHelper, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.form_class = "genericFilterForm"
+        self.form_method = "GET"
+        self.form_tag = False
+        self.layout = Layout(
+            BS5Accordion(
+                AccordionGroup(
+                    "Eigenschaften",
+                    "name",
+                    "first_name",
+                    "profession",
+                    "gender",
+                    "birth_year",
+                    "death_year",
+                    css_id="more",
+                ),
+                AccordionGroup("Beziehungen","related_with_person", "related_with_place", "related_with_work", "related_with_institution", css_id="admin_search"),
+            )
+        )
+
+
 class PersonTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
-   
+
     class Meta:
         model = Person
         sequence = ("id", "name", "first_name")
@@ -122,7 +201,7 @@ class PersonTable(tables.Table):
 class PersonListView(GenericListView):
     model = Person
     filter_class = PersonListFilter
-    formhelper_class = GenericFilterFormHelper
+    formhelper_class = PersonFilterFormHelper
     table_class = PersonTable
     init_columns = [
         "id",
