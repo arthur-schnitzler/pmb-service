@@ -61,6 +61,9 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
     init_columns = []
     enable_merge = False
     excluded_cols = []
+    verbose_name = "Personen"
+    help_text = "Personen help text"
+    icon = "bi bi-people apis-person big-icons"
 
     def get_table_class(self):
         if self.table_class:
@@ -114,25 +117,9 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         model_name = self.model.__name__.lower()
         context["entity"] = model_name
         context["app_name"] = self.model._meta.app_label
-        if "charts" in settings.INSTALLED_APPS:
-            model = self.model
-            app_label = model._meta.app_label
-            filtered_objs = ChartConfig.objects.filter(
-                model_name=model.__name__.lower(), app_name=app_label
-            )
-            context["vis_list"] = filtered_objs
-            context["property_name"] = self.request.GET.get("property")
-            context["charttype"] = self.request.GET.get("charttype")
-            if context["charttype"] and context["property_name"]:
-                qs = self.get_queryset()
-                chartdata = create_payload(
-                    context["entity"],
-                    context["property_name"],
-                    context["charttype"],
-                    qs,
-                    app_label=app_label,
-                )
-                context = dict(context, **chartdata)
+        context["verbose_name"] = self.verbose_name
+        context["help_text"] = self.help_text
+        context["icon"] = self.icon
         return context
 
 

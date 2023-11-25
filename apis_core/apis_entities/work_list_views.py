@@ -53,6 +53,9 @@ class WorkListFilter(django_filters.FilterSet):
         label="Werktitel",
         help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
     )
+    year_of_creation = django_filters.NumberFilter(
+        field_name="start_date__year", label="Schöpfungsdatum", help_text="z.B. 1880"
+    )
     related_with_person = django_filters.LookupChoiceFilter(
         lookup_choices=WORK_PERSON_RELATION_CHOICES,
         label="Bezugsperson",
@@ -86,6 +89,7 @@ class WorkFilterFormHelper(FormHelper):
                 AccordionGroup(
                     "Eigenschaften",
                     "name",
+                    "year_of_creation",
                     css_id="more",
                 ),
                 AccordionGroup(
@@ -121,4 +125,7 @@ class WorkListView(GenericListView):
     ]
     exclude_columns = excluded_cols
     enable_merge = False
-    template_name = "apis_entities/list_views/person_list.html"
+    template_name = "apis_entities/list_views/list.html"
+    verbose_name = "Werke"
+    help_text = "Werke help text"
+    icon = "bi bi-book apis-work big-icons"
