@@ -33,9 +33,6 @@ excluded_cols = [
     "review",
 ]
 
-
-### Personen ###
-
 PERSON_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()
 ]

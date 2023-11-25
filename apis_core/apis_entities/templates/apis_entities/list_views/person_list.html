@@ -24,7 +24,12 @@
 <div class="container">
     <h1 class="display-1 text-center apis-{{ entity }}">
         <i class="bi bi-people apis-{{ entity }} big-icons"></i>
-        Personen
+        {% if entity == person %}
+            Personen
+        {% else %}
+            Werke
+        {% endif %}
+
     </h1>
     <div class="row">
         <div class="col-md-4" id="searchpane">
