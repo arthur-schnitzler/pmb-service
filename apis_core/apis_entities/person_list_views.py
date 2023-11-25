@@ -10,9 +10,9 @@ from dal import autocomplete
 from browsing.browsing_utils import GenericListView
 
 from apis_core.apis_entities.models import Person
-from apis_core.apis_vocabularies.models import ProfessionType
 
 from apis_core.apis_vocabularies.models import (
+    ProfessionType,
     PersonPersonRelation,
     PersonPlaceRelation,
     PersonWorkRelation,

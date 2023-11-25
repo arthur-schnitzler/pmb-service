@@ -16,6 +16,7 @@ from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     PersonWorkRelation,
     WorkWorkRelation,
+    WorkType
 )
 from apis_core.helper_functions.utils import get_child_classes
 
@@ -62,6 +63,14 @@ class WorkListFilter(django_filters.FilterSet):
         help_text="Name einer Bezugsperson und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
         method="related_person_filter",
     )
+    kind = django_filters.ModelMultipleChoiceFilter(
+        queryset=WorkType.objects.all(),
+        help_text="Art/Typ des Werkes, z.B. 'Roman'",
+        label="Werktype",
+        widget=autocomplete.Select2Multiple(
+            url="/apis/vocabularies/autocomplete/worktype/normal/",
+        ),
+    )
 
     def related_person_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -89,6 +98,7 @@ class WorkFilterFormHelper(FormHelper):
                 AccordionGroup(
                     "Eigenschaften",
                     "name",
+                    "kind",
                     "year_of_creation",
                     css_id="more",
                 ),
