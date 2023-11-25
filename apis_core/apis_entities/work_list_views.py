@@ -63,6 +63,12 @@ class WorkListFilter(django_filters.FilterSet):
         help_text="Name einer Bezugsperson und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
         method="related_person_filter",
     )
+    related_with_work = django_filters.LookupChoiceFilter(
+        lookup_choices=WORK_WORK_RELATION_CHOICES,
+        label="Werk",
+        help_text="Name einer Werkes und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
+        method="related_work_filter",
+    )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=WorkType.objects.all(),
         help_text="Art/Typ des Werkes, z.B. 'Roman'",
@@ -71,6 +77,18 @@ class WorkListFilter(django_filters.FilterSet):
             url="/apis/vocabularies/autocomplete/worktype/normal/",
         ),
     )
+
+    def related_work_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            WorkWorkRelation,
+        )
+        qs = qs.filter(
+            workb_set__name__icontains=value.value, workb_relationtype_set__in=rels
+        )
+        return qs
 
     def related_person_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -105,6 +123,7 @@ class WorkFilterFormHelper(FormHelper):
                 AccordionGroup(
                     "Beziehungen",
                     "related_with_person",
+                    "related_with_work",
                     css_id="admin_search",
                 ),
             )
