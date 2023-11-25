@@ -7,7 +7,7 @@ from .autocomplete3 import (
 )
 
 from .views2 import GenericEntitiesCreateStanbolView
-from .list_views import PersonListView
+from .person_list_views import PersonListView
 
 app_name = "apis_entities"
 
