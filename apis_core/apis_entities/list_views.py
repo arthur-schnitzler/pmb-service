@@ -184,7 +184,14 @@ class PersonFilterFormHelper(FormHelper):
                     "death_year",
                     css_id="more",
                 ),
-                AccordionGroup("Beziehungen","related_with_person", "related_with_place", "related_with_work", "related_with_institution", css_id="admin_search"),
+                AccordionGroup(
+                    "Beziehungen",
+                    "related_with_person",
+                    "related_with_place",
+                    "related_with_work",
+                    "related_with_institution",
+                    css_id="admin_search",
+                ),
             )
         )
 
