@@ -192,10 +192,22 @@ class PersonFilterFormHelper(FormHelper):
 
 class PersonTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
+    personplace_set = tables.ManyToManyColumn(
+        verbose_name="Geburtsort",
+        transform=lambda x: x.related_place,
+        filter=lambda qs: qs.filter(
+            relation_type__in=get_child_classes(
+                [
+                    88, 1510, 1398
+                ],
+                PersonPlaceRelation,
+            )
+        ),  # ToDo: don't hardcode the realtion type id here
+    )
 
     class Meta:
         model = Person
-        sequence = ("id", "name", "first_name")
+        sequence = ("id", "name", "first_name", "personplace_set")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -211,6 +223,7 @@ class PersonListView(GenericListView):
         "uris",
         "start_date",
         "end_date",
+        "personplace_set"
     ]
     exclude_columns = excluded_cols
     enable_merge = False

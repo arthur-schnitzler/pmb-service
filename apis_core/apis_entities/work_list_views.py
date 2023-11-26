@@ -133,6 +133,8 @@ class WorkFilterFormHelper(FormHelper):
 
 class WorkTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
+    name = tables.columns.Column(verbose_name="Titel")
+    label_set = tables.ManyToManyColumn(verbose_name="Labels")
     personwork_set = tables.ManyToManyColumn(
         verbose_name="AutorIn",
         transform=lambda x: x.related_person,
