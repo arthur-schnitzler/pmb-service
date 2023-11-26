@@ -7,8 +7,9 @@ from .autocomplete3 import (
 )
 
 from .views2 import GenericEntitiesCreateStanbolView
-from .person_list_views import PersonListView
-from .work_list_views import WorkListView
+from .list_view_person import PersonListView
+from .list_view_work import WorkListView
+from .list_view_place import PlaceListView
 
 app_name = "apis_entities"
 
@@ -36,12 +37,17 @@ urlpatterns = [
     path(
         "entity/person/list/",
         PersonListView.as_view(),
-        name="generic_entities_list",
+        name="person_list_view",
+    ),
+    path(
+        "entity/place/list/",
+        PlaceListView.as_view(),
+        name="place_list_view",
     ),
     path(
         "entity/work/list/",
         WorkListView.as_view(),
-        name="generic_entities_list",
+        name="work_list_view",
     ),
     path(
         "entity/<entity>/list/",
