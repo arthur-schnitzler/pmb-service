@@ -197,9 +197,7 @@ class PersonTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [
-                    88, 1510, 1398
-                ],
+                [88, 1510, 1398],
                 PersonPlaceRelation,
             )
         ),  # ToDo: don't hardcode the realtion type id here
@@ -223,7 +221,7 @@ class PersonListView(GenericListView):
         "uris",
         "start_date",
         "end_date",
-        "personplace_set"
+        "personplace_set",
     ]
     exclude_columns = excluded_cols
     enable_merge = False
