@@ -526,6 +526,11 @@ class Person(AbstractEntity):
                 self.first_name = unicodedata.normalize("NFC", self.first_name)
         super(Person, self).save(*args, **kwargs)
         return self
+    
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 
 class Place(AbstractEntity):
@@ -542,12 +547,21 @@ class Place(AbstractEntity):
         super(Place, self).save(*args, **kwargs)
         return self
 
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 class Institution(AbstractEntity):
 
     kind = models.ForeignKey(
         InstitutionType, blank=True, null=True, on_delete=models.SET_NULL
     )
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 
 class Event(AbstractEntity):
@@ -556,10 +570,20 @@ class Event(AbstractEntity):
         EventType, blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    class Meta:
+        ordering = [
+            "id",
+        ]
+
 
 class Work(AbstractEntity):
 
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)

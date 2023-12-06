@@ -85,7 +85,6 @@ class TempEntityClass(models.Model):
         """Adaption of the save() method of the class to automatically parse string-dates into date objects"""
 
         if parse_dates:
-
             # overwrite every field with None as default
             start_date = None
             start_start_date = None
@@ -306,6 +305,7 @@ class TempEntityClass(models.Model):
 
     def get_serialization(self):
         return EntitySerializer(self).data
+
 
 
 class Source(models.Model):
