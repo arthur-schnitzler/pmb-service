@@ -257,7 +257,6 @@ class TempEntityClass(models.Model):
         rels = ContentType.objects.filter(
             app_label="apis_relations", model__icontains=e_a
         )
-        print(entities)
         for ent in entities:
             e_b = type(ent).__name__
             e_b_pk = ent.pk
