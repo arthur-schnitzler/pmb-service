@@ -16,6 +16,7 @@ from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     InstitutionPlaceRelation,
     InstitutionInstitutionRelation,
+    InstitutionEventRelation,
     InstitutionType,
 )
 from apis_core.helper_functions.utils import get_child_classes
@@ -48,6 +49,9 @@ INSTITUTION_INSTITUTION_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})")
     for x in InstitutionInstitutionRelation.objects.all()
 ]
+INSTITUTION_EVENT_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.all()
+]
 
 
 class InstitutionListFilter(django_filters.FilterSet):
@@ -68,8 +72,20 @@ class InstitutionListFilter(django_filters.FilterSet):
     related_with_work = django_filters.LookupChoiceFilter(
         lookup_choices=INSTITUTION_WORK_RELATION_CHOICES,
         label="Werk",
-        help_text="Name einer Werkes und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
+        help_text="Name eines Werkes und die Art des Beziehung, z.B. 'enthält' und 'Armand Carrel'",
         method="related_work_filter",
+    )
+    related_with_place = django_filters.LookupChoiceFilter(
+        lookup_choices=INSTITUTION_PLACE_RELATION_CHOICES,
+        label="Ort",
+        help_text="Name eines Ortes und die Art des Beziehung, z.B. 'angesiedelt in' und 'Linz'",
+        method="related_place_filter",
+    )
+    related_with_event = django_filters.LookupChoiceFilter(
+        lookup_choices=INSTITUTION_EVENT_RELATION_CHOICES,
+        label="Ereignis",
+        help_text="Name eines Ereignisses  und die Art des Beziehung, z.B. 'veranstaltet' und 'Aufführung'",
+        method="related_event_filter",
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=InstitutionType.objects.all(),
@@ -80,6 +96,32 @@ class InstitutionListFilter(django_filters.FilterSet):
         ),
     )
 
+    def related_event_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            InstitutionEventRelation,
+        )
+        qs = qs.filter(
+            institutionevent_set__related_event__name__icontains=value.value,
+            institutionevent_set__relation_type__in=rels,
+        )
+        return qs
+
+    def related_place_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            InstitutionPlaceRelation,
+        )
+        qs = qs.filter(
+            institutionplace_set__related_place__name__icontains=value.value,
+            institutionplace_set__relation_type__in=rels,
+        )
+        return qs
+
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
             [
@@ -88,7 +130,8 @@ class InstitutionListFilter(django_filters.FilterSet):
             InstitutionWorkRelation,
         )
         qs = qs.filter(
-            workb_set__name__icontains=value.value, workb_relationtype_set__in=rels
+            institutionwork_set__related_work__name__icontains=value.value,
+            institutionwork_set__relation_type__in=rels,
         )
         return qs
 
@@ -100,8 +143,8 @@ class InstitutionListFilter(django_filters.FilterSet):
             PersonInstitutionRelation,
         )
         qs = qs.filter(
-            personwork_set__related_person__name__icontains=value.value,
-            personwork_set__relation_type__in=rels,
+            personinstitution_set__related_person__name__icontains=value.value,
+            personinstitution_set__relation_type__in=rels,
         )
         return qs
 
@@ -125,6 +168,8 @@ class InstitutionFilterFormHelper(FormHelper):
                 AccordionGroup(
                     "Beziehungen",
                     "related_with_person",
+                    "related_with_place",
+                    "related_with_event",
                     "related_with_work",
                     css_id="admin_search",
                 ),
