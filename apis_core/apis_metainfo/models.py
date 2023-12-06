@@ -307,7 +307,6 @@ class TempEntityClass(models.Model):
         return EntitySerializer(self).data
 
 
-
 class Source(models.Model):
     """Holds information about entities and their relations"""
 

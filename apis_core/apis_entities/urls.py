@@ -10,6 +10,7 @@ from .views2 import GenericEntitiesCreateStanbolView
 from .list_view_person import PersonListView
 from .list_view_work import WorkListView
 from .list_view_place import PlaceListView
+from .list_view_institution import InstitutionListView
 
 app_name = "apis_entities"
 
@@ -48,6 +49,11 @@ urlpatterns = [
         "entity/work/list/",
         WorkListView.as_view(),
         name="work_list_view",
+    ),
+    path(
+        "entity/institution/list/",
+        InstitutionListView.as_view(),
+        name="institution_list_view",
     ),
     path(
         "entity/<entity>/list/",

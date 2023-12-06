@@ -526,7 +526,7 @@ class Person(AbstractEntity):
                 self.first_name = unicodedata.normalize("NFC", self.first_name)
         super(Person, self).save(*args, **kwargs)
         return self
-    
+
     class Meta:
         ordering = [
             "id",
@@ -551,6 +551,7 @@ class Place(AbstractEntity):
         ordering = [
             "id",
         ]
+
 
 class Institution(AbstractEntity):
 
