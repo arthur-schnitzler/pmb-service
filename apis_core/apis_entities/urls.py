@@ -7,6 +7,11 @@ from .autocomplete3 import (
 )
 
 from .views2 import GenericEntitiesCreateStanbolView
+from .list_view_person import PersonListView
+from .list_view_work import WorkListView
+from .list_view_place import PlaceListView
+from .list_view_institution import InstitutionListView
+from .list_view_event import EventListView
 
 app_name = "apis_entities"
 
@@ -32,6 +37,31 @@ urlpatterns = [
         name="generic_entities_delete_view",
     ),
     path(
+        "entity/person/list/",
+        PersonListView.as_view(),
+        name="person_list_view",
+    ),
+    path(
+        "entity/place/list/",
+        PlaceListView.as_view(),
+        name="place_list_view",
+    ),
+    path(
+        "entity/work/list/",
+        WorkListView.as_view(),
+        name="work_list_view",
+    ),
+    path(
+        "entity/institution/list/",
+        InstitutionListView.as_view(),
+        name="institution_list_view",
+    ),
+    path(
+        "entity/event/list/",
+        EventListView.as_view(),
+        name="event_list_view",
+    ),
+    path(
         "entity/<entity>/list/",
         views.GenericListViewNew.as_view(),
         name="generic_entities_list",
@@ -42,12 +72,12 @@ urlpatterns = [
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/createstanbol/<entity>/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/createstanbol/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesCreateStanbolView.as_view(),
         name="generic_entities_stanbol_create",
     ),
     path(
-        "autocomplete/<entity>/(?P<ent_merge_pk>[0-9]+)/",
+        "autocomplete/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
@@ -57,7 +87,7 @@ urlpatterns = [
         name="generic_entities_autocomplete",
     ),
     path(
-        "autocomplete/<entity>/(?P<db_include>[a-z]+)/",
+        "autocomplete/<entity>/<db_include>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
@@ -73,7 +103,7 @@ urlpatterns = [
     path("place/geojson/list/", views.getGeoJsonList, name="getGeoJsonList"),
     path("place/network/list/", views.getNetJsonList, name="getNetJsonList"),
     path(
-        "resolve/place/<int:pk>/(?P<uri>.+)",
+        "resolve/place/<int:pk>/<uri>",
         views.resolve_ambigue_place,
         name="resolve_ambigue_place",
     ),

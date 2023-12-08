@@ -1,0 +1,49 @@
+{% load django_tables2 %}
+{% load i18n %}
+
+<div>
+    {% with table.page.object_list|length as count %}
+        <p class="float-center">Page total: {{ count }}</p>
+    {% endwith %}
+</div>
+{% if table.paginator.page_range|length > 25 %}
+<div class="form-group mb-3">
+    <label for="goto">Go to page</label>
+    <select class="form-control" id="goto" onchange="javascript:location.href = this.value;">
+        {% for p in table.paginator.page_range %}
+            <option value="{% querystring table.prefixed_page_field=p %}">{{ p }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% else %}
+<nav aria-label="Pagination of the results table">
+    <ul class="pagination">
+    {% if table.page.has_previous %}
+        {% block pagination.previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endblock pagination.previous %}
+    {% endif %}
+    {% for p in table.paginator.page_range %}
+        {% if p == table.page.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">{{ p }}</a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="{% querystring table.prefixed_page_field=p %}"> {{ p }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    {% if table.page.has_next %}
+        {% block pagination.next %}
+        <li class="page-item">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.next_page_number %}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        {% endblock pagination.next %}
+    {% endif %}
+    </ul>
+</nav>
+{% endif %}

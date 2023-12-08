@@ -22,6 +22,8 @@ from apis_core.helper_functions.utils import (
     access_for_all_function,
     ENTITIES_DEFAULT_COLS,
 )
+
+from browsing.browsing_utils import GenericListView
 from .filters import get_list_filter_of_entity
 from .forms import (
     GenericFilterFormHelper,
@@ -31,14 +33,6 @@ from .forms import (
 )
 from .models import Place
 from .tables import get_entities_table
-
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.forms import SelectAnnotationProject
-    from apis_highlighter.highlighter import highlight_text_new
-
-if "charts" in settings.INSTALLED_APPS:
-    from charts.models import ChartConfig
-    from charts.views import create_payload
 
 ###########################################################################
 ############################################################################
@@ -113,10 +107,7 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
     formhelper_class = GenericFilterFormHelper
     context_filter_name = "filter"
     paginate_by = 25
-    template_name = getattr(
-        settings, "APIS_LIST_VIEW_TEMPLATE", "apis:apis_entities/generic_list.html"
-    )
-    #login_url = "/accounts/login/"
+    template_name = "browsing/generic_list.html"
 
     def get_model(self):
         model = ContentType.objects.get(
@@ -156,7 +147,7 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
         if "table_fields" in settings.APIS_ENTITIES[entity.title()]:
             default_cols = settings.APIS_ENTITIES[entity.title()]["table_fields"]
         else:
-            default_cols = ["name"]
+            default_cols = ["id", "name"]
         default_cols = default_cols + selected_cols
         self.table_class = get_entities_table(
             self.entity.title(), edit_v, default_cols=default_cols
@@ -172,17 +163,10 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
         context = super(GenericListViewNew, self).get_context_data()
         context[self.context_filter_name] = self.filter
         context["entity"] = self.entity
+        print(f"#############{self.entity}")
         context["app_name"] = "apis_entities"
         entity = self.entity.title()
         context["entity_create_stanbol"] = GenericEntitiesStanbolForm(self.entity)
-        if "browsing" in settings.INSTALLED_APPS:
-            from browsing.models import BrowsConf
-
-            context["conf_items"] = list(
-                BrowsConf.objects.filter(model_name=self.entity).values_list(
-                    "field_path", "label"
-                )
-            )
         context["docstring"] = "{}".format(model.__doc__)
         if model._meta.verbose_name_plural:
             context["class_name"] = "{}".format(model._meta.verbose_name.title())
@@ -191,44 +175,15 @@ class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
                 context["class_name"] = "{}".format(model.__name__)
             else:
                 context["class_name"] = "{}s".format(model.__name__)
-        try:
-            context["get_arche_dump"] = model.get_arche_dump()
-        except AttributeError:
-            context["get_arche_dump"] = None
-        try:
-            context["create_view_link"] = model.get_createview_url()
-        except AttributeError:
-            context["create_view_link"] = None
-        if "charts" in settings.INSTALLED_APPS:
-            app_label = model._meta.app_label
-            filtered_objs = ChartConfig.objects.filter(
-                model_name=model.__name__.lower(), app_name=app_label
-            )
-            context["vis_list"] = filtered_objs
-            context["property_name"] = self.request.GET.get("property")
-            context["charttype"] = self.request.GET.get("charttype")
-            if context["charttype"] and context["property_name"]:
-                qs = self.get_queryset()
-                chartdata = create_payload(
-                    context["entity"],
-                    context["property_name"],
-                    context["charttype"],
-                    qs,
-                    app_label=app_label,
-                )
-                context = dict(context, **chartdata)
-        try:
-            context["enable_merge"] = settings.APIS_ENTITIES[entity.title()]["merge"]
-        except KeyError:
-            context["enable_merge"] = False
+        context["create_view_link"] = None
+        context["enable_merge"] = False
         try:
             togg_cols = settings.APIS_ENTITIES[entity.title()]["additional_cols"]
         except KeyError:
             togg_cols = []
-        if context["enable_merge"] and self.request.user.is_authenticated:
-            togg_cols = togg_cols + ["merge"]
-        context["togglable_colums"] = togg_cols + ENTITIES_DEFAULT_COLS
-
+        context["togglable_colums"] = {
+            x: x for x in [togg_cols + ENTITIES_DEFAULT_COLS][0]
+        }
         return context
 
     def render_to_response(self, context, **kwargs):
@@ -595,19 +550,3 @@ def generic_network_viz(request):
             "apis:apis_entities/generic_network_visualization.html",
             {"form": form},
         )
-
-
-############################################################################
-############################################################################
-#
-#  Reversion Views
-#
-############################################################################
-############################################################################
-# TODO: add again as soon as the module has been bumped to new django version
-# class ReversionCompareView(HistoryCompareDetailView):
-#    template_name = 'apis_entities/compare_base.html'
-
-#    def dispatch(self, request, app, kind, pk, *args, **kwargs):
-#        self.model = ContentType.objects.get(app_label=app, model=kind).model_class()
-#        return super(ReversionCompareView, self).dispatch(request, *args, **kwargs)

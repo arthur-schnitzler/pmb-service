@@ -17,6 +17,9 @@ if os.environ.get("DEBUG"):
 
 ALLOWED_HOSTS = ["*"]
 
+APIS_LIST_VIEWS_ALLOWED = True
+APIS_DETAIL_VIEWS_ALLOWED = True
+
 
 # Application definition
 
@@ -30,6 +33,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "browsing",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "django_tables2",
+    "django_filters",
     "apis_core.apis_entities",
     "apis_core.apis_metainfo",
     "apis_core.apis_relations",
@@ -40,8 +47,10 @@ INSTALLED_APPS = [
     "archemd",
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 if os.environ.get("DEV"):
-    print("HALLLLLLOOOOO")
     INSTALLED_APPS = INSTALLED_APPS + [
         "django_extensions",
     ]
@@ -81,15 +90,15 @@ WSGI_APPLICATION = "pmb.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("POSTGRES_DB", "pmb"),
-            "USER": os.environ.get("POSTGRES_USER", "postgres"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
-            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-            "PORT": os.environ.get("POSTEGRES_PORT", "5432"),
-        }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "pmb"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTEGRES_PORT", "5432"),
     }
+}
 
 
 # Password validation
@@ -115,10 +124,13 @@ STATIC_URL = "static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "media/"
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "de"
 
 TIME_ZONE = "Europe/Vienna"
 
@@ -127,6 +139,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+USE_THOUSAND_SEPARATOR = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -188,8 +201,21 @@ APIS_ENTITIES = {
     "Person": {
         "merge": True,
         "search": ["name", "first_name"],
-        "form_order": ["first_name", "name", "start_date_written", "end_date_written", "profession", "status", "collection"],
-        "table_fields": ["name", "first_name", "start_date_written", "end_date_written"],
+        "form_order": [
+            "first_name",
+            "name",
+            "start_date_written",
+            "end_date_written",
+            "profession",
+            "status",
+            "collection",
+        ],
+        "table_fields": [
+            "name",
+            "first_name",
+            "start_date_written",
+            "end_date_written",
+        ],
         "additional_cols": ["id", "profession", "gender"],
         "list_filters": [
             "name",
@@ -206,8 +232,18 @@ APIS_ENTITIES = {
     "Institution": {
         "merge": True,
         "search": ["name"],
-        "form_order": ["name", "start_date_written", "end_date_written", "kind", "status", "collection"],
-        "additional_cols": ["id", "kind", ],
+        "form_order": [
+            "name",
+            "start_date_written",
+            "end_date_written",
+            "kind",
+            "status",
+            "collection",
+        ],
+        "additional_cols": [
+            "id",
+            "kind",
+        ],
         "list_filters": [
             {"name": {"label": "Name or label of institution"}},
             {"kind": {"label": "Kind of Institution"}},
@@ -221,7 +257,10 @@ APIS_ENTITIES = {
     "Work": {
         "merge": True,
         "search": ["name"],
-        "additional_cols": ["id", "kind", ],
+        "additional_cols": [
+            "id",
+            "kind",
+        ],
         "list_filters": [
             {"name": {"label": "Name of work"}},
             {"kind": {"label": "Kind of Work"}},
@@ -234,7 +273,9 @@ APIS_ENTITIES = {
     "Event": {
         "merge": True,
         "search": ["name"],
-        "additional_cols": ["id", ],
+        "additional_cols": [
+            "id",
+        ],
         "list_filters": [
             {"name": {"label": "Name of event"}},
             {"kind": {"label": "Kind of Event"}},

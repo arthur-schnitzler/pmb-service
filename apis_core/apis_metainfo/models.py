@@ -11,13 +11,14 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.functional import cached_property
-# from model_utils.managers import InheritanceManager
+from model_utils.managers import InheritanceManager
 
 from apis_core.apis_entities.serializers_generic import EntitySerializer
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
 
 from django.contrib.contenttypes.fields import GenericRelation
+
 # from helper_functions.highlighter import highlight_text
 from apis_core.default_settings.NER_settings import autocomp_settings
 from apis_core.helper_functions import DateParser
@@ -68,8 +69,7 @@ class TempEntityClass(models.Model):
     notes = models.TextField(blank=True, null=True)
     published = models.BooleanField(default=False)
     objects = models.Manager()
-    # objects_inheritance = InheritanceManager()
-
+    objects_inheritance = InheritanceManager()
 
     def __str__(self):
         if self.name != "" and hasattr(
@@ -85,7 +85,6 @@ class TempEntityClass(models.Model):
         """Adaption of the save() method of the class to automatically parse string-dates into date objects"""
 
         if parse_dates:
-
             # overwrite every field with None as default
             start_date = None
             start_start_date = None
@@ -257,7 +256,6 @@ class TempEntityClass(models.Model):
         rels = ContentType.objects.filter(
             app_label="apis_relations", model__icontains=e_a
         )
-        print(entities)
         for ent in entities:
             e_b = type(ent).__name__
             e_b_pk = ent.pk
@@ -310,7 +308,7 @@ class TempEntityClass(models.Model):
 
 
 class Source(models.Model):
-    """ Holds information about entities and their relations"""
+    """Holds information about entities and their relations"""
 
     orig_filename = models.CharField(max_length=255, blank=True)
     indexed = models.BooleanField(default=False)
@@ -326,7 +324,7 @@ class Source(models.Model):
 
 
 class Collection(models.Model):
-    """ Allows to group entities and relation. """
+    """Allows to group entities and relation."""
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -372,13 +370,29 @@ class Text(models.Model):
             return "ID: {}".format(self.id)
 
 
-
 class Uri(models.Model):
-    uri = models.URLField(blank=True, null=True, unique=True, max_length=255)
-    domain = models.CharField(max_length=255, blank=True)
+    uri = models.URLField(
+        blank=True,
+        null=True,
+        unique=True,
+        max_length=255,
+        verbose_name="URI",
+        help_text="Eindeutiger Identifier",
+    )
+    domain = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Domain",
+        help_text="Domain der Normdatenquelle, z.B. gnd, wikidata, geonames, ...",
+    )
     rdf_link = models.URLField(blank=True)
     entity = models.ForeignKey(
-        TempEntityClass, blank=True, null=True, on_delete=models.CASCADE
+        TempEntityClass,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="Entität",
+        help_text="Entität die mit dieser URI verbunden ist",
     )
     # loaded set to True when RDF was loaded and parsed into the data model
     loaded = models.BooleanField(default=False)

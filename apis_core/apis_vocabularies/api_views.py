@@ -2,21 +2,58 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets
 
 from .models import (
-    InstitutionInstitutionRelation, TextType, CollectionType, VocabsBaseClass,
-    InstitutionType, ProfessionType, PlaceType, PersonInstitutionRelation, PersonPlaceRelation, PersonPersonRelation,
-    VocabNames, InstitutionPlaceRelation, PersonEventRelation,
-    PersonWorkRelation, InstitutionEventRelation, InstitutionWorkRelation, PlaceWorkRelation, PlaceEventRelation,
-    PlacePlaceRelation, EventWorkRelation, EventEventRelation, WorkWorkRelation, EventType, WorkType)
+    InstitutionInstitutionRelation,
+    TextType,
+    CollectionType,
+    VocabsBaseClass,
+    InstitutionType,
+    ProfessionType,
+    PlaceType,
+    PersonInstitutionRelation,
+    PersonPlaceRelation,
+    PersonPersonRelation,
+    VocabNames,
+    InstitutionPlaceRelation,
+    PersonEventRelation,
+    PersonWorkRelation,
+    InstitutionEventRelation,
+    InstitutionWorkRelation,
+    PlaceWorkRelation,
+    PlaceEventRelation,
+    PlacePlaceRelation,
+    EventWorkRelation,
+    EventEventRelation,
+    WorkWorkRelation,
+    EventType,
+    WorkType,
+)
 from .serializers import (
-    InstitutionInstitutionRelationSerializer, TextTypeSerializer,
-    CollectionTypeSerializer, VocabsBaseClassSerializer,
-    InstitutionTypeSerializer, ProfessionTypeSerializer, InstitutionPlaceRelationSerializer,
-    PlaceTypeSerializer, PersonInstitutionRelationSerializer,
-    PersonPlaceRelationSerializer, UserAccSerializer, VocabNamesSerializer,
-    PersonPersonRelationSerializer, PersonEventRelationSerializer, PersonWorkRelationSerializer,
-    InstitutionEventRelationSerializer, InstitutionWorkRelationSerializer, PlaceEventRelationSerializer,
-    PlaceWorkRelationSerializer, PlacePlaceRelationSerializer, EventWorkRelationSerializer,
-    EventEventRelationSerializer, WorkWorkRelationSerializer, EventTypeSerializer, WorkTypeSerializer)
+    InstitutionInstitutionRelationSerializer,
+    TextTypeSerializer,
+    CollectionTypeSerializer,
+    VocabsBaseClassSerializer,
+    InstitutionTypeSerializer,
+    ProfessionTypeSerializer,
+    InstitutionPlaceRelationSerializer,
+    PlaceTypeSerializer,
+    PersonInstitutionRelationSerializer,
+    PersonPlaceRelationSerializer,
+    UserAccSerializer,
+    VocabNamesSerializer,
+    PersonPersonRelationSerializer,
+    PersonEventRelationSerializer,
+    PersonWorkRelationSerializer,
+    InstitutionEventRelationSerializer,
+    InstitutionWorkRelationSerializer,
+    PlaceEventRelationSerializer,
+    PlaceWorkRelationSerializer,
+    PlacePlaceRelationSerializer,
+    EventWorkRelationSerializer,
+    EventEventRelationSerializer,
+    WorkWorkRelationSerializer,
+    EventTypeSerializer,
+    WorkTypeSerializer,
+)
 
 
 ###########################################################
@@ -163,6 +200,3 @@ class EventEventRelationViewSet(viewsets.ModelViewSet):
 class WorkWorkRelationViewSet(viewsets.ModelViewSet):
     queryset = WorkWorkRelation.objects.all()
     serializer_class = WorkWorkRelationSerializer
-
-
-

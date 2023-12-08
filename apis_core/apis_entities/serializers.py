@@ -228,8 +228,8 @@ class NetJsonEdgeSerializer(serializers.BaseSerializer):
         rel_a = "related_" + ob_match.group(1).lower()
         rel_b = "related_" + ob_match.group(2).lower()
         if rel_a == rel_b:
-            rel_a += "A"
-            rel_b += "B"
+            rel_a += "a"
+            rel_b += "b"
         r = {
             "source": getattr(obj, rel_a).pk,
             "target": getattr(obj, rel_b).pk,
@@ -307,7 +307,13 @@ class LifePathSerializer(serializers.BaseSerializer):
     def get_place(self, obj):
         if isinstance(obj, PersonInstitution):
             inst = obj.related_institution
-            rel_type = getattr(settings, "APIS_LOCATED_IN_ATTR", ["situated in",])
+            rel_type = getattr(
+                settings,
+                "APIS_LOCATED_IN_ATTR",
+                [
+                    "situated in",
+                ],
+            )
             rel_type_inst = getattr(settings, "APIS_INSTITUTION_PRECEEDING", [160, 161])
             ipl_rel = InstitutionPlaceRelation.objects.filter(
                 name__in=rel_type

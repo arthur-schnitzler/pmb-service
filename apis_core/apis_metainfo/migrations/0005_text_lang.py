@@ -6,13 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis_metainfo', '0004_collection_published'),
+        ("apis_metainfo", "0004_collection_published"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='text',
-            name='lang',
-            field=models.CharField(blank=True, default='deu', help_text="The ISO 639-3 (or 2) code for the label's language.", max_length=3, null=True, verbose_name='ISO Code'),
+            model_name="text",
+            name="lang",
+            field=models.CharField(
+                blank=True,
+                default="deu",
+                help_text="The ISO 639-3 (or 2) code for the label's language.",
+                max_length=3,
+                null=True,
+                verbose_name="ISO Code",
+            ),
         ),
     ]

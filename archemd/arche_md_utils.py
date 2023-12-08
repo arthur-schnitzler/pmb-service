@@ -21,7 +21,13 @@ class ArcheMd:
                     ),
                 )
             )
-            g.add((subj, self.ARCHE["hasUrl"], Literal(self.detail_view_url, datatype=XSD.anyURI)))
+            g.add(
+                (
+                    subj,
+                    self.ARCHE["hasUrl"],
+                    Literal(self.detail_view_url, datatype=XSD.anyURI),
+                )
+            )
         else:
             g.add(
                 (

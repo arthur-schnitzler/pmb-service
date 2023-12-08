@@ -7,3 +7,5 @@ exclude =
     .git,
     .tox,
     env
+    venv
+    apis_core

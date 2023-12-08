@@ -1,0 +1,11 @@
+{% load django_tables2 %}
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-download" title="download the table"></i>
+        Download
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a class="dropdown-item" href="{% querystring %}&_export=csv">CSV</a></li>
+        <li><a class="dropdown-item" href="{% querystring %}&_export=json">JSON</a></li>
+    </ul>
+</div>

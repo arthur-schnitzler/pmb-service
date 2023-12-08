@@ -36,8 +36,8 @@ class GenericEntitiesEditView(View):
         side_bar = []
         for rel in relations:
             match = [
-                rel.get_related_entity_classA().__name__.lower(),
-                rel.get_related_entity_classB().__name__.lower(),
+                rel.get_related_entity_classa().__name__.lower(),
+                rel.get_related_entity_classb().__name__.lower(),
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
             table = get_generic_relations_table(
@@ -46,8 +46,8 @@ class GenericEntitiesEditView(View):
             title_card = ""
             if match[0] == match[1]:
                 title_card = entity.title()
-                dict_1 = {"related_" + entity.lower() + "A": instance}
-                dict_2 = {"related_" + entity.lower() + "B": instance}
+                dict_1 = {"related_" + entity.lower() + "a": instance}
+                dict_2 = {"related_" + entity.lower() + "b": instance}
                 objects = rel.objects.filter(Q(**dict_1) | Q(**dict_2))
             else:
                 if match[0].lower() == entity.lower():

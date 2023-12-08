@@ -1,0 +1,98 @@
+:root {
+    --pmb: #9B5F98;
+    --pmb-hover: #9b5f98c2;
+    --person: #ad3f58;
+    --place: #f5db9e;
+    --work: #668cb9;
+    --event: #5c8c7c;
+    --institution: #c57f7f;
+    --uri: #e80d0d;
+}
+
+
+a {
+    color: var(--pmb)
+}
+
+a:hover { 
+    color: var(--pmb-hover)
+} 
+
+main {
+    padding-top: 5.50em;
+}
+
+/* COLORS FOR ENTITIES */
+
+.apis-person {
+    color: var(--person)
+}
+
+.apis-place {
+    color: var(--place)
+}
+
+.apis-work {
+    color: var(--work)
+}
+
+.apis-event {
+    color: var(--event)
+}
+
+.apis-institution {
+    color: var(--institution)
+}
+
+.apis-uri {
+    color: var(--uri)
+}
+
+.big-icons {
+    font-size: 120px;
+}
+
+.navbar {
+    border-bottom: 5px solid var(--pmb);
+}
+
+.navbar .navbar-brand img {
+    max-height: none;
+    height: 4rem;
+    max-width: 100%;
+}
+
+/* CUSTOMIZE THE CAROUSEL
+  -------------------------------------------------- */
+#myCarousel {
+    background-image: url('/static/img/title-img.jpg');
+}
+
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+    padding: 2em;
+
+    z-index: 10;
+    background-color: #aa3c5569;
+    border-radius: 25% 10%;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+    height: 35rem;
+}
+
+.marketing .col-lg-4 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.marketing h2 {
+    font-weight: 400;
+}
+
+/* rtl:begin:ignore */
+.marketing .col-lg-4 p {
+    margin-right: .75rem;
+    margin-left: .75rem;
+}

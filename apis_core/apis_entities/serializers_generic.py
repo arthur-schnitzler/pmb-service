@@ -74,13 +74,13 @@ class EntitySerializer(serializers.Serializer):
                         ).data
                     )
             else:
-                for t in ["A", "B"]:
+                for t in ["a", "b"]:
                     for rel2 in (
                         getattr(obj, "related_{}{}".format(mk.lower(), t))
                         .all()
                         .filter_for_user()
                     ):
-                        if t == "A":
+                        if t == "a":
                             ok = "{}B".format(mk.lower())
                             reverse = True
                         else:
@@ -156,7 +156,7 @@ class RelationEntitySerializer(serializers.Serializer):
     start_date_written = serializers.DateField()
     end_date_written = serializers.DateField()
     relation_type = serializers.SerializerMethodField(method_name="add_relation_label")
-    
+
     def add_entity(self, obj):
         return EntitySerializer(
             getattr(obj, "related_{}".format(self.entity_type)), depth_ent=0

@@ -9,62 +9,133 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('apis_metainfo', '0001_initial'),
+        ("apis_metainfo", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Event',
+            name="Event",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
         ),
         migrations.CreateModel(
-            name='Institution',
+            name="Institution",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
         ),
         migrations.CreateModel(
-            name='Person',
+            name="Person",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
-                ('first_name', models.CharField(blank=True, help_text='The persons´s forename. In case of more then one name...', max_length=255, null=True)),
-                ('gender', models.CharField(blank=True, choices=[('female', 'female'), ('male', 'male')], max_length=15)),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True,
+                        help_text="The persons´s forename. In case of more then one name...",
+                        max_length=255,
+                        null=True,
+                    ),
+                ),
+                (
+                    "gender",
+                    models.CharField(
+                        blank=True,
+                        choices=[("female", "female"), ("male", "male")],
+                        max_length=15,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
         ),
         migrations.CreateModel(
-            name='Place',
+            name="Place",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
-                ('lat', models.FloatField(blank=True, null=True, verbose_name='latitude')),
-                ('lng', models.FloatField(blank=True, null=True, verbose_name='longitude')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
+                (
+                    "lat",
+                    models.FloatField(blank=True, null=True, verbose_name="latitude"),
+                ),
+                (
+                    "lng",
+                    models.FloatField(blank=True, null=True, verbose_name="longitude"),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
         ),
         migrations.CreateModel(
-            name='Work',
+            name="Work",
             fields=[
-                ('tempentityclass_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.TempEntityClass')),
+                (
+                    "tempentityclass_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.TempEntityClass",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('apis_metainfo.tempentityclass',),
+            bases=("apis_metainfo.tempentityclass",),
         ),
     ]

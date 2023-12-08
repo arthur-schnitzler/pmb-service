@@ -2890,7 +2890,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Opatija",
             "label_type": 6,
             "temp_entity": 26
@@ -2900,7 +2900,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Opatija, sr. Rijeka",
             "label_type": 4,
             "temp_entity": 26
@@ -2910,7 +2910,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Opatija, sr. Rijeka",
             "label_type": 4,
             "temp_entity": 26
@@ -2920,7 +2920,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Zagreb",
             "label_type": 6,
             "temp_entity": 133
@@ -2930,7 +2930,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Zagreb",
             "label_type": 4,
             "temp_entity": 133
@@ -2940,7 +2940,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Vienna",
             "label_type": 6,
             "temp_entity": 183
@@ -2950,7 +2950,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wien",
             "label_type": 4,
             "temp_entity": 183
@@ -2960,7 +2960,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Brno",
             "label_type": 6,
             "temp_entity": 327
@@ -2970,7 +2970,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -2980,7 +2980,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Dlouhá Ves, kr. Plzeňský",
             "label_type": 4,
             "temp_entity": 384
@@ -2990,7 +2990,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Budapest",
             "label_type": 6,
             "temp_entity": 400
@@ -3000,7 +3000,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Budapest",
             "label_type": 4,
             "temp_entity": 400
@@ -3010,7 +3010,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Bucharest",
             "label_type": 6,
             "temp_entity": 831
@@ -3020,7 +3020,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bucureşti",
             "label_type": 4,
             "temp_entity": 831
@@ -3030,7 +3030,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Baden bei Wien",
             "label_type": 6,
             "temp_entity": 926
@@ -3040,7 +3040,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Baden",
             "label_type": 4,
             "temp_entity": 926
@@ -3050,7 +3050,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Berlin",
             "label_type": 6,
             "temp_entity": 1390
@@ -3060,7 +3060,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Berlin",
             "label_type": 4,
             "temp_entity": 1390
@@ -3070,7 +3070,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Liberec",
             "label_type": 6,
             "temp_entity": 1424
@@ -3080,7 +3080,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Ostašov, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -3090,7 +3090,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bezau",
             "label_type": 4,
             "temp_entity": 1454
@@ -3100,7 +3100,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bodensdorf, Bez. Feldkirchen",
             "label_type": 4,
             "temp_entity": 1701
@@ -3110,7 +3110,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Heilbronn",
             "label_type": 6,
             "temp_entity": 1718
@@ -3120,7 +3120,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Heilbronn",
             "label_type": 4,
             "temp_entity": 1718
@@ -3130,7 +3130,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Botoşani",
             "label_type": 6,
             "temp_entity": 2006
@@ -3140,7 +3140,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Botoşani",
             "label_type": 4,
             "temp_entity": 2006
@@ -3150,7 +3150,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Bratislava",
             "label_type": 6,
             "temp_entity": 2072
@@ -3160,7 +3160,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava",
             "label_type": 4,
             "temp_entity": 2072
@@ -3170,7 +3170,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava",
             "label_type": 4,
             "temp_entity": 2072
@@ -3180,7 +3180,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Broumov",
             "label_type": 6,
             "temp_entity": 2085
@@ -3190,7 +3190,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Broumov, kr. Královéhradecký",
             "label_type": 4,
             "temp_entity": 2085
@@ -3200,7 +3200,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Broumov, kr. Královéhradecký",
             "label_type": 4,
             "temp_entity": 2085
@@ -3210,7 +3210,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Wrocław",
             "label_type": 6,
             "temp_entity": 2161
@@ -3220,7 +3220,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wrocław",
             "label_type": 4,
             "temp_entity": 2161
@@ -3230,7 +3230,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wrocław",
             "label_type": 4,
             "temp_entity": 2161
@@ -3240,7 +3240,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Brixen",
             "label_type": 6,
             "temp_entity": 2170
@@ -3250,7 +3250,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone/Brixen, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2170
@@ -3260,7 +3260,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Hradec Králové",
             "label_type": 6,
             "temp_entity": 2197
@@ -3270,7 +3270,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hradec Králové - Březhrad, kr. Královéhradecký",
             "label_type": 4,
             "temp_entity": 2197
@@ -3280,7 +3280,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone/Brixen, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2170
@@ -3290,7 +3290,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone/Brixen, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2170
@@ -3300,7 +3300,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3310,7 +3310,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Brody",
             "label_type": 6,
             "temp_entity": 2281
@@ -3320,7 +3320,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brody, obl. L'viv",
             "label_type": 4,
             "temp_entity": 2281
@@ -3330,7 +3330,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3340,7 +3340,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3350,7 +3350,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3360,7 +3360,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3370,7 +3370,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Buenos Aires",
             "label_type": 6,
             "temp_entity": 2489
@@ -3380,7 +3380,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Buenos Aires",
             "label_type": 4,
             "temp_entity": 2489
@@ -3390,7 +3390,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bucureşti",
             "label_type": 4,
             "temp_entity": 831
@@ -3400,7 +3400,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bucureşti",
             "label_type": 4,
             "temp_entity": 831
@@ -3410,7 +3410,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Caldaro/Kaltern, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2602
@@ -3420,7 +3420,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Chernivtsi",
             "label_type": 6,
             "temp_entity": 2854
@@ -3430,7 +3430,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Černivci",
             "label_type": 4,
             "temp_entity": 2854
@@ -3440,7 +3440,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Černivci",
             "label_type": 4,
             "temp_entity": 2854
@@ -3450,7 +3450,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Cieszyn",
             "label_type": 6,
             "temp_entity": 3105
@@ -3460,7 +3460,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cieszyn, woj. Bielsko",
             "label_type": 4,
             "temp_entity": 3105
@@ -3470,7 +3470,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Cluj-Napoca",
             "label_type": 6,
             "temp_entity": 3162
@@ -3480,7 +3480,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cluj-Napoca, jud. Cluj",
             "label_type": 4,
             "temp_entity": 3162
@@ -3490,7 +3490,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Černivci",
             "label_type": 4,
             "temp_entity": 2854
@@ -3500,7 +3500,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Düren",
             "label_type": 6,
             "temp_entity": 4096
@@ -3510,7 +3510,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Düren",
             "label_type": 4,
             "temp_entity": 4096
@@ -3520,7 +3520,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Údlice, kr. Ústecký",
             "label_type": 4,
             "temp_entity": 4269
@@ -3530,7 +3530,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Graz",
             "label_type": 6,
             "temp_entity": 4767
@@ -3540,7 +3540,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Graz",
             "label_type": 4,
             "temp_entity": 4767
@@ -3550,7 +3550,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Freistadt",
             "label_type": 6,
             "temp_entity": 4877
@@ -3560,7 +3560,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Freistadt",
             "label_type": 4,
             "temp_entity": 4877
@@ -3570,7 +3570,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ghidfalău, jud. Covasna",
             "label_type": 4,
             "temp_entity": 5294
@@ -3580,7 +3580,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Marienheide",
             "label_type": 4,
             "temp_entity": 5308
@@ -3590,7 +3590,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Gorizia",
             "label_type": 6,
             "temp_entity": 5478
@@ -3600,7 +3600,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gorizia, reg. Friuli - Venezia Giulia",
             "label_type": 4,
             "temp_entity": 5478
@@ -3610,7 +3610,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gorizia, reg. Friuli - Venezia Giulia",
             "label_type": 4,
             "temp_entity": 5478
@@ -3620,7 +3620,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gorizia, reg. Friuli - Venezia Giulia",
             "label_type": 4,
             "temp_entity": 5478
@@ -3630,7 +3630,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Merano",
             "label_type": 6,
             "temp_entity": 5691
@@ -3640,7 +3640,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Quarazze / Meran - Gratsch, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -3650,7 +3650,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Grieskirchen",
             "label_type": 4,
             "temp_entity": 5749
@@ -3660,7 +3660,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Velké Losiny, kr. Olomoucký",
             "label_type": 4,
             "temp_entity": 6004
@@ -3670,7 +3670,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Velké Losiny, kr. Olomoucký",
             "label_type": 4,
             "temp_entity": 6004
@@ -3680,7 +3680,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Hanover",
             "label_type": 6,
             "temp_entity": 6324
@@ -3690,7 +3690,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hannover",
             "label_type": 4,
             "temp_entity": 6324
@@ -3700,7 +3700,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Innsbruck",
             "label_type": 6,
             "temp_entity": 6700
@@ -3710,7 +3710,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Innsbruck",
             "label_type": 4,
             "temp_entity": 6700
@@ -3720,7 +3720,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hrastje, sr. Maribor",
             "label_type": 4,
             "temp_entity": 6947
@@ -3730,7 +3730,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hrastje, sr. Maribor",
             "label_type": 4,
             "temp_entity": 6947
@@ -3740,7 +3740,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno - Brno-sever, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3750,7 +3750,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Jaworzno, woj. Katowice",
             "label_type": 4,
             "temp_entity": 7454
@@ -3760,7 +3760,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Leoben",
             "label_type": 6,
             "temp_entity": 7622
@@ -3770,7 +3770,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Leoben",
             "label_type": 4,
             "temp_entity": 7622
@@ -3780,7 +3780,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Caldaro/Kaltern, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2602
@@ -3790,7 +3790,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Caldaro/Kaltern, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2602
@@ -3800,7 +3800,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Kassel",
             "label_type": 6,
             "temp_entity": 7986
@@ -3810,7 +3810,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Kassel",
             "label_type": 4,
             "temp_entity": 7986
@@ -3820,7 +3820,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cluj-Napoca, jud. Cluj",
             "label_type": 4,
             "temp_entity": 3162
@@ -3830,7 +3830,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cluj-Napoca, jud. Cluj",
             "label_type": 4,
             "temp_entity": 3162
@@ -3840,7 +3840,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Klosterneuburg",
             "label_type": 4,
             "temp_entity": 8482
@@ -3850,7 +3850,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hradec Králové",
             "label_type": 4,
             "temp_entity": 2197
@@ -3860,7 +3860,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Konstanz",
             "label_type": 6,
             "temp_entity": 8798
@@ -3870,7 +3870,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Konstanz",
             "label_type": 4,
             "temp_entity": 8798
@@ -3880,7 +3880,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Kufstein",
             "label_type": 6,
             "temp_entity": 9287
@@ -3890,7 +3890,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Kufstein",
             "label_type": 4,
             "temp_entity": 9287
@@ -3900,7 +3900,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hradec Králové - Kukleny, kr. Královéhradecký",
             "label_type": 4,
             "temp_entity": 2197
@@ -3910,7 +3910,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno - Brno-jih, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -3920,7 +3920,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lachovice, kr. Karlovarský",
             "label_type": 4,
             "temp_entity": 9455
@@ -3930,7 +3930,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Ljubljana",
             "label_type": 6,
             "temp_entity": 9475
@@ -3940,7 +3940,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ljubljana",
             "label_type": 4,
             "temp_entity": 9475
@@ -3950,7 +3950,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Lviv",
             "label_type": 6,
             "temp_entity": 9735
@@ -3960,7 +3960,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -3970,7 +3970,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -3980,7 +3980,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Linz",
             "label_type": 6,
             "temp_entity": 10015
@@ -3990,7 +3990,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Linz",
             "label_type": 4,
             "temp_entity": 10015
@@ -4000,7 +4000,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "City of London",
             "label_type": 6,
             "temp_entity": 10265
@@ -4010,7 +4010,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "London City",
             "label_type": 6,
             "temp_entity": 10265
@@ -4020,7 +4020,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "The City",
             "label_type": 6,
             "temp_entity": 10265
@@ -4030,7 +4030,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "London",
             "label_type": 6,
             "temp_entity": 10265
@@ -4040,7 +4040,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "London",
             "label_type": 4,
             "temp_entity": 10265
@@ -4050,7 +4050,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -4060,7 +4060,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -4070,7 +4070,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -4080,7 +4080,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Vratislavice nad Nisou, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4090,7 +4090,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Vratislavice nad Nisou, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4100,7 +4100,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Bassa / Meran-Untermais",
             "label_type": 4,
             "temp_entity": 5691
@@ -4110,7 +4110,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Maribor",
             "label_type": 6,
             "temp_entity": 10793
@@ -4120,7 +4120,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Maribor",
             "label_type": 4,
             "temp_entity": 10793
@@ -4130,7 +4130,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Maribor",
             "label_type": 4,
             "temp_entity": 10793
@@ -4140,7 +4140,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Maribor",
             "label_type": 4,
             "temp_entity": 10793
@@ -4150,7 +4150,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Maribor",
             "label_type": 4,
             "temp_entity": 10793
@@ -4160,7 +4160,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano/Meran, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4170,7 +4170,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano/Meran, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4180,7 +4180,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano (Castello di Trautmannsdorf) / Meran (Schloß Trautmannsdorf), reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4190,7 +4190,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Alta / Meran - Obermais, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4200,7 +4200,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Bassa / Meran-Untermais",
             "label_type": 4,
             "temp_entity": 5691
@@ -4210,7 +4210,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano/Meran, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4220,7 +4220,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stříbro, kr. Plzeňský",
             "label_type": 4,
             "temp_entity": 11238
@@ -4230,7 +4230,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Moldava, kr. Ústecký",
             "label_type": 4,
             "temp_entity": 11556
@@ -4240,7 +4240,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Munich",
             "label_type": 6,
             "temp_entity": 11799
@@ -4250,7 +4250,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "München",
             "label_type": 4,
             "temp_entity": 11799
@@ -4260,7 +4260,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Nysa",
             "label_type": 6,
             "temp_entity": 12211
@@ -4270,7 +4270,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Nysa, woj. Opole",
             "label_type": 4,
             "temp_entity": 12211
@@ -4280,7 +4280,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hradec Králové - Nový Hradec Králové, kr. Královéhradecký",
             "label_type": 4,
             "temp_entity": 2197
@@ -4290,7 +4290,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Dolní Hanychov, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4300,7 +4300,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Nice",
             "label_type": 6,
             "temp_entity": 12758
@@ -4310,7 +4310,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Nice",
             "label_type": 4,
             "temp_entity": 12758
@@ -4320,7 +4320,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno - Brno-jih, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -4330,7 +4330,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Horní Hanychov, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4340,7 +4340,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Alta / Meran-Obermais, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4350,7 +4350,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Alta / Meran-Obermais, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4360,7 +4360,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Horní Růžodol, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4370,7 +4370,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Brno - Maloměřice-Obřany, kr. Jihomoravský",
             "label_type": 4,
             "temp_entity": 327
@@ -4380,7 +4380,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Sopron",
             "label_type": 6,
             "temp_entity": 13253
@@ -4390,7 +4390,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Sopron, m. Győr-Moson-Sopron",
             "label_type": 4,
             "temp_entity": 13253
@@ -4400,7 +4400,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Olomouc",
             "label_type": 6,
             "temp_entity": 13382
@@ -4410,7 +4410,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Olomouc",
             "label_type": 4,
             "temp_entity": 13382
@@ -4420,7 +4420,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Olomouc",
             "label_type": 4,
             "temp_entity": 13382
@@ -4430,7 +4430,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Olomouc",
             "label_type": 4,
             "temp_entity": 13382
@@ -4440,7 +4440,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Olomouc",
             "label_type": 4,
             "temp_entity": 13382
@@ -4450,7 +4450,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Paris",
             "label_type": 6,
             "temp_entity": 13714
@@ -4460,7 +4460,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Paris",
             "label_type": 4,
             "temp_entity": 13714
@@ -4470,7 +4470,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Petting",
             "label_type": 4,
             "temp_entity": 13987
@@ -4480,7 +4480,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Prague",
             "label_type": 6,
             "temp_entity": 14608
@@ -4490,7 +4490,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -4500,7 +4500,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha, kr. Hlavní město Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -4510,7 +4510,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -4520,7 +4520,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -4530,7 +4530,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -4540,7 +4540,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava",
             "label_type": 4,
             "temp_entity": 2072
@@ -4550,7 +4550,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava",
             "label_type": 4,
             "temp_entity": 2072
@@ -4560,7 +4560,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Růžodol I, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4570,7 +4570,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Horní Růžodol, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4580,7 +4580,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Ruprechtice, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4590,7 +4590,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Černivci",
             "label_type": 4,
             "temp_entity": 2854
@@ -4600,7 +4600,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Svätý Jur",
             "label_type": 6,
             "temp_entity": 16242
@@ -4610,7 +4610,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Svätý Jur, kr. Bratislava",
             "label_type": 4,
             "temp_entity": 16242
@@ -4620,7 +4620,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "St. Pankraz",
             "label_type": 6,
             "temp_entity": 16310
@@ -4630,7 +4630,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "San Pancrazio / Sankt Pankraz, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 16310
@@ -4640,7 +4640,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Štíty, kr. Olomoucký",
             "label_type": 4,
             "temp_entity": 16594
@@ -4650,7 +4650,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liberec - Krásná Studánka, kr. Liberecký",
             "label_type": 4,
             "temp_entity": 1424
@@ -4660,7 +4660,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schwanberg",
             "label_type": 4,
             "temp_entity": 16864
@@ -4670,7 +4670,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wien - Sechshaus",
             "label_type": 4,
             "temp_entity": 183
@@ -4680,7 +4680,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Dlouhá Ves, kr. Plzeňský",
             "label_type": 4,
             "temp_entity": 384
@@ -4690,7 +4690,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Szczakowa, woj. Katowice",
             "label_type": 4,
             "temp_entity": 18374
@@ -4700,7 +4700,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Szeged, m. Csongrád",
             "label_type": 4,
             "temp_entity": 18400
@@ -4710,7 +4710,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cieszyn, woj. Bielsko",
             "label_type": 4,
             "temp_entity": 3105
@@ -4720,7 +4720,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Cieszyn, woj. Bielsko",
             "label_type": 4,
             "temp_entity": 3105
@@ -4730,7 +4730,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Trento",
             "label_type": 6,
             "temp_entity": 19215
@@ -4740,7 +4740,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Trento, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 19215
@@ -4750,7 +4750,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Trento, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 19215
@@ -4760,7 +4760,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Trento, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 19215
@@ -4770,7 +4770,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Trento, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 19215
@@ -4780,7 +4780,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mojmírovce, kr. Nitra",
             "label_type": 4,
             "temp_entity": 19599
@@ -4790,7 +4790,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Caldaro/Kaltern, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 2602
@@ -4800,7 +4800,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - Maia Bassa / Meran-Untermais, reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -4810,7 +4810,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Warsaw",
             "label_type": 6,
             "temp_entity": 20549
@@ -4820,7 +4820,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4830,7 +4830,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4840,7 +4840,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4850,7 +4850,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4860,7 +4860,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4870,7 +4870,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa",
             "label_type": 4,
             "temp_entity": 20549
@@ -4880,7 +4880,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bela Crkva, sr. Pančevo",
             "label_type": 4,
             "temp_entity": 20659
@@ -4890,7 +4890,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bad Gastein",
             "label_type": 4,
             "temp_entity": 20872
@@ -4900,7 +4900,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wisborough Green",
             "label_type": 4,
             "temp_entity": 20988
@@ -4910,7 +4910,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wrocław",
             "label_type": 4,
             "temp_entity": 2161
@@ -4920,7 +4920,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L'viv - Znesinnja, obl. L'viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -4930,7 +4930,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Svitavy",
             "label_type": 6,
             "temp_entity": 21818
@@ -4940,7 +4940,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Svitavy, kr. Pardubický",
             "label_type": 4,
             "temp_entity": 21818
@@ -4950,7 +4950,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Jamnitz",
             "label_type": 4,
             "temp_entity": 22216
@@ -4960,7 +4960,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stronach (Lienz)",
             "label_type": 4,
             "temp_entity": 22259
@@ -4970,7 +4970,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Nizza",
             "label_type": 4,
             "temp_entity": 12758
@@ -4980,7 +4980,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Grünburg",
             "label_type": 4,
             "temp_entity": 22322
@@ -4990,7 +4990,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Olten",
             "label_type": 6,
             "temp_entity": 22354
@@ -5000,7 +5000,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Olten, Kt. Solothurn",
             "label_type": 4,
             "temp_entity": 22354
@@ -5010,7 +5010,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bad Kreuznach",
             "label_type": 4,
             "temp_entity": 22475
@@ -5020,7 +5020,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lasberg",
             "label_type": 4,
             "temp_entity": 22494
@@ -5030,7 +5030,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Fribourg",
             "label_type": 6,
             "temp_entity": 22526
@@ -5040,7 +5040,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Fribourg",
             "label_type": 4,
             "temp_entity": 22526
@@ -5050,7 +5050,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bocșa",
             "label_type": 4,
             "temp_entity": 22545
@@ -5060,7 +5060,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ludźmierz",
             "label_type": 4,
             "temp_entity": 22558
@@ -5070,7 +5070,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Warszawa, woj. mazowieckie",
             "label_type": 4,
             "temp_entity": 20549
@@ -5080,7 +5080,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "eng",
+            "isocode_639_3": "eng",
             "label": "Vezzano",
             "label_type": 6,
             "temp_entity": 22570
@@ -5090,7 +5090,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Vezzano",
             "label_type": 4,
             "temp_entity": 22570
@@ -5100,7 +5100,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Thalberg, Sigismund (Fortuné François)",
             "label_type": 598,
             "temp_entity": 27245
@@ -5110,7 +5110,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Fortuné François",
             "label_type": 597,
             "temp_entity": 27245
@@ -5120,7 +5120,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava, kr. Bratislavský",
             "label_type": 4,
             "temp_entity": 2072
@@ -5130,7 +5130,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone/Brixen",
             "label_type": 4,
             "temp_entity": 2170
@@ -5140,7 +5140,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wien (?)",
             "label_type": 4,
             "temp_entity": 183
@@ -5150,7 +5150,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone",
             "label_type": 4,
             "temp_entity": 2170
@@ -5160,7 +5160,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano/Meran, reg. Trento - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -5170,7 +5170,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Teschen/Těšín/Cieszyn",
             "label_type": 4,
             "temp_entity": 3105
@@ -5180,7 +5180,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "?, kr. ?",
             "label_type": 4,
             "temp_entity": 14608
@@ -5190,7 +5190,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano - ? / Meran - ? , reg. Trentino - Alto Adige",
             "label_type": 4,
             "temp_entity": 5691
@@ -5200,7 +5200,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ľviv (?)",
             "label_type": 4,
             "temp_entity": 9735
@@ -5210,7 +5210,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bratislava (?)",
             "label_type": 4,
             "temp_entity": 2072
@@ -5220,7 +5220,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Linz (?)",
             "label_type": 4,
             "temp_entity": 10015
@@ -5230,7 +5230,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gorizia, reg. Friuli-Venezia Giulia",
             "label_type": 4,
             "temp_entity": 5478
@@ -5240,7 +5240,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Reicha (Rejcha), Anton (Antonín) Josef",
             "label_type": 598,
             "temp_entity": 46414
@@ -5250,7 +5250,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Rejcha",
             "label_type": 597,
             "temp_entity": 46414
@@ -5260,7 +5260,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Antonín  Josef",
             "label_type": 597,
             "temp_entity": 46414
@@ -5270,7 +5270,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Moscheles, Ignaz (Isaak)",
             "label_type": 598,
             "temp_entity": 56248
@@ -5280,7 +5280,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Isaak",
             "label_type": 597,
             "temp_entity": 56248
@@ -5290,7 +5290,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gastein",
             "label_type": 4,
             "temp_entity": 20872
@@ -5300,7 +5300,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Liszt, Franz von",
             "label_type": 598,
             "temp_entity": 62757
@@ -5310,7 +5310,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bressanone/Brixen, reg. Trento - Alto Adige",
             "label_type": 4,
             "temp_entity": 2170
@@ -5320,7 +5320,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha - Malá Chuchle, kr. Hlavní město Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -5330,7 +5330,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Praha - Horní Počernice, kr. Hlavní město Praha",
             "label_type": 4,
             "temp_entity": 14608
@@ -5340,7 +5340,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Szeged",
             "label_type": 4,
             "temp_entity": 18400
@@ -5350,7 +5350,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Prag",
             "label_type": 4,
             "temp_entity": 14608
@@ -5360,7 +5360,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Blahetka, Marie Leopoldine",
             "label_type": 598,
             "temp_entity": 88219
@@ -5370,7 +5370,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Beethoven, Ludwig van",
             "label_type": 598,
             "temp_entity": 88902
@@ -5380,7 +5380,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Freiburg/Fribourg",
             "label_type": 4,
             "temp_entity": 22526
@@ -5390,7 +5390,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Merano/Meran",
             "label_type": 4,
             "temp_entity": 5691
@@ -5400,7 +5400,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stříbro",
             "label_type": 4,
             "temp_entity": 11238
@@ -5410,7 +5410,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bäuerle, Friederike; Ps. Friedrich Horn",
             "label_type": 598,
             "temp_entity": 92412
@@ -5420,7 +5420,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Friedrich Horn",
             "label_type": 430,
             "temp_entity": 92412
@@ -5430,7 +5430,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "L’viv",
             "label_type": 4,
             "temp_entity": 9735
@@ -5440,7 +5440,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Czerny (Černý), Carl",
             "label_type": 598,
             "temp_entity": 92603
@@ -5450,7 +5450,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Černý",
             "label_type": 597,
             "temp_entity": 92603
@@ -5460,7 +5460,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Bahr, Hermann",
             "label_type": 598,
             "temp_entity": 93003
@@ -5470,7 +5470,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Czerny, Adalbert",
             "label_type": 598,
             "temp_entity": 93009
@@ -5480,7 +5480,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Czetz, Johann",
             "label_type": 598,
             "temp_entity": 93012
@@ -5490,7 +5490,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Czikann, Johann Jakob Heinrich",
             "label_type": 598,
             "temp_entity": 93015
@@ -5500,7 +5500,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Clam-Gallas, Eduard Gf.",
             "label_type": 598,
             "temp_entity": 93018
@@ -5510,7 +5510,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Clam-Martinic, Heinrich Jaroslav Gf.",
             "label_type": 598,
             "temp_entity": 93021
@@ -5520,7 +5520,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Clam-Martinic, Heinrich Gf.",
             "label_type": 598,
             "temp_entity": 93024
@@ -5530,7 +5530,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Claus, Karl Friedrich",
             "label_type": 598,
             "temp_entity": 93028
@@ -5540,7 +5540,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Conze, Alexander",
             "label_type": 598,
             "temp_entity": 93031
@@ -5550,7 +5550,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Costenoble, Karl Ludwig",
             "label_type": 598,
             "temp_entity": 93034
@@ -5560,7 +5560,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Čelakovský, Jaromír",
             "label_type": 598,
             "temp_entity": 93044
@@ -5570,7 +5570,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Čelakovský, Ladislav",
             "label_type": 598,
             "temp_entity": 93047
@@ -5580,7 +5580,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Červený, Václav František",
             "label_type": 598,
             "temp_entity": 93050
@@ -5590,7 +5590,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Charlemont, Hugo de",
             "label_type": 598,
             "temp_entity": 93056
@@ -5600,7 +5600,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Chlumczanský, Wenzel Leopold von",
             "label_type": 598,
             "temp_entity": 93059
@@ -5610,7 +5610,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Dumba, Konstantin Theodor",
             "label_type": 598,
             "temp_entity": 93065
@@ -5620,7 +5620,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Doderer, Wilhelm von",
             "label_type": 598,
             "temp_entity": 93068
@@ -5630,7 +5630,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Defregger, Franz von",
             "label_type": 598,
             "temp_entity": 93071
@@ -5640,7 +5640,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Dengel, Ignaz Philipp",
             "label_type": 598,
             "temp_entity": 93074
@@ -5650,7 +5650,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Holovsky, Hilde",
             "label_type": 598,
             "temp_entity": 93136
@@ -5660,7 +5660,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lorenz, Heinrich",
             "label_type": 598,
             "temp_entity": 93328
@@ -5670,7 +5670,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Löwy, Julius; Ps. Von der Als",
             "label_type": 598,
             "temp_entity": 93337
@@ -5680,7 +5680,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Von der Als",
             "label_type": 430,
             "temp_entity": 93337
@@ -5690,7 +5690,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lobmeyr, Josef",
             "label_type": 598,
             "temp_entity": 93352
@@ -5700,7 +5700,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lichtblau, Adolf; Ps. A. L. Blau",
             "label_type": 598,
             "temp_entity": 93366
@@ -5710,7 +5710,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "A. L. Blau",
             "label_type": 430,
             "temp_entity": 93366
@@ -5720,7 +5720,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lichtblau, Ludwig",
             "label_type": 598,
             "temp_entity": 93369
@@ -5730,7 +5730,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Leitgeb, Hubert",
             "label_type": 598,
             "temp_entity": 93378
@@ -5740,7 +5740,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lenhossék, Mihály Ignác von",
             "label_type": 598,
             "temp_entity": 93387
@@ -5750,7 +5750,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lefler, Heinrich",
             "label_type": 598,
             "temp_entity": 93393
@@ -5760,7 +5760,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Leichter, Käthe; geb. Pick",
             "label_type": 598,
             "temp_entity": 93396
@@ -5770,7 +5770,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Pick",
             "label_type": 612,
             "temp_entity": 93396
@@ -5780,7 +5780,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Leidesdorf, Franz; Ps. Wallner",
             "label_type": 598,
             "temp_entity": 93400
@@ -5790,7 +5790,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Wallner",
             "label_type": 430,
             "temp_entity": 93400
@@ -5800,7 +5800,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Lapaine, Valentin",
             "label_type": 598,
             "temp_entity": 93409
@@ -5810,7 +5810,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Langer-Schroll, Johanna; verehel. Suida und Langer",
             "label_type": 598,
             "temp_entity": 93415
@@ -5820,7 +5820,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Suida und Langer",
             "label_type": 606,
             "temp_entity": 93415
@@ -5830,7 +5830,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Müller, Wolf Johannes",
             "label_type": 598,
             "temp_entity": 93418
@@ -5840,7 +5840,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mörl, Maria Theresia von",
             "label_type": 598,
             "temp_entity": 93442
@@ -5850,7 +5850,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Millosicz, Georg Frh. von",
             "label_type": 598,
             "temp_entity": 93445
@@ -5860,7 +5860,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Miklosich, Franz von",
             "label_type": 598,
             "temp_entity": 93448
@@ -5870,7 +5870,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Meithner, Karl",
             "label_type": 598,
             "temp_entity": 93469
@@ -5880,7 +5880,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Margulies, Berl",
             "label_type": 598,
             "temp_entity": 93481
@@ -5890,7 +5890,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mánesová, Amalie",
             "label_type": 598,
             "temp_entity": 93484
@@ -5900,7 +5900,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mánes, Quido",
             "label_type": 598,
             "temp_entity": 93487
@@ -5910,7 +5910,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mayer, Karl",
             "label_type": 598,
             "temp_entity": 93510
@@ -5920,7 +5920,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Mahl-Schedl von Alpenburg, Johann Nep.; Ps. Ritter von Alpenburg",
             "label_type": 598,
             "temp_entity": 93513
@@ -5930,7 +5930,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ritter von Alpenburg",
             "label_type": 430,
             "temp_entity": 93513
@@ -5940,7 +5940,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Nováček, Rudolf",
             "label_type": 598,
             "temp_entity": 93516
@@ -5950,7 +5950,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ortmann, Rudolf",
             "label_type": 598,
             "temp_entity": 93540
@@ -5960,7 +5960,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Oellacher, Josef",
             "label_type": 598,
             "temp_entity": 93546
@@ -5970,7 +5970,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Poljanec, Leopold",
             "label_type": 598,
             "temp_entity": 93561
@@ -5980,7 +5980,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Petzold, Emil",
             "label_type": 598,
             "temp_entity": 93573
@@ -5990,7 +5990,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Peithner von Lichtenfels, Eduard",
             "label_type": 598,
             "temp_entity": 93588
@@ -6000,7 +6000,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Patera, Adolf",
             "label_type": 598,
             "temp_entity": 93600
@@ -6010,7 +6010,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Rumpler, Matthias",
             "label_type": 598,
             "temp_entity": 93609
@@ -6020,7 +6020,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Rotter, Johann (Hans)",
             "label_type": 598,
             "temp_entity": 93615
@@ -6030,7 +6030,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Hans",
             "label_type": 597,
             "temp_entity": 93615
@@ -6040,7 +6040,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Revertera von Salandra, Friedrich Gf.",
             "label_type": 598,
             "temp_entity": 93639
@@ -6050,7 +6050,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Reichenberger, Andreas",
             "label_type": 598,
             "temp_entity": 93642
@@ -6060,7 +6060,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Reiser, Othmar",
             "label_type": 598,
             "temp_entity": 93645
@@ -6070,7 +6070,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Randa, Maximilian von",
             "label_type": 598,
             "temp_entity": 93651
@@ -6080,7 +6080,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Radakovič, Michael",
             "label_type": 598,
             "temp_entity": 93654
@@ -6090,7 +6090,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Szigligeti, Ede (Edvárd); bis 1834 József Szathmáry",
             "label_type": 598,
             "temp_entity": 93657
@@ -6100,7 +6100,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Edvárd",
             "label_type": 597,
             "temp_entity": 93657
@@ -6110,7 +6110,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": " bis 1834 József Szathmáry",
             "label_type": 653,
             "temp_entity": 93657
@@ -6120,7 +6120,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Szurmay von Uzsok, Sándor (Alexander) Frh.",
             "label_type": 598,
             "temp_entity": 93663
@@ -6130,7 +6130,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Alexander  Frh.",
             "label_type": 597,
             "temp_entity": 93663
@@ -6140,7 +6140,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stülz, Jodok",
             "label_type": 598,
             "temp_entity": 93678
@@ -6150,7 +6150,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stowasser, Otto Hellmuth",
             "label_type": 598,
             "temp_entity": 93684
@@ -6160,7 +6160,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Steindler, Olga; verehel. Ehrenhaft-S.",
             "label_type": 598,
             "temp_entity": 93702
@@ -6170,7 +6170,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ehrenhaft-S.",
             "label_type": 606,
             "temp_entity": 93702
@@ -6180,7 +6180,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stein, Ernst (Ernest) Edward Aurel; Ps. Gottlieb Hellseher",
             "label_type": 598,
             "temp_entity": 93705
@@ -6190,7 +6190,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Ernest  Edward Aurel",
             "label_type": 597,
             "temp_entity": 93705
@@ -6200,7 +6200,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Gottlieb Hellseher",
             "label_type": 430,
             "temp_entity": 93705
@@ -6210,7 +6210,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Stariha, Janez Nep.",
             "label_type": 598,
             "temp_entity": 93714
@@ -6220,7 +6220,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Šnjarić, Lukas",
             "label_type": 598,
             "temp_entity": 93748
@@ -6230,7 +6230,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Sichulski, Kazimierz",
             "label_type": 598,
             "temp_entity": 93779
@@ -6240,7 +6240,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Settari, Wilhelm Anton Maria",
             "label_type": 598,
             "temp_entity": 93785
@@ -6250,7 +6250,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Sehnal, Eugen",
             "label_type": 598,
             "temp_entity": 93791
@@ -6260,7 +6260,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schwartz, P. Anton Maria",
             "label_type": 598,
             "temp_entity": 93800
@@ -6270,7 +6270,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schwarz, Johann",
             "label_type": 598,
             "temp_entity": 93803
@@ -6280,7 +6280,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schwarz, Kaspar",
             "label_type": 598,
             "temp_entity": 93809
@@ -6290,7 +6290,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schweitzer, Leopold Albrecht",
             "label_type": 598,
             "temp_entity": 93815
@@ -6300,7 +6300,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schwabl, Franz",
             "label_type": 598,
             "temp_entity": 93818
@@ -6310,7 +6310,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schuëcker, Edmund; eigentl. Schuöcker",
             "label_type": 598,
             "temp_entity": 93836
@@ -6320,7 +6320,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schuöcker",
             "label_type": 597,
             "temp_entity": 93836
@@ -6330,7 +6330,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schrödl, Leopold",
             "label_type": 598,
             "temp_entity": 93839
@@ -6340,7 +6340,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schreyer, Johann",
             "label_type": 598,
             "temp_entity": 93854
@@ -6350,7 +6350,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Scholz, Franz",
             "label_type": 598,
             "temp_entity": 93863
@@ -6360,7 +6360,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schrammel, Johann",
             "label_type": 598,
             "temp_entity": 93866
@@ -6370,7 +6370,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Scholl, Joseph",
             "label_type": 598,
             "temp_entity": 93878
@@ -6380,7 +6380,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schönberger (Schoenberger), (Carl Friedrich) Adolf Frh. von",
             "label_type": 598,
             "temp_entity": 93891
@@ -6390,7 +6390,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schoenberger",
             "label_type": 597,
             "temp_entity": 93891
@@ -6400,7 +6400,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Carl Friedrich Frh. von",
             "label_type": 597,
             "temp_entity": 93891
@@ -6410,7 +6410,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schönberger, Benno",
             "label_type": 598,
             "temp_entity": 93894
@@ -6420,7 +6420,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schnitzler, Julius",
             "label_type": 598,
             "temp_entity": 93900
@@ -6430,7 +6430,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schober, Alfred",
             "label_type": 598,
             "temp_entity": 93903
@@ -6440,7 +6440,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schoeller, Gustav Adolph von",
             "label_type": 598,
             "temp_entity": 93909
@@ -6450,7 +6450,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schmutzler, Leopold",
             "label_type": 598,
             "temp_entity": 93921
@@ -6460,7 +6460,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schmidt, Joseph",
             "label_type": 598,
             "temp_entity": 93933
@@ -6470,7 +6470,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schmidt, Anton",
             "label_type": 598,
             "temp_entity": 93940
@@ -6480,7 +6480,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schmal, Johannes Adolf",
             "label_type": 598,
             "temp_entity": 93946
@@ -6490,7 +6490,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schmidt-Beauchez, Louis",
             "label_type": 598,
             "temp_entity": 93955
@@ -6500,7 +6500,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schindler, Josef",
             "label_type": 598,
             "temp_entity": 93958
@@ -6510,7 +6510,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Scheu, Josef Franz Georg",
             "label_type": 598,
             "temp_entity": 93961
@@ -6520,7 +6520,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schikaneder, Jakub",
             "label_type": 598,
             "temp_entity": 93964
@@ -6530,7 +6530,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schell, Karl",
             "label_type": 598,
             "temp_entity": 93967
@@ -6540,7 +6540,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Schenk, Samuel Leopold",
             "label_type": 598,
             "temp_entity": 93970
@@ -6550,7 +6550,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Tölgyessy, Artúr",
             "label_type": 598,
             "temp_entity": 93988
@@ -6560,7 +6560,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Thun und Hohenstein, Emanuel Maria Gf. von",
             "label_type": 598,
             "temp_entity": 93991
@@ -6570,7 +6570,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Teschenberg, Ernst Maximilian Frh. von; eigentl. Kluger Frh. von Teschenberg Ernst",
             "label_type": 598,
             "temp_entity": 94003
@@ -6580,7 +6580,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Kluger Frh. von Teschenberg Ernst",
             "label_type": 597,
             "temp_entity": 94003
@@ -6590,7 +6590,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Tetmajer (Przerwa-Tetmajer), Kazimierz",
             "label_type": 598,
             "temp_entity": 94006
@@ -6600,7 +6600,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Przerwa-Tetmajer",
             "label_type": 597,
             "temp_entity": 94006
@@ -6610,7 +6610,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Teuber, Emmerich (genannt Imre)",
             "label_type": 598,
             "temp_entity": 94009
@@ -6620,7 +6620,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "genannt Imre",
             "label_type": 597,
             "temp_entity": 94009
@@ -6630,7 +6630,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Tauber, Richard; eigentl. Richard Denemy, ab 1913 Denemy-Tauber",
             "label_type": 598,
             "temp_entity": 94018
@@ -6640,7 +6640,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Richard Denemy",
             "label_type": 597,
             "temp_entity": 94018
@@ -6650,7 +6650,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": " ab 1913 Denemy-Tauber",
             "label_type": 597,
             "temp_entity": 94018
@@ -6660,7 +6660,7 @@
     },
     {
         "fields": {
-            "isoCode_639_3": "deu",
+            "isocode_639_3": "deu",
             "label": "Laibach",
             "label_type": 6,
             "temp_entity": 9475
@@ -10108,8 +10108,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92412,
-            "related_personB": 92603,
+            "related_persona": 92412,
+            "related_personb": 92603,
             "relation_type": 5608,
             "text": []
         },
@@ -10119,8 +10119,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 88902,
+            "related_persona": 92603,
+            "related_personb": 88902,
             "relation_type": 5608,
             "text": []
         },
@@ -10130,8 +10130,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 27245,
+            "related_persona": 92603,
+            "related_personb": 27245,
             "relation_type": 5608,
             "text": []
         },
@@ -10141,8 +10141,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 88219,
+            "related_persona": 92603,
+            "related_personb": 88219,
             "relation_type": 5608,
             "text": []
         },
@@ -10152,8 +10152,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 62757,
+            "related_persona": 92603,
+            "related_personb": 62757,
             "relation_type": 5608,
             "text": []
         },
@@ -10163,8 +10163,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 56248,
+            "related_persona": 92603,
+            "related_personb": 56248,
             "relation_type": 5608,
             "text": []
         },
@@ -10174,8 +10174,8 @@
     {
         "fields": {
             "collection": [],
-            "related_personA": 92603,
-            "related_personB": 46414,
+            "related_persona": 92603,
+            "related_personb": 46414,
             "relation_type": 5608,
             "text": []
         },

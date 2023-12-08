@@ -1,0 +1,82 @@
+{% load static %}
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'dumper:home' %}">
+                <img src="{% static 'img/project-logo.svg' %}" alt="PMB-Logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Info
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Über das Projekt</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Imprint</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Entitäten
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'person' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'place' %}">
+                                    <i class="bi bi-map apis-place"></i>
+                                    Orte
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'work' %}">
+                                    <i class="bi bi-book apis-work"></i>
+                                    Werke
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'event' %}">
+                                    <i class="bi bi-calendar3 apis-event"></i>
+                                    Ereignisse
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'institution' %}">
+                                    <i class="bi bi-building-gear apis-institution"></i>
+                                    Institutionen
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_metainfo:uri_browse' %}">
+                                    <i class="bi bi-link-45deg apis-uri"></i>URIs
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                <a href="#"><i class="bi bi-person-check"></i></a>
+                {% else %}
+                <a href="#"><i class="bi bi-box-arrow-in-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>

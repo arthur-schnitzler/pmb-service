@@ -4,7 +4,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-from apis_core.apis_entities.models import Person, Place, Institution, Work, Event, TempEntityClass
+from apis_core.apis_entities.models import (
+    Person,
+    Place,
+    Institution,
+    Work,
+    Event,
+    TempEntityClass,
+)
 from .utils import get_service_mainfest, get_properties
 
 
@@ -15,7 +22,7 @@ def reconcile(request):
         "place": Place,
         "work": Work,
         "institution": Institution,
-        "event": Event
+        "event": Event,
     }
     if request.method == "POST":
         response = {}
@@ -30,7 +37,7 @@ def reconcile(request):
                     query_type = value["type"]
                 except:
                     query_type = "/person"
-                model_name = query_type.split('/')[-1]
+                model_name = query_type.split("/")[-1]
                 cur_model = model_dict[model_name]
                 items = cur_model.objects.filter(name=query_string)
                 properties = value.get("properties")
@@ -48,7 +55,10 @@ def reconcile(request):
                 if match_count > 1:
                     score = 1 / match_count
                     match = False
-                matches = [{"id": x.id, "name": f"{x}", "score": score, "match": match} for x in items]
+                matches = [
+                    {"id": x.id, "name": f"{x}", "score": score, "match": match}
+                    for x in items
+                ]
                 item = {"result": matches}
                 response[key] = item
         elif "extend" in data.keys():
@@ -82,7 +92,7 @@ def suggest_types(request):
     print(suggestions)
     filtered_results = []
     for x in suggestions:
-        if x['name'].startswith(prefix):
+        if x["name"].startswith(prefix):
             filtered_results.append(x)
     data["result"] = filtered_results
     print(data)

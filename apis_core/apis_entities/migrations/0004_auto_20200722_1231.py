@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis_entities', '0003_auto_20200216_1152'),
+        ("apis_entities", "0003_auto_20200216_1152"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='person',
-            name='gender',
-            field=models.CharField(blank=True, choices=[('female', 'female'), ('male', 'male'), ('third gender', 'third gender')], max_length=15, null=True),
+            model_name="person",
+            name="gender",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("female", "female"),
+                    ("male", "male"),
+                    ("third gender", "third gender"),
+                ],
+                max_length=15,
+                null=True,
+            ),
         ),
     ]

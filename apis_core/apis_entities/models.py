@@ -284,8 +284,8 @@ class AbstractEntity(TempEntityClass):
         E.g. for Person.get_related_entity_field_names() or person_instance.get_related_entity_field_names() ->
         ['event_set', 'institution_set', 'personB_set', 'personA_set', 'place_set', 'work_set']
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -300,8 +300,8 @@ class AbstractEntity(TempEntityClass):
         :param entity_field_name: the name of one of several ManyToMany fields created automatically
         :return: None
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -366,11 +366,11 @@ class AbstractEntity(TempEntityClass):
 
             q_args = Q()
 
-            if relation_class.get_related_entity_classA() == self.__class__:
-                q_args |= Q(**{relation_class.get_related_entity_field_nameA(): self})
+            if relation_class.get_related_entity_classa() == self.__class__:
+                q_args |= Q(**{relation_class.get_related_entity_field_namea(): self})
 
-            if relation_class.get_related_entity_classB() == self.__class__:
-                q_args |= Q(**{relation_class.get_related_entity_field_nameB(): self})
+            if relation_class.get_related_entity_classb() == self.__class__:
+                q_args |= Q(**{relation_class.get_related_entity_field_nameb(): self})
 
             queryset = relation_class.objects.filter(q_args)
             queryset_list.extend(list(queryset))
@@ -440,8 +440,8 @@ class AbstractEntity(TempEntityClass):
         E.g. for PersonPerson.get_related_relationtype_field_names() or person_instance.get_related_relationtype_field_names() ->
         ['event_relationtype_set', 'institution_relationtype_set', 'personB_relationtype_set', 'personA_relationtype_set', 'place_relationtype_set', 'work_relationtype_set']
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -458,8 +458,8 @@ class AbstractEntity(TempEntityClass):
         :param entity_field_name: the name of one of several ManyToMany fields created automatically
         :return: None
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -527,6 +527,11 @@ class Person(AbstractEntity):
         super(Person, self).save(*args, **kwargs)
         return self
 
+    class Meta:
+        ordering = [
+            "id",
+        ]
+
 
 class Place(AbstractEntity):
 
@@ -542,12 +547,22 @@ class Place(AbstractEntity):
         super(Place, self).save(*args, **kwargs)
         return self
 
+    class Meta:
+        ordering = [
+            "id",
+        ]
+
 
 class Institution(AbstractEntity):
 
     kind = models.ForeignKey(
         InstitutionType, blank=True, null=True, on_delete=models.SET_NULL
     )
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 
 class Event(AbstractEntity):
@@ -556,10 +571,20 @@ class Event(AbstractEntity):
         EventType, blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    class Meta:
+        ordering = [
+            "id",
+        ]
+
 
 class Work(AbstractEntity):
 
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
@@ -581,16 +606,19 @@ def prepare_fields_dict(fields_list, vocabs, vocabs_m2m):
 ents_cls_list = []
 
 
-
 @receiver(post_save, dispatch_uid="create_default_uri")
 def create_default_uri(sender, instance, **kwargs):
-    if kwargs["created"] and sender in [Person, Institution, Place, Work, Event] + ents_cls_list:
+    if (
+        kwargs["created"]
+        and sender in [Person, Institution, Place, Work, Event] + ents_cls_list
+    ):
         if BASE_URI.endswith("/"):
             base1 = BASE_URI[:-1]
         else:
             base1 = BASE_URI
         uri_c = "{}{}".format(
-            base1, reverse("GetEntityGenericRoot", kwargs={"pk": instance.pk}),
+            base1,
+            reverse("GetEntityGenericRoot", kwargs={"pk": instance.pk}),
         )
         uri2 = Uri(uri=uri_c, domain=DOMAIN_DEFAULT, entity=instance)
         uri2.save()

@@ -1,4 +1,4 @@
-{% extends "webpage/base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% block title %} See all {{entity|title}}s {% endblock %}
 {% block content %}
@@ -12,13 +12,13 @@
         });
     });
 </script>
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top: 1em;">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <div id="filter-container">
-                        <h3>{{entity}}</h3>
+                        <h3>hallo {{entity}}</h3>
                         {% load django_tables2 crispy_forms_tags %}
 
                     <hr/>
