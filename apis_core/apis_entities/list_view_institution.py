@@ -186,9 +186,7 @@ class InstitutionTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [
-                    970, 1141, 1160
-                ],
+                [970, 1141, 1160],
                 InstitutionPlaceRelation,
             )
         ),  # ToDo: don't hardcode the realtion type id here
