@@ -17,6 +17,7 @@ from apis_core.apis_vocabularies.models import (
     PersonEventRelation,
     EventEventRelation,
     EventType,
+    EventWorkRelation
 )
 from apis_core.helper_functions.utils import get_child_classes
 
@@ -39,13 +40,16 @@ EVENT_PERSON_RELATION_CHOICES = [
     for x in PersonEventRelation.objects.all()
 ]
 EVENT_PLACE_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PlaceEventRelation.objects.all()
+    (f"{x.id}", f"{x.label_reverse} (ID: {x.id})") for x in PlaceEventRelation.objects.all()
 ]
 EVENT_EVENT_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in EventEventRelation.objects.all()
 ]
 EVENT_INSTITUTION_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.all()
+]
+EVENT_WORK_RELATION_CHOICES = [
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in EventWorkRelation.objects.all()
 ]
 
 
@@ -67,13 +71,13 @@ class EventListFilter(django_filters.FilterSet):
     related_with_place = django_filters.LookupChoiceFilter(
         lookup_choices=EVENT_PLACE_RELATION_CHOICES,
         label="Bezugsort",
-        help_text="Names eines Bezugsort und die Art des Beziehung, z.B. 'Veranstaltungsort von' und 'Volkstheater'",
+        help_text="Names eines Bezugsort und die Art des Beziehung, z.B. 'veranstaltet in' und 'Volkstheater'",
         method="related_place_filter",
     )
     related_with_work = django_filters.LookupChoiceFilter(
-        lookup_choices=EVENT_EVENT_RELATION_CHOICES,
+        lookup_choices=EVENT_WORK_RELATION_CHOICES,
         label="Werk",
-        help_text="Name einer Ereignisses und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
+        help_text="Name einer Werkes und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
         method="related_work_filter",
     )
     kind = django_filters.ModelMultipleChoiceFilter(
@@ -90,10 +94,11 @@ class EventListFilter(django_filters.FilterSet):
             [
                 value.lookup_expr,
             ],
-            EventEventRelation,
+            EventWorkRelation,
         )
         qs = qs.filter(
-            workb_set__name__icontains=value.value, workb_relationtype_set__in=rels
+            eventwork_set__related_work__name__icontains=value.value,
+            eventwork_set__relation_type__in=rels,
         )
         return qs
 
@@ -102,7 +107,7 @@ class EventListFilter(django_filters.FilterSet):
             [
                 value.lookup_expr,
             ],
-            PersonEventRelation,
+            EventWorkRelation,
         )
         qs = qs.filter(
             personevent_set__related_person__name__icontains=value.value,
@@ -144,6 +149,7 @@ class EventFilterFormHelper(FormHelper):
                     "Beziehungen",
                     "related_with_person",
                     "related_with_place",
+                    "related_with_work",
                     css_id="admin_search",
                 ),
             )
@@ -154,22 +160,23 @@ class EventTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     name = tables.columns.Column(verbose_name="Titel")
     label_set = tables.ManyToManyColumn(verbose_name="Labels")
-    # personevent_set = tables.ManyToManyColumn(
-    #     verbose_name="AutorIn",
-    #     transform=lambda x: x.related_person,
-    #     filter=lambda qs: qs.filter(
-    #         relation_type__in=get_child_classes(
-    #             [
-    #                 1049,
-    #             ],
-    #             PersonEventRelation,
-    #         )
-    #     ),  # ToDo: don't hardcode the realtion type id here
-    # )
+    placeevent_set = tables.ManyToManyColumn(
+        verbose_name="veranstaltet in",
+        transform=lambda x: x.related_place,
+        filter=lambda qs: qs.filter(
+            relation_type__in=get_child_classes(
+                [
+                    1202,
+                    1369
+                ],
+                PlaceEventRelation,
+            )
+        ),  # ToDo: don't hardcode the realtion type id here
+    )
 
     class Meta:
         model = Event
-        sequence = ("id", "name", "start_date")
+        sequence = ("id", "name", "start_date", "placeevent_set")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -183,6 +190,7 @@ class EventListView(GenericListView):
         "name",
         "start_date",
         "kind",
+        "placeevent_set"
     ]
     exclude_columns = excluded_cols
     enable_merge = False
