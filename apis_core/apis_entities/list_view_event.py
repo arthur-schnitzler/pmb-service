@@ -61,21 +61,27 @@ class EventListFilter(django_filters.FilterSet):
     related_with_person = django_filters.LookupChoiceFilter(
         lookup_choices=EVENT_PERSON_RELATION_CHOICES,
         label="Bezugsperson",
-        help_text="Name einer Bezugsperson und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
+        help_text="Name einer Bezugsperson und die Art des Beziehung, z.B. 'hat als Arbeitskraft' und 'Haindl'",
         method="related_person_filter",
+    )
+    related_with_place = django_filters.LookupChoiceFilter(
+        lookup_choices=EVENT_PLACE_RELATION_CHOICES,
+        label="Bezugsort",
+        help_text="Names eines Bezugsort und die Art des Beziehung, z.B. 'Veranstaltungsort von' und 'Volkstheater'",
+        method="related_place_filter",
     )
     related_with_work = django_filters.LookupChoiceFilter(
         lookup_choices=EVENT_EVENT_RELATION_CHOICES,
         label="Werk",
-        help_text="Name einer Werkes und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
+        help_text="Name einer Ereignisses und die Art des Beziehung, z.B. 'Schnitzler' und 'wurde geschaffen von'",
         method="related_work_filter",
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=EventType.objects.all(),
-        help_text="Art/Typ des Werkes, z.B. 'Roman'",
-        label="Werktype",
+        help_text="Art/Typ des Ereignisses, z.B. 'Premiere'",
+        label="Art des Ereignisses",
         widget=autocomplete.Select2Multiple(
-            url="/apis/vocabularies/autocomplete/worktype/normal/",
+            url="/apis/vocabularies/autocomplete/eventtype/normal/",
         ),
     )
 
@@ -99,8 +105,21 @@ class EventListFilter(django_filters.FilterSet):
             PersonEventRelation,
         )
         qs = qs.filter(
-            personwork_set__related_person__name__icontains=value.value,
-            personwork_set__relation_type__in=rels,
+            personevent_set__related_person__name__icontains=value.value,
+            personevent_set__relation_type__in=rels,
+        )
+        return qs
+
+    def related_place_filter(self, qs, name, value):
+        rels = get_child_classes(
+            [
+                value.lookup_expr,
+            ],
+            PlaceEventRelation,
+        )
+        qs = qs.filter(
+            placeevent_set__related_place__name__icontains=value.value,
+            placeevent_set__relation_type__in=rels,
         )
         return qs
 
@@ -124,7 +143,7 @@ class EventFilterFormHelper(FormHelper):
                 AccordionGroup(
                     "Beziehungen",
                     "related_with_person",
-                    "related_with_work",
+                    "related_with_place",
                     css_id="admin_search",
                 ),
             )
@@ -135,22 +154,22 @@ class EventTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     name = tables.columns.Column(verbose_name="Titel")
     label_set = tables.ManyToManyColumn(verbose_name="Labels")
-    personwork_set = tables.ManyToManyColumn(
-        verbose_name="AutorIn",
-        transform=lambda x: x.related_person,
-        filter=lambda qs: qs.filter(
-            relation_type__in=get_child_classes(
-                [
-                    1049,
-                ],
-                PersonEventRelation,
-            )
-        ),  # ToDo: don't hardcode the realtion type id here
-    )
+    # personevent_set = tables.ManyToManyColumn(
+    #     verbose_name="AutorIn",
+    #     transform=lambda x: x.related_person,
+    #     filter=lambda qs: qs.filter(
+    #         relation_type__in=get_child_classes(
+    #             [
+    #                 1049,
+    #             ],
+    #             PersonEventRelation,
+    #         )
+    #     ),  # ToDo: don't hardcode the realtion type id here
+    # )
 
     class Meta:
         model = Event
-        sequence = ("id", "name", "personwork_set", "start_date")
+        sequence = ("id", "name", "start_date")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -163,12 +182,11 @@ class EventListView(GenericListView):
         "id",
         "name",
         "start_date",
-        "personwork_set",
         "kind",
     ]
     exclude_columns = excluded_cols
     enable_merge = False
     template_name = "apis_entities/list_views/list.html"
-    verbose_name = "Werke"
-    help_text = "Werke help text"
-    icon = "bi bi-book apis-work big-icons"
+    verbose_name = "Ereignisse"
+    help_text = "Ereignisse help text"
+    icon = "bi bi-calendar3 apis-event big-icons"
