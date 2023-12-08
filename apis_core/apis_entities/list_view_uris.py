@@ -11,12 +11,21 @@ from apis_core.apis_metainfo.models import Uri
 
 
 class UriTable(tables.Table):
-    id = tables.LinkColumn(verbose_name="ID")
-    uri = tables.columns.Column(verbose_name="URI")
+    id = tables.LinkColumn()
+    entity = tables.TemplateColumn(
+        "<a href='{{ record.entity.get_absolute_url }}'>{{ record.entity }}</a>",
+        orderable=True,
+        verbose_name="related Entity",
+    )
+    ent_type = tables.TemplateColumn(
+        "{{ record.entity.get_child_class }}",
+        orderable=False,
+        verbose_name="Entity Type",
+    )
 
     class Meta:
         model = Uri
-        sequence = ("id", "uri", "domain")
+        sequence = ("id", "uri")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -33,6 +42,7 @@ class UriFilterFormHelper(FormHelper):
                     "Eigenschaften",
                     "uri",
                     "domain",
+                    "entity__name",
                     css_id="more",
                 )
             )
@@ -50,18 +60,20 @@ class UriListFilter(django_filters.FilterSet):
         label="Domain",
         help_text="eingegebene Zeichenkette muss in der Domain enthalten sein",
     )
+    entity__name = django_filters.CharFilter(
+        lookup_expr="icontains",
+        help_text=Uri._meta.get_field("entity").help_text,
+        label=Uri._meta.get_field("entity").verbose_name,
+    )
+
 
 class UriListView(GenericListView):
     model = Uri
     filter_class = UriListFilter
     formhelper_class = UriFilterFormHelper
     table_class = UriTable
-    init_columns = [
-        "id",
-        "uri",
-        "domain",
-    ]
-    exclude_columns = []
+    init_columns = ["id", "uri", "domain", "entity"]
+    exclude_columns = ["loaded", "loaded_time", "rdf_link"]
     enable_merge = False
     template_name = "apis_entities/list_views/list.html"
     verbose_name = "Uris"

@@ -1,7 +1,5 @@
-from crispy_forms.bootstrap import AccordionGroup
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
+from crispy_forms.layout import Submit
 from dal import autocomplete
 from django import forms
 
@@ -27,18 +25,4 @@ class UriForm(forms.ModelForm):
         self.helper.field_class = "col-md-9"
         self.helper.add_input(
             Submit("submit", "save"),
-        )
-
-
-class UriFilterFormHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super(UriFilterFormHelper, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.form_class = "genericFilterForm"
-        self.form_method = "GET"
-        self.form_tag = False
-        self.layout = Layout(
-            "uri",
-            "domain",
-            "entity__name",
         )

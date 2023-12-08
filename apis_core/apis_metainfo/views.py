@@ -6,11 +6,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 
-from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
-from .filters import UriListFilter
-from .forms import UriFilterFormHelper, UriForm
+from browsing.browsing_utils import BaseCreateView, BaseUpdateView
+from .forms import UriForm
 from .models import Uri
-from .tables import UriTable
 
 
 PROJECT_NAME = settings.PROJECT_NAME
@@ -26,20 +24,6 @@ def beacon(request):
     for x in uris:
         result = result + f"{x[0]}|" f"{x[1]}|" f"{domain}entity/{x[2]}/\n"
     return HttpResponse(result, content_type="text/plain")
-
-
-class UriListView(GenericListView):
-    model = Uri
-    filter_class = UriListFilter
-    formhelper_class = UriFilterFormHelper
-    table_class = UriTable
-    init_columns = [
-        "id",
-        "uri",
-        "entity",
-    ]
-    exclude_columns = ["loaded", "loaded_time", "rdf_link"]
-    enable_merge = False
 
 
 class UriDetailView(DetailView):

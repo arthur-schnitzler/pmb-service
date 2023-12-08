@@ -17,7 +17,7 @@ from apis_core.apis_vocabularies.models import (
     PersonEventRelation,
     EventEventRelation,
     EventType,
-    EventWorkRelation
+    EventWorkRelation,
 )
 from apis_core.helper_functions.utils import get_child_classes
 
@@ -40,7 +40,8 @@ EVENT_PERSON_RELATION_CHOICES = [
     for x in PersonEventRelation.objects.all()
 ]
 EVENT_PLACE_RELATION_CHOICES = [
-    (f"{x.id}", f"{x.label_reverse} (ID: {x.id})") for x in PlaceEventRelation.objects.all()
+    (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
+    for x in PlaceEventRelation.objects.all()
 ]
 EVENT_EVENT_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in EventEventRelation.objects.all()
@@ -165,10 +166,7 @@ class EventTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [
-                    1202,
-                    1369
-                ],
+                [1202, 1369],
                 PlaceEventRelation,
             )
         ),  # ToDo: don't hardcode the realtion type id here
@@ -185,13 +183,7 @@ class EventListView(GenericListView):
     filter_class = EventListFilter
     formhelper_class = EventFilterFormHelper
     table_class = EventTable
-    init_columns = [
-        "id",
-        "name",
-        "start_date",
-        "kind",
-        "placeevent_set"
-    ]
+    init_columns = ["id", "name", "start_date", "kind", "placeevent_set"]
     exclude_columns = excluded_cols
     enable_merge = False
     template_name = "apis_entities/list_views/list.html"

@@ -1,8 +1,5 @@
-import django_tables2 as tables
 from django.db.models import F
 from django.utils.html import format_html
-
-from .models import Uri
 
 
 # generic order_FOO methods for start_date_written and end_date_written to be used in all kinds of tables where a queryset is loaded
@@ -98,22 +95,3 @@ def generic_render_end_date_written(self, record, value):
         var_start_date=record.end_start_date,
         var_end_date=record.end_end_date,
     )
-
-
-class UriTable(tables.Table):
-    id = tables.LinkColumn()
-    entity = tables.TemplateColumn(
-        "<a href='{{ record.entity.get_absolute_url }}'>{{ record.entity }}</a>",
-        orderable=True,
-        verbose_name="related Entity",
-    )
-    ent_type = tables.TemplateColumn(
-        "{{ record.entity.get_child_class }}",
-        orderable=False,
-        verbose_name="Entity Type",
-    )
-
-    class Meta:
-        model = Uri
-        sequence = ("id", "uri")
-        attrs = {"class": "table table-responsive table-hover"}
