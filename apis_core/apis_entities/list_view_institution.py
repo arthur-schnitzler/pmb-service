@@ -181,22 +181,22 @@ class InstitutionTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     name = tables.columns.Column(verbose_name="Titel")
     label_set = tables.ManyToManyColumn(verbose_name="Labels")
-    # personwork_set = tables.ManyToManyColumn(
-    #     verbose_name="AutorIn",
-    #     transform=lambda x: x.related_person,
-    #     filter=lambda qs: qs.filter(
-    #         relation_type__in=get_child_classes(
-    #             [
-    #                 1049,
-    #             ],
-    #             PersonWorkRelation,
-    #         )
-    #     ),  # ToDo: don't hardcode the realtion type id here
-    # )
+    institutionplace_set = tables.ManyToManyColumn(
+        verbose_name="angesiedelt in",
+        transform=lambda x: x.related_place,
+        filter=lambda qs: qs.filter(
+            relation_type__in=get_child_classes(
+                [
+                    970, 1141, 1160
+                ],
+                InstitutionPlaceRelation,
+            )
+        ),  # ToDo: don't hardcode the realtion type id here
+    )
 
     class Meta:
         model = Institution
-        sequence = ("id", "name", "start_date")
+        sequence = ("id", "name", "institutionplace_set", "start_date")
         attrs = {"class": "table table-responsive table-hover"}
 
 
@@ -208,6 +208,7 @@ class InstitutionListView(GenericListView):
     init_columns = [
         "id",
         "name",
+        "institutionplace_set",
         "start_date",
         "kind",
     ]
