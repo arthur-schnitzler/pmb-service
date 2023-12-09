@@ -62,11 +62,6 @@ urlpatterns = [
         name="event_list_view",
     ),
     path(
-        "entity/<entity>/list/",
-        views.GenericListViewNew.as_view(),
-        name="generic_entities_list",
-    ),
-    path(
         "autocomplete/createstanbol/<entity>/",
         GenericEntitiesCreateStanbolView.as_view(),
         name="generic_entities_stanbol_create",
