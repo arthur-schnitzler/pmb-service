@@ -6,92 +6,69 @@
 {% load django_tables2 %}
 {% load crispy_forms_tags %}
 {% if instance %}
-<div class="container-fluid">
-    
-    <h1>
-        <a href="{{ instance.get_listview_url }}"><small>{{ entity_type }}s </small></a>
-        {{ instance }} <a href="{{ instance.get_absolute_url }}">
+<div class="container-fluid pt-2">
+    <h1 class="display-4 text-center">
+        <a href="{{ instance.get_listview_url }}">
+            <small>{{ entity_type }}s </small>
+        </a>
+        {{ instance }} 
+    </h1>
+    <h2 class="text-center">
+        <a href="{{ instance.get_absolute_url }}">
             <i class="bi bi-eye"></i>
         </a>
         <a href="/entity/{{ instance.id }}">
             <i class="bi bi-database"></i>
         </a>
-    </h1>
+    </h2>
     <div class="row">
         <div class="col-md-5">
 {% endif %}
-            
-                    
-                        	{% if instance %}
-                                <h3>
-                                    <small>Edit the Entity</small>
-                                </h3>
-            		        {% else %}
-                                <h2>
-                                    <small>create new object type:</small> <strong>{{ entity_type|title }}</strong>
-                                </h2>
-                            {% endif %}
-                        
-                            <form action="" method="post">
-                               
-                            	{% crispy form %}
-                                    
-                                            
-                                        </div>
-                                    </div>
-                           
-                                
-                                        <h4 class="card-title">
-                                            
-                                                URIs
-                                        </h4>
-                                    
-                                            <p>{% for lod in object_lod %}{% if forloop.last %}<a href="{{ lod.uri }}">{{ lod.uri }}</a>{% else %}<a href="{{ lod.uri }}">{{ lod.uri }}</a> <br  /> {% endif %}{% endfor %}</p>
-                                        
-                                
-                         
-                            {% block editbuttons %}
-                                {% if instance %}
-                                
-                                   <input class="btn btn-primary" type="submit" value="modify" />
-                                   <a class ="btn btn-danger btn-primary" href="delete">Delete</a>
-                                   <a class ="btn btn-success" href="{% url 'apis:apis_entities:generic_entities_create_view' entity_type %}">Create new {{entity_type|title}}</a>
-                                    {% else %}
-                                   
-                                    <input class="btn btn-primary" type="submit" value="create" />
-                                       
-                                                {% endif %}
-
-                            {% endblock editbuttons %}
-                        </form>
-            {% if instance %}
-                </div>
-            {% endif %}
-            {% if instance %}
-                <div class="col-md-7">
-                   
-                            <h3><small> the Entity is related to</h3>
-                            {% block additional_accordion %}
-                            {% endblock additional_accordion %}
-                            {% for obj in right_card %}
-                               
-                                        <h4 class="card-title">
-                                            
-                                                {{ obj.0 }}
-                                        </h4>
-                                    
-                                        <div id="tab_{{ obj.2 }}" >
-                                            {% render_table obj.1 %}
-                                        </div>
-                                {% endfor %}
-
-                {% endif %}
-    {% if instance %}
+        {% if instance %}
+            <h3 class="text-center">
+                Edit the Entity
+            </h3>
+            {% else %}
+            <h3>
+                <small>create new object type:</small> <strong>{{ entity_type|title }}</strong>
+            </h3>
+        {% endif %}
+        <form action="" method="post">
+        {% crispy form %}
+        {% block editbuttons %}
+        {% if instance %}
+            <input class="btn btn-primary" type="submit" value="modify" />
+            <a class ="btn btn-danger btn-primary" href="delete">Delete</a>
+        {% else %}
+            <input class="btn btn-primary" type="submit" value="create" />
+        {% endif %}
+        {% endblock editbuttons %}
+        </form>
+        {% if instance %}
+        <hr />
+        <div class="pt-5">
+            <h4>Merge into</h4>
+            <div id="tab_merge_with">
+                {% load crispy_forms_tags %}
+                {% crispy form_merge_with form_merge_with.helper %}
+            </div>
         </div>
-    {% endif %}
-
-
-
+        {% endif %}
+    </div>
+{% if instance %}
+    <div class="col-md-7">
+        <h3 class="text-center">Edit the Relations</h3>
+        {% for obj in right_card %}
+            <h4 class="card-title">{{ obj.0 }}</h4>
+            <div >
+                {% render_table obj.1 %}
+            </div>
+        {% endfor %}
+{% endif %}
+{% if instance %}
+    </div>
+{% endif %}
+</div>
 
 {% endblock %}
 {% block scripts %}

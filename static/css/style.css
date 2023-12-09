@@ -11,7 +11,8 @@
 
 
 a {
-    color: var(--pmb)
+    color: var(--pmb);
+    text-decoration: unset;
 }
 
 a:hover { 
