@@ -123,6 +123,7 @@ def get_form_ajax(request):
     ButtonText = request.POST.get("ButtonText")
     ObjectID = request.POST.get("ObjectID")
     entity_type_str = request.POST.get("entity_type")
+    print(FormName)
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)(Highlighter)?Form", FormName)
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
     if FormName and form_match:

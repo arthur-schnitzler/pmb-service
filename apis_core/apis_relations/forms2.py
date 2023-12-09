@@ -207,27 +207,27 @@ class GenericRelationForm(forms.ModelForm):
         if lst_src_target[0] == lst_src_target[1]:
             if instance and instance.id:
                 if getattr(
-                    instance, "related_{}A_id".format(lst_src_target[0].lower())
+                    instance, "related_{}a_id".format(lst_src_target[0].lower())
                 ) == int(siteID):
                     self.rel_accessor = (
                         lst_src_target[1],
                         True,
-                        "related_{}B".format(lst_src_target[1].lower()),
-                        "related_{}A".format(lst_src_target[0].lower()),
+                        "related_{}b".format(lst_src_target[1].lower()),
+                        "related_{}a".format(lst_src_target[0].lower()),
                     )
                 else:
                     self.rel_accessor = (
                         lst_src_target[1],
                         False,
-                        "related_{}A".format(lst_src_target[1].lower()),
-                        "related_{}B".format(lst_src_target[0].lower()),
+                        "related_{}a".format(lst_src_target[1].lower()),
+                        "related_{}b".format(lst_src_target[0].lower()),
                     )
             else:
                 self.rel_accessor = (
                     lst_src_target[1],
                     True,
-                    "related_{}B".format(lst_src_target[1].lower()),
-                    "related_{}A".format(lst_src_target[0].lower()),
+                    "related_{}b".format(lst_src_target[1].lower()),
+                    "related_{}a".format(lst_src_target[0].lower()),
                 )
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
