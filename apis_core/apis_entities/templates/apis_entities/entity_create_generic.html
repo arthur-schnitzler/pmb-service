@@ -1,43 +1,28 @@
-{% extends "webpage/base.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block scriptHeader %}
-{{block.super}}
-{% if highlighter_active %}
-      <link rel="stylesheet" href="{% static 'apis_highlighter/apis_highlighter.css' %}" />
-	<script type="text/javascript" src="{% static 'apis_highlighter/apis_highlighter.js' %}?arbitrary_tag_to_avoid_cache"></script>
-	{% endif %}
-    {% if apis_bibsonomy %}
-{% include 'apis_bibsonomy/apis_bibsonomy_include.html' %}
-    {% endif %}
-{% endblock %}
-{% block Titel %}Create a {{entity_type|title}}{% endblock %}
-{% load guardian_tags %}
-{% load static %}
+{% block titel %}Create a {{ entity_type|title }}{% endblock %}
 
 {% block content %}
 {% load django_tables2 %}
 {% if instance %}
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header" style="text-align: center;">
+        <div class="card-header text-center">
             <h1><a href="{{ instance.get_listview_url }}">
-                <small>{{ entity_type }}s</small>
+                <small>{{ entity_type }}s </small>
             </a>
-                <strong>{{ instance }} </strong> <a href="{{ instance.get_absolute_url }}">
-                    <i data-feather="eye" title="eye"></i>
+                {{ instance }} <a href="{{ instance.get_absolute_url }}">
+                    <i class="bi bi-eye"></i>
                 </a>
-                <a href="/entity/{{instance.id}}">
-                    <i data-feather="database" title="database"></i>
+                <a href="/entity/{{ instance.id }}">
+                    <i class="bi bi-database"></i>
                 </a>
-                {% if "apis_ampel" in APPS and show_ampel %}
-                {% include "ampel/ampel_inline_template.html" with instance=instance %}
-                {% endif %}
             </h1>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-5">
-            {% endif %}
+{% endif %}
             {% load crispy_forms_tags %}
                     <div class="card">
                         <div class="card-header">
@@ -53,9 +38,6 @@
                         </div>
                         <div class="card-body">
                             <form action="" method="post">
-                            {% if apis_bibsonomy %}
-                                <button hidden=True class="bibsonomy-anker-hidden" data-bibs-contenttype={{ entity_type }} data-bibs-object_pk={{instance.pk}} data-bibs-form-elements="{{ apis_bibsonomy }}">Ref</button>
-                            {% endif %}
                                 <div class="card card-default">
 
                             	{% crispy form %}
@@ -94,9 +76,8 @@
                             {% endblock %}
                             {% block editbuttons %}
                                 {% if instance %}
-                                {% if "change" in permissions %}
+                                
                                    <input class="btn btn-primary" type="submit" value="modify" />
-                                {% endif %}
                                 {% if instance %}
                                 <button class="compare_tooltip btn btn-default" data-tooltip='{"app":"apis_entities","kind":"{{entity_type|lower}}","pk":"{{ instance.pk }}"}'>Revisions</button>
                                 {% endif %}
