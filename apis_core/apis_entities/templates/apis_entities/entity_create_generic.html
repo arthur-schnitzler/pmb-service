@@ -153,38 +153,7 @@
         unbind_compare_forms();
     }
 </script>
-<script type="text/javascript">
-    function HighlForm_response(response){
-        if (response.test == false) {
-            $.ApisHigh.tt_instance.content(response.form);
-            //(".form.ajax_form").unbind()
-        } else {
-             $('#tab_'+response.tab+' div.table-container').remove();
-             $('#tab_'+response.tab).prepend(response.table_html);
-             //GetFormAjax(response.tab+'Form');
-             $('#htxt_'+response.text.id).html($.parseHTML(response.text.text))
-             $.ApisHigh.tt_instance.close()
-             $('html, body').animate({ scrollTop: ($('#'+$.ApisHigh.selected_text.id).offset().top)}, 'slow');
-             $('mark.highlight').off();
-             $('mark.highlight').on("click", highlight_detail);
-             initiate_compare_tooltip();
-        }
-    }
-</script>
-<script type="text/javascript">
-    function PAddRelation_response(response){
-        if (response.test == false) {
-            $.ApisHigh.tt_instance.content(response.form);
-            //(".form.ajax_form").unbind()
-        } else {
-             $('#htxt_'+response.text.id).html($.parseHTML(response.text.text))
-             $.ApisHigh.tt_instance.close()
-             $('html, body').animate({ scrollTop: ($('#'+$.ApisHigh.selected_text.id).offset().top)}, 'slow');
-             $('mark.highlight').off()
-             $('mark.highlight').on("click", highlight_detail)
-        }
-    }
-</script>
+
 <script type='text/javascript'>
     function DeleteTempEntity(pk, kind, app_name=false) {
         if (app_name){
@@ -210,12 +179,7 @@
         })
     }
 </script>
-<script type='text/javascript'>
-    function DeleteAnnTempEntity(an_pk, rel_class, rel_pk, app_name) {
-        DeleteTempEntity(an_pk,"HLAnnotation");
-        DeleteTempEntity(rel_pk, rel_class, app_name);
-    };
-</script>
+
 
 <script type="text/javascript">
     function check_perms_relation(){
@@ -234,19 +198,6 @@
         GetFormAjax("{{obj.2|add:'Form'}}");
         //unbind_ajax_forms();
         {% endfor %}
-{% if highlighter_active %}
-    init_apis_highlighter(1, {{instance.pk}});
-    if (typeof $.ApisHigh.vars == 'undefined') {
-        $.ApisHigh.vars = {}; };
-        $.ApisHigh.vars.entity_type = '{{entity_type}}';
-        $.ApisHigh.vars.instance_pk = '{{instance.pk}}';
-        $.ApisHigh.vars.urls = {};
-        $.ApisHigh.vars.urls.get_form_ajax = "{% url 'apis:apis_relations:get_form_ajax' %}";
-        $.ApisHigh.vars.urls.annotatoragreementview = "{% url 'apis:apis_api2:AnnotatorAgreementView' %}";
-        $.ApisHigh.vars.urls.showoverlappinghighlights = "{% url 'apis:apis_api2:ShowOverlappingHighlights' %}";
-      activate_context_menu_highlighter();
-      $('body').on("click", 'mark.highlight', highlight_detail);
-    {% endif %}
  };
 function deactivate_editing(){
     $('.reldelete').addClass("disabled");
