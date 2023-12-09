@@ -136,15 +136,9 @@ class TempEntityClass(models.Model):
     def get_listview_url(self):
         entity = self.__name__.lower()
         if entity == "institution" or len(entity) < 10:
-            return reverse(
-                "apis_core:apis_entities:generic_entities_list",
-                kwargs={"entity": entity},
-            )
+            return reverse(f"apis_core:apis_entities:{entity}_list_view")
         else:
-            return reverse(
-                "apis_core:apis_relations:generic_relations_list",
-                kwargs={"entity": entity},
-            )
+            return "/"
 
     @classmethod
     def get_createview_url(self):
