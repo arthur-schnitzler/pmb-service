@@ -1,12 +1,14 @@
 from django.urls import path
 from django.conf import settings
 
-from dumper.views import HomePageView
+from dumper import views
 
 app_name = "dumper"
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", views.HomePageView.as_view(), name="home"),
+    path("login/", views.user_login, name="user_login"),
+    path("logout/", views.user_logout, name="user_logout"),
 ]
 
 if settings.DEBUG:
