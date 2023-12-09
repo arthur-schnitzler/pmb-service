@@ -24,8 +24,7 @@ from .tables import get_generic_relations_table
 
 # from dal.autocomplete import ListSelect2
 
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.models import Annotation, AnnotationProject
+
 
 
 def validate_target_autocomplete(value):
@@ -96,28 +95,8 @@ class GenericRelationForm(forms.ModelForm):
         if not t1:
             t1 = RDFParser(cd["target"], self.rel_accessor[0]).get_or_create()
         setattr(x, self.rel_accessor[2], t1)
-        if self.highlighter:
-            an_proj = AnnotationProject.objects.get(
-                pk=int(self.request.session.get("annotation_project", 1))
-            )
-            x.published = an_proj.published
         if commit:
             x.save()
-        if self.highlighter:
-            if not commit:
-                x.save()
-            txt = Text.objects.get(pk=cd["HL_text_id"][5:])
-            a = Annotation(
-                start=cd["HL_start"],
-                end=cd["HL_end"],
-                text=txt,
-                user_added=self.request.user,
-                annotation_project_id=int(
-                    self.request.session.get("annotation_project", 1)
-                ),
-            )
-            a.entity_link = x
-            a.save()
         print("saved: {}".format(x))
         return x
 
@@ -152,12 +131,7 @@ class GenericRelationForm(forms.ModelForm):
             table_html = table(data=objects, prefix=prefix)
         else:
             tab_query = {"related_" + entity_type.lower(): site_instance}
-            if "apis_highlighter" in settings.INSTALLED_APPS:
-                ttab = self.relation_form.objects.filter_ann_proj(
-                    request=request
-                ).filter(**tab_query)
-            else:
-                ttab = self.relation_form.objects.filter(**tab_query)
+            ttab = self.relation_form.objects.filter(**tab_query)
             table_html = table(data=ttab, prefix=prefix)
         return table_html
 
@@ -232,7 +206,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
                 widget=ListSelect2(
-                    # url='/vocabularies/autocomplete/{}{}relation/normal'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_vocabularies:generic_vocabularies_autocomplete",
                         args=[
@@ -252,7 +225,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["target"] = autocomplete.Select2ListCreateChoiceField(
                 label=lst_src_target[1],
                 widget=ListSelect2(
-                    # url='/entities/autocomplete/{}'.format(lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_entities:generic_entities_autocomplete",
                         args=[lst_src_target[1].lower()],
@@ -272,7 +244,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
                 widget=ListSelect2(
-                    # url='/vocabularies/autocomplete/{}{}relation/normal'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_vocabularies:generic_vocabularies_autocomplete",
                         args=[
