@@ -4,24 +4,23 @@
 
 {% block content %}
 {% load django_tables2 %}
+{% load crispy_forms_tags %}
 {% if instance %}
 <div class="container-fluid">
     
-            <h1><a href="{{ instance.get_listview_url }}">
-                <small>{{ entity_type }}s </small>
-            </a>
-                {{ instance }} <a href="{{ instance.get_absolute_url }}">
-                    <i class="bi bi-eye"></i>
-                </a>
-                <a href="/entity/{{ instance.id }}">
-                    <i class="bi bi-database"></i>
-                </a>
-            </h1>
-       
-            <div class="row">
-                <div class="col-md-5">
+    <h1>
+        <a href="{{ instance.get_listview_url }}"><small>{{ entity_type }}s </small></a>
+        {{ instance }} <a href="{{ instance.get_absolute_url }}">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="/entity/{{ instance.id }}">
+            <i class="bi bi-database"></i>
+        </a>
+    </h1>
+    <div class="row">
+        <div class="col-md-5">
 {% endif %}
-            {% load crispy_forms_tags %}
+            
                     
                         	{% if instance %}
                                 <h3>
@@ -49,7 +48,7 @@
                                     
                                             <p>{% for lod in object_lod %}{% if forloop.last %}<a href="{{ lod.uri }}">{{ lod.uri }}</a>{% else %}<a href="{{ lod.uri }}">{{ lod.uri }}</a> <br  /> {% endif %}{% endfor %}</p>
                                         
-                                </div>
+                                
                          
                             {% block editbuttons %}
                                 {% if instance %}
