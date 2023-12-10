@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titel %}Create a {{ entity_type|title }}{% endblock %}
+
+{% block content %}
+{% load django_tables2 %}
+{% load crispy_forms_tags %}
+<div class="container-fluid pt-2">
+    <h1 class="display-4 text-center">
+        <a href="{{ instance.get_listview_url }}">
+            <small>{{ entity_type }}s </small>
+        </a>
+        {{ instance }} 
+    </h1>
+    <h2 class="text-center">
+        <a href="{{ instance.get_absolute_url }}">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="/entity/{{ instance.id }}">
+            <i class="bi bi-database"></i>
+        </a>
+    </h2>
+    <div class="row">
+        <div class="col-md-5">
+            <h3 class="text-center">
+                Edit the Entity
+            </h3>
+            <form action="" method="post">
+            {% crispy form %}
+                <input class="btn btn-primary" type="submit" value="modify" />
+                <a class ="btn btn-danger btn-primary" href="delete">Delete</a>
+            </form>
+        </div>
+        <div class="col-md-7">
+            <h3 class="text-center">Edit the Relations</h3>
+            {% for obj in right_card %}
+                <div class="pt-2">
+                    <h4 class="card-title">{{ obj.0 }}</h4>
+                    <div id="tab_{{ obj.2 }}">
+                        {% render_table obj.1 %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+</div>
+
+{% endblock %}
