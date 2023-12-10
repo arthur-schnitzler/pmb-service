@@ -287,12 +287,10 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             "right_card": right_card,
         }
     else:
-        if "Highlighter" in tab:
-            call_function = "HighlForm_response"
         data = {
             "test": False,
             "call_function": call_function,
-            "DivID": "div_" + kind_form + instance_id,
+            "DivID": f"div_{kind_form}{instance_id}",
             "form": render_to_string(
                 "apis_relations/_ajax_form.html",
                 context={

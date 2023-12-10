@@ -60,7 +60,7 @@
         <h3 class="text-center">Edit the Relations</h3>
         {% for obj in right_card %}
             <h4 class="card-title">{{ obj.0 }}</h4>
-            <div >
+            <div id="tab_{{ obj.2 }}">
                 {% render_table obj.1 %}
             </div>
         {% endfor %}
@@ -184,11 +184,9 @@
 <script type="text/javascript">
     function check_perms_relation(){
         {% if instance %}
-        {% if "change" in permissions %}
         return true
         {% else %}
         return false
-        {% endif %}
         {% endif %}
     }
 </script>
