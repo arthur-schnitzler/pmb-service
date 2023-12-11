@@ -11,4 +11,9 @@ urlpatterns = [
         views.save_ajax_form,
         name="save_ajax_form",
     ),
+    path(
+        "ajax/save/<entity_type>/<kind_form>/<int:SiteID>/",
+        views.save_ajax_form,
+        name="save_ajax_form",
+    ),
 ]

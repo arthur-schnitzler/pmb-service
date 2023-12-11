@@ -24,6 +24,7 @@ APIS_DETAIL_VIEWS_ALLOWED = True
 # Application definition
 
 INSTALLED_APPS = [
+    "apis_override_select2js",
     "dal",
     "dal_select2",
     "django.contrib.admin",

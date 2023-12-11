@@ -185,7 +185,6 @@ def get_form_ajax(request):
             }
 
     return HttpResponse(template.render(form_context, request))
-    # return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @login_required
@@ -223,11 +222,11 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     else:
         form_class = form_class_dict[kind_form]
         form = form_class(**form_dict)
+    print("form.is_valid()#################")
+    print(form.is_valid())
+    print(form.errors)
     if form.is_valid():
         site_instance = entity_type.objects.get(pk=SiteID)
-        set_ann_proj = request.session.get("annotation_project", 1)
-        entity_types_highlighter = request.session.get("entity_types_highlighter")
-        users_show = request.session.get("users_show_highlighter", None)
         hl_text = None
         if ObjectID:
             instance = form.save(instance=ObjectID, site_instance=site_instance)
@@ -238,16 +237,6 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             table_html = form.get_html_table(
                 entity_type_str, request, site_instance, form_match
             )
-        if "Highlighter" in tab or form_match.group(3) == "Highlighter":
-            hl_text = {
-                "text": highlight_text_new(
-                    form.get_text_id(),
-                    users_show=users_show,
-                    set_ann_proj=set_ann_proj,
-                    types=entity_types_highlighter,
-                )[0].strip(),
-                "id": form.get_text_id(),
-            }
         if tab == "PersonLabel":
             table_html = LabelTableEdit(
                 data=site_instance.label_set.all(), prefix="PL-"
@@ -260,17 +249,6 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             table_html = EntityUriTable(
                 Uri.objects.filter(entity=site_instance), prefix="PURI-"
             )
-
-        elif (
-            tab == "AddRelationHighlighterPerson"
-            or tab == "PlaceHighlighter"
-            or tab == "PersonHighlighter"
-            or tab == "SundayHighlighter"
-        ):
-            table_html = None
-            right_card = False
-            call_function = "PAddRelation_response"
-            instance = None
         if instance:
             instance2 = instance.get_web_object()
         else:
@@ -307,9 +285,4 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
                 request=request,
             ),
         }
-
-    # except Exception as e:
-    #     print('Error in save method')
-    #     print(e)
-    #     data = {'test': False, 'error': json.dumps(str(e))}
     return HttpResponse(json.dumps(data), content_type="application/json")
