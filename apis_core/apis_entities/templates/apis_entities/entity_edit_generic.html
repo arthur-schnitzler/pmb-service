@@ -3,6 +3,7 @@
 {% block titel %}Create a {{ entity_type|title }}{% endblock %}
 
 {% block content %}
+<script src="https://unpkg.com/htmx.org@1.9.9"></script>
 {% load django_tables2 %}
 {% load crispy_forms_tags %}
 <div class="container-fluid pt-2">
@@ -38,6 +39,16 @@
                     <h4 class="card-title">{{ obj.0 }}</h4>
                     <div id="tab_{{ obj.2 }}">
                         {% render_table obj.1 %}
+                        <button
+                            hx-get="{% url 'apis_core:apis_entities:foobar' %}"
+                            hx-swap="outerHTML"
+                            hx-vals='{
+                                "instance_id": "{{ instance.id }}",
+                                "relation_type": "{{ obj.2 }}"
+                            }'>
+                            Click Me
+                          </button>
+                    
                     </div>
                 </div>
             {% endfor %}

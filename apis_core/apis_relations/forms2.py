@@ -25,8 +25,6 @@ from .tables import get_generic_relations_table
 # from dal.autocomplete import ListSelect2
 
 
-
-
 def validate_target_autocomplete(value):
     try:
         value = int(value)

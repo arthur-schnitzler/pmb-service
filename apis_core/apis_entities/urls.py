@@ -6,6 +6,7 @@ from .autocomplete3 import (
     GenericNetworkEntitiesAutocomplete,
 )
 
+from . import htmx_views
 from .views2 import GenericEntitiesCreateStanbolView
 from .list_view_person import PersonListView
 from .list_view_work import WorkListView
@@ -13,9 +14,15 @@ from .list_view_place import PlaceListView
 from .list_view_institution import InstitutionListView
 from .list_view_event import EventListView
 
+
 app_name = "apis_entities"
 
 urlpatterns = [
+    path(
+        "foo/",
+        htmx_views.FooBarView.as_view(),
+        name="foobar",
+    ),
     path(
         "entity/<entity>/<int:pk>/edit",
         views2.GenericEntitiesEditView.as_view(),
