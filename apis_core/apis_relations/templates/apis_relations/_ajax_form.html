@@ -1,6 +1,6 @@
 
 <div id="div_{{type1}}{{InstanceID}}">
-<form action="/apis/relations/ajax/save/place/PlacePlaceForm/{{ SiteID }}/" enctype="multipart/form-data" method="post" id="form_{{type1}}" class="form ajax_form {{url2}}" data-replace="#message-form">
+<form action="/apis/relations/ajax/save/{{ entity_type }}/{{ form_name }}/{{ SiteID }}/" enctype="multipart/form-data" method="post" id="form_{{type1}}" class="form ajax_form {{url2}}" data-replace="#message-form">
     {% load crispy_forms_tags %}
     {% crispy form form.helper %}
     <div class="form-actions">

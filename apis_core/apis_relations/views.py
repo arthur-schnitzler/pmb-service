@@ -2,6 +2,8 @@ import json
 import re
 import inspect
 
+from icecream import ic
+
 from django.template import loader
 
 from django.conf import settings
@@ -177,7 +179,7 @@ def get_form_ajax(request):
     form_context = {
                 "entity_type": entity_type_str,
                 "form": form,
-                "type1": FormName,
+                "form_name": FormName,
                 "url2": "save_ajax_" + FormName,
                 "button_text": ButtonText,
                 "ObjectID": ObjectID,
@@ -201,6 +203,9 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
         instance_id = ObjectID
     entity_type_str = entity_type
     entity_type = AbstractEntity.get_entity_class_of_name(entity_type)
+    ic(entity_type)
+    ic(kind_form)
+    ic(SiteID)
 
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)?(Highlighter)?Form", kind_form)
     form_dict = {"data": request.POST, "entity_type": entity_type, "request": request}
@@ -222,9 +227,6 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     else:
         form_class = form_class_dict[kind_form]
         form = form_class(**form_dict)
-    print("form.is_valid()#################")
-    print(form.is_valid())
-    print(form.errors)
     if form.is_valid():
         site_instance = entity_type.objects.get(pk=SiteID)
         hl_text = None

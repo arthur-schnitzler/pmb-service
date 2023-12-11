@@ -78,6 +78,7 @@ class GenericRelationForm(forms.ModelForm):
         :return: instance of relation
         """
         cd = self.cleaned_data
+        print(cd)
         if instance:
             x = self.relation_form.objects.get(pk=instance)
         else:
@@ -87,10 +88,12 @@ class GenericRelationForm(forms.ModelForm):
         x.end_date_written = cd["end_date_written"]
         x.notes = cd["notes"]
         x.references = cd["references"]
+        print(self.rel_accessor)
         setattr(x, self.rel_accessor[3], site_instance)
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd["target"])
         if not t1:
+            print(self.rel_accessor)
             t1 = RDFParser(cd["target"], self.rel_accessor[0]).get_or_create()
         setattr(x, self.rel_accessor[2], t1)
         if commit:
