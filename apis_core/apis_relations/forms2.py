@@ -348,8 +348,6 @@ class GenericRelationForm(forms.ModelForm):
                     instance.relation_type.id,
                     instance.relation_type.label_reverse,
                 )
-        if highlighter:
-            css_notes = "HL"
 
         self.helper.include_media = False
         self.helper.layout = Layout(
@@ -369,12 +367,6 @@ class GenericRelationForm(forms.ModelForm):
                 )
             ),
         )
-
-        if highlighter:
-            self.fields["HL_start"] = forms.IntegerField(widget=forms.HiddenInput)
-            self.fields["HL_end"] = forms.IntegerField(widget=forms.HiddenInput)
-            self.fields["HL_text_id"] = forms.CharField(widget=forms.HiddenInput)
-            self.helper.layout.extend(["HL_start", "HL_end", "HL_text_id"])
 
         if instance != None:
 

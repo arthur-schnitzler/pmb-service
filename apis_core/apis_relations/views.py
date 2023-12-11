@@ -2,6 +2,8 @@ import json
 import re
 import inspect
 
+from django.template import loader
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
@@ -35,18 +37,13 @@ from .models import (
     PlaceWork,
     EventWork,
     WorkWork,
+    EventEvent
 )
 
 # from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]
-
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.highlighter import highlight_text_new
-    from apis_highlighter import forms as highlighter_form_module
-
-    form_module_list.append(highlighter_form_module)
 
 
 def turn_form_modules_into_dict(form_module_list):
@@ -83,6 +80,7 @@ form_class_dict = turn_form_modules_into_dict(form_module_list)
 # Model-classes must be registered together with their ModelForm-classes
 registered_forms = {
     "WorkWorkForm": [WorkWork, Work, Work],
+    "EventEventForm": [EventEvent, Event, Event],
     "PersonPlaceForm": [PersonPlace, Person, Place],
     "PersonPlaceHighlighterForm": [PersonPlace, Person, Place],
     "PersonPersonForm": [PersonPerson, Person, Person],
@@ -123,7 +121,15 @@ def get_form_ajax(request):
     ButtonText = request.POST.get("ButtonText")
     ObjectID = request.POST.get("ObjectID")
     entity_type_str = request.POST.get("entity_type")
-    print(FormName)
+    print("###########################")
+    print("###########################")
+    print(f"FormName: {FormName}")
+    print(f"SiteID: {SiteID}")
+    print(f"ButtonText: {ButtonText}")
+    print(f"ObjectID: {ObjectID}")
+    print(f"entity_type_str: {entity_type_str}")
+    print("###########################")
+    print("###########################")
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)(Highlighter)?Form", FormName)
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
     if FormName and form_match:
@@ -167,11 +173,8 @@ def get_form_ajax(request):
         form_class = form_class_dict[FormName]
         form = form_class(**form_dict)
     tab = FormName[:-4]
-    data = {
-        "tab": tab,
-        "form": render_to_string(
-            "apis_relations/_ajax_form.html",
-            {
+    template = loader.get_template("apis_relations/_ajax_form.html")
+    form_context = {
                 "entity_type": entity_type_str,
                 "form": form,
                 "type1": FormName,
@@ -179,11 +182,10 @@ def get_form_ajax(request):
                 "button_text": ButtonText,
                 "ObjectID": ObjectID,
                 "SiteID": SiteID,
-            },
-        ),
-    }
+            }
 
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(template.render(form_context, request))
+    # return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @login_required

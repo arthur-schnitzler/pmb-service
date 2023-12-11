@@ -40,11 +40,13 @@
                     <div id="tab_{{ obj.2 }}">
                         {% render_table obj.1 %}
                         <button
-                            hx-get="{% url 'apis_core:apis_entities:foobar' %}"
+                            hx-post="/apis/relations/ajax/get/"
                             hx-swap="outerHTML"
                             hx-vals='{
-                                "instance_id": "{{ instance.id }}",
-                                "relation_type": "{{ obj.2 }}"
+                                "SiteID": "{{ instance.id }}",
+                                "FormName": "{{ obj.2 }}Form",
+                                "ButtonText": "create",
+                                "entity_type": "{{ entity_type }}"
                             }'>
                             Click Me
                           </button>
