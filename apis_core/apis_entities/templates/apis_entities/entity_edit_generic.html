@@ -46,17 +46,20 @@
                     <div id="tableDiv__{{ obj.2 }}">
                         {% render_table obj.1 %}
                     </div>
-                    <div id="InitCreateFormDiv"
-                        hx-trigger="revealed"
+                    <div id="editFormDiv_{{ obj.2 }}"></div>
+                    <button class="btn"
+                        type="button"
+                        hx-trigger="click"
+                        hx-target="#editFormDiv_{{ obj.2 }}"
                         hx-post="/apis/relations/ajax/get/"
                         hx-vals='{
                             "SiteID": "{{ instance.id }}",
                             "FormName": "{{ obj.2 }}Form",
-                            "ButtonText": "create",
+                            "ButtonText": "speichern",
                             "entity_type": "{{ entity_type }}"
                         }'>
-                        create new instance
-                    </div>
+                        <i class="bi bi-plus-lg" title="neue Verbindung anlegen"></i>
+                    </button>
                 </div>
             {% endfor %}
         </div>

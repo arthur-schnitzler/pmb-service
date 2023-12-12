@@ -78,7 +78,6 @@ class GenericRelationForm(forms.ModelForm):
         :return: instance of relation
         """
         cd = self.cleaned_data
-        print(cd)
         if instance:
             x = self.relation_form.objects.get(pk=instance)
         else:
@@ -88,17 +87,14 @@ class GenericRelationForm(forms.ModelForm):
         x.end_date_written = cd["end_date_written"]
         x.notes = cd["notes"]
         x.references = cd["references"]
-        print(self.rel_accessor)
         setattr(x, self.rel_accessor[3], site_instance)
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd["target"])
         if not t1:
-            print(self.rel_accessor)
             t1 = RDFParser(cd["target"], self.rel_accessor[0]).get_or_create()
         setattr(x, self.rel_accessor[2], t1)
         if commit:
             x.save()
-        print("saved: {}".format(x))
         return x
 
     def get_text_id(self):
@@ -120,8 +116,8 @@ class GenericRelationForm(forms.ModelForm):
         )
         prefix = prefix.group(1) + prefix.group(2) + "-"
         if form_match.group(1) == form_match.group(2):
-            dic_a = {"related_" + entity_type.lower() + "A": site_instance}
-            dic_b = {"related_" + entity_type.lower() + "B": site_instance}
+            dic_a = {"related_" + entity_type.lower() + "a": site_instance}
+            dic_b = {"related_" + entity_type.lower() + "b": site_instance}
             if "apis_highlighter" in settings.INSTALLED_APPS:
                 objects = self.relation_form.objects.filter_ann_proj(
                     request=request
@@ -315,7 +311,7 @@ class GenericRelationForm(forms.ModelForm):
                 help_text=help_text_target,
             )
         else:
-            print("no hit rel_accessor")
+            pass
         if instance and instance.id:
             self.fields["target"].choices = [
                 (

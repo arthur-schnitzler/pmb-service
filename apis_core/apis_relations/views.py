@@ -1,14 +1,12 @@
-import json
 import re
 import inspect
 
-from icecream import ic
 from apis_core.apis_metainfo.models import TempEntityClass
 from django.template import loader
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import HttpResponse, Http404
 from apis_core.apis_relations import forms as relation_form_module
 
 from apis_core.apis_entities.models import (
@@ -37,7 +35,7 @@ from .models import (
     PlaceWork,
     EventWork,
     WorkWork,
-    EventEvent
+    EventEvent,
 )
 
 # from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
@@ -121,15 +119,6 @@ def get_form_ajax(request):
     ButtonText = request.POST.get("ButtonText")
     ObjectID = request.POST.get("ObjectID")
     entity_type_str = request.POST.get("entity_type")
-    print("###########################")
-    print("###########################")
-    print(f"FormName: {FormName}")
-    print(f"SiteID: {SiteID}")
-    print(f"ButtonText: {ButtonText}")
-    print(f"ObjectID: {ObjectID}")
-    print(f"entity_type_str: {entity_type_str}")
-    print("###########################")
-    print("###########################")
     relation_name = FormName.replace("Form", "")
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)(Highlighter)?Form", FormName)
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
@@ -173,18 +162,17 @@ def get_form_ajax(request):
     else:
         form_class = form_class_dict[FormName]
         form = form_class(**form_dict)
-    tab = FormName[:-4]
     template = loader.get_template("apis_relations/_ajax_form.html")
     form_context = {
-                "entity_type": entity_type_str,
-                "form": form,
-                "form_name": FormName,
-                "relation_name": relation_name,
-                "url2": "save_ajax_" + FormName,
-                "button_text": ButtonText,
-                "ObjectID": ObjectID,
-                "SiteID": SiteID,
-            }
+        "entity_type": entity_type_str,
+        "form": form,
+        "form_name": FormName,
+        "relation_name": relation_name,
+        "url2": "save_ajax_" + FormName,
+        "button_text": ButtonText,
+        "ObjectID": ObjectID,
+        "SiteID": SiteID,
+    }
 
     return HttpResponse(template.render(form_context, request))
 
@@ -196,10 +184,7 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
         raise Http404
     entity_type_str = entity_type
     entity_type = AbstractEntity.get_entity_class_of_name(entity_type)
-    ic(entity_type)
-    ic(kind_form)
-    ic(SiteID)
-
+    object_id = ObjectID
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)?(Highlighter)?Form", kind_form)
     form_dict = {"data": request.POST, "entity_type": entity_type, "request": request}
 
@@ -218,8 +203,8 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     if form.is_valid():
         site_instance = entity_type.objects.get(pk=SiteID)
 
-        if ObjectID:
-            form.save(instance=ObjectID, site_instance=site_instance)
+        if object_id:
+            form.save(instance=object_id, site_instance=site_instance)
         else:
             form.save(site_instance=site_instance)
         if test_form_relations.count() > 0:

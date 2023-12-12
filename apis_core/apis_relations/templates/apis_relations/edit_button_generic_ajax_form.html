@@ -1,14 +1,14 @@
 {% load apis_helpers %}
 <a
     hx-trigger="click"
-    hx-target="#InitCreateFormDiv"
     hx-post="/apis/relations/ajax/get/"
+    hx-target="#editFormDiv_{{ record|content_type }}"
     hx-vals='{
         "FormName": "{{ record|content_type }}Form",
-        "SiteId": "{{ site_id }}",
-        "ObjectId": "{% if record.relation_pk %}{{record.relation_pk}}{% else %}{{ record.pk}}{% endif %}",
+        "SiteID": "{{ site_id }}",
+        "ObjectID": "{% if record.relation_pk %}{{record.relation_pk}}{% else %}{{ record.pk}}{% endif %}",
         "entity_type": "{{ entity_type }}",
-        "ButtonText": "edit"
+        "ButtonText": "speichern"
     }'>
     edit
 </a>
