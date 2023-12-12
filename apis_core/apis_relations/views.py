@@ -196,13 +196,6 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     """Tests validity and saves AjaxForms, returns them when validity test fails"""
     if kind_form not in registered_forms.keys():
         raise Http404
-
-    button_text = "create/modify"
-
-    if not ObjectID:
-        instance_id = ""
-    else:
-        instance_id = ObjectID
     entity_type_str = entity_type
     entity_type = AbstractEntity.get_entity_class_of_name(entity_type)
     ic(entity_type)
@@ -217,26 +210,20 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
         app_label="apis_relations",
     )
     tab = re.match(r"(.*)Form", kind_form).group(1)
-    call_function = "EntityRelationForm_response"
     if test_form_relations.count() > 0:
         relation_form = test_form_relations[0].model_class()
         form_dict["relation_form"] = relation_form
-        if form_match.group(3) == "Highlighter":
-            form_dict["highlighter"] = True
-            tab = form_match.group(1) + form_match.group(2)
-            call_function = "HighlForm_response"
         form = GenericRelationForm(**form_dict)
     else:
         form_class = form_class_dict[kind_form]
         form = form_class(**form_dict)
     if form.is_valid():
         site_instance = entity_type.objects.get(pk=SiteID)
-        hl_text = None
+
         if ObjectID:
-            instance = form.save(instance=ObjectID, site_instance=site_instance)
+            form.save(instance=ObjectID, site_instance=site_instance)
         else:
-            instance = form.save(site_instance=site_instance)
-        right_card = True
+            form.save(site_instance=site_instance)
         if test_form_relations.count() > 0:
             table_html = form.get_html_table(
                 entity_type_str, request, site_instance, form_match
@@ -249,27 +236,10 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             table_html = LabelTableEdit(
                 data=site_instance.label_set.all(), prefix="IL-"
             )
-        elif tab == "PersonResolveUri":
-            table_html = EntityUriTable(
-                Uri.objects.filter(entity=site_instance), prefix="PURI-"
-            )
-        if instance:
-            instance2 = instance.get_web_object()
-        else:
-            instance2 = None
         if table_html:
             table_html2 = table_html.as_html(request)
         else:
             table_html2 = None
-        data = {
-            "test": True,
-            "tab": tab,
-            "call_function": call_function,
-            "instance": instance2,
-            "table_html": table_html2,
-            "text": hl_text,
-            "right_card": right_card,
-        }
         return HttpResponse(table_html2)
     else:
         template = loader.get_template("apis_relations/_ajax_form.html")
