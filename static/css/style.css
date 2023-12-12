@@ -9,6 +9,9 @@
     --uri: #e80d0d;
 }
 
+.select2-container .select2-selection--single {
+    min-height: 2.2rem;
+}
 
 a {
     color: var(--pmb);

@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ["*"]
 
 APIS_LIST_VIEWS_ALLOWED = True
 APIS_DETAIL_VIEWS_ALLOWED = True
-
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 
 # Application definition
 
