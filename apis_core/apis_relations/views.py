@@ -3,14 +3,12 @@ import re
 import inspect
 
 from icecream import ic
-
+from apis_core.apis_metainfo.models import TempEntityClass
 from django.template import loader
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse, Http404
-from django.template.loader import render_to_string
+from django.http import HttpResponse, Http404, JsonResponse
 from apis_core.apis_relations import forms as relation_form_module
 
 from apis_core.apis_entities.models import (
@@ -244,3 +242,10 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     else:
         template = loader.get_template("apis_relations/_ajax_form.html")
         return HttpResponse(template.render({"form": form}, request))
+
+
+@login_required
+def delete_relation_view(request, relation_id):
+    instance = TempEntityClass.objects.get(id=relation_id)
+    instance.delete()
+    return HttpResponse(instance.id)

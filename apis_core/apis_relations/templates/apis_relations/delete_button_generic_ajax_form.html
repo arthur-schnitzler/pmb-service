@@ -1,2 +1,7 @@
-{% load apis_helpers %}
-<a id="tempEntity_{% if record.relation_pk %}{{ record.relation_pk }}{% else %}{{ record.pk }}{% endif %}" class="reldelete" aria-label="Left Align" onclick=DeleteTempEntity('{% if record.relation_pk %}{{record.relation_pk}}{% else %}{{ record.pk }}{% endif %}',"relations/{{ record|content_type|lower}}")>LÖSCHEN!!!!</a>
+<button 
+    class="btn btn-danger"
+    hx-get="/apis/relations/delete/{{ record.pk }}/"
+    hx-target="closest tr" hx-swap="outerHTML swap:1s"
+    >
+    <i class="bi bi-trash"></i>
+</button>
