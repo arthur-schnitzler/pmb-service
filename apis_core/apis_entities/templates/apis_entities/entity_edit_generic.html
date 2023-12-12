@@ -36,21 +36,20 @@
             <h3 class="text-center">Edit the Relations</h3>
             {% for obj in right_card %}
                 <div class="pt-2">
-                    <h4 class="card-title">{{ obj.0 }}</h4>
-                    <div id="tab_{{ obj.2 }}">
+                    <h4>{{ obj.0 }}</h4>
+                    <div id="tableDiv__{{ obj.2 }}">
                         {% render_table obj.1 %}
-                        <button
-                            hx-post="/apis/relations/ajax/get/"
-                            hx-swap="outerHTML"
-                            hx-vals='{
-                                "SiteID": "{{ instance.id }}",
-                                "FormName": "{{ obj.2 }}Form",
-                                "ButtonText": "create",
-                                "entity_type": "{{ entity_type }}"
-                            }'>
-                            Click Me
-                          </button>
-                    
+                    </div>
+                    <div id="InitCreateFormDiv"
+                        hx-trigger="revealed"
+                        hx-post="/apis/relations/ajax/get/"
+                        hx-vals='{
+                            "SiteID": "{{ instance.id }}",
+                            "FormName": "{{ obj.2 }}Form",
+                            "ButtonText": "create",
+                            "entity_type": "{{ entity_type }}"
+                        }'>
+                        create new instance
                     </div>
                 </div>
             {% endfor %}
