@@ -1,6 +1,6 @@
 
 <div id="div_{{type1}}{{InstanceID}}">
-<form action="/apis/relations/ajax/save/{{ entity_type }}/{{ form_name }}/{{ SiteID }}/" enctype="multipart/form-data" method="post" id="form_{{type1}}" class="form ajax_form {{url2}}" data-replace="#message-form">
+<form hx-post="/apis/relations/ajax/save/{{ entity_type }}/{{ form_name }}/{{ SiteID }}/" hx-target="#tab_{{ relation_name }}"">
     {% load crispy_forms_tags %}
     {% crispy form form.helper %}
     <div class="form-actions">

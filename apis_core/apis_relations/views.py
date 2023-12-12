@@ -132,6 +132,7 @@ def get_form_ajax(request):
     print(f"entity_type_str: {entity_type_str}")
     print("###########################")
     print("###########################")
+    relation_name = FormName.replace("Form", "")
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)(Highlighter)?Form", FormName)
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
     if FormName and form_match:
@@ -180,6 +181,7 @@ def get_form_ajax(request):
                 "entity_type": entity_type_str,
                 "form": form,
                 "form_name": FormName,
+                "relation_name": relation_name,
                 "url2": "save_ajax_" + FormName,
                 "button_text": ButtonText,
                 "ObjectID": ObjectID,
@@ -268,23 +270,7 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             "text": hl_text,
             "right_card": right_card,
         }
+        return HttpResponse(table_html2)
     else:
-        data = {
-            "test": False,
-            "call_function": call_function,
-            "DivID": f"div_{kind_form}{instance_id}",
-            "form": render_to_string(
-                "apis_relations/_ajax_form.html",
-                context={
-                    "entity_type": entity_type_str,
-                    "form": form,
-                    "type1": kind_form,
-                    "url2": "save_ajax_" + kind_form,
-                    "button_text": button_text,
-                    "ObjectID": ObjectID,
-                    "SiteID": SiteID,
-                },
-                request=request,
-            ),
-        }
-    return HttpResponse(json.dumps(data), content_type="application/json")
+        template = loader.get_template("apis_relations/_ajax_form.html")
+        return HttpResponse(template.render({"form": form}, request))
