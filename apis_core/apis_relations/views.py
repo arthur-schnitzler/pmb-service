@@ -248,4 +248,4 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
 def delete_relation_view(request, relation_id):
     instance = TempEntityClass.objects.get(id=relation_id)
     instance.delete()
-    return HttpResponse(instance.id)
+    return HttpResponse(f"<small>gelöschte Verbindung: {relation_id}</small> ")
