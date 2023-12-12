@@ -1,5 +1,4 @@
 import django_tables2 as tables
-from django.conf import settings
 from django.db.models import Case, When
 from django_tables2.utils import A
 
@@ -103,6 +102,7 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
     # create all variables which save the foreign key fields which are different for each relation class
     entity_class_name = entity_instance.__class__.__name__.lower()
+    
     related_entity_class_name_a = (
         relation_class.get_related_entity_classa().__name__.lower()
     )
@@ -309,7 +309,10 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
                 # edit button
                 self.base_columns["edit"] = tables.TemplateColumn(
-                    template_name="apis_relations/edit_button_generic_ajax_form.html"
+                    template_name="apis_relations/edit_button_generic_ajax_form.html", extra_context={
+                        "site_id": entity_instance.id,
+                        "entity_type": entity_instance.__class__.__name__.lower()
+                    }
                 )
 
                 super().__init__(*args, **kwargs)
