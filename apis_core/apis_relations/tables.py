@@ -394,7 +394,8 @@ class LabelTableEdit(LabelTableBase):
     """
 
     edit = tables.TemplateColumn(
-        template_name="apis_relations/edit_button_persLabel_ajax_form.html"
+        template_name="apis_relations/edit_button_persLabel_ajax_form.html",
+        orderable=False
     )
 
     class Meta(LabelTableBase.Meta):

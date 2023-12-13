@@ -1,1 +1,14 @@
-<button type='button' class='btn btn-primary btn-sm reledit' onclick=GetFormAjax('PersonLabelForm',"{{ record.pk }}")>Edit</button>
+<a
+    class="btn"
+    hx-trigger="click"
+    hx-post="/apis/relations/ajax/get/"
+    hx-target="#editFormDiv_PersonLabel"
+    hx-vals='{
+        "FormName": "PersonLabelForm",
+        "SiteID": "{{ re }}",
+        "ObjectID": "{{ record.pk }}",
+        "entity_type": "{{ entity_type }}",
+        "ButtonText": "speichern"
+    }'>
+    <i class="bi bi-pencil-square"></i>
+</a>

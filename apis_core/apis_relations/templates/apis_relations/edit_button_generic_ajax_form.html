@@ -1,5 +1,6 @@
 {% load apis_helpers %}
 <a
+    class="btn"
     hx-trigger="click"
     hx-post="/apis/relations/ajax/get/"
     hx-target="#editFormDiv_{{ record|content_type }}"
@@ -10,5 +11,5 @@
         "entity_type": "{{ entity_type }}",
         "ButtonText": "speichern"
     }'>
-    edit
+    <i class="bi bi-pencil-square"></i>
 </a>

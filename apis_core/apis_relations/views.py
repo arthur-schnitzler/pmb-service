@@ -116,6 +116,7 @@ def get_form_ajax(request):
 
     FormName = request.POST.get("FormName")
     SiteID = request.POST.get("SiteID")
+    print(SiteID)
     ButtonText = request.POST.get("ButtonText")
     ObjectID = request.POST.get("ObjectID")
     entity_type_str = request.POST.get("entity_type")
@@ -156,8 +157,6 @@ def get_form_ajax(request):
         form_dict["relation_form"] = "{}{}".format(
             form_match.group(1), form_match.group(2)
         )
-        if form_match.group(3) == "Highlighter":
-            form_dict["highlighter"] = True
         form = GenericRelationForm(**form_dict)
     else:
         form_class = form_class_dict[FormName]

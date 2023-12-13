@@ -1,6 +1,5 @@
 <form hx-post="/apis/relations/ajax/save/{{ entity_type }}/{{ form_name }}/{{ SiteID }}{% if ObjectID %}/{{ ObjectID }}{% endif %}/" hx-target="#tableDiv__{{ relation_name }}" hx-swap="innerHTML">
     {% load crispy_forms_tags %}
     {% crispy form form.helper %}
-
         <button type="submit" class="btn btn-primary">{{ button_text }}</button>
 </form>
