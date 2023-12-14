@@ -369,24 +369,7 @@ class LabelTableBase(tables.Table):
         attrs = {
             "class": "table table-hover table-striped table-condensed",
             "id": "PL_conn",
-            "style": "table-layout: fixed;",
         }
-
-    def __init__(self, **kwargs):
-        self.base_columns["start_date_written"].attrs = {
-            "th": {"class": "d-none d-lg-table-cell"},
-            "td": {"class": "d-none d-lg-table-cell"},
-        }
-        self.base_columns["end_date_written"].attrs = {
-            "th": {"class": "d-none d-lg-table-cell"},
-            "td": {"class": "d-none d-lg-table-cell"},
-        }
-        self.base_columns["isocode_639_3"].attrs = {
-            "th": {"class": "d-none d-lg-table-cell"},
-            "td": {"class": "d-none d-lg-table-cell"},
-        }
-        super().__init__(**kwargs)
-
 
 class LabelTableEdit(LabelTableBase):
     """
@@ -394,7 +377,11 @@ class LabelTableEdit(LabelTableBase):
     """
 
     edit = tables.TemplateColumn(
-        template_name="apis_relations/edit_button_persLabel_ajax_form.html",
+        template_name="apis_relations/edit_button_label_form.html",
+        orderable=False
+    )
+    delete = tables.TemplateColumn(
+        template_name="apis_relations/delete_button_label_form.html",
         orderable=False
     )
 
