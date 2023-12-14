@@ -14,7 +14,7 @@
         border-right: 1px solid var(--{{ entity_type }});
     }
 
-    h1, h2 {
+    h1, h2, h3 {
         color: var(--{{ entity_type }});
     }
     tr.htmx-swapping td {
@@ -37,7 +37,7 @@
             {% endif %}
         </div>
         <div class="col-md-8">
-            <h2 style="text-align: center;">
+            <h2 class="display-4 text-center">
                 {% if object.get_listview_url %}
                     <a href="{{ object.get_listview_url }}">
                         <small>{{ entity_type }}s</small>
@@ -47,6 +47,7 @@
                 {% endif %}
                 {{ object }}
                 {% if user.is_authenticated %}
+                <h2 class="text-center">
                     {% if object.get_edit_url %}
                             <a href="{{ object.get_edit_url }}">
                                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
@@ -64,6 +65,7 @@
                                 </svg>
                             </a>
                     {% endif %}
+                </h2>
                 {% endif %}
             </h2>
         </div>
@@ -81,8 +83,8 @@
     </div>
    
     <div class="row">
-        <div class="col-md-4">
-            <h3>
+        <div class="col-md-5">
+            <h3 class="text-center">
                 General Info
                 <a href="/entity/{{object.id}}/?data-view=true">
                     <small>
@@ -105,18 +107,23 @@
                         {{ object.name }}
                     </td>
                 </tr>
+                {% if no_merge_labels %}
                 <tr>
                     <th>
                         Labels
                     </th>
                     <td>
+                        <ul >
                         {% for x in no_merge_labels %}
-                            <li>
+                            <li class="list-unstyled">
                                 <small>{{ x.label_type }}: </small>{{ x.label }}
                             </li>
                         {% endfor %}
+                        </ul>
+                        
                     </td>
                 </tr>
+                {% endif %}
                 <tr>
                     <th>
                         ID
@@ -162,6 +169,7 @@
             {% endblock info-table %}
             {% block info-metadata %}
                 <table class="table">
+                    {% if object.collection.all %}
                     <tr>
                         <th>
                             Collection(s)
@@ -174,6 +182,7 @@
                             {% endfor %}
                         </td>
                     </tr>
+                    {% endif %}
                     <tr>
                         <th>
                             Uri(s)
@@ -209,8 +218,8 @@
             {% block left-pane-additional %}
             {% endblock left-pane-additional %}
         </div>
-        <div class="col-md-8">
-            <h3>Relations</h3>
+        <div class="col-md-7">
+            <h3 class="text-center">Relations</h3>
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}

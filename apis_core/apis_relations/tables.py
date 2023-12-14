@@ -162,7 +162,7 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
             # This attrs dictionary I took over from the tables implementation before. No idea if and where it would be needed.
             attrs = {
-                "class": "table table-hover table-striped table-condensed",
+                "class": "table table-hover table-condensed",
                 "id": related_entity_class_name_a.title()[:2]
                 + related_entity_class_name_b.title()[:2]
                 + "_conn",
@@ -338,7 +338,7 @@ class EntityUriTable(tables.Table):
         sequence = ("delete", "uri")
         # add class="paleblue" to <table> tag
         attrs = {
-            "class": "table table-hover table-striped table-condensed",
+            "class": "table table-hover table-condensed",
             "id": "PURI_conn",
         }
 
@@ -372,7 +372,7 @@ class LabelTableBase(tables.Table):
 
         # add class="paleblue" to <table> tag
         attrs = {
-            "class": "table table-hover table-striped table-condensed",
+            "class": "table table-hover table-condensed",
             "id": "PL_conn",
         }
 

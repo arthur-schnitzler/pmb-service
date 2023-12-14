@@ -1,9 +1,7 @@
 {% extends "apis_entities/detail_views/entity_detail_generic.html" %}
-{% block titel %} {{ object.id }} {% endblock %}
-
 
     {% block info-table %}
-    <table class="table table-bordered table-hover">
+    <table class="table">
         <tr>
             <th>
                 Name
@@ -12,18 +10,21 @@
                 {{ object.name }}, {{ object.first_name }}
             </td>
         </tr>
+        {% if no_merge_labels %}
         <tr>
             <th>
-                Alternative Names
+                Alternative Namen
             </th>
             <td>
                 {% for x in no_merge_labels %}
-                    <li>
+                    <li class="list-unstyled">
                         <small>{{ x.label_type }}: </small>{{ x.label }}
                     </li>
                 {% endfor %}
+                
             </td>
         </tr>
+        {% endif %}
         <tr>
             <th>
                 ID
