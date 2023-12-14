@@ -5,10 +5,10 @@
     hx-target="#editFormDiv_PersonLabel"
     hx-vals='{
         "FormName": "PersonLabelForm",
-        "SiteID": "{{ re }}",
+        "SiteID": "{{ record.temp_entity.id }}",
         "ObjectID": "{{ record.pk }}",
         "entity_type": "{{ entity_type }}",
         "ButtonText": "speichern"
     }'>
-    <i class="bi bi-pencil-square"></i>
+    <i class="bi bi-pencil-square"> </i>
 </a>
