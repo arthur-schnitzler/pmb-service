@@ -1,12 +1,10 @@
 from django.conf import settings
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.template.loader import select_template
 from django.views import View
 from django_tables2 import RequestConfig
-from django.urls import reverse
 from django.shortcuts import redirect
 
 from apis_core.apis_labels.models import Label
@@ -15,10 +13,8 @@ from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import (
     get_generic_relations_table,
     LabelTableBase,
-)  # , EntityDetailViewLabelTable
-from apis_core.helper_functions.utils import access_for_all
+)
 from .models import TempEntityClass, BASE_URI
-from .views import get_highlighted_texts
 
 
 def get_object_from_pk_or_uri(request, pk):
@@ -45,12 +41,8 @@ def get_object_from_pk_or_uri(request, pk):
         return instance
 
 
-class GenericEntitiesDetailView(UserPassesTestMixin, View):
+class GenericEntitiesDetailView(View):
     # login_url = '/accounts/login/'
-
-    def test_func(self):
-        access = access_for_all(self, viewtype="detail")
-        return access
 
     def get(self, request, *args, **kwargs):
         entity = kwargs["entity"].lower()
@@ -109,7 +101,6 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
                 )
             )
         object_lod = Uri.objects.filter(entity=instance)
-        object_texts, ann_proj_form = get_highlighted_texts(request, instance)
         object_labels = Label.objects.filter(temp_entity=instance)
         tb_label = LabelTableBase(data=object_labels, prefix=entity.title()[:2] + "L-")
         tb_label_open = request.GET.get("PL-page", None)
@@ -121,26 +112,6 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
                 "apis_entities/detail_views/entity_detail_generic.html",
             ]
         )
-        tei = getattr(settings, "APIS_TEI_TEXTS", [])
-        if tei:
-            tei = set(tei) & set([x.kind.name for x in instance.text.all()])
-        ceteicean_css = getattr(settings, "APIS_CETEICEAN_CSS", None)
-        ceteicean_js = getattr(settings, "APIS_CETEICEAN_JS", None)
-        openseadragon_js = getattr(settings, "APIS_OSD_JS", None)
-        openseadragon_img = getattr(settings, "APIS_OSD_IMG_PREFIX", None)
-        iiif_field = getattr(settings, "APIS_IIIF_WORK_KIND", None)
-        if iiif_field:
-            try:
-                if "{}".format(instance.kind) == "{}".format(iiif_field):
-                    iiif = True
-                else:
-                    iiif = False
-            except AttributeError:
-                iiif = False
-        else:
-            iiif = False
-        iiif_server = getattr(settings, "APIS_IIIF_SERVER", None)
-        iiif_info_json = instance.name
         try:
             no_merge_labels = [
                 x for x in object_labels if not x.label_type.name.startswith("Legacy")
@@ -153,16 +124,6 @@ class GenericEntitiesDetailView(UserPassesTestMixin, View):
             "right_card": side_bar,
             "no_merge_labels": no_merge_labels,
             "object_lables": object_labels,
-            "object_texts": object_texts,
             "object_lod": object_lod,
-            "tei": tei,
-            "ceteicean_css": ceteicean_css,
-            "ceteicean_js": ceteicean_js,
-            "iiif": iiif,
-            "openseadragon_js": openseadragon_js,
-            "openseadragon_img": openseadragon_img,
-            "iiif_field": iiif_field,
-            "iiif_info_json": iiif_info_json,
-            "iiif_server": iiif_server,
         }
         return HttpResponse(template.render(request=request, context=context))
