@@ -13,6 +13,7 @@ from .list_view_place import PlaceListView
 from .list_view_institution import InstitutionListView
 from .list_view_event import EventListView
 
+
 app_name = "apis_entities"
 
 urlpatterns = [
@@ -60,11 +61,6 @@ urlpatterns = [
         "entity/event/list/",
         EventListView.as_view(),
         name="event_list_view",
-    ),
-    path(
-        "entity/<entity>/list/",
-        views.GenericListViewNew.as_view(),
-        name="generic_entities_list",
     ),
     path(
         "autocomplete/createstanbol/<entity>/",

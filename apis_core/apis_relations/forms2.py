@@ -24,9 +24,6 @@ from .tables import get_generic_relations_table
 
 # from dal.autocomplete import ListSelect2
 
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.models import Annotation, AnnotationProject
-
 
 def validate_target_autocomplete(value):
     try:
@@ -34,7 +31,7 @@ def validate_target_autocomplete(value):
     except ValueError:
         if value.startswith("http"):
             test = False
-            sett = yaml.load(open(APIS_RDF_URI_SETTINGS, "r"))
+            sett = yaml.safe_load(open(APIS_RDF_URI_SETTINGS, "r"))
             regx = [x["regex"] for x in sett["mappings"]]
             regx.append("http.*oeaw\.ac\.at")
             for k, v in getattr(settings, "APIS_AC_INSTANCES", {}).items():
@@ -96,29 +93,8 @@ class GenericRelationForm(forms.ModelForm):
         if not t1:
             t1 = RDFParser(cd["target"], self.rel_accessor[0]).get_or_create()
         setattr(x, self.rel_accessor[2], t1)
-        if self.highlighter:
-            an_proj = AnnotationProject.objects.get(
-                pk=int(self.request.session.get("annotation_project", 1))
-            )
-            x.published = an_proj.published
         if commit:
             x.save()
-        if self.highlighter:
-            if not commit:
-                x.save()
-            txt = Text.objects.get(pk=cd["HL_text_id"][5:])
-            a = Annotation(
-                start=cd["HL_start"],
-                end=cd["HL_end"],
-                text=txt,
-                user_added=self.request.user,
-                annotation_project_id=int(
-                    self.request.session.get("annotation_project", 1)
-                ),
-            )
-            a.entity_link = x
-            a.save()
-        print("saved: {}".format(x))
         return x
 
     def get_text_id(self):
@@ -140,8 +116,8 @@ class GenericRelationForm(forms.ModelForm):
         )
         prefix = prefix.group(1) + prefix.group(2) + "-"
         if form_match.group(1) == form_match.group(2):
-            dic_a = {"related_" + entity_type.lower() + "A": site_instance}
-            dic_b = {"related_" + entity_type.lower() + "B": site_instance}
+            dic_a = {"related_" + entity_type.lower() + "a": site_instance}
+            dic_b = {"related_" + entity_type.lower() + "b": site_instance}
             if "apis_highlighter" in settings.INSTALLED_APPS:
                 objects = self.relation_form.objects.filter_ann_proj(
                     request=request
@@ -152,12 +128,7 @@ class GenericRelationForm(forms.ModelForm):
             table_html = table(data=objects, prefix=prefix)
         else:
             tab_query = {"related_" + entity_type.lower(): site_instance}
-            if "apis_highlighter" in settings.INSTALLED_APPS:
-                ttab = self.relation_form.objects.filter_ann_proj(
-                    request=request
-                ).filter(**tab_query)
-            else:
-                ttab = self.relation_form.objects.filter(**tab_query)
+            ttab = self.relation_form.objects.filter(**tab_query)
             table_html = table(data=ttab, prefix=prefix)
         return table_html
 
@@ -207,32 +178,31 @@ class GenericRelationForm(forms.ModelForm):
         if lst_src_target[0] == lst_src_target[1]:
             if instance and instance.id:
                 if getattr(
-                    instance, "related_{}A_id".format(lst_src_target[0].lower())
+                    instance, "related_{}a_id".format(lst_src_target[0].lower())
                 ) == int(siteID):
                     self.rel_accessor = (
                         lst_src_target[1],
                         True,
-                        "related_{}B".format(lst_src_target[1].lower()),
-                        "related_{}A".format(lst_src_target[0].lower()),
+                        "related_{}b".format(lst_src_target[1].lower()),
+                        "related_{}a".format(lst_src_target[0].lower()),
                     )
                 else:
                     self.rel_accessor = (
                         lst_src_target[1],
                         False,
-                        "related_{}A".format(lst_src_target[1].lower()),
-                        "related_{}B".format(lst_src_target[0].lower()),
+                        "related_{}a".format(lst_src_target[1].lower()),
+                        "related_{}b".format(lst_src_target[0].lower()),
                     )
             else:
                 self.rel_accessor = (
                     lst_src_target[1],
                     True,
-                    "related_{}B".format(lst_src_target[1].lower()),
-                    "related_{}A".format(lst_src_target[0].lower()),
+                    "related_{}b".format(lst_src_target[1].lower()),
+                    "related_{}a".format(lst_src_target[0].lower()),
                 )
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
                 widget=ListSelect2(
-                    # url='/vocabularies/autocomplete/{}{}relation/normal'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_vocabularies:generic_vocabularies_autocomplete",
                         args=[
@@ -252,7 +222,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["target"] = autocomplete.Select2ListCreateChoiceField(
                 label=lst_src_target[1],
                 widget=ListSelect2(
-                    # url='/entities/autocomplete/{}'.format(lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_entities:generic_entities_autocomplete",
                         args=[lst_src_target[1].lower()],
@@ -272,7 +241,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
                 widget=ListSelect2(
-                    # url='/vocabularies/autocomplete/{}{}relation/normal'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_vocabularies:generic_vocabularies_autocomplete",
                         args=[
@@ -343,7 +311,7 @@ class GenericRelationForm(forms.ModelForm):
                 help_text=help_text_target,
             )
         else:
-            print("no hit rel_accessor")
+            pass
         if instance and instance.id:
             self.fields["target"].choices = [
                 (
@@ -379,8 +347,6 @@ class GenericRelationForm(forms.ModelForm):
                     instance.relation_type.id,
                     instance.relation_type.label_reverse,
                 )
-        if highlighter:
-            css_notes = "HL"
 
         self.helper.include_media = False
         self.helper.layout = Layout(
@@ -400,12 +366,6 @@ class GenericRelationForm(forms.ModelForm):
                 )
             ),
         )
-
-        if highlighter:
-            self.fields["HL_start"] = forms.IntegerField(widget=forms.HiddenInput)
-            self.fields["HL_end"] = forms.IntegerField(widget=forms.HiddenInput)
-            self.fields["HL_text_id"] = forms.CharField(widget=forms.HiddenInput)
-            self.helper.layout.extend(["HL_start", "HL_end", "HL_text_id"])
 
         if instance != None:
 

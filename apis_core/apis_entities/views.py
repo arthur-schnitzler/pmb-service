@@ -3,36 +3,25 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
-from django_tables2 import RequestConfig
-from django_tables2 import SingleTableView
-from django_tables2.export.views import ExportMixin
 from apis_core.apis_metainfo.models import Uri, UriCandidate, Text
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions.RDFParser import RDFParser
 from apis_core.helper_functions.stanbolQueries import retrieve_obj
 from apis_core.helper_functions.utils import (
-    access_for_all,
     access_for_all_function,
-    ENTITIES_DEFAULT_COLS,
 )
 
-from browsing.browsing_utils import GenericListView
-from .filters import get_list_filter_of_entity
 from .forms import (
-    GenericFilterFormHelper,
     NetworkVizFilterForm,
     PersonResolveUriForm,
-    GenericEntitiesStanbolForm,
 )
 from .models import Place
-from .tables import get_entities_table
+
 
 ###########################################################################
 ############################################################################
@@ -92,147 +81,6 @@ def get_highlighted_texts(request, instance):
             for x in Text.objects.filter(tempentityclass=instance)
         ]
         return object_texts, False
-
-
-############################################################################
-############################################################################
-#
-#   GenericViews
-#
-############################################################################
-############################################################################
-
-
-class GenericListViewNew(UserPassesTestMixin, ExportMixin, SingleTableView):
-    formhelper_class = GenericFilterFormHelper
-    context_filter_name = "filter"
-    paginate_by = 25
-    template_name = "browsing/generic_list.html"
-
-    def get_model(self):
-        model = ContentType.objects.get(
-            app_label__startswith="apis_", model=self.entity.lower()
-        ).model_class()
-        return model
-
-    def test_func(self):
-        access = access_for_all(self, viewtype="list")
-        if access:
-            self.request = set_session_variables(self.request)
-        return access
-
-    def get_queryset(self, **kwargs):
-        self.entity = self.kwargs.get("entity")
-        qs = (
-            ContentType.objects.get(
-                app_label__startswith="apis_", model=self.entity.lower()
-            )
-            .model_class()
-            .objects.all()
-        )
-        self.filter = get_list_filter_of_entity(self.entity.title())(
-            self.request.GET, queryset=qs
-        )
-        self.filter.form.helper = self.formhelper_class()
-        return self.filter.qs
-
-    def get_table(self, **kwargs):
-        session = getattr(self.request, "session", False)
-        entity = self.kwargs.get("entity")
-        selected_cols = self.request.GET.getlist("columns")
-        if session:
-            edit_v = self.request.session.get("edit_views", False)
-        else:
-            edit_v = False
-        if "table_fields" in settings.APIS_ENTITIES[entity.title()]:
-            default_cols = settings.APIS_ENTITIES[entity.title()]["table_fields"]
-        else:
-            default_cols = ["id", "name"]
-        default_cols = default_cols + selected_cols
-        self.table_class = get_entities_table(
-            self.entity.title(), edit_v, default_cols=default_cols
-        )
-        table = super(GenericListViewNew, self).get_table()
-        RequestConfig(
-            self.request, paginate={"page": 1, "per_page": self.paginate_by}
-        ).configure(table)
-        return table
-
-    def get_context_data(self, **kwargs):
-        model = self.get_model()
-        context = super(GenericListViewNew, self).get_context_data()
-        context[self.context_filter_name] = self.filter
-        context["entity"] = self.entity
-        print(f"#############{self.entity}")
-        context["app_name"] = "apis_entities"
-        entity = self.entity.title()
-        context["entity_create_stanbol"] = GenericEntitiesStanbolForm(self.entity)
-        context["docstring"] = "{}".format(model.__doc__)
-        if model._meta.verbose_name_plural:
-            context["class_name"] = "{}".format(model._meta.verbose_name.title())
-        else:
-            if model.__name__.endswith("s"):
-                context["class_name"] = "{}".format(model.__name__)
-            else:
-                context["class_name"] = "{}s".format(model.__name__)
-        context["create_view_link"] = None
-        context["enable_merge"] = False
-        try:
-            togg_cols = settings.APIS_ENTITIES[entity.title()]["additional_cols"]
-        except KeyError:
-            togg_cols = []
-        context["togglable_colums"] = {
-            x: x for x in [togg_cols + ENTITIES_DEFAULT_COLS][0]
-        }
-        return context
-
-    def render_to_response(self, context, **kwargs):
-        download = self.request.GET.get("sep", None)
-        if download and "browsing" in settings.INSTALLED_APPS:
-            import datetime
-            import time
-            import pandas as pd
-
-            sep = self.request.GET.get("sep", ",")
-            timestamp = datetime.datetime.fromtimestamp(time.time()).strftime(
-                "%Y-%m-%d-%H-%M-%S"
-            )
-            filename = "export_{}".format(timestamp)
-            response = HttpResponse(content_type="text/csv")
-            if context["conf_items"]:
-                conf_items = context["conf_items"]
-                try:
-                    df = pd.DataFrame(
-                        list(
-                            self.get_queryset().values_list(*[x[0] for x in conf_items])
-                        ),
-                        columns=[x[1] for x in conf_items],
-                    )
-                except AssertionError:
-                    response[
-                        "Content-Disposition"
-                    ] = 'attachment; filename="{}.csv"'.format(filename)
-                    return response
-            else:
-                response[
-                    "Content-Disposition"
-                ] = 'attachment; filename="{}.csv"'.format(filename)
-                return response
-            if sep == "comma":
-                df.to_csv(response, sep=",", index=False)
-            elif sep == "semicolon":
-                df.to_csv(response, sep=";", index=False)
-            elif sep == "tab":
-                df.to_csv(response, sep="\t", index=False)
-            else:
-                df.to_csv(response, sep=",", index=False)
-            response["Content-Disposition"] = 'attachment; filename="{}.csv"'.format(
-                filename
-            )
-            return response
-        else:
-            response = super(GenericListViewNew, self).render_to_response(context)
-            return response
 
 
 ############################################################################

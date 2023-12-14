@@ -33,31 +33,31 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'person' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:person_list_view' %}">
                                     <i class="bi bi-people apis-person"></i>
                                     Personen
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'place' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:place_list_view' %}">
                                     <i class="bi bi-map apis-place"></i>
                                     Orte
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'work' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:work_list_view' %}">
                                     <i class="bi bi-book apis-work"></i>
                                     Werke
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'event' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:event_list_view' %}">
                                     <i class="bi bi-calendar3 apis-event"></i>
                                     Ereignisse
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_entities:generic_entities_list' 'institution' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_entities:institution_list_view' %}">
                                     <i class="bi bi-building-gear apis-institution"></i>
                                     Institutionen
                                 </a>
@@ -72,9 +72,9 @@
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
-                <a href="#"><i class="bi bi-person-check"></i></a>
+                <a href="{% url 'dumper:user_logout' %}"><i class="bi bi-person-check"></i></a>
                 {% else %}
-                <a href="#"><i class="bi bi-box-arrow-in-right"></i></a>
+                <a href="{% url 'dumper:user_login' %}"><i class="bi bi-box-arrow-in-right"></i></a>
                 {% endif %}
             </div>
         </div>

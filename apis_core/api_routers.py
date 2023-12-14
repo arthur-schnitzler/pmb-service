@@ -27,10 +27,10 @@ def deep_get(dictionary, keys, default=None):
     )
 
 
-def create_query_parameters(entity):
-    print(entity)
-    for f in entity._meta.fields:
-        print(f.name, f.__class__.__name__)
+# def create_query_parameters(entity):
+#     print(entity)
+#     for f in entity._meta.fields:
+#         print(f.name, f.__class__.__name__)
 
 
 class CustomPagination(pagination.LimitOffsetPagination):

@@ -282,7 +282,6 @@ class AbstractRelation(TempEntityClass):
 
         :return: An entity instance related to the current relation instance
         """
-        print(f"{self.get_related_entity_field_namea()}")
         return getattr(self, self.get_related_entity_field_namea())
 
     def get_related_entity_instanceb(self):

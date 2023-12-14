@@ -19,11 +19,12 @@ ALLOWED_HOSTS = ["*"]
 
 APIS_LIST_VIEWS_ALLOWED = True
 APIS_DETAIL_VIEWS_ALLOWED = True
-
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 
 # Application definition
 
 INSTALLED_APPS = [
+    "apis_override_select2js",
     "dal",
     "dal_select2",
     "django.contrib.admin",
@@ -55,11 +56,14 @@ if os.environ.get("DEV"):
         "django_extensions",
     ]
 
+CSRF_USE_SESSIONS = True
+
+
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -139,7 +143,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-USE_THOUSAND_SEPARATOR = True
+USE_THOUSAND_SEPARATOR = False
 
 
 # Static files (CSS, JavaScript, Images)

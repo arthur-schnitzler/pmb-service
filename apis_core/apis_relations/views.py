@@ -1,12 +1,12 @@
-import json
 import re
 import inspect
 
-from django.conf import settings
+from apis_core.apis_metainfo.models import TempEntityClass
+from django.template import loader
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse, Http404
-from django.template.loader import render_to_string
 from apis_core.apis_relations import forms as relation_form_module
 
 from apis_core.apis_entities.models import (
@@ -35,18 +35,13 @@ from .models import (
     PlaceWork,
     EventWork,
     WorkWork,
+    EventEvent,
 )
 
 # from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]
-
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.highlighter import highlight_text_new
-    from apis_highlighter import forms as highlighter_form_module
-
-    form_module_list.append(highlighter_form_module)
 
 
 def turn_form_modules_into_dict(form_module_list):
@@ -83,6 +78,7 @@ form_class_dict = turn_form_modules_into_dict(form_module_list)
 # Model-classes must be registered together with their ModelForm-classes
 registered_forms = {
     "WorkWorkForm": [WorkWork, Work, Work],
+    "EventEventForm": [EventEvent, Event, Event],
     "PersonPlaceForm": [PersonPlace, Person, Place],
     "PersonPlaceHighlighterForm": [PersonPlace, Person, Place],
     "PersonPersonForm": [PersonPerson, Person, Person],
@@ -120,9 +116,11 @@ def get_form_ajax(request):
 
     FormName = request.POST.get("FormName")
     SiteID = request.POST.get("SiteID")
+    print(SiteID)
     ButtonText = request.POST.get("ButtonText")
     ObjectID = request.POST.get("ObjectID")
     entity_type_str = request.POST.get("entity_type")
+    relation_name = FormName.replace("Form", "")
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)(Highlighter)?Form", FormName)
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
     if FormName and form_match:
@@ -159,30 +157,23 @@ def get_form_ajax(request):
         form_dict["relation_form"] = "{}{}".format(
             form_match.group(1), form_match.group(2)
         )
-        if form_match.group(3) == "Highlighter":
-            form_dict["highlighter"] = True
         form = GenericRelationForm(**form_dict)
     else:
         form_class = form_class_dict[FormName]
         form = form_class(**form_dict)
-    tab = FormName[:-4]
-    data = {
-        "tab": tab,
-        "form": render_to_string(
-            "apis_relations/_ajax_form.html",
-            {
-                "entity_type": entity_type_str,
-                "form": form,
-                "type1": FormName,
-                "url2": "save_ajax_" + FormName,
-                "button_text": ButtonText,
-                "ObjectID": ObjectID,
-                "SiteID": SiteID,
-            },
-        ),
+    template = loader.get_template("apis_relations/_ajax_form.html")
+    form_context = {
+        "entity_type": entity_type_str,
+        "form": form,
+        "form_name": FormName,
+        "relation_name": relation_name,
+        "url2": "save_ajax_" + FormName,
+        "button_text": ButtonText,
+        "ObjectID": ObjectID,
+        "SiteID": SiteID,
     }
 
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(template.render(form_context, request))
 
 
 @login_required
@@ -190,16 +181,9 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     """Tests validity and saves AjaxForms, returns them when validity test fails"""
     if kind_form not in registered_forms.keys():
         raise Http404
-
-    button_text = "create/modify"
-
-    if not ObjectID:
-        instance_id = ""
-    else:
-        instance_id = ObjectID
     entity_type_str = entity_type
     entity_type = AbstractEntity.get_entity_class_of_name(entity_type)
-
+    object_id = ObjectID
     form_match = re.match(r"([A-Z][a-z]+)([A-Z][a-z]+)?(Highlighter)?Form", kind_form)
     form_dict = {"data": request.POST, "entity_type": entity_type, "request": request}
 
@@ -208,43 +192,24 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
         app_label="apis_relations",
     )
     tab = re.match(r"(.*)Form", kind_form).group(1)
-    call_function = "EntityRelationForm_response"
     if test_form_relations.count() > 0:
         relation_form = test_form_relations[0].model_class()
         form_dict["relation_form"] = relation_form
-        if form_match.group(3) == "Highlighter":
-            form_dict["highlighter"] = True
-            tab = form_match.group(1) + form_match.group(2)
-            call_function = "HighlForm_response"
         form = GenericRelationForm(**form_dict)
     else:
         form_class = form_class_dict[kind_form]
         form = form_class(**form_dict)
     if form.is_valid():
         site_instance = entity_type.objects.get(pk=SiteID)
-        set_ann_proj = request.session.get("annotation_project", 1)
-        entity_types_highlighter = request.session.get("entity_types_highlighter")
-        users_show = request.session.get("users_show_highlighter", None)
-        hl_text = None
-        if ObjectID:
-            instance = form.save(instance=ObjectID, site_instance=site_instance)
+
+        if object_id:
+            form.save(instance=object_id, site_instance=site_instance)
         else:
-            instance = form.save(site_instance=site_instance)
-        right_card = True
+            form.save(site_instance=site_instance)
         if test_form_relations.count() > 0:
             table_html = form.get_html_table(
                 entity_type_str, request, site_instance, form_match
             )
-        if "Highlighter" in tab or form_match.group(3) == "Highlighter":
-            hl_text = {
-                "text": highlight_text_new(
-                    form.get_text_id(),
-                    users_show=users_show,
-                    set_ann_proj=set_ann_proj,
-                    types=entity_types_highlighter,
-                )[0].strip(),
-                "id": form.get_text_id(),
-            }
         if tab == "PersonLabel":
             table_html = LabelTableEdit(
                 data=site_instance.label_set.all(), prefix="PL-"
@@ -253,62 +218,18 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
             table_html = LabelTableEdit(
                 data=site_instance.label_set.all(), prefix="IL-"
             )
-        elif tab == "PersonResolveUri":
-            table_html = EntityUriTable(
-                Uri.objects.filter(entity=site_instance), prefix="PURI-"
-            )
-
-        elif (
-            tab == "AddRelationHighlighterPerson"
-            or tab == "PlaceHighlighter"
-            or tab == "PersonHighlighter"
-            or tab == "SundayHighlighter"
-        ):
-            table_html = None
-            right_card = False
-            call_function = "PAddRelation_response"
-            instance = None
-        if instance:
-            instance2 = instance.get_web_object()
-        else:
-            instance2 = None
         if table_html:
             table_html2 = table_html.as_html(request)
         else:
             table_html2 = None
-        data = {
-            "test": True,
-            "tab": tab,
-            "call_function": call_function,
-            "instance": instance2,
-            "table_html": table_html2,
-            "text": hl_text,
-            "right_card": right_card,
-        }
+        return HttpResponse(table_html2)
     else:
-        if "Highlighter" in tab:
-            call_function = "HighlForm_response"
-        data = {
-            "test": False,
-            "call_function": call_function,
-            "DivID": "div_" + kind_form + instance_id,
-            "form": render_to_string(
-                "apis_relations/_ajax_form.html",
-                context={
-                    "entity_type": entity_type_str,
-                    "form": form,
-                    "type1": kind_form,
-                    "url2": "save_ajax_" + kind_form,
-                    "button_text": button_text,
-                    "ObjectID": ObjectID,
-                    "SiteID": SiteID,
-                },
-                request=request,
-            ),
-        }
+        template = loader.get_template("apis_relations/_ajax_form.html")
+        return HttpResponse(template.render({"form": form}, request))
 
-    # except Exception as e:
-    #     print('Error in save method')
-    #     print(e)
-    #     data = {'test': False, 'error': json.dumps(str(e))}
-    return HttpResponse(json.dumps(data), content_type="application/json")
+
+@login_required
+def delete_relation_view(request, relation_id):
+    instance = TempEntityClass.objects.get(id=relation_id)
+    instance.delete()
+    return HttpResponse(f"<small>gelöschte Verbindung: {relation_id}</small> ")

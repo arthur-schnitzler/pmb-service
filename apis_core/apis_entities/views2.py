@@ -14,12 +14,9 @@ import importlib
 
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
-from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import get_generic_relations_table, LabelTableEdit
 from .forms import get_entities_form, FullTextForm, GenericEntitiesStanbolForm
-from .views import get_highlighted_texts
-from .views import set_session_variables
 
 
 @method_decorator(login_required, name="dispatch")
@@ -29,7 +26,6 @@ class GenericEntitiesEditView(View):
         pk = kwargs["pk"]
         entity_model = AbstractEntity.get_entity_class_of_name(entity)
         instance = get_object_or_404(entity_model, pk=pk)
-        request = set_session_variables(request)
         relations = AbstractRelation.get_relation_classes_of_entity_name(
             entity_name=entity
         )
@@ -69,11 +65,6 @@ class GenericEntitiesEditView(View):
             )
         form = get_entities_form(entity.title())
         form = form(instance=instance)
-        form_text = FullTextForm(entity=entity.title(), instance=instance)
-        form_ann_agreement = False
-        apis_bibsonomy = False
-        object_lod = Uri.objects.filter(entity=instance)
-        object_texts, ann_proj_form = get_highlighted_texts(request, instance)
         object_labels = Label.objects.filter(temp_entity=instance)
         tb_label = LabelTableEdit(data=object_labels, prefix=entity.title()[:2] + "L-")
         tb_label_open = request.GET.get("PL-page", None)
@@ -81,24 +72,17 @@ class GenericEntitiesEditView(View):
         RequestConfig(request, paginate={"per_page": 10}).configure(tb_label)
         template = select_template(
             [
-                "apis_entities/{}_create_generic.html".format(entity),
-                "apis_entities/entity_create_generic.html",
+                "apis_entities/entity_edit_generic.html",
             ]
         )
         context = {
             "entity_type": entity,
             "form": form,
-            "form_text": form_text,
             "instance": instance,
             "right_card": side_bar,
-            "object_texts": object_texts,
-            "object_lod": object_lod,
-            "ann_proj_form": ann_proj_form,
-            "form_ann_agreement": form_ann_agreement,
-            "apis_bibsonomy": apis_bibsonomy,
         }
-        form_merge_with = GenericEntitiesStanbolForm(entity, ent_merge_pk=pk)
-        context["form_merge_with"] = form_merge_with
+        # form_merge_with = GenericEntitiesStanbolForm(entity, ent_merge_pk=pk)
+        # context["form_merge_with"] = form_merge_with
         return HttpResponse(template.render(request=request, context=context))
 
     def post(self, request, *args, **kwargs):

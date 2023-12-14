@@ -1,0 +1,14 @@
+<a
+    class="btn"
+    hx-trigger="click"
+    hx-post="/apis/relations/ajax/get/"
+    hx-target="#editFormDiv_PersonLabel"
+    hx-vals='{
+        "FormName": "PersonLabelForm",
+        "SiteID": "{{ record.temp_entity.id }}",
+        "ObjectID": "{{ record.pk }}",
+        "entity_type": "{{ entity_type }}",
+        "ButtonText": "speichern"
+    }'>
+    <i class="bi bi-pencil-square" title="Label: '{{ record }}' bearbeiten"> </i>
+</a>
