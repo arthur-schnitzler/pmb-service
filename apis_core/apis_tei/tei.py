@@ -355,7 +355,6 @@ class TeiEntCreator:
         )
         this_entity_texts = {t for t in this_entity.text.all() if t.text}
 
-
         # Then, check all the entity texts to see whether it's an annotated one;
         # otherwise, we'll need to include it here...
         for text in this_entity_texts:

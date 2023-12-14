@@ -102,7 +102,7 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
     # create all variables which save the foreign key fields which are different for each relation class
     entity_class_name = entity_instance.__class__.__name__.lower()
-    
+
     related_entity_class_name_a = (
         relation_class.get_related_entity_classa().__name__.lower()
     )
@@ -288,7 +288,7 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 """
 
                 # This fields list also defines the order of the elements.
-                fields = ["delete"] + RelationTableBase.Meta.fields + ["edit"]
+                fields = RelationTableBase.Meta.fields + ["edit", "delete"]
 
                 # again reuse the fields list for ordering
                 sequence = tuple(fields)
@@ -304,15 +304,20 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
                 # delete button
                 self.base_columns["delete"] = tables.TemplateColumn(
-                    template_name="apis_relations/delete_button_generic_ajax_form.html"
+                    template_name="apis_relations/delete_button_generic_ajax_form.html",
+                    orderable=False,
+                    verbose_name="Löschen",
                 )
 
                 # edit button
                 self.base_columns["edit"] = tables.TemplateColumn(
-                    template_name="apis_relations/edit_button_generic_ajax_form.html", extra_context={
+                    template_name="apis_relations/edit_button_generic_ajax_form.html",
+                    orderable=False,
+                    verbose_name="Bearbeiten",
+                    extra_context={
                         "site_id": entity_instance.id,
-                        "entity_type": entity_instance.__class__.__name__.lower()
-                    }
+                        "entity_type": entity_instance.__class__.__name__.lower(),
+                    },
                 )
 
                 super().__init__(*args, **kwargs)
@@ -371,6 +376,7 @@ class LabelTableBase(tables.Table):
             "id": "PL_conn",
         }
 
+
 class LabelTableEdit(LabelTableBase):
     """
     Reuse most of the base table class for labels. Only addition is editing functionality.
@@ -378,11 +384,13 @@ class LabelTableEdit(LabelTableBase):
 
     edit = tables.TemplateColumn(
         template_name="apis_relations/edit_button_label_form.html",
-        orderable=False
+        orderable=False,
+        verbose_name="Bearbeiten",
     )
     delete = tables.TemplateColumn(
         template_name="apis_relations/delete_button_label_form.html",
-        orderable=False
+        orderable=False,
+        verbose_name="Löschen",
     )
 
     class Meta(LabelTableBase.Meta):
