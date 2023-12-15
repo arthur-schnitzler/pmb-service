@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import DeleteView
@@ -55,3 +58,11 @@ class LabelDelete(DeleteView):
     model = Label
     template_name = "apis_templates/confirm_delete.html"
     success_url = reverse_lazy("apis_labels:label_list")
+
+
+@login_required
+def delete_label(request, label_id):
+    instance = Label.objects.get(id=label_id)
+    label = f"{instance}"
+    instance.delete()
+    return HttpResponse(f"<small>gelöschtes Label: {label}</small> ")

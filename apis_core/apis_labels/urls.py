@@ -10,4 +10,5 @@ urlpatterns = [
     path("create/", views.label_create, name="label_create"),
     path("edit/<int:pk>", views.label_edit, name="label_edit"),
     path("delete/<int:pk>", views.LabelDelete.as_view(), name="label_delete"),
+    path("delete-from-tabel/<int:label_id>/", views.delete_label, name="label_delete"),
 ]
