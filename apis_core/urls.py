@@ -3,9 +3,7 @@ from django.conf.urls import include
 from rest_framework import routers
 
 from apis_core.api_routers import views
-from apis_core.apis_entities.api_views import (
-    PlaceGeoJsonViewSet,
-)
+
 from apis_core.apis_vocabularies.api_views import UserViewSet
 from apis_core.helper_functions.ContentType import GetContentTypes
 from apis_core.apis_metainfo.views import beacon
@@ -29,7 +27,6 @@ for app_label, model_str in GetContentTypes().get_names():
 
 
 router.register("users", UserViewSet)
-router.register("GeoJsonPlace", PlaceGeoJsonViewSet, "PlaceGeoJson")
 
 
 urlpatterns = [
