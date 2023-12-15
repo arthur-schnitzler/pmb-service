@@ -1,6 +1,4 @@
-import re
 import unicodedata
-import requests
 
 from django.apps import apps
 from django.conf import settings
@@ -10,20 +8,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from django.utils.functional import cached_property
 from model_utils.managers import InheritanceManager
 
-from apis_core.apis_entities.serializers_generic import EntitySerializer
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
 
-from django.contrib.contenttypes.fields import GenericRelation
-
-# from helper_functions.highlighter import highlight_text
-from apis_core.default_settings.NER_settings import autocomp_settings
 from apis_core.helper_functions import DateParser
 
-NEXT_PREV = getattr(settings, "APIS_NEXT_PREV", True)
 
 
 class TempEntityClass(models.Model):
@@ -185,10 +176,7 @@ class TempEntityClass(models.Model):
 
     def get_prev_url(self):
         entity = self.__class__.__name__.lower()
-        if NEXT_PREV:
-            prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
-        else:
-            return False
+        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
         if prev:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
@@ -205,10 +193,7 @@ class TempEntityClass(models.Model):
 
     def get_next_url(self):
         entity = self.__class__.__name__.lower()
-        if NEXT_PREV:
-            next = self.__class__.objects.filter(id__gt=self.id)
-        else:
-            return False
+        next = self.__class__.objects.filter(id__gt=self.id)
         if next:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
@@ -296,9 +281,6 @@ class TempEntityClass(models.Model):
                         t.save()
 
             ent.delete()
-
-    def get_serialization(self):
-        return EntitySerializer(self).data
 
 
 class Source(models.Model):
@@ -388,9 +370,7 @@ class Uri(models.Model):
         verbose_name="Entität",
         help_text="Entität die mit dieser URI verbunden ist",
     )
-    # loaded set to True when RDF was loaded and parsed into the data model
     loaded = models.BooleanField(default=False)
-    # Timestamp when file was loaded and parsed
     loaded_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -424,35 +404,3 @@ class Uri(models.Model):
     def get_edit_url(self):
         return reverse("apis_core:apis_metainfo:uri_edit", kwargs={"pk": self.id})
 
-
-class UriCandidate(models.Model):
-    """Used to store the URI candidates for automatically generated entities."""
-
-    uri = models.URLField()
-    confidence = models.FloatField(blank=True, null=True)
-    responsible = models.CharField(max_length=255)
-    entity = models.ForeignKey(
-        TempEntityClass, blank=True, null=True, on_delete=models.CASCADE
-    )
-
-    @cached_property
-    def description(self):
-        headers = {"accept": "application/json"}
-        cn = TempEntityClass.objects_inheritance.get_subclass(
-            id=self.entity_id
-        ).__class__.__name__
-        for endp in autocomp_settings[cn.title()]:
-            url = re.sub(r"/[a-z]+$", "/entity", endp["url"])
-            params = {"id": self.uri}
-            res = requests.get(url, params=params, headers=headers)
-            if res.status_code == 200:
-                if endp["fields"]["descr"][0] in res.json()["representation"].keys():
-                    desc = res.json()["representation"][endp["fields"]["descr"][0]][0][
-                        "value"
-                    ]
-                else:
-                    desc = "undefined"
-                label = res.json()["representation"][endp["fields"]["name"][0]][0][
-                    "value"
-                ]
-                return (label, desc)
