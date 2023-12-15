@@ -1,14 +1,9 @@
 <a
     class="btn"
     hx-trigger="click"
-    hx-post="/apis/relations/ajax/get/"
-    hx-target="#editFormDiv_PersonLabel"
-    hx-vals='{
-        "FormName": "PersonLabelForm",
-        "SiteID": "{{ record.temp_entity.id }}",
-        "ObjectID": "{{ record.pk }}",
-        "entity_type": "{{ entity_type }}",
-        "ButtonText": "speichern"
-    }'>
-    <i class="bi bi bi-trash" title="Label: '{{ record }}' bearbeiten"> </i>
+    hx-post="/apis/labels/delete-from-tabel/{{ record.pk }}/"
+    hx-confirm="Sicher? Weil was weg ist ist weg"
+    hx-target="closest tr" hx-swap="outerHTML swap:1s"
+    >
+    <i class="bi bi bi-trash" title="Label: '{{ record }}' löschen"> </i>
 </a>
