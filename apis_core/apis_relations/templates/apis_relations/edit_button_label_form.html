@@ -7,7 +7,7 @@
         "FormName": "PersonLabelForm",
         "SiteID": "{{ record.temp_entity.id }}",
         "ObjectID": "{{ record.pk }}",
-        "entity_type": "{{ entity_type }}",
+        "entity_type": "{{ record.temp_entity.get_child_class|lower }}",
         "ButtonText": "speichern"
     }'>
     <i class="bi bi-pencil-square" title="Label: '{{ record }}' bearbeiten"> </i>
