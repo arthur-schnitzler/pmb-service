@@ -115,18 +115,3 @@ class PlaceLabelForm(EntityLabelForm):
 
 class EventLabelForm(EntityLabelForm):
     pass
-
-
-##############################################
-# Entities Base Forms
-#############################################
-
-
-class PlaceEntityForm(forms.Form):
-    # place = forms.CharField(label='Place', widget=al.TextWidget('OrtAutocomplete'))
-    place_uri = forms.CharField(required=False, widget=forms.HiddenInput())
-
-    def save(self, *args, **kwargs):
-        cd = self.cleaned_data
-        pl = Place.get_or_create_uri(cd["place_uri"])
-        return pl
