@@ -185,7 +185,6 @@ def parse_date(date_string: str) -> (datetime, datetime, datetime):
             return datetime(year=year, month=month, day=day)
 
     try:
-
         # return variables
         date_single = None
         date_ab = None
@@ -258,7 +257,6 @@ def parse_date(date_string: str) -> (datetime, datetime, datetime):
             # split by allowed keywords 'ab' and 'bis' and iterate over them
             date_split_ab_bis = re.split(r"(ab|bis)", date_string)
             for i, v in enumerate(date_split_ab_bis):
-
                 if v == "ab":
                     # indicates that the next value must be a start date
 
@@ -422,5 +420,4 @@ def get_date_help_text_from_dates(
 
 
 def get_date_help_text_default():
-
     return "Dates are interpreted by defined rules. If this fails, an iso-date can be explicitly set with '&lt;YYYY-MM-DD&gt;'."

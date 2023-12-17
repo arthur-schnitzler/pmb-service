@@ -29,7 +29,6 @@ class AbstractRelation(TempEntityClass):
         default_manager_name = "objects"
 
     def save(self, *args, **kwargs):
-
         if (
             getattr(self, self.get_related_entity_field_namea()) is None
             or getattr(self, self.get_related_entity_field_nameb()) is None
@@ -50,7 +49,6 @@ class AbstractRelation(TempEntityClass):
         )
 
     def get_web_object(self):
-
         namea = self.get_related_entity_instancea().name
         nameb = self.get_related_entity_instanceb().name
 
@@ -146,7 +144,6 @@ class AbstractRelation(TempEntityClass):
                     and relation_class.__name__ != "AbstractRelation"
                     and relation_name != "ent_class"
                 ):
-
                     relation_classes.append(relation_class)
                     relation_names.append(relation_name.lower())
 
@@ -175,7 +172,6 @@ class AbstractRelation(TempEntityClass):
         """
 
         if cls._all_relation_classes == None:
-
             # The instantion logic of relation_names list is coupled to the instantiation logic of the relation_classes
             # list done in the method 'get_all_relation_classes'; hence just calling that is sufficient.
             cls.get_all_relation_classes()
@@ -344,27 +340,22 @@ class AbstractRelation(TempEntityClass):
 
 
 class PersonPerson(AbstractRelation):
-
     pass
 
 
 class PersonPlace(AbstractRelation):
-
     pass
 
 
 class PersonInstitution(AbstractRelation):
-
     pass
 
 
 class PersonEvent(AbstractRelation):
-
     pass
 
 
 class PersonWork(AbstractRelation):
-
     pass
 
 
@@ -376,22 +367,18 @@ class PersonWork(AbstractRelation):
 
 
 class InstitutionInstitution(AbstractRelation):
-
     pass
 
 
 class InstitutionPlace(AbstractRelation):
-
     pass
 
 
 class InstitutionEvent(AbstractRelation):
-
     pass
 
 
 class InstitutionWork(AbstractRelation):
-
     pass
 
 
@@ -403,17 +390,14 @@ class InstitutionWork(AbstractRelation):
 
 
 class PlacePlace(AbstractRelation):
-
     pass
 
 
 class PlaceEvent(AbstractRelation):
-
     pass
 
 
 class PlaceWork(AbstractRelation):
-
     pass
 
 
@@ -425,12 +409,10 @@ class PlaceWork(AbstractRelation):
 
 
 class EventEvent(AbstractRelation):
-
     pass
 
 
 class EventWork(AbstractRelation):
-
     pass
 
 
@@ -442,5 +424,4 @@ class EventWork(AbstractRelation):
 
 
 class WorkWork(AbstractRelation):
-
     pass

@@ -5,7 +5,6 @@ from .autocomplete3 import (
     GenericEntitiesAutocomplete,
 )
 
-from .views import GenericEntitiesCreateStanbolView
 from .list_view_person import PersonListView
 from .list_view_work import WorkListView
 from .list_view_place import PlaceListView
@@ -60,16 +59,6 @@ urlpatterns = [
         "entity/event/list/",
         EventListView.as_view(),
         name="event_list_view",
-    ),
-    path(
-        "autocomplete/createstanbol/<entity>/",
-        GenericEntitiesCreateStanbolView.as_view(),
-        name="generic_entities_stanbol_create",
-    ),
-    path(
-        "autocomplete/createstanbol/<entity>/<int:ent_merge_pk>/",
-        GenericEntitiesCreateStanbolView.as_view(),
-        name="generic_entities_stanbol_create",
     ),
     path(
         "autocomplete/<entity>/<int:ent_merge_pk>/",

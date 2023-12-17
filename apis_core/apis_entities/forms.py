@@ -32,7 +32,6 @@ class SearchForm(forms.Form):
 
 
 def get_entities_form(entity):
-
     # TODO __sresch__ : consider moving this class outside of the function call to avoid redundant class definitions
     class GenericEntitiesForm(forms.ModelForm):
         class Meta:
@@ -167,7 +166,6 @@ def get_entities_form(entity):
                     # Make a check if all items of sort_preferences were used. If not, this indicates an out of sync setting
                     # if len(sort_preferences) > 0:
                     if len(sort_preferences_used) != len(sort_preferences):
-
                         differences = []
                         for p in sort_preferences_used:
                             if p not in sort_preferences:
@@ -200,7 +198,6 @@ def get_entities_form(entity):
 
             instance = getattr(self, "instance", None)
             if instance != None:
-
                 if instance.start_date_written:
                     self.fields[
                         "start_date_written"

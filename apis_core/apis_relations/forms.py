@@ -52,7 +52,6 @@ class EntityLabelForm(forms.ModelForm):
 
         instance = getattr(self, "instance", None)
         if instance != None:
-
             if instance.start_date_written:
                 self.fields[
                     "start_date_written"

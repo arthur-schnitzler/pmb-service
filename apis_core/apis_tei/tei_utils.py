@@ -51,7 +51,6 @@ def get_part_of_relation(res):
 
 
 def get_context(res):
-
     context = {}
     context["object"] = res
     context["org_located_in"] = []

@@ -1,7 +1,6 @@
 import copy
 import re
 
-import yaml
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
@@ -85,7 +84,6 @@ class GenericRelationForm(forms.ModelForm):
         return self.cleaned_data["HL_text_id"][5:]
 
     def get_html_table(self, entity_type, request, site_instance, form_match):
-
         table = get_generic_relations_table(
             relation_class=self.relation_form,
             entity_instance=site_instance,
@@ -348,7 +346,6 @@ class GenericRelationForm(forms.ModelForm):
         )
 
         if instance != None:
-
             if instance.start_date_written:
                 self.fields[
                     "start_date_written"

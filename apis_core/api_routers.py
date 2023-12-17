@@ -196,7 +196,6 @@ def generic_serializer_creation_factory():
                 select_related.append(f.name)
 
         class TemplateSerializer(serializers.HyperlinkedModelSerializer):
-
             id = serializers.ReadOnlyField()
             url = serializers.HyperlinkedIdentityField(
                 view_name=f"apis:apis_api:{entity_str.lower()}-detail"
@@ -207,7 +206,6 @@ def generic_serializer_creation_factory():
             _app_label = app_label
 
             class Meta:
-
                 model = entity
                 exclude = exclude_lst_fin
 
@@ -269,7 +267,6 @@ def generic_serializer_creation_factory():
         ) = f"{entity_str.title().replace(' ', '')}Serializer"
 
         class TemplateSerializerRetrieve(TemplateSerializer):
-
             if entity_str.lower() == "text":
                 text = serializers.SerializerMethodField(
                     method_name="txt_serializer_add_text"
@@ -447,14 +444,12 @@ def generic_serializer_creation_factory():
                         filter_fields[f1[0]] = f1[1]
 
         class MetaFilter(object):
-
             model = entity
             fields = filter_fields
 
         filterset_dict["Meta"] = MetaFilter
 
         class TemplateViewSet(viewsets.ModelViewSet):
-
             _select_related = select_related
             _prefetch_rel = prefetch_rel
             pagination_class = CustomPagination

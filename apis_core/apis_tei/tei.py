@@ -371,7 +371,6 @@ class TeiEntCreator:
         # This loop here iterates texts from self.ent_dict annotations and embeds
         # annotations as TEI tags
         for text_id, anns in annotations_by_text_id.items():
-
             # Get the text object from database via its ID
             ### (in future, this should be embedded in ent_dict to avoid further query??)
             text_obj = Text.objects.get(pk=text_id)
@@ -443,9 +442,7 @@ def group_annotations_by_text(ent_dict):
     annotations_by_text = defaultdict(list)
 
     for rel_type_name, rel_type_list in ent_dict.get("relations").items():
-
         for rel in rel_type_list:
-
             if rel.get("annotation"):
                 for ann in rel.get("annotation", []):
                     text_id = ann["text_url"].split("/")[

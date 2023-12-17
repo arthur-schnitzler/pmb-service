@@ -174,45 +174,6 @@ class GenericEntitiesCreateView(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class GenericEntitiesCreateStanbolView(View):
-    def post(self, request, *args, **kwargs):
-        entity = kwargs["entity"]
-        ent_merge_pk = kwargs.get("ent_merge_pk", False)
-        if ent_merge_pk:
-            form = GenericEntitiesStanbolForm(
-                entity, request.POST, ent_merge_pk=ent_merge_pk
-            )
-        else:
-            form = GenericEntitiesStanbolForm(entity, request.POST)
-        # form = form(request.POST)
-        if form.is_valid():
-            entity_2 = form.save()
-            if ent_merge_pk:
-                entity_2.merge_with(int(ent_merge_pk))
-            return redirect(
-                reverse(
-                    "apis:apis_entities:generic_entities_edit_view",
-                    kwargs={"pk": entity_2.pk, "entity": entity},
-                )
-            )
-        else:
-            permissions = {
-                "create": request.user.has_perm("apis_entities.add_{}".format(entity))
-            }
-            template = select_template(
-                [
-                    "apis_entities/{}_create_generic.html".format(entity),
-                    "apis_entities/create_view.html",
-                ]
-            )
-            return HttpResponse(
-                template.render(
-                    request=request, context={"permissions": permissions, "form": form}
-                )
-            )
-
-
-@method_decorator(login_required, name="dispatch")
 class GenericEntitiesDeleteView(DeleteView):
     model = importlib.import_module("apis_core.apis_metainfo.models").TempEntityClass
     template_name = getattr(

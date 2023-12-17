@@ -78,7 +78,6 @@ class GenericListFilter(django_filters.FilterSet):
         )
 
     def __init__(self, *args, **kwargs):
-
         # call super init foremost to create dictionary of filters which will be processed further below
         super().__init__(*args, **kwargs)
 
@@ -101,7 +100,6 @@ class GenericListFilter(django_filters.FilterSet):
             filter_dict_tmp = {}
 
             for enabled_filter in enabled_filters:
-
                 if (
                     type(enabled_filter) == str
                     and enabled_filter in default_filter_dict
@@ -118,7 +116,6 @@ class GenericListFilter(django_filters.FilterSet):
                     enabled_filter_key = list(enabled_filter.keys())[0]
 
                     if enabled_filter_key in default_filter_dict:
-
                         # get the dictionary which contains potential method or label overrides
                         enabled_filter_settings_dict = enabled_filter[
                             enabled_filter_key
@@ -163,24 +160,19 @@ class GenericListFilter(django_filters.FilterSet):
         """
 
         if value.startswith("*") and not value.endswith("*"):
-
             value = value[1:]
             return "__iendswith", value
 
         elif not value.startswith("*") and value.endswith("*"):
-
             value = value[:-1]
             return "__istartswith", value
 
         elif value.startswith('"') and value.endswith('"'):
-
             value = value[1:-1]
             return "__iexact", value
 
         else:
-
             if value.startswith("*") and value.endswith("*"):
-
                 value = value[1:-1]
 
             return "__icontains", value
@@ -236,7 +228,6 @@ class GenericListFilter(django_filters.FilterSet):
         # step 2
         # iterate over every relation related to the current queryset model (e.g for Person: PersonWork, PersonPerson, etc)
         for relation_class in queryset.model.get_related_relation_classes():
-
             # get the related classes and lookup names of the current relation
             # (e.g. for PersonWork: class Person, class Work, "related_person", "related_work")
             related_entity_classA = relation_class.get_related_entity_classa()
@@ -247,7 +238,6 @@ class GenericListFilter(django_filters.FilterSet):
             # Within a relation class, there is two fields which relate to entities, check now which of the two
             # is the same as the current one.
             if queryset.model == related_entity_classA:
-
                 # append filtered relation queryset to list for use later
                 related_relations_to_hit_list.append(
                     # filter the current relation for if the other related entity's pk is in the hit list of tempentity class
@@ -261,7 +251,6 @@ class GenericListFilter(django_filters.FilterSet):
             # also check the related entity field B (because it can be that both A and B are of the same entity class, e.g. PersonPerson,
             # or that only A is the other one, e.g. when filtering for Work within PersonWork, then the other related class is Person)
             if queryset.model == related_entity_classB:
-
                 # same procedure as above, just with related class and related name being reversed.
                 related_relations_to_hit_list.append(
                     relation_class.objects.filter(
@@ -275,7 +264,6 @@ class GenericListFilter(django_filters.FilterSet):
                 queryset.model != related_entity_classA
                 and queryset.model != related_entity_classB
             ):
-
                 raise ValueError(
                     "queryset model class has a wrong relation class associated!"
                 )
@@ -323,14 +311,12 @@ class GenericListFilter(django_filters.FilterSet):
         related_relations_to_hit_list = []
 
         for relation_class in queryset.model.get_related_relation_classes():
-
             related_entity_classA = relation_class.get_related_entity_classa()
             related_entity_classB = relation_class.get_related_entity_classb()
             related_entity_field_nameA = relation_class.get_related_entity_field_namea()
             related_entity_field_nameB = relation_class.get_related_entity_field_nameb()
 
             if queryset.model == related_entity_classA:
-
                 # Only difference to method 'related_entity_name_filter' is that the lookup is done on 'relation_type_id'
                 related_relations_to_hit_list.append(
                     relation_class.objects.filter(
@@ -339,7 +325,6 @@ class GenericListFilter(django_filters.FilterSet):
                 )
 
             if queryset.model == related_entity_classB:
-
                 # Only difference to method 'related_entity_name_filter' is that the lookup is done on 'relation_type_id'
                 related_relations_to_hit_list.append(
                     relation_class.objects.filter(
@@ -351,7 +336,6 @@ class GenericListFilter(django_filters.FilterSet):
                 queryset.model != related_entity_classA
                 and queryset.model != related_entity_classB
             ):
-
                 raise ValueError(
                     "queryset model class has a wrong relation class associated!"
                 )
@@ -404,7 +388,6 @@ class PersonListFilter(GenericListFilter):
     )
 
     def person_name_filter(self, queryset, name, value):
-
         lookup, value = self.construct_lookup(value)
 
         queryset_related_label = queryset.filter(**{"label__label" + lookup: value})

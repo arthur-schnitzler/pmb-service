@@ -28,7 +28,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-
         tei_doc = tei_header()
         listperson = tei_doc.xpath("//*[local-name() = 'listPerson']")[0]
 

@@ -17,7 +17,6 @@ lang = getattr(settings, "LANGUAGE_CODE", "de")
 
 
 class VocabToSkos(renderers.BaseRenderer):
-
     media_type = "text/rdf"
 
     def render(

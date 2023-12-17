@@ -5,7 +5,6 @@ from django.db.models.base import ModelBase
 
 
 class GetContentTypes:
-
     # class memeber dictionary, used for caching ContentType objects in method get_content_type_of_class_or_instance
     class_content_type_dict = {}
 

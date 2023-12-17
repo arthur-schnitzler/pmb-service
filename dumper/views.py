@@ -9,7 +9,6 @@ from .forms import form_user_login
 
 
 class HomePageView(TemplateView):
-
     template_name = "dumper/index.html"
 
     def get_context_data(self, *args, **kwargs):

@@ -28,7 +28,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-
         tei_doc = tei_header(title="ListBibl", ent_type="<listBibl/>")
         entity_list = tei_doc.xpath("//*[local-name() = 'listBibl']")[0]
 
