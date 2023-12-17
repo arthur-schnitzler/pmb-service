@@ -16,7 +16,7 @@ from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import get_generic_relations_table, LabelTableEdit
-from .forms import get_entities_form, FullTextForm, GenericEntitiesStanbolForm
+from .forms import get_entities_form, FullTextForm
 
 
 @method_decorator(login_required, name="dispatch")
@@ -81,8 +81,6 @@ class GenericEntitiesEditView(View):
             "instance": instance,
             "right_card": side_bar,
         }
-        # form_merge_with = GenericEntitiesStanbolForm(entity, ent_merge_pk=pk)
-        # context["form_merge_with"] = form_merge_with
         return HttpResponse(template.render(request=request, context=context))
 
     def post(self, request, *args, **kwargs):
@@ -116,8 +114,6 @@ class GenericEntitiesEditView(View):
                 "instance": instance,
             }
             if entity.lower() != "place":
-                form_merge_with = GenericEntitiesStanbolForm(entity, ent_merge_pk=pk)
-                context["form_merge_with"] = form_merge_with
                 return TemplateResponse(request, template, context=context)
             return HttpResponse(template.render(request=request, context=context))
 

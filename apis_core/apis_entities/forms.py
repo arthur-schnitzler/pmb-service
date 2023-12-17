@@ -7,7 +7,6 @@ from dal import autocomplete
 from django import forms
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.core.validators import URLValidator
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.forms import ModelMultipleChoiceField, ModelChoiceField
 from django.urls import reverse
@@ -15,12 +14,8 @@ from django.urls import reverse
 from apis_core.apis_metainfo.models import Text, Uri, Collection
 from apis_core.apis_vocabularies.models import TextType
 from apis_core.helper_functions import DateParser
-from apis_core.helper_functions.RDFParser import RDFParser
 from .fields import ListSelect2, Select2Multiple
 from .models import AbstractEntity
-
-if "apis_highlighter" in settings.INSTALLED_APPS:
-    from apis_highlighter.models import AnnotationProject
 
 
 class SearchForm(forms.Form):
@@ -245,50 +240,6 @@ def get_entities_form(entity):
             return obj
 
     return GenericEntitiesForm
-
-
-class GenericEntitiesStanbolForm(forms.Form):
-    def save(self, *args, **kwargs):
-        cd = self.cleaned_data
-        entity = RDFParser(cd["entity"], self.entity.title()).get_or_create()
-        return entity
-
-    def __init__(self, entity, *args, **kwargs):
-
-        attrs = {
-            "data-placeholder": "Type to get suggestions",
-            "data-minimum-input-length": getattr(settings, "APIS_MIN_CHAR", 3),
-            "data-html": True,
-            "style": "width: auto",
-        }
-        ent_merge_pk = kwargs.pop("ent_merge_pk", False)
-        super(GenericEntitiesStanbolForm, self).__init__(*args, **kwargs)
-        self.entity = entity
-        self.helper = FormHelper()
-        form_kwargs = {"entity": entity}
-        url = reverse(
-            "apis:apis_entities:generic_entities_autocomplete",
-            args=[entity.title(), "remove"],
-        )
-        label = "Create {} from reference resources".format(entity.title())
-        button_label = "Create"
-        if ent_merge_pk:
-            form_kwargs["ent_merge_pk"] = ent_merge_pk
-            url = reverse(
-                "apis:apis_entities:generic_entities_autocomplete",
-                args=[entity.title(), ent_merge_pk],
-            )
-            label = "Search for {0} in reference resources or db".format(entity.title())
-            button_label = "Merge"
-        self.helper.form_action = reverse(
-            "apis:apis_entities:generic_entities_stanbol_create", kwargs=form_kwargs
-        )
-        self.helper.add_input(Submit("submit", button_label))
-        self.fields["entity"] = autocomplete.Select2ListCreateChoiceField(
-            label=label,
-            widget=ListSelect2(url=url, attrs=attrs),
-            validators=[URLValidator],
-        )
 
 
 class FullTextForm(forms.Form):
