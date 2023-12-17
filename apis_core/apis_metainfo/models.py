@@ -16,7 +16,6 @@ from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextTy
 from apis_core.helper_functions import DateParser
 
 
-
 class TempEntityClass(models.Model):
     """Base class to bind common attributes to many classes.
 
@@ -403,4 +402,3 @@ class Uri(models.Model):
 
     def get_edit_url(self):
         return reverse("apis_core:apis_metainfo:uri_edit", kwargs={"pk": self.id})
-
