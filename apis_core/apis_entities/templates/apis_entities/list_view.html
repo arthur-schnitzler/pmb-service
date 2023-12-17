@@ -6,21 +6,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<style>
-    a {
-        color: var(--{{ entity }});
-    }
-    .navbar {
-        border-bottom: 5px solid var(--{{ entity }});
-    }
-    #searchpane {
-        border-right: 1px solid var(--{{ entity }});
-    }
+{% include "partials/entity_styles.html" %}
 
-    h1, h2 {
-        color: var(--{{ entity }});
-    }
-</style>
 <div class="container">
     <h1 class="display-1 text-center apis-{{ entity }}">
         <i class="{{ icon }}"> {{ verbose_name }}</i>
