@@ -8,7 +8,6 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
 
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_vocabularies.models import (
@@ -41,7 +40,6 @@ class AbstractEntity(TempEntityClass):
         abstract = True
 
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
         self.__class__.create_relation_methods_from_manytomany_fields()
 
@@ -49,7 +47,6 @@ class AbstractEntity(TempEntityClass):
     ####################################################################################################################
 
     def __str__(self):
-
         if self.__class__ == Person:
 
             def valid(name):
@@ -65,7 +62,6 @@ class AbstractEntity(TempEntityClass):
                 return "no name provided"
 
         else:
-
             if self.name != "":
                 return self.name
             else:
@@ -160,7 +156,6 @@ class AbstractEntity(TempEntityClass):
             related_entity_function_name = "get_related_" + entity_name + "_instances"
 
             if not hasattr(cls, related_entity_function_name):
-
                 if cls.__name__.lower() == entity_name:
                     # If the related entity is the same as this current one, then set the names of the related functions
                     # to A and B and also combine them into one function where both A and B are returned.
@@ -224,20 +219,17 @@ class AbstractEntity(TempEntityClass):
         """
 
         if cls._all_entity_classes == None:
-
             entity_classes = []
             entity_names = []
 
             for entity_name, entity_class in inspect.getmembers(
                 sys.modules[__name__], inspect.isclass
             ):
-
                 if (
                     entity_class.__module__ == "apis_core.apis_entities.models"
                     and entity_name != "ent_class"
                     and entity_name != "AbstractEntity"
                 ):
-
                     entity_classes.append(entity_class)
                     entity_names.append(entity_name.lower())
 
@@ -266,7 +258,6 @@ class AbstractEntity(TempEntityClass):
         """
 
         if cls._all_entity_names == None:
-
             cls.get_all_entity_classes()
 
         return cls._all_entity_names
@@ -318,7 +309,6 @@ class AbstractEntity(TempEntityClass):
         queryset_list = []
 
         for entity_name in self.get_all_entity_names():
-
             queryset = getattr(self, "get_related_" + entity_name + "_instances")()
             if len(queryset) > 0:
                 queryset_list.append(queryset)
@@ -363,7 +353,6 @@ class AbstractEntity(TempEntityClass):
         queryset_list = []
 
         for relation_class in self.get_related_relation_classes():
-
             q_args = Q()
 
             if relation_class.get_related_entity_classa() == self.__class__:
@@ -394,7 +383,6 @@ class AbstractEntity(TempEntityClass):
         """
 
         if cls._related_relationtype_classes == None:
-
             relationtype_classes = []
             relationtype_names = []
 
@@ -404,11 +392,9 @@ class AbstractEntity(TempEntityClass):
             for (
                 relationtype_class
             ) in AbstractRelationType.get_all_relationtype_classes():
-
                 relationtype_name = relationtype_class.__name__.lower()
 
                 if cls.__name__.lower() in relationtype_name:
-
                     relationtype_classes.append(relationtype_class)
                     relationtype_names.append(relationtype_name)
 
@@ -427,7 +413,6 @@ class AbstractEntity(TempEntityClass):
         """
 
         if cls._related_relationtype_names == None:
-
             cls.get_related_relationtype_classes()
 
         return cls._related_relationtype_names
@@ -479,13 +464,11 @@ class AbstractEntity(TempEntityClass):
             queryset = None
 
             if entity_name != self.__class__.__name__.lower():
-
                 queryset = (
                     getattr(self, entity_name + "_relationtype_set").all().distinct()
                 )
 
             else:
-
                 querysetA = (
                     getattr(self, entity_name + "A_relationtype_set").all().distinct()
                 )
@@ -501,7 +484,6 @@ class AbstractEntity(TempEntityClass):
 
 
 class Person(AbstractEntity):
-
     GENDER_CHOICES = (
         ("female", "female"),
         ("male", "male"),
@@ -534,7 +516,6 @@ class Person(AbstractEntity):
 
 
 class Place(AbstractEntity):
-
     kind = models.ForeignKey(
         PlaceType, blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -554,7 +535,6 @@ class Place(AbstractEntity):
 
 
 class Institution(AbstractEntity):
-
     kind = models.ForeignKey(
         InstitutionType, blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -566,7 +546,6 @@ class Institution(AbstractEntity):
 
 
 class Event(AbstractEntity):
-
     kind = models.ForeignKey(
         EventType, blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -578,7 +557,6 @@ class Event(AbstractEntity):
 
 
 class Work(AbstractEntity):
-
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -616,10 +594,7 @@ def create_default_uri(sender, instance, **kwargs):
             base1 = BASE_URI[:-1]
         else:
             base1 = BASE_URI
-        uri_c = "{}{}".format(
-            base1,
-            reverse("GetEntityGenericRoot", kwargs={"pk": instance.pk}),
-        )
+        uri_c = f"{base1}/entity/{instance.pk}/"
         uri2 = Uri(uri=uri_c, domain=DOMAIN_DEFAULT, entity=instance)
         uri2.save()
 

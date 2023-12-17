@@ -149,7 +149,7 @@ class PlaceListView(GenericListView):
     ]
     exclude_columns = excluded_cols
     enable_merge = False
-    template_name = "apis_entities/list_views/list.html"
+    template_name = "apis_entities/list_view.html"
     verbose_name = "Orte"
     help_text = "Orte help text"
     icon = "bi bi-map apis-place big-icons"

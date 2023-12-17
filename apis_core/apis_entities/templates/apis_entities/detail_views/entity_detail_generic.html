@@ -3,25 +3,8 @@
 {% load django_tables2 %}
 {% block title %} {{ object }} {% endblock %}
 {% block content %}
-<style>
-    a {
-        color: var(--{{ entity_type }});
-    }
-    .navbar {
-        border-bottom: 5px solid var(--{{ entity_type }});
-    }
-    #searchpane {
-        border-right: 1px solid var(--{{ entity_type }});
-    }
+{% include "partials/entity_styles.html" %}
 
-    h1, h2, h3 {
-        color: var(--{{ entity_type }});
-    }
-    tr.htmx-swapping td {
-        opacity: 0;
-        transition: opacity 1s ease-out;
-      }
-</style>
 <div class="container-fluid pt-2">
     
     <div class="row">

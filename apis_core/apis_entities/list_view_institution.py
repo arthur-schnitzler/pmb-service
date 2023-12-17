@@ -212,7 +212,7 @@ class InstitutionListView(GenericListView):
     ]
     exclude_columns = excluded_cols
     enable_merge = False
-    template_name = "apis_entities/list_views/list.html"
+    template_name = "apis_entities/list_view.html"
     verbose_name = "Institution"
     help_text = "Institution help text"
     icon = "bi bi-building-gear apis-institution big-icons"

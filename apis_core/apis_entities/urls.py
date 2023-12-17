@@ -1,11 +1,11 @@
 from django.urls import path
 
-from . import views2, detail_views, merge_views
+from . import views, detail_views, merge_views
 from .autocomplete3 import (
     GenericEntitiesAutocomplete,
 )
 
-from .views2 import GenericEntitiesCreateStanbolView
+from .views import GenericEntitiesCreateStanbolView
 from .list_view_person import PersonListView
 from .list_view_work import WorkListView
 from .list_view_place import PlaceListView
@@ -18,7 +18,7 @@ app_name = "apis_entities"
 urlpatterns = [
     path(
         "entity/<entity>/<int:pk>/edit",
-        views2.GenericEntitiesEditView.as_view(),
+        views.GenericEntitiesEditView.as_view(),
         name="generic_entities_edit_view",
     ),
     path(
@@ -28,12 +28,12 @@ urlpatterns = [
     ),
     path(
         "entity/<entity>/create",
-        views2.GenericEntitiesCreateView.as_view(),
+        views.GenericEntitiesCreateView.as_view(),
         name="generic_entities_create_view",
     ),
     path(
         "entity/<entity>/<int:pk>/delete",
-        views2.GenericEntitiesDeleteView.as_view(),
+        views.GenericEntitiesDeleteView.as_view(),
         name="generic_entities_delete_view",
     ),
     path(
