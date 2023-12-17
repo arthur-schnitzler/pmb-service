@@ -168,7 +168,7 @@ class WorkListView(GenericListView):
     ]
     exclude_columns = excluded_cols
     enable_merge = False
-    template_name = "apis_entities/list_views/list.html"
+    template_name = "apis_entities/list_view.html"
     verbose_name = "Werke"
     help_text = "Werke help text"
     icon = "bi bi-book apis-work big-icons"

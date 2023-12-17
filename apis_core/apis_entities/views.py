@@ -72,7 +72,7 @@ class GenericEntitiesEditView(View):
         RequestConfig(request, paginate={"per_page": 10}).configure(tb_label)
         template = select_template(
             [
-                "apis_entities/entity_edit_generic.html",
+                "apis_entities/edit_view.html",
             ]
         )
         context = {
@@ -106,7 +106,7 @@ class GenericEntitiesEditView(View):
             template = select_template(
                 [
                     "apis_entities/{}_create_generic.html".format(entity),
-                    "apis_entities/entity_create_generic.html",
+                    "apis_entities/create_view.html",
                 ]
             )
             context = {
@@ -131,7 +131,7 @@ class GenericEntitiesCreateView(View):
         template = select_template(
             [
                 "apis_entities/{}_create_generic.html".format(entity),
-                "apis_entities/entity_create_generic.html",
+                "apis_entities/create_view.html",
             ]
         )
         return HttpResponse(
@@ -163,7 +163,7 @@ class GenericEntitiesCreateView(View):
             template = select_template(
                 [
                     "apis_entities/{}_create_generic.html".format(entity),
-                    "apis_entities/entity_create_generic.html",
+                    "apis_entities/create_view.html",
                 ]
             )
             return HttpResponse(
@@ -206,7 +206,7 @@ class GenericEntitiesCreateStanbolView(View):
             template = select_template(
                 [
                     "apis_entities/{}_create_generic.html".format(entity),
-                    "apis_entities/entity_create_generic.html",
+                    "apis_entities/create_view.html",
                 ]
             )
             return HttpResponse(
