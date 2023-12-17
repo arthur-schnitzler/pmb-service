@@ -128,10 +128,6 @@ class GenericEntitiesCreateView(View):
         entity = kwargs["entity"]
         form = get_entities_form(entity.title())
         form = form()
-        form_text = FullTextForm(entity=entity.title())
-        permissions = {
-            "create": request.user.has_perm("entities.add_{}".format(entity))
-        }
         template = select_template(
             [
                 "apis_entities/{}_create_generic.html".format(entity),
@@ -143,9 +139,7 @@ class GenericEntitiesCreateView(View):
                 request=request,
                 context={
                     "entity_type": entity,
-                    "permissions": permissions,
                     "form": form,
-                    "form_text": form_text,
                 },
             )
         )
@@ -154,10 +148,8 @@ class GenericEntitiesCreateView(View):
         entity = kwargs["entity"]
         form = get_entities_form(entity.title())
         form = form(request.POST)
-        form_text = FullTextForm(request.POST, entity=entity.title())
-        if form.is_valid() and form_text.is_valid():
+        if form.is_valid():
             entity_2 = form.save()
-            form_text.save(entity_2)
             return redirect(
                 reverse(
                     "apis:apis_entities:generic_entities_detail_view",
@@ -180,7 +172,6 @@ class GenericEntitiesCreateView(View):
                     context={
                         "permissions": permissions,
                         "form": form,
-                        "form_text": form_text,
                     },
                 )
             )
