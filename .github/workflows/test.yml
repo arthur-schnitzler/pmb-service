@@ -30,14 +30,14 @@ jobs:
         key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
     - name: Install dependencies
       run: |
-        pip install --upgrade --upgrade-strategy eager -r requirements.txt
+        pip install --upgrade --upgrade-strategy eager -r requirements_dev.txt
     - name: Run migrations
       run: |
         export NEW_PMB=TRUE
         python manage.py migrate
         unset NEW_PMB
     - name: Run tests
-      run: coverage run manage.py test
+      run: coverage run manage.py test -v 3
     - name: Create Coverage Report
       run: coverage xml
     - name: "Upload coverage to Codecov"

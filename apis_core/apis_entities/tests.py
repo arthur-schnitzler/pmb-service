@@ -26,3 +26,10 @@ class EntitiesTestCase(TestCase):
     def test_002_check_fixtures(self):
         items = Person.objects.all().count()
         self.assertEqual(items, 2)
+
+    def test_003_create_person(self):
+        item, created = Person.objects.get_or_create(
+            **{"name": "Bahr", "first_name": "Hermann", "start_date_written": "1900"}
+        )
+        self.assertTrue(created)
+        self.assertEqual(item.name, "Bahr")
