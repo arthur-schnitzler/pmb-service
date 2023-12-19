@@ -30,10 +30,12 @@ try:
     author_rels = settings.AUTHOR_RELS
 except AttributeError:
     author_rels = False
-
-if author_rels:
-    author_rels = get_child_classes(author_rels, PersonWorkRelation, labels=False)
-else:
+try:
+    if author_rels:
+        author_rels = get_child_classes(author_rels, PersonWorkRelation, labels=False)
+    else:
+        author_rels = False
+except Exception:
     author_rels = False
 
 
