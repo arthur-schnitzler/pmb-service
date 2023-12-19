@@ -7,6 +7,7 @@ from apis_core.apis_entities.models import Person
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
+BAHR = {"name": "Bahr", "first_name": "Hermann", "start_date_written": "1900"}
 
 
 class EntitiesTestCase(TestCase):
@@ -28,8 +29,11 @@ class EntitiesTestCase(TestCase):
         self.assertEqual(items, 2)
 
     def test_003_create_person(self):
-        item, created = Person.objects.get_or_create(
-            **{"name": "Bahr", "first_name": "Hermann", "start_date_written": "1900"}
-        )
+        item, created = Person.objects.get_or_create(**BAHR)
         self.assertTrue(created)
         self.assertEqual(item.name, "Bahr")
+
+    def test_004_delete_person(self):
+        item, _ = Person.objects.get_or_create(**BAHR)
+        self.assertEqual(item.name, "Bahr")
+        item.delete()
