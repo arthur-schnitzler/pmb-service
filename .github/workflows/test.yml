@@ -1,0 +1,48 @@
+name: Test
+on: 
+  push:
+jobs:
+  test:
+    name: Test Application
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_DB: github_actions
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ env.pythonLocation }}
+        key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+    - name: Install dependencies
+      run: |
+        pip install --upgrade --upgrade-strategy eager -r requirements.txt
+    - name: Run migrations
+      run: |
+        export NEW_PMB=TRUE
+        python manage.py migrate
+        unset NEW_PMB
+    - name: Run tests
+      run: coverage run manage.py test
+    - name: Create Coverage Report
+      run: coverage xml
+    - name: "Upload coverage to Codecov"
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage.xml
+        fail_ci_if_error: false
