@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "apis_override_select2js",
     "dal",
     "dal_select2",
+    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,11 +51,6 @@ INSTALLED_APPS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-if os.environ.get("DEV"):
-    INSTALLED_APPS = INSTALLED_APPS + [
-        "django_extensions",
-    ]
 
 CSRF_USE_SESSIONS = True
 
