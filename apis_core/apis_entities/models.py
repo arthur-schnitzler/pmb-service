@@ -76,8 +76,9 @@ class AbstractEntity(TempEntityClass):
             else:
                 p = cls.objects.get(uri__uri=uri)
             return p
-        except:
-            print("Found no object corresponding to given uri.")
+        except Exception as e:
+            print(f"Error: {e}")
+            print(f"Found no object corresponding to given uri: {uri}.")
             return False
 
     @classmethod
