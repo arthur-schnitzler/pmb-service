@@ -7,7 +7,6 @@ from .models import Label
 
 # Register your models here.
 class BaseAdmin(admin.ModelAdmin):
-
     search_fields = ("label",)
     list_filter = (
         "isocode_639_3",

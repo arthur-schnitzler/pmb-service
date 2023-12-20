@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "apis_override_select2js",
     "dal",
     "dal_select2",
+    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,11 +51,6 @@ INSTALLED_APPS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-if os.environ.get("DEV"):
-    INSTALLED_APPS = INSTALLED_APPS + [
-        "django_extensions",
-    ]
 
 CSRF_USE_SESSIONS = True
 
@@ -182,9 +178,7 @@ OWNCLOUD_USER = os.environ.get("OWNCLOUD_USER")
 OWNCLOUD_PW = os.environ.get("OWNCLOUD_PW")
 PMB_LOG_FILE = os.path.join(MEDIA_ROOT, "pmb-log.csv")
 PMB_TIME_PATTERN = "%Y-%m-%d::%H:%M:%S"
-PMB_DETAIL_VIEW_PATTERN = (
-    "https://pmb.acdh.oeaw.ac.at/apis/entities/entity/{}/{}/detail"
-)
+
 APIS_ENTITIES = {
     "Place": {
         "merge": True,

@@ -153,7 +153,6 @@ def get_average_age_data(request):
 
 
 def get_heatmap_data(request):
-
     rel_type = request.GET.get("rel-type")
     places = [
         (

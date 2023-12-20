@@ -38,7 +38,6 @@ from .models import (
     EventEvent,
 )
 
-# from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]

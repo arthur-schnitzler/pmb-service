@@ -229,7 +229,6 @@ class PersonInstitutionRelationSerializer(VocabsBaseSerializer):
 
 
 class PersonPlaceRelationSerializer(VocabsBaseSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="apis:apis_api:personplacerelation-detail", lookup_field="pk"
     )

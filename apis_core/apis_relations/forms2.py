@@ -1,7 +1,6 @@
 import copy
 import re
 
-import yaml
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
@@ -16,10 +15,9 @@ from apis_core.apis_entities.fields import ListSelect2
 from apis_core.apis_entities.models import AbstractEntity
 
 # from dal.autocomplete import ListSelect2
-from apis_core.apis_metainfo.models import TempEntityClass, Text, Uri
+from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions import DateParser
-from apis_core.helper_functions.RDFParser import RDFParser, APIS_RDF_URI_SETTINGS
 from .tables import get_generic_relations_table
 
 # from dal.autocomplete import ListSelect2
@@ -30,24 +28,7 @@ def validate_target_autocomplete(value):
         value = int(value)
     except ValueError:
         if value.startswith("http"):
-            test = False
-            sett = yaml.safe_load(open(APIS_RDF_URI_SETTINGS, "r"))
-            regx = [x["regex"] for x in sett["mappings"]]
-            regx.append("http.*oeaw\.ac\.at")
-            for k, v in getattr(settings, "APIS_AC_INSTANCES", {}).items():
-                regx.append(v["url"].replace(".", "\."))
-            for r in regx:
-                if re.match(r, value):
-                    test = True
-            if not test:
-                if Uri.objects.filter(uri=value).count() != 1:
-                    raise ValidationError(
-                        _(
-                            "Invalid value: %(value)s, the url you are using is not configured"
-                        ),
-                        code="invalid",
-                        params={"value": value},
-                    )
+            pass
         else:
             raise ValidationError(
                 _("Invalid value: %(value)s, use either URLs or select a value"),
@@ -90,8 +71,6 @@ class GenericRelationForm(forms.ModelForm):
         setattr(x, self.rel_accessor[3], site_instance)
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd["target"])
-        if not t1:
-            t1 = RDFParser(cd["target"], self.rel_accessor[0]).get_or_create()
         setattr(x, self.rel_accessor[2], t1)
         if commit:
             x.save()
@@ -105,7 +84,6 @@ class GenericRelationForm(forms.ModelForm):
         return self.cleaned_data["HL_text_id"][5:]
 
     def get_html_table(self, entity_type, request, site_instance, form_match):
-
         table = get_generic_relations_table(
             relation_class=self.relation_form,
             entity_instance=site_instance,
@@ -368,7 +346,6 @@ class GenericRelationForm(forms.ModelForm):
         )
 
         if instance != None:
-
             if instance.start_date_written:
                 self.fields[
                     "start_date_written"

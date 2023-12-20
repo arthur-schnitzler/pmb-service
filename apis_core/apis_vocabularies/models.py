@@ -227,21 +227,18 @@ class AbstractRelationType(RelationBaseClass):
         """
 
         if cls._all_relationtype_classes == None:
-
             relationtype_classes = []
             relationtype_names = []
 
             for relationtype_name, relationtype_class in inspect.getmembers(
                 sys.modules[__name__], inspect.isclass
             ):
-
                 if (
                     relationtype_class.__module__
                     == "apis_core.apis_vocabularies.models"
                     and relationtype_name != "ent_class"
                     and relationtype_name.endswith("Relation")
                 ):
-
                     relationtype_classes.append(relationtype_class)
                     relationtype_names.append(relationtype_name.lower())
 
@@ -270,7 +267,6 @@ class AbstractRelationType(RelationBaseClass):
         """
 
         if cls._all_relationtype_names == None:
-
             cls.get_all_relationtype_classes()
 
         return cls._all_relationtype_names

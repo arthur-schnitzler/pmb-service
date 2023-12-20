@@ -36,7 +36,6 @@ class PersonInstitutionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PersonPlaceSerializer(serializers.HyperlinkedModelSerializer):
-
     # url = serializers.HyperlinkedIdentityField(
     #     view_name="apis:apis_api:personplace-detail",
     #     lookup_field="pk"

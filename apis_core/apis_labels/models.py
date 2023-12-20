@@ -64,7 +64,6 @@ class Label(models.Model):
             self.label = unicodedata.normalize("NFC", self.label)
 
         def parse_dates():
-
             # overwrite every field with None as default
             start_date = None
             start_start_date = None

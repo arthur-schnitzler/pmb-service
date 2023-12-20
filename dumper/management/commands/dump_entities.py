@@ -40,7 +40,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-
         for key, value in ENTITY_MAP.items():
             start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
             save_path = os.path.join(settings.MEDIA_ROOT, f"list{key}.xml")

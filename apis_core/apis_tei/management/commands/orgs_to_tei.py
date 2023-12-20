@@ -28,7 +28,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-
         tei_doc = tei_header(title="ListOrg", ent_type="<listOrg/>")
         entity_list = tei_doc.xpath("//*[local-name() = 'listOrg']")[0]
 

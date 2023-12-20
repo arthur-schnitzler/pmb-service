@@ -61,7 +61,6 @@ def generate_all_fields():
         # Iterate over all relation and relationtype classes
         for rc in relation_classes:
             for rtc in relationtype_classes:
-
                 # compare their name, to check if they should be regarded as pair (This depends on the APIS design
                 # decision that given a relation class its respective relationtype must be named the same but with a
                 # 'Relation' added at the end)
@@ -73,7 +72,6 @@ def generate_all_fields():
 
         # Check if any classes are left without any pairing found
         if len(no_pairing_found) > 0:
-
             message = ""
             for cls in no_pairing_found:
                 message += (
@@ -97,13 +95,11 @@ def generate_all_fields():
     # Iterate over all entity classes, twice, so that all relations between all entity classes are covered.
     for entity_class_a in entity_classes:
         for entity_class_b in entity_classes:
-
             entity_class_name_a = entity_class_a.__name__.lower()
             entity_class_name_b = entity_class_b.__name__.lower()
 
             # inner loop iterating over each of the relation_class and relationtype at the same time
             for relation_class, relationtype_class in relation_relationtype_pairs:
-
                 # Check if current relation related to both entities
                 # Note that this way two entites are checked twice, such as person-place and place-person
                 # but however in the relation model only one of these two exists. Thus the right one will be picked.
@@ -111,9 +107,7 @@ def generate_all_fields():
                     entity_class_name_a + entity_class_name_b
                     == relation_class.__name__.lower()
                 ):
-
                     if entity_class_a != entity_class_b:
-
                         # On relation models: generate fields from relation to entity and from relation to relationtype
                         ################################################################################################
 
@@ -255,7 +249,6 @@ def generate_all_fields():
                         )
 
                     else:
-
                         # On relation models: generate fields from relation to entity and from relation to relationtype
                         ################################################################################################
 

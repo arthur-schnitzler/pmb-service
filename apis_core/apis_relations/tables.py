@@ -36,7 +36,6 @@ def get_generic_relation_listview_table(relation_name):
     related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
 
     class GenericRelationListViewTable(tables.Table):
-
         # reuse the logic for ordering and rendering *_date_written
         # Important: The names of these class variables must correspond to the column field name,
         # e.g. for start_date_written, the methods must be named order_start_date_written and render_start_date_written
@@ -63,7 +62,6 @@ def get_generic_relation_listview_table(relation_name):
             attrs = {"class": "table table-hover table-striped table-condensed"}
 
         def __init__(self, *args, **kwargs):
-
             # LinkColumn objects provied hyperlinking to the related entities
             self.base_columns[related_entity_field_name_a] = tables.LinkColumn(
                 # which url to use:
@@ -192,7 +190,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 )
 
         def __init__(self, data, *args, **kwargs):
-
             # annotations for displaying data about the 'other side' of the relation.
             # Both of them ('other_related_entity' and 'other_relation_type') are necessary for displaying relations
             # in context to what entity we are calling this from.
@@ -262,7 +259,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
             """
 
             def __init__(self, data, *args, **kwargs):
-
                 # Only addition with respect to parent class is which main url is to be used when clicking on a
                 # related entity column.
                 self.base_columns["other_related_entity"] = tables.LinkColumn(
@@ -294,7 +290,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
                 sequence = tuple(fields)
 
             def __init__(self, *args, **kwargs):
-
                 # Clicking on a related entity will lead also the edit view of the related entity instance
                 self.base_columns["other_related_entity"] = tables.LinkColumn(
                     "apis:apis_entities:generic_entities_edit_view",
@@ -326,7 +321,6 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
 
 
 class EntityUriTable(tables.Table):
-
     delete = tables.TemplateColumn(
         template_name="apis_relations/delete_button_Uri_ajax_form.html"
     )
@@ -344,7 +338,6 @@ class EntityUriTable(tables.Table):
 
 
 class LabelTableBase(tables.Table):
-
     label = tables.TemplateColumn(template_name="apis_relations/labels_label.html")
 
     # reuse the logic for ordering and rendering *_date_written
@@ -356,7 +349,6 @@ class LabelTableBase(tables.Table):
     render_end_date_written = generic_render_end_date_written
 
     class Meta:
-
         empty_text = empty_text_default
         model = Label
 

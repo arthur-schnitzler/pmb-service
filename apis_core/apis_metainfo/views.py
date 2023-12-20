@@ -32,7 +32,6 @@ class UriDetailView(DetailView):
 
 
 class UriCreate(BaseCreateView):
-
     model = Uri
     form_class = UriForm
 
@@ -42,7 +41,6 @@ class UriCreate(BaseCreateView):
 
 
 class UriUpdate(BaseUpdateView):
-
     model = Uri
     form_class = UriForm
 

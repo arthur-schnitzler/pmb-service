@@ -10,7 +10,6 @@ lang = getattr(settings, "LANGUAGE_CODE", "de")
 
 
 class EntityToTEI(renderers.BaseRenderer):
-
     media_type = "text/xml"
     format = "tei"
 

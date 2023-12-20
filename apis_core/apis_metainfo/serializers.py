@@ -4,7 +4,6 @@ from .models import Collection, Source, TempEntityClass, Text, Uri
 
 
 class CollectionSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="apis:apis_api:text-detail", lookup_field="pk"
     )

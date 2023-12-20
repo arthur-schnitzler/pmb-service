@@ -186,7 +186,7 @@ class EventListView(GenericListView):
     init_columns = ["id", "name", "start_date", "kind", "placeevent_set"]
     exclude_columns = excluded_cols
     enable_merge = False
-    template_name = "apis_entities/list_views/list.html"
+    template_name = "apis_entities/list_view.html"
     verbose_name = "Ereignisse"
     help_text = "Ereignisse help text"
     icon = "bi bi-calendar3 apis-event big-icons"

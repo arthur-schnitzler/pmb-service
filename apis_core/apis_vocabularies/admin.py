@@ -68,7 +68,6 @@ app = apps.get_app_config("apis_vocabularies")
 
 
 for model_name, model in app.models.items():
-
     if model_name.endswith("relation"):
         admin.site.register(model, VocabsRelationAdmin)
     else:

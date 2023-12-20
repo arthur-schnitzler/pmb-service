@@ -1,8 +1,8 @@
-apis-override-select2js-0.1
+apis-override-select2js==0.1
 acdh-django-browsing
 acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=0.34,<1
-Django>4.1,<5
+Django>4.1,<6
 django-admin-csvexport
 django-autocomplete-light
 django-crispy-forms
@@ -10,11 +10,9 @@ django-extensions
 django-model-utils
 django-tables2
 djangorestframework
-gunicorn==20.1.0
-celery>=5.2.7,<6
 pandas
 psycopg2
 pyocclient==0.6
-PyYAML>=6.0.1,<7
-rdflib
 icecream
+flake8
+black
