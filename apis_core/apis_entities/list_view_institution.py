@@ -1,25 +1,19 @@
 import django_filters
 import django_tables2 as tables
+from apis_core.apis_entities.models import Institution
+from apis_core.apis_vocabularies.models import (InstitutionEventRelation,
+                                                InstitutionInstitutionRelation,
+                                                InstitutionPlaceRelation,
+                                                InstitutionType,
+                                                InstitutionWorkRelation,
+                                                PersonInstitutionRelation)
+from apis_core.helper_functions.utils import get_child_classes
+from browsing.browsing_utils import GenericListView
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
+from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import AccordionGroup
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
-
 from dal import autocomplete
-
-from browsing.browsing_utils import GenericListView
-
-from apis_core.apis_entities.models import Institution
-
-from apis_core.apis_vocabularies.models import (
-    PersonInstitutionRelation,
-    InstitutionWorkRelation,
-    InstitutionPlaceRelation,
-    InstitutionInstitutionRelation,
-    InstitutionEventRelation,
-    InstitutionType,
-)
-from apis_core.helper_functions.utils import get_child_classes
 
 excluded_cols = [
     "start_start_date",

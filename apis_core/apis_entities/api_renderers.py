@@ -1,7 +1,6 @@
+from apis_core.apis_tei.tei import TeiEntCreator
 from django.conf import settings
 from rest_framework import renderers
-
-from apis_core.apis_tei.tei import TeiEntCreator
 
 base_uri = getattr(settings, "APIS_BASE_URI", "http://apis.info")
 if base_uri.endswith("/"):

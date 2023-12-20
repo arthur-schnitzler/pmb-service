@@ -7,6 +7,8 @@ from functools import reduce
 
 import dateutil.parser
 import requests
+from apis_core.apis_metainfo.models import Collection, Uri
+from apis_core.apis_vocabularies.models import VocabsBaseClass
 from dal import autocomplete
 from django import http
 from django.conf import settings
@@ -14,8 +16,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import FieldError
 from django.db.models import Q
 
-from apis_core.apis_metainfo.models import Uri, Collection
-from apis_core.apis_vocabularies.models import VocabsBaseClass
 from .models import AbstractEntity
 
 

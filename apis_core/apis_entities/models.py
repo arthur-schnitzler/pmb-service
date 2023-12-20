@@ -3,22 +3,16 @@ import re
 import sys
 import unicodedata
 
+from apis_core.apis_metainfo.models import TempEntityClass, Uri
+from apis_core.apis_vocabularies.models import (EventType, InstitutionType,
+                                                PlaceType, ProfessionType,
+                                                Title, WorkType)
+from apis_core.helper_functions import EntityRelationFieldGenerator
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-from apis_core.apis_metainfo.models import TempEntityClass, Uri
-from apis_core.apis_vocabularies.models import (
-    EventType,
-    InstitutionType,
-    PlaceType,
-    ProfessionType,
-    Title,
-    WorkType,
-)
-from apis_core.helper_functions import EntityRelationFieldGenerator
 
 BASE_URI = getattr(settings, "APIS_BASE_URI", "http://apis.info/")
 DOMAIN_DEFAULT = getattr(settings, "APIS_DEFAULT_DOMAIN", "apis default")

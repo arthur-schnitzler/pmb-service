@@ -1,8 +1,15 @@
+import importlib
+
+from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_labels.models import Label
+from apis_core.apis_relations.models import AbstractRelation
+from apis_core.apis_relations.tables import (LabelTableEdit,
+                                             get_generic_relations_table)
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import select_template
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -10,13 +17,8 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
-import importlib
 
-from apis_core.apis_entities.models import AbstractEntity
-from apis_core.apis_labels.models import Label
-from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import get_generic_relations_table, LabelTableEdit
-from .forms import get_entities_form, FullTextForm
+from .forms import get_entities_form, MergeForm
 
 
 @method_decorator(login_required, name="dispatch")
@@ -65,6 +67,7 @@ class GenericEntitiesEditView(View):
             )
         form = get_entities_form(entity.title())
         form = form(instance=instance)
+        form_merge_with = MergeForm(entity, ent_merge_pk=pk)
         object_labels = Label.objects.filter(temp_entity=instance)
         tb_label = LabelTableEdit(data=object_labels, prefix=entity.title()[:2] + "L-")
         tb_label_open = request.GET.get("PL-page", None)
@@ -78,6 +81,7 @@ class GenericEntitiesEditView(View):
         context = {
             "entity_type": entity,
             "form": form,
+            "form_merge_with": form_merge_with,
             "instance": instance,
             "right_card": side_bar,
         }
@@ -90,10 +94,8 @@ class GenericEntitiesEditView(View):
         instance = get_object_or_404(entity_model, pk=pk)
         form = get_entities_form(entity.title())
         form = form(request.POST, instance=instance)
-        form_text = FullTextForm(request.POST, entity=entity.title())
-        if form.is_valid() and form_text.is_valid():
+        if form.is_valid():
             entity_2 = form.save()
-            form_text.save(entity_2)
             return redirect(
                 reverse(
                     "apis:apis_entities:generic_entities_edit_view",
@@ -110,7 +112,6 @@ class GenericEntitiesEditView(View):
             context = {
                 "form": form,
                 "entity_type": entity,
-                "form_text": form_text,
                 "instance": instance,
             }
             if entity.lower() != "place":

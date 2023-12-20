@@ -1,16 +1,12 @@
 from django.urls import path
 
-from . import views, detail_views, merge_views
-from .autocomplete3 import (
-    GenericEntitiesAutocomplete,
-)
-
-from .list_view_person import PersonListView
-from .list_view_work import WorkListView
-from .list_view_place import PlaceListView
-from .list_view_institution import InstitutionListView
+from . import detail_views, merge_views, views
+from .autocomplete3 import GenericEntitiesAutocomplete
 from .list_view_event import EventListView
-
+from .list_view_institution import InstitutionListView
+from .list_view_person import PersonListView
+from .list_view_place import PlaceListView
+from .list_view_work import WorkListView
 
 app_name = "apis_entities"
 
