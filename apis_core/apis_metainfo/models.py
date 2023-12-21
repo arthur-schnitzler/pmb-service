@@ -8,12 +8,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from icecream import ic
 from model_utils.managers import InheritanceManager
 
 from apis_core.apis_labels.models import Label
-from apis_core.apis_vocabularies.models import (CollectionType, LabelType,
-                                                TextType)
+from apis_core.apis_vocabularies.models import (
+    CollectionType,
+    LabelType,
+    TextType,
+)
 from apis_core.helper_functions import DateParser
 
 
@@ -221,7 +223,6 @@ class TempEntityClass(models.Model):
     def merge_with(self, entities):
         e_a_pk = self.pk
         e_a = type(self).__name__
-        ic(e_a)
         self_model_class = ContentType.objects.get(
             app_label="apis_entities", model__iexact=e_a
         ).model_class()

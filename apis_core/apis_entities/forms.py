@@ -203,7 +203,8 @@ def get_entities_form(entity):
 
                         raise Exception(
                             "An item of the entity setting 'form_order' list was not used. \n"
-                            "This propably indicates that the 'form_order' settings is out of sync with the effective django models.\n"
+                            "This propably indicates that the 'form_order' settings is out \n"
+                            "of sync with the effective django models.\n"
                             f"The relevant entity is: {entity_label}\n"
                             f"And the differences between used list and settings list are: {differences}"
                         )
