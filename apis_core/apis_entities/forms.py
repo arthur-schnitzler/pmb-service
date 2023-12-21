@@ -23,7 +23,7 @@ class MergeForm(forms.Form):
 
         attrs = {
             "data-placeholder": "Type to get suggestions",
-            "data-minimum-input-length": getattr(settings, "APIS_MIN_CHAR", 3),
+            "data-minimum-input-length": 1,
             "data-html": True,
             "style": "width: auto",
         }
@@ -44,9 +44,11 @@ class MergeForm(forms.Form):
                 "apis:apis_entities:generic_entities_autocomplete",
                 args=[entity.title(), ent_merge_pk],
             )
-            label = "Search for {0} in reference resources or db".format(entity.title())
+            label = f"Suche nach Objekten vom Type: {entity.title()}"
             button_label = "Merge"
-        self.helper.form_action = "hansi"
+        self.helper.form_action = reverse(
+            "apis:apis_entities:merge_view", kwargs=form_kwargs
+        )
         self.helper.add_input(Submit("submit", button_label))
         self.fields["entity"] = autocomplete.Select2ListCreateChoiceField(
             label=label,
@@ -144,7 +146,8 @@ def get_entities_form(entity):
                                 except ValueError:
                                     res = ""
                 if f not in acc_grp2:
-                    # append to unsorted list, so that it can be sorted and afterwards attached to accordion group acc_grp1
+                    # append to unsorted list, so that it can be sorted and
+                    # afterwards attached to accordion group acc_grp1
                     fields_list_unsorted.append(f)
 
             def sort_fields_list(list_unsorted, entity_label):

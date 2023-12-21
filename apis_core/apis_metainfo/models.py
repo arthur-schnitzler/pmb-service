@@ -9,6 +9,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from model_utils.managers import InheritanceManager
+from icecream import ic
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
@@ -220,6 +221,7 @@ class TempEntityClass(models.Model):
     def merge_with(self, entities):
         e_a_pk = self.pk
         e_a = type(self).__name__
+        ic(e_a)
         self_model_class = ContentType.objects.get(
             app_label="apis_entities", model__iexact=e_a
         ).model_class()

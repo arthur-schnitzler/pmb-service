@@ -1,12 +1,13 @@
 import importlib
 
 from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_labels.models import Label
 from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import (LabelTableEdit,
-                                             get_generic_relations_table)
+from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -18,6 +19,7 @@ from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
 
+from icecream import ic
 from .forms import get_entities_form, MergeForm
 
 
@@ -187,3 +189,34 @@ class GenericEntitiesDeleteView(DeleteView):
             "apis_core:apis_entities:generic_entities_list", kwargs={"entity": entity}
         )
         return super(GenericEntitiesDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+@method_decorator(login_required, name="dispatch")
+class MergeEntitiesView(View):
+    def post(self, request, *args, **kwargs):
+        entity = kwargs["entity"]
+        ent_merge_pk = kwargs.get("ent_merge_pk", False)
+        form = MergeForm(entity, request.POST, ent_merge_pk=ent_merge_pk)
+        if form.is_valid():
+            uri = form.data["entity"]
+            if ent_merge_pk:
+                uri_obj = Uri.objects.get(uri=uri)
+                target = uri_obj.entity
+                entity_model_class = ContentType.objects.get(
+                    app_label="apis_entities", model__iexact=entity
+                ).model_class()
+                target_obj = entity_model_class.objects.get(id=target.id)
+                target_obj.merge_with(int(ent_merge_pk))
+            return redirect(
+                reverse(
+                    "apis:apis_entities:generic_entities_detail_view",
+                    kwargs={"pk": target.pk, "entity": entity},
+                )
+            )
+        else:
+            return redirect(
+                reverse(
+                    "apis:apis_entities:generic_entities_edit_view",
+                    kwargs={"pk": ent_merge_pk, "entity": entity},
+                )
+            )

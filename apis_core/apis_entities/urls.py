@@ -57,6 +57,11 @@ urlpatterns = [
         name="event_list_view",
     ),
     path(
+        "merge/<entity>/<int:ent_merge_pk>/",
+        views.MergeEntitiesView.as_view(),
+        name="merge_view",
+    ),
+    path(
         "autocomplete/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
