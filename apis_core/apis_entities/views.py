@@ -19,8 +19,7 @@ from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import (LabelTableEdit,
-                                             get_generic_relations_table)
+from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 
 from .forms import MergeForm, get_entities_form
 
@@ -187,9 +186,7 @@ class GenericEntitiesDeleteView(DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         entity = kwargs["entity"]
-        self.success_url = reverse(
-            "apis_core:apis_entities:generic_entities_list", kwargs={"entity": entity}
-        )
+        self.success_url = reverse(f"apis_core:apis_entities:{entity}_list_view")
         return super(GenericEntitiesDeleteView, self).dispatch(request, *args, **kwargs)
 
 
