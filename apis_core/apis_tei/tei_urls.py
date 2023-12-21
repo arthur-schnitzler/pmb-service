@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .tei_ac import TeiEntAc, TeiCompleterAc
-
 from apis_core.apis_tei import views
+
+from .tei_ac import TeiCompleterAc, TeiEntAc
 
 app_name = "apis_tei"
 

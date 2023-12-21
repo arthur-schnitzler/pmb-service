@@ -1,26 +1,14 @@
 from rest_framework import serializers
 
-from apis_core.apis_entities.serializers import PersonSerializer, PlaceSerializer
-from apis_core.apis_vocabularies.serializers import (
-    PersonPlaceRelationSerializer,
-)
-from .models import (
-    InstitutionInstitution,
-    PersonInstitution,
-    PersonPlace,
-    PersonPerson,
-    PersonEvent,
-    PersonWork,
-    InstitutionPlace,
-    InstitutionEvent,
-    InstitutionWork,
-    PlaceEvent,
-    PlaceWork,
-    PlacePlace,
-    EventWork,
-    EventEvent,
-    WorkWork,
-)
+from apis_core.apis_entities.serializers import (PersonSerializer,
+                                                 PlaceSerializer)
+from apis_core.apis_vocabularies.serializers import \
+    PersonPlaceRelationSerializer
+
+from .models import (EventEvent, EventWork, InstitutionEvent,
+                     InstitutionInstitution, InstitutionPlace, InstitutionWork,
+                     PersonEvent, PersonInstitution, PersonPerson, PersonPlace,
+                     PersonWork, PlaceEvent, PlacePlace, PlaceWork, WorkWork)
 
 
 class InstitutionInstitutionSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apis_core.apis_vocabularies.serializers import LabelTypeMinimalSerializer
+
 from .models import Label
 
 

@@ -1,5 +1,11 @@
 import django_filters
 import django_tables2 as tables
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
+from crispy_forms.bootstrap import AccordionGroup
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout
+from dal import autocomplete
+
 from apis_core.apis_entities.models import Work
 from apis_core.apis_vocabularies.models import (InstitutionWorkRelation,
                                                 PersonWorkRelation,
@@ -7,11 +13,6 @@ from apis_core.apis_vocabularies.models import (InstitutionWorkRelation,
                                                 WorkWorkRelation)
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
-from crispy_forms.bootstrap import AccordionGroup
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from dal import autocomplete
 
 excluded_cols = [
     "start_start_date",

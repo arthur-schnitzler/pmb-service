@@ -1,9 +1,9 @@
-from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.generics import ListAPIView
 
 from apis_core.apis_relations.models import AbstractRelation
+
 from .serializers import *
 
 

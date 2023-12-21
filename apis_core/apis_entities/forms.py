@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from apis_core.apis_metainfo.models import Collection
-from apis_core.helper_functions import DateParser
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit
@@ -11,6 +9,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.forms import ModelChoiceField, ModelMultipleChoiceField
 from django.urls import reverse
 
+from apis_core.apis_metainfo.models import Collection
+from apis_core.helper_functions import DateParser
+
 from .fields import ListSelect2, Select2Multiple
 from .models import AbstractEntity
 
@@ -20,7 +21,6 @@ class MergeForm(forms.Form):
         return self.entity
 
     def __init__(self, entity, *args, **kwargs):
-
         attrs = {
             "data-placeholder": "Type to get suggestions",
             "data-minimum-input-length": 1,

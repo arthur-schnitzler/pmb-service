@@ -1,10 +1,5 @@
 import importlib
 
-from apis_core.apis_entities.models import AbstractEntity
-from apis_core.apis_metainfo.models import Uri
-from apis_core.apis_labels.models import Label
-from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
@@ -18,9 +13,16 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
-
 from icecream import ic
-from .forms import get_entities_form, MergeForm
+
+from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_labels.models import Label
+from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_relations.models import AbstractRelation
+from apis_core.apis_relations.tables import (LabelTableEdit,
+                                             get_generic_relations_table)
+
+from .forms import MergeForm, get_entities_form
 
 
 @method_decorator(login_required, name="dispatch")

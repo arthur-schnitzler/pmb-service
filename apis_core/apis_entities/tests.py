@@ -1,7 +1,8 @@
-from apis_core.apis_entities.models import Person
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
+
+from apis_core.apis_entities.models import Person
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}

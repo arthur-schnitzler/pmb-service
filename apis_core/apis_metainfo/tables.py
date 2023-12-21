@@ -1,7 +1,6 @@
 from django.db.models import F
 from django.utils.html import format_html
 
-
 # generic order_FOO methods for start_date_written and end_date_written to be used in all kinds of tables where a queryset is loaded
 # whose model has start_date_written and end_date_written. These methods order the *_date_written by their corresponding
 # parsed date objects.

@@ -8,7 +8,6 @@ from apis_core.apis_entities.models import Place
 from apis_core.apis_labels.models import Label
 from apis_core.helper_functions import DateParser
 
-
 ##############################################
 # Generic
 ##############################################
