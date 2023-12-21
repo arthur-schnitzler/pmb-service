@@ -1,13 +1,13 @@
 import os
-from django.urls import path
+
 from django.conf.urls import include
+from django.urls import path
 from rest_framework import routers
 
 from apis_core.api_routers import views
-
+from apis_core.apis_metainfo.views import beacon
 from apis_core.apis_vocabularies.api_views import UserViewSet
 from apis_core.helper_functions.ContentType import GetContentTypes
-from apis_core.apis_metainfo.views import beacon
 
 app_name = "apis_core"
 

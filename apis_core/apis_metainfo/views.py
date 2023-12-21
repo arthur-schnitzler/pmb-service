@@ -1,15 +1,15 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 
 from browsing.browsing_utils import BaseCreateView, BaseUpdateView
+
 from .forms import UriForm
 from .models import Uri
-
 
 PROJECT_NAME = settings.PROJECT_NAME
 

@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views, api_views
+from . import api_views, views
 
 app_name = "apis_vis"
 

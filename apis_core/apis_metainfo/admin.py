@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Source, Collection, Text, Uri
+from .models import Collection, Source, Text, Uri
 
 admin.site.register(Source)
 admin.site.register(Collection)

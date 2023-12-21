@@ -1,16 +1,12 @@
 from django.urls import path
 
-from . import views, detail_views, merge_views
-from .autocomplete3 import (
-    GenericEntitiesAutocomplete,
-)
-
-from .list_view_person import PersonListView
-from .list_view_work import WorkListView
-from .list_view_place import PlaceListView
-from .list_view_institution import InstitutionListView
+from . import detail_views, views
+from .autocomplete3 import GenericEntitiesAutocomplete
 from .list_view_event import EventListView
-
+from .list_view_institution import InstitutionListView
+from .list_view_person import PersonListView
+from .list_view_place import PlaceListView
+from .list_view_work import WorkListView
 
 app_name = "apis_entities"
 
@@ -61,6 +57,11 @@ urlpatterns = [
         name="event_list_view",
     ),
     path(
+        "merge/<entity>/<int:ent_merge_pk>/",
+        views.MergeEntitiesView.as_view(),
+        name="merge_view",
+    ),
+    path(
         "autocomplete/<entity>/<int:ent_merge_pk>/",
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
@@ -75,5 +76,4 @@ urlpatterns = [
         GenericEntitiesAutocomplete.as_view(),
         name="generic_entities_autocomplete",
     ),
-    path("merge-objects/", merge_views.merge_objects, name="merge_objects"),
 ]

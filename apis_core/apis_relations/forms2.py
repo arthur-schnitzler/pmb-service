@@ -11,13 +11,14 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 from apis_core.apis_entities.fields import ListSelect2
 from apis_core.apis_entities.models import AbstractEntity
-
 # from dal.autocomplete import ListSelect2
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions import DateParser
+
 from .tables import get_generic_relations_table
 
 # from dal.autocomplete import ListSelect2

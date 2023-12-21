@@ -1,20 +1,18 @@
 from django.conf import settings
 from django.db.models import Q
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import select_template
 from django.views import View
 from django_tables2 import RequestConfig
-from django.shortcuts import redirect
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import (
-    get_generic_relations_table,
-    LabelTableBase,
-)
-from .models import TempEntityClass, BASE_URI
+from apis_core.apis_relations.tables import (LabelTableBase,
+                                             get_generic_relations_table)
+
+from .models import BASE_URI, TempEntityClass
 
 
 def get_object_from_pk_or_uri(request, pk):
