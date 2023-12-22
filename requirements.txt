@@ -17,3 +17,4 @@ pyocclient==0.6
 icecream
 flake8
 black
+Wikidata
