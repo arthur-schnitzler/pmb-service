@@ -1,9 +1,13 @@
 from rest_framework import viewsets
 
 from .models import Collection, Source, TempEntityClass, Text, Uri
-from .serializers import (CollectionSerializer, SourceSerializer,
-                          TempEntityClassSerializer, TextSerializer,
-                          UriSerializer)
+from .serializers import (
+    CollectionSerializer,
+    SourceSerializer,
+    TempEntityClassSerializer,
+    TextSerializer,
+    UriSerializer,
+)
 
 
 class CollectionViewSet(viewsets.ModelViewSet):

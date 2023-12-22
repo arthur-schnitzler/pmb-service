@@ -1,12 +1,12 @@
 import os
-import lxml.etree as ET
 from datetime import datetime
 
+import lxml.etree as ET
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from apis_core.apis_entities.models import Person, Place, Institution, Work
+from apis_core.apis_entities.models import Institution, Person, Place, Work
 from apis_core.apis_tei.tei_utils import get_node_from_template, tei_header
 from dumper.utils import upload_files_to_owncloud, write_report
 

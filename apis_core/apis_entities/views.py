@@ -13,7 +13,6 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
-from icecream import ic
 
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
@@ -180,9 +179,7 @@ class GenericEntitiesCreateView(View):
 @method_decorator(login_required, name="dispatch")
 class GenericEntitiesDeleteView(DeleteView):
     model = importlib.import_module("apis_core.apis_metainfo.models").TempEntityClass
-    template_name = getattr(
-        settings, "APIS_DELETE_VIEW_TEMPLATE", "apis_entities/confirm_delete.html"
-    )
+    template_name = "apis_entities/confirm_delete.html"
 
     def dispatch(self, request, *args, **kwargs):
         entity = kwargs["entity"]

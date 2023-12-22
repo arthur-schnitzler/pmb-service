@@ -7,11 +7,14 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Event
-from apis_core.apis_vocabularies.models import (EventEventRelation, EventType,
-                                                EventWorkRelation,
-                                                InstitutionEventRelation,
-                                                PersonEventRelation,
-                                                PlaceEventRelation)
+from apis_core.apis_vocabularies.models import (
+    EventEventRelation,
+    EventType,
+    EventWorkRelation,
+    InstitutionEventRelation,
+    PersonEventRelation,
+    PlaceEventRelation,
+)
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView
 

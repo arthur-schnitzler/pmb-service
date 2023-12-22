@@ -6,17 +6,36 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
 from django.template import loader
 
-from apis_core.apis_entities.models import (AbstractEntity, Event, Institution,
-                                            Person, Place, Work)
+from apis_core.apis_entities.models import (
+    AbstractEntity,
+    Event,
+    Institution,
+    Person,
+    Place,
+    Work,
+)
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations import forms as relation_form_module
 
 from .forms2 import GenericRelationForm
-from .models import (EventEvent, EventWork, InstitutionEvent,
-                     InstitutionInstitution, InstitutionPlace, InstitutionWork,
-                     PersonEvent, PersonInstitution, PersonPerson, PersonPlace,
-                     PersonWork, PlaceEvent, PlacePlace, PlaceWork, WorkWork)
+from .models import (
+    EventEvent,
+    EventWork,
+    InstitutionEvent,
+    InstitutionInstitution,
+    InstitutionPlace,
+    InstitutionWork,
+    PersonEvent,
+    PersonInstitution,
+    PersonPerson,
+    PersonPlace,
+    PersonWork,
+    PlaceEvent,
+    PlacePlace,
+    PlaceWork,
+    WorkWork,
+)
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]

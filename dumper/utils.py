@@ -1,11 +1,12 @@
 import os
+
 import owncloud
 import requests
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-
 from tqdm import tqdm
-from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
+
 from apis_core.apis_metainfo.models import Uri
 
 DOMAIN_MAPPING = [

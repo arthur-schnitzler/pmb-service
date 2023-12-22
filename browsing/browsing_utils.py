@@ -1,13 +1,10 @@
 import django_tables2
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django.utils.safestring import mark_safe
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-
 from django_tables2.export.views import ExportMixin
-
 
 input_form = """
   <input type="checkbox" name="keep" value="{}" title="keep this"/> |

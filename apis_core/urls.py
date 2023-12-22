@@ -40,9 +40,12 @@ else:
         path("labels/", include("apis_core.apis_labels.urls", namespace="apis_labels")),
         path("tei/", include("apis_core.apis_tei.tei_urls", namespace="apis_tei")),
         path(
-            "entities/", include("apis_core.apis_entities.urls", namespace="apis_entities")
+            "entities/",
+            include("apis_core.apis_entities.urls", namespace="apis_entities"),
         ),
-        path("openrefine/", include("apis_core.openrefine.urls", namespace="openrefine")),
+        path(
+            "openrefine/", include("apis_core.openrefine.urls", namespace="openrefine")
+        ),
         path(
             "relations/",
             include("apis_core.apis_relations.urls", namespace="apis_relations"),

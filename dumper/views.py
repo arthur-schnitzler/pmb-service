@@ -1,8 +1,9 @@
-from django.views.generic.base import TemplateView
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
-from apis_core.apis_entities.models import Person, Place, Event, Work, Institution
+from django.views.generic.base import TemplateView
+
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
 
 from .forms import form_user_login

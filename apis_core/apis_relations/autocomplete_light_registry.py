@@ -9,13 +9,10 @@ import dateutil.parser
 import requests
 from django.db.models import Q
 
-from apis_core.apis_entities.models import (Event, Institution, Person, Place,
-                                            Work)
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
-from apis_core.apis_relations.models import (PersonInstitution, PersonPerson,
-                                             PersonPlace)
-from apis_core.default_settings.NER_settings import \
-    autocomp_settings as ac_settings
+from apis_core.apis_relations.models import PersonInstitution, PersonPerson, PersonPlace
+from apis_core.default_settings.NER_settings import autocomp_settings as ac_settings
 
 
 class StanbolAutocompleteBase(al.AutocompleteListTemplate):
