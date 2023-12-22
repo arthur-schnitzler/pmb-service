@@ -2,13 +2,17 @@ from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
+from icecream import ic
 
-from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.forms import get_entities_form
+from apis_core.apis_entities.models import Person
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
 BAHR = {"name": "Bahr", "first_name": "Hermann", "start_date_written": "1900"}
+DUMMY_OBJECT = {"name": "test", "start_date_written": "1900"}
+
+ENTITY_TYPES = ["person", "place", "event", "work", "institution"]
 
 MODELS = list(apps.all_models["apis_entities"].values())
 
@@ -82,7 +86,7 @@ class EntitiesTestCase(TestCase):
         item.delete()
 
     def test_008_get_entities_form(self):
-        for x in ["person", "place", "event", "work", "institution"]:
+        for x in ENTITY_TYPES:
             data = {"name": f"{x}__hansi", "start_date_written": "1900"}
             form_class = get_entities_form(x.title())
             form = form_class(data=data)
@@ -106,3 +110,22 @@ class EntitiesTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         after = Person.objects.all().count()
         self.assertTrue(before > after)
+
+    def test_010_delete_views(self):
+        client.login(**USER)
+        for x in MODELS:
+            entity_type = f"{x.__name__.lower()}"
+            if entity_type in ENTITY_TYPES:
+                try:
+                    item, created = x.objects.get_or_create(**DUMMY_OBJECT)
+                except Exception:
+                    item = x.objects.filter(name="test").first()
+                url = reverse(
+                    "apis:apis_entities:generic_entities_delete_view",
+                    kwargs={"entity": f"{x.__name__.lower()}", "pk": item.id},
+                )
+                item.save()
+                response = client.get(url)
+                self.assertContains(response, "Löschen von")
+                self.assertContains(response, item.id)
+                item.delete()

@@ -1,9 +1,10 @@
 import os
-import pandas as pd
 from datetime import datetime
 
+import pandas as pd
 from django.conf import settings
 from django.core.management.base import BaseCommand
+
 from apis_core.apis_vocabularies.models import ProfessionType
 from dumper.utils import write_report
 

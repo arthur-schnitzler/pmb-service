@@ -1,10 +1,12 @@
 import os
 from datetime import datetime
+
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 from tqdm import tqdm
-from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
+
 from apis_core.apis_metainfo.models import Uri
 from dumper.utils import write_report
 

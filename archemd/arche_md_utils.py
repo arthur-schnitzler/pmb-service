@@ -1,6 +1,7 @@
-from rdflib import Graph, Namespace, URIRef, RDF, Literal, XSD
-from apis_core.apis_metainfo.models import TempEntityClass
 from django.conf import settings
+from rdflib import RDF, XSD, Graph, Literal, Namespace, URIRef
+
+from apis_core.apis_metainfo.models import TempEntityClass
 
 
 class ArcheMd:

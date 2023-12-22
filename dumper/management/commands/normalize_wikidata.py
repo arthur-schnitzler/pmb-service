@@ -1,6 +1,7 @@
 import os
-from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from datetime import datetime
+
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from tqdm import tqdm

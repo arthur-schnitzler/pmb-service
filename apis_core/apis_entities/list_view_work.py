@@ -7,10 +7,13 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Work
-from apis_core.apis_vocabularies.models import (InstitutionWorkRelation,
-                                                PersonWorkRelation,
-                                                PlaceWorkRelation, WorkType,
-                                                WorkWorkRelation)
+from apis_core.apis_vocabularies.models import (
+    InstitutionWorkRelation,
+    PersonWorkRelation,
+    PlaceWorkRelation,
+    WorkType,
+    WorkWorkRelation,
+)
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView
 

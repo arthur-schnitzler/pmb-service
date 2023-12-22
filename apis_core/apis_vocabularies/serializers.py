@@ -2,16 +2,33 @@ from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
 from rest_framework import serializers
 
-from .models import (CollectionType, EventEventRelation, EventType,
-                     EventWorkRelation, InstitutionEventRelation,
-                     InstitutionInstitutionRelation, InstitutionPlaceRelation,
-                     InstitutionType, InstitutionWorkRelation, LabelType,
-                     PersonEventRelation, PersonInstitutionRelation,
-                     PersonPersonRelation, PersonPlaceRelation,
-                     PersonWorkRelation, PlaceEventRelation,
-                     PlacePlaceRelation, PlaceType, PlaceWorkRelation,
-                     ProfessionType, TextType, VocabNames, VocabsBaseClass,
-                     WorkType, WorkWorkRelation)
+from .models import (
+    CollectionType,
+    EventEventRelation,
+    EventType,
+    EventWorkRelation,
+    InstitutionEventRelation,
+    InstitutionInstitutionRelation,
+    InstitutionPlaceRelation,
+    InstitutionType,
+    InstitutionWorkRelation,
+    LabelType,
+    PersonEventRelation,
+    PersonInstitutionRelation,
+    PersonPersonRelation,
+    PersonPlaceRelation,
+    PersonWorkRelation,
+    PlaceEventRelation,
+    PlacePlaceRelation,
+    PlaceType,
+    PlaceWorkRelation,
+    ProfessionType,
+    TextType,
+    VocabNames,
+    VocabsBaseClass,
+    WorkType,
+    WorkWorkRelation,
+)
 
 ###########################################################
 #

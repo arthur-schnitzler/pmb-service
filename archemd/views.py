@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 
 # from apis_core.apis_entities.detail_views import get_object_from_pk_or_uri
-from apis_core.apis_metainfo.models import Uri, TempEntityClass
+from apis_core.apis_metainfo.models import TempEntityClass, Uri
+
 from .arche_md_utils import ArcheMd
 
 
