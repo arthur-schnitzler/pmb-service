@@ -1,17 +1,16 @@
 from functools import reduce
-from django.conf import settings
 
+from django.conf import settings
 from django.urls import reverse
-from rest_framework import pagination, serializers, viewsets
-from rest_framework import renderers
+from django_filters import rest_framework as filters
+from rest_framework import pagination, renderers, serializers, viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 
-
-from django_filters import rest_framework as filters
-from rest_framework.filters import OrderingFilter
-from .apis_metainfo.models import TempEntityClass
-from .api_renderers import NetJsonRenderer
 from apis_core.helper_functions.ContentType import GetContentTypes
+
+from .api_renderers import NetJsonRenderer
+from .apis_metainfo.models import TempEntityClass
 
 try:
     MAX_AGE = settings.MAX_AGE

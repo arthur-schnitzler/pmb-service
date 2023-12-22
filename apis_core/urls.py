@@ -1,13 +1,13 @@
 import os
-from django.urls import path
+
 from django.conf.urls import include
+from django.urls import path
 from rest_framework import routers
 
 from apis_core.api_routers import views
-
+from apis_core.apis_metainfo.views import beacon
 from apis_core.apis_vocabularies.api_views import UserViewSet
 from apis_core.helper_functions.ContentType import GetContentTypes
-from apis_core.apis_metainfo.views import beacon
 
 app_name = "apis_core"
 
@@ -40,9 +40,12 @@ else:
         path("labels/", include("apis_core.apis_labels.urls", namespace="apis_labels")),
         path("tei/", include("apis_core.apis_tei.tei_urls", namespace="apis_tei")),
         path(
-            "entities/", include("apis_core.apis_entities.urls", namespace="apis_entities")
+            "entities/",
+            include("apis_core.apis_entities.urls", namespace="apis_entities"),
         ),
-        path("openrefine/", include("apis_core.openrefine.urls", namespace="openrefine")),
+        path(
+            "openrefine/", include("apis_core.openrefine.urls", namespace="openrefine")
+        ),
         path(
             "relations/",
             include("apis_core.apis_relations.urls", namespace="apis_relations"),

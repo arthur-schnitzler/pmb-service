@@ -1,13 +1,13 @@
 import os
 import time
-
 from datetime import datetime
-from acdh_id_reconciler import wikidata_to_wikipedia
-from tqdm import tqdm
 
+from acdh_id_reconciler import wikidata_to_wikipedia
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from apis_core.apis_metainfo.models import TempEntityClass, Uri, Collection
+from tqdm import tqdm
+
+from apis_core.apis_metainfo.models import Collection, TempEntityClass, Uri
 from dumper.utils import write_report
 
 

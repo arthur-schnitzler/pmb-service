@@ -1,19 +1,15 @@
+import pprint
+from collections import defaultdict
 from xml.sax.saxutils import escape, unescape
 
 import lxml.etree as ET
-
 from django.conf import settings
 from django.utils.text import slugify
 
-from .partials import TEI_NSMAP, tei_gen_header
-
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Text
-from apis_core.apis_entities.models import Person, Place, Event, Work, Institution
 
-
-from collections import defaultdict
-
-import pprint
+from .partials import TEI_NSMAP, tei_gen_header
 
 pp = pprint.PrettyPrinter(indent=4)
 

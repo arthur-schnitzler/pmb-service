@@ -1,13 +1,12 @@
 import django_filters
 import django_tables2 as tables
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
+from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import AccordionGroup
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
-
-from browsing.browsing_utils import GenericListView
 
 from apis_core.apis_metainfo.models import Uri
+from browsing.browsing_utils import GenericListView
 
 
 class UriTable(tables.Table):

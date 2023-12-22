@@ -1,25 +1,22 @@
 import django_filters
 import django_tables2 as tables
+from crispy_bootstrap5.bootstrap5 import BS5Accordion
+from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import AccordionGroup
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
-
 from dal import autocomplete
 
-from browsing.browsing_utils import GenericListView
-
 from apis_core.apis_entities.models import Event
-
 from apis_core.apis_vocabularies.models import (
-    PlaceEventRelation,
-    InstitutionEventRelation,
-    PersonEventRelation,
     EventEventRelation,
     EventType,
     EventWorkRelation,
+    InstitutionEventRelation,
+    PersonEventRelation,
+    PlaceEventRelation,
 )
 from apis_core.helper_functions.utils import get_child_classes
+from browsing.browsing_utils import GenericListView
 
 excluded_cols = [
     "start_start_date",

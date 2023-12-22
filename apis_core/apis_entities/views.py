@@ -1,8 +1,11 @@
+import importlib
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import select_template
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -10,13 +13,14 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
-import importlib
 
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
+from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import get_generic_relations_table, LabelTableEdit
-from .forms import get_entities_form, FullTextForm
+from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
+
+from .forms import MergeForm, get_entities_form
 
 
 @method_decorator(login_required, name="dispatch")
@@ -65,6 +69,7 @@ class GenericEntitiesEditView(View):
             )
         form = get_entities_form(entity.title())
         form = form(instance=instance)
+        form_merge_with = MergeForm(entity, ent_merge_pk=pk)
         object_labels = Label.objects.filter(temp_entity=instance)
         tb_label = LabelTableEdit(data=object_labels, prefix=entity.title()[:2] + "L-")
         tb_label_open = request.GET.get("PL-page", None)
@@ -78,6 +83,7 @@ class GenericEntitiesEditView(View):
         context = {
             "entity_type": entity,
             "form": form,
+            "form_merge_with": form_merge_with,
             "instance": instance,
             "right_card": side_bar,
         }
@@ -90,10 +96,8 @@ class GenericEntitiesEditView(View):
         instance = get_object_or_404(entity_model, pk=pk)
         form = get_entities_form(entity.title())
         form = form(request.POST, instance=instance)
-        form_text = FullTextForm(request.POST, entity=entity.title())
-        if form.is_valid() and form_text.is_valid():
+        if form.is_valid():
             entity_2 = form.save()
-            form_text.save(entity_2)
             return redirect(
                 reverse(
                     "apis:apis_entities:generic_entities_edit_view",
@@ -110,7 +114,6 @@ class GenericEntitiesEditView(View):
             context = {
                 "form": form,
                 "entity_type": entity,
-                "form_text": form_text,
                 "instance": instance,
             }
             if entity.lower() != "place":
@@ -176,13 +179,40 @@ class GenericEntitiesCreateView(View):
 @method_decorator(login_required, name="dispatch")
 class GenericEntitiesDeleteView(DeleteView):
     model = importlib.import_module("apis_core.apis_metainfo.models").TempEntityClass
-    template_name = getattr(
-        settings, "APIS_DELETE_VIEW_TEMPLATE", "apis_entities/confirm_delete.html"
-    )
+    template_name = "apis_entities/confirm_delete.html"
 
     def dispatch(self, request, *args, **kwargs):
         entity = kwargs["entity"]
-        self.success_url = reverse(
-            "apis_core:apis_entities:generic_entities_list", kwargs={"entity": entity}
-        )
+        self.success_url = reverse(f"apis_core:apis_entities:{entity}_list_view")
         return super(GenericEntitiesDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+@method_decorator(login_required, name="dispatch")
+class MergeEntitiesView(View):
+    def post(self, request, *args, **kwargs):
+        entity = kwargs["entity"]
+        ent_merge_pk = kwargs.get("ent_merge_pk", False)
+        form = MergeForm(entity, request.POST, ent_merge_pk=ent_merge_pk)
+        if form.is_valid():
+            uri = form.data["entity"]
+            if ent_merge_pk:
+                uri_obj = Uri.objects.get(uri=uri)
+                target = uri_obj.entity
+                entity_model_class = ContentType.objects.get(
+                    app_label="apis_entities", model__iexact=entity
+                ).model_class()
+                target_obj = entity_model_class.objects.get(id=target.id)
+                target_obj.merge_with(int(ent_merge_pk))
+            return redirect(
+                reverse(
+                    "apis:apis_entities:generic_entities_detail_view",
+                    kwargs={"pk": target.pk, "entity": entity},
+                )
+            )
+        else:
+            return redirect(
+                reverse(
+                    "apis:apis_entities:generic_entities_edit_view",
+                    kwargs={"pk": ent_merge_pk, "entity": entity},
+                )
+            )

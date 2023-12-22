@@ -1,18 +1,19 @@
 import json
+
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-
 from apis_core.apis_entities.models import (
+    Event,
+    Institution,
     Person,
     Place,
-    Institution,
-    Work,
-    Event,
     TempEntityClass,
+    Work,
 )
-from .utils import get_service_mainfest, get_properties
+
+from .utils import get_properties, get_service_mainfest
 
 
 @csrf_exempt

@@ -1,9 +1,9 @@
+from csvexport.actions import csvexport
 from dal import autocomplete
 from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.urls import reverse
-from csvexport.actions import csvexport
 
 
 class BaseAdminVocabularies(admin.ModelAdmin):

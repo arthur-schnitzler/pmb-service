@@ -1,43 +1,41 @@
-import re
 import inspect
-
-from apis_core.apis_metainfo.models import TempEntityClass
-from django.template import loader
+import re
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse, Http404
-from apis_core.apis_relations import forms as relation_form_module
+from django.http import Http404, HttpResponse
+from django.template import loader
 
 from apis_core.apis_entities.models import (
-    Person,
-    Institution,
-    Place,
-    Event,
-    Work,
     AbstractEntity,
+    Event,
+    Institution,
+    Person,
+    Place,
+    Work,
 )
 from apis_core.apis_labels.models import Label
-from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_metainfo.models import TempEntityClass, Uri
+from apis_core.apis_relations import forms as relation_form_module
+
 from .forms2 import GenericRelationForm
 from .models import (
-    PersonPlace,
-    PersonPerson,
-    PersonInstitution,
-    InstitutionPlace,
-    InstitutionInstitution,
-    PlacePlace,
-    PersonEvent,
-    InstitutionEvent,
-    PlaceEvent,
-    PersonWork,
-    InstitutionWork,
-    PlaceWork,
-    EventWork,
-    WorkWork,
     EventEvent,
+    EventWork,
+    InstitutionEvent,
+    InstitutionInstitution,
+    InstitutionPlace,
+    InstitutionWork,
+    PersonEvent,
+    PersonInstitution,
+    PersonPerson,
+    PersonPlace,
+    PersonWork,
+    PlaceEvent,
+    PlacePlace,
+    PlaceWork,
+    WorkWork,
 )
-
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]

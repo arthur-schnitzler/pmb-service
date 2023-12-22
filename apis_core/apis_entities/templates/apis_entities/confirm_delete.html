@@ -1,28 +1,28 @@
-{% extends "webpage/base.html" %}
+{% extends "base.html" %}
+{% block title %} Lösche: {{ object }} ?{% endblock %}
+
 {% block content %}
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Confirm delete</h3>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+<div class="container">
+    <h1 class="text-center pt-5">Löschen von <br /><strong>{{ object }}</strong></h1>
+    <h2 class="text-center">Ganz sicher?</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col d-flex justify-content-start">
+                <input class="btn btn-danger" type="submit" value="Ja ich bin mir ganz sicher" />
             </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <h4>
-                        Are you sure you want to delete: <strong>{{ object }}</strong> ?
-                    </h4>
-                    <input  class="btn btn-danger" type="submit" value="Yes, I want to delete" />
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input  class="btn" type="submit" value="No, bring me back" onclick="goBack()" />
+            <div class="col d-flex justify-content-end"">
+                <input class="btn btn-success" type="submit" value="Nein, ich habs mir anders überlegt" onclick="goBack()" />
             </div>
         </div>
-    </div>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
+       
+    </form>
+   
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 {% endblock content %}

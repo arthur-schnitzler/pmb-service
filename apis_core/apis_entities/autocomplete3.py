@@ -14,8 +14,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import FieldError
 from django.db.models import Q
 
-from apis_core.apis_metainfo.models import Uri, Collection
+from apis_core.apis_metainfo.models import Collection, Uri
 from apis_core.apis_vocabularies.models import VocabsBaseClass
+
 from .models import AbstractEntity
 
 

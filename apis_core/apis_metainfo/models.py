@@ -12,7 +12,6 @@ from model_utils.managers import InheritanceManager
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
-
 from apis_core.helper_functions import DateParser
 
 

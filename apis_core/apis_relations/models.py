@@ -1,13 +1,8 @@
 import inspect
 import sys
 
-from django.conf import settings
-from django.db import models
-from django.db.models import Q
-
 from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import TempEntityClass
-
 
 #######################################################################
 #
