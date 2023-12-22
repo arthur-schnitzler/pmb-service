@@ -11,6 +11,7 @@ django-model-utils
 django-tables2
 djangorestframework
 pandas
+pylobid
 psycopg2
 pyocclient==0.6
 icecream
