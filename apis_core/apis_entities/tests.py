@@ -2,7 +2,6 @@ from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
-from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person
