@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from pylobid.pylobid import PyLobidPerson
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri, get_norm_id
 from acdh_id_reconciler import gnd_to_wikidata
+from acdh_wikidata_pyutils import WikiDataPerson
 from wikidata.client import Client
 
 
@@ -33,17 +34,9 @@ class GndFormView(FormView):
                 Uri.objects.get(uri=get_normalized_uri(wikidata_id))
                 return super().form_valid(form)
             except ObjectDoesNotExist:
-                client = Client()
-                entity = client.get(get_norm_id(wikidata_id), load=True)
-                date_of_birth_prop = client.get('P569')
-                date_of_birth = entity[date_of_birth_prop]
-                date_of_death_prop = client.get('P570')
-                date_of_death = entity[date_of_death_prop]
-                person = Person.objects.create(
-                    name=f"{entity.label}",
-                    start_date_written=str(date_of_birth),
-                    end_date_written=str(date_of_death)
-                )
+                wd_person = WikiDataPerson(wikidata_id)
+                apis_person = wd_person.get_apis_person()
+                person = Person.objects.create(**apis_person)
                 Uri.objects.create(
                     uri=get_normalized_uri(wikidata_id),
                     domain="wikidata",

@@ -2,6 +2,7 @@ apis-override-select2js==0.1
 acdh-django-browsing
 acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=0.34,<1
+acdh-wikidata-pyutils>=0.2.1,<1
 Django>4.1,<6
 django-admin-csvexport
 django-autocomplete-light
@@ -17,4 +18,3 @@ pyocclient==0.6
 icecream
 flake8
 black
-Wikidata
