@@ -54,7 +54,7 @@ class ArcheMd:
         self.item = TempEntityClass.objects.get(id=entity_id)
         self.entity = self.item.get_child_entity()
         self.entity_class_name = self.entity.__class__.__name__.lower()
-        self.detail_view_url = self.entity.get_absolute_url()
+        self.detail_view_url = f"https://pmb.acdh.oeaw.ac.at{self.entity.get_absolute_url()}"
         if self.entity_class_name == "institution":
             self.arche_class = "Organization"
         else:
