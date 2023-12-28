@@ -1,22 +1,19 @@
 from django.urls import reverse
 from django.views.generic.edit import FormView
-from icecream import ic
 
-from .forms import GndForm
+from .forms import NormDataImportForm
 from .utils import import_from_normdata
 
 
-class GndFormView(FormView):
+class NormDataImportFormView(FormView):
     template_name = "normdata/create_from_gnd.html"
-    form_class = GndForm
+    form_class = NormDataImportForm
 
     def get_success_url(self):
         return reverse("apis:apis_entities:person_list_view")
 
     def form_valid(self, form):
-        ic(form.data)
         raw_url = form.data["gnd_url"]
         entity_type = form.data["entity_type"]
-        entity = import_from_normdata(raw_url, entity_type)
-        ic(entity)
+        import_from_normdata(raw_url, entity_type)
         return super().form_valid(form)

@@ -2,7 +2,6 @@ from acdh_id_reconciler import geonames_to_wikidata, gnd_to_wikidata
 from acdh_wikidata_pyutils import WikiDataPerson, WikiDataPlace
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.core.exceptions import ObjectDoesNotExist
-from icecream import ic
 
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
@@ -77,7 +76,6 @@ def import_from_normdata(raw_url, entity_type):
         wikidata_url = normalized_url
     else:
         wikidata_url = False
-    ic(domain, wikidata_url)
     if wikidata_url:
         try:
             entity = Uri.objects.get(uri=normalized_url).entity

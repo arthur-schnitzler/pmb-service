@@ -6,5 +6,9 @@ app_name = "normdata"
 
 
 urlpatterns = [
-    path("import-from-gnd/", views.GndFormView.as_view(), name="import_from_gnd")
+    path(
+        "import-from-normdata/",
+        views.NormDataImportFormView.as_view(),
+        name="import_from_normdata",
+    )
 ]
