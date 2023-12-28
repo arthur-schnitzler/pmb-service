@@ -16,21 +16,24 @@ MODELS = list(apps.all_models["apis_entities"].values())
 
 
 class TeiTestCase(TestCase):
-
     def setUp(self):
         # Create two users
         User.objects.create_user(**USER)
         Person.objects.create(**BAHR)
 
     def test_01_tei_autocomplete(self):
-        url = reverse("apis:apis_tei:generic_entities_autocomplete", kwargs={"entity": "person"})
+        url = reverse(
+            "apis:apis_tei:generic_entities_autocomplete", kwargs={"entity": "person"}
+        )
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         response = client.get(f"{url}?q=Bahr")
         self.assertTrue("Hermann" in str(response.content))
 
     def test_02_tei_completer_autocomplete(self):
-        url = reverse("apis:apis_tei:tei_completer_autocomplete", kwargs={"entity": "person"})
+        url = reverse(
+            "apis:apis_tei:tei_completer_autocomplete", kwargs={"entity": "person"}
+        )
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         response = client.get(f"{url}?q=Bahr")

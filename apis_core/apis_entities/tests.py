@@ -5,6 +5,8 @@ from django.urls import reverse
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person
+from apis_core.apis_metainfo.models import Uri
+from normdata.forms import NormDataImportForm
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
@@ -128,3 +130,45 @@ class EntitiesTestCase(TestCase):
                 self.assertContains(response, "Löschen von")
                 self.assertContains(response, item.id)
                 item.delete()
+
+    def test_010_import_nordmdata_view(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "http://lobid.org/gnd/118566512",
+            "entity_type": "person",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Uri.objects.filter(uri__icontains="118566512"))
+        payload = {
+            "normdata_url": "https://www.geonames.org/2772400/linz.html",
+            "entity_type": "place",
+        }
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Uri.objects.filter(uri__icontains="2772400"))
+
+        payload = {
+            "normdata_url": "https://www.wikidata.org/wiki/Q119350694",
+            "entity_type": "person",
+        }
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        payload = {
+            "normdata_url": "https://www.wikidata.org/wiki/Q119350694",
+            "entity_type": "person",
+        }
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_011_import_normdata_form(self):
+        payload = {
+            "normdata_url": "http://lobid.org/gnd/118566512",
+            "entity_type": "person"
+        }
+        form = NormDataImportForm(data=payload)
+        self.assertTrue(form.is_valid())
