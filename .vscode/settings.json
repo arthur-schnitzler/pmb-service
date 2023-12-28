@@ -6,5 +6,7 @@
         "!yaml",
         "!yml",
         "!html"
-    ]
+    ],
+    "isort.check": true,
+    "isort.importStrategy": "fromEnvironment"
 }
