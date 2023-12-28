@@ -168,7 +168,7 @@ class EntitiesTestCase(TestCase):
     def test_011_import_normdata_form(self):
         payload = {
             "normdata_url": "http://lobid.org/gnd/118566512",
-            "entity_type": "person"
+            "entity_type": "person",
         }
         form = NormDataImportForm(data=payload)
         self.assertTrue(form.is_valid())
