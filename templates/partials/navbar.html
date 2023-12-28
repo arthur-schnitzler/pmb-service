@@ -70,6 +70,12 @@
                             </li>
                         </ul>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'normdata:import_from_gnd' %}">Neue Entität aus GND/WikiData</a>
+                    </li>
+                    {% endif %}
+              
                 </ul>
                 {% if user.is_authenticated %}
                 <a href="{% url 'dumper:user_logout' %}"><i class="bi bi-person-check"></i></a>

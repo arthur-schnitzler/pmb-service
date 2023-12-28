@@ -4,10 +4,9 @@ from django.urls import reverse
 from apis_core.apis_entities.models import Person, Uri
 from django.core.exceptions import ObjectDoesNotExist
 from pylobid.pylobid import PyLobidPerson
-from AcdhArcheAssets.uri_norm_rules import get_normalized_uri, get_norm_id
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from acdh_id_reconciler import gnd_to_wikidata
 from acdh_wikidata_pyutils import WikiDataPerson
-from wikidata.client import Client
 
 
 class GndFormView(FormView):
@@ -35,7 +34,7 @@ class GndFormView(FormView):
                 return super().form_valid(form)
             except ObjectDoesNotExist:
                 wd_person = WikiDataPerson(wikidata_id)
-                apis_person = wd_person.get_apis_person()
+                apis_person = wd_person.get_apis_entity()
                 person = Person.objects.create(**apis_person)
                 Uri.objects.create(
                     uri=get_normalized_uri(wikidata_id),

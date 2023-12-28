@@ -4,6 +4,7 @@
         "!css",
         "!python",
         "!yaml",
-        "!yml"
+        "!yml",
+        "!html"
     ]
 }
