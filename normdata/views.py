@@ -13,7 +13,7 @@ class NormDataImportFormView(FormView):
         return reverse("apis:apis_entities:person_list_view")
 
     def form_valid(self, form):
-        raw_url = form.data["gnd_url"]
+        raw_url = form.data["normdata_url"]
         entity_type = form.data["entity_type"]
         import_from_normdata(raw_url, entity_type)
         return super().form_valid(form)
