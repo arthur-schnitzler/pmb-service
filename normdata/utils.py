@@ -1,11 +1,18 @@
 from acdh_id_reconciler import geonames_to_wikidata, gnd_to_wikidata
 from acdh_wikidata_pyutils import WikiDataPerson, WikiDataPlace
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import IntegrityError
 
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_relations.models import PersonPlace
+from apis_core.apis_vocabularies.models import PersonPlaceRelation
 from dumper.utils import DOMAIN_MAPPING
+
+BIRTH_REL = getattr(settings, "BIRTH_REL")
+DEATH_REL = getattr(settings, "DEATH_REL")
 
 
 def get_uri_domain(uri):
@@ -14,44 +21,98 @@ def get_uri_domain(uri):
             return x[1]
 
 
-def import_from_wikidata(wikidata_url, entity_type):
-    if entity_type == "person":
-        wd_entity = WikiDataPerson(wikidata_url)
-        apis_entity = wd_entity.get_apis_entity()
-        entity = Person.objects.create(**apis_entity)
-        Uri.objects.create(
-            uri=get_normalized_uri(wikidata_url),
-            domain="wikidata",
-            entity=entity,
-        )
-        if wd_entity.gnd_uri:
+def get_or_create_place_from_wikidata(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Place.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        wd_entity = WikiDataPlace(uri)
+        try:
+            entity = Uri.objects.get(uri=wd_entity.geonames_uri).entity
+            entity = Place.objects.get(id=entity.id)
+            return entity
+        except ObjectDoesNotExist:
+            try:
+                entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
+                entity = Place.objects.get(id=entity.id)
+                return entity
+            except ObjectDoesNotExist:
+                apis_entity = wd_entity.get_apis_entity()
+                entity = Place.objects.create(**apis_entity)
+                Uri.objects.create(
+                    uri=get_normalized_uri(uri),
+                    domain="wikidata",
+                    entity=entity,
+                )
+                try:
+                    if wd_entity.gnd_uri:
+                        Uri.objects.create(
+                            uri=get_normalized_uri(wd_entity.gnd_uri),
+                            domain="gnd",
+                            entity=entity,
+                        )
+                except IntegrityError:
+                    pass
+                try:
+                    if wd_entity.geonames_uri:
+                        Uri.objects.create(
+                            uri=get_normalized_uri(wd_entity.geonames_uri),
+                            domain="geonames",
+                            entity=entity,
+                        )
+                except IntegrityError:
+                    pass
+        return entity
+
+
+def get_or_create_person_from_wikidata(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Person.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        wd_entity = WikiDataPerson(uri)
+        try:
+            entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
+            entity = Person.objects.get(id=entity.id)
+            return entity
+        except ObjectDoesNotExist:
+            apis_entity = wd_entity.get_apis_entity()
+            entity = Person.objects.create(**apis_entity)
             Uri.objects.create(
-                uri=get_normalized_uri(wd_entity.gnd_uri),
-                domain="gnd",
+                uri=get_normalized_uri(uri),
+                domain="wikidata",
                 entity=entity,
             )
-    else:
-        wd_entity = WikiDataPlace(wikidata_url)
-        apis_entity = wd_entity.get_apis_entity()
-        entity = Place.objects.create(**apis_entity)
-        Uri.objects.create(
-            uri=get_normalized_uri(wikidata_url),
-            domain="wikidata",
-            entity=entity,
-        )
-        if wd_entity.gnd_uri:
-            Uri.objects.create(
-                uri=get_normalized_uri(wd_entity.gnd_uri),
-                domain="gnd",
-                entity=entity,
-            )
-        if wd_entity.geonames_uri:
-            Uri.objects.create(
-                uri=get_normalized_uri(wd_entity.geonames_uri),
-                domain="geonames",
-                entity=entity,
-            )
-    return entity
+            if wd_entity.gnd_uri:
+                try:
+                    Uri.objects.create(
+                        uri=get_normalized_uri(wd_entity.gnd_uri),
+                        domain="gnd",
+                        entity=entity,
+                    )
+                except IntegrityError:
+                    pass
+            if wd_entity.place_of_birth:
+                relation_type = PersonPlaceRelation.objects.get(id=BIRTH_REL[0])
+                place = get_or_create_place_from_wikidata(wd_entity.place_of_birth)
+                rel, _ = PersonPlace.objects.get_or_create(
+                    related_person=entity,
+                    related_place=place,
+                    relation_type=relation_type,
+                    start_date_written=apis_entity["start_date_written"],
+                )
+            if wd_entity.place_of_death:
+                relation_type = PersonPlaceRelation.objects.get(id=DEATH_REL[0])
+                place = get_or_create_place_from_wikidata(wd_entity.place_of_death)
+                rel, _ = PersonPlace.objects.get_or_create(
+                    related_person=entity,
+                    related_place=place,
+                    relation_type=relation_type,
+                    start_date_written=apis_entity["end_date_written"],
+                )
+        return entity
 
 
 def import_from_normdata(raw_url, entity_type):
@@ -81,7 +142,10 @@ def import_from_normdata(raw_url, entity_type):
             entity = Uri.objects.get(uri=normalized_url).entity
             return entity
         except ObjectDoesNotExist:
-            entity = import_from_wikidata(wikidata_url, entity_type)
+            if entity_type == "place":
+                entity = get_or_create_place_from_wikidata(wikidata_url)
+            else:
+                entity = get_or_create_person_from_wikidata(wikidata_url)
     else:
         entity = None
     return entity
