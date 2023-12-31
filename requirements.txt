@@ -1,5 +1,6 @@
 apis-override-select2js==0.1
 acdh-django-browsing
+acdh_geonames_utils
 acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=0.34,<1
 acdh-wikidata-pyutils>=0.2.1,<1
