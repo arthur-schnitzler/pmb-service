@@ -13,7 +13,7 @@ from apis_core.apis_vocabularies.models import (
     InstitutionPlaceRelation,
     InstitutionType,
     InstitutionWorkRelation,
-    PersonInstitutionRelation
+    PersonInstitutionRelation,
 )
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView

@@ -6,7 +6,7 @@ from .serializers import (
     SourceSerializer,
     TempEntityClassSerializer,
     TextSerializer,
-    UriSerializer
+    UriSerializer,
 )
 
 

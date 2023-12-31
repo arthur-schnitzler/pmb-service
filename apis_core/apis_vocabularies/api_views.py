@@ -25,7 +25,7 @@ from .models import (
     VocabNames,
     VocabsBaseClass,
     WorkType,
-    WorkWorkRelation
+    WorkWorkRelation,
 )
 from .serializers import (
     CollectionTypeSerializer,
@@ -52,7 +52,7 @@ from .serializers import (
     VocabNamesSerializer,
     VocabsBaseClassSerializer,
     WorkTypeSerializer,
-    WorkWorkRelationSerializer
+    WorkWorkRelationSerializer,
 )
 
 ###########################################################

@@ -12,7 +12,7 @@ from apis_core.apis_entities.models import (
     Institution,
     Person,
     Place,
-    Work
+    Work,
 )
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
@@ -34,7 +34,7 @@ from .models import (
     PlaceEvent,
     PlacePlace,
     PlaceWork,
-    WorkWork
+    WorkWork,
 )
 from .tables import LabelTableEdit
 
