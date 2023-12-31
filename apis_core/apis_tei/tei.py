@@ -6,7 +6,13 @@ import lxml.etree as ET
 from django.conf import settings
 from django.utils.text import slugify
 
-from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
+from apis_core.apis_entities.models import (
+    Event,
+    Institution,
+    Person,
+    Place,
+    Work
+)
 from apis_core.apis_metainfo.models import Text
 
 from .partials import TEI_NSMAP, tei_gen_header

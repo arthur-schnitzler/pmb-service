@@ -27,7 +27,7 @@ from .models import (
     VocabNames,
     VocabsBaseClass,
     WorkType,
-    WorkWorkRelation,
+    WorkWorkRelation
 )
 
 ###########################################################

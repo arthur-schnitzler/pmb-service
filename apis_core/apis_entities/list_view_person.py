@@ -12,7 +12,7 @@ from apis_core.apis_vocabularies.models import (
     PersonPersonRelation,
     PersonPlaceRelation,
     PersonWorkRelation,
-    ProfessionType,
+    ProfessionType
 )
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView

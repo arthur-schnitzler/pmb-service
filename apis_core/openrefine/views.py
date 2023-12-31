@@ -10,7 +10,7 @@ from apis_core.apis_entities.models import (
     Person,
     Place,
     TempEntityClass,
-    Work,
+    Work
 )
 
 from .utils import get_properties, get_service_mainfest
