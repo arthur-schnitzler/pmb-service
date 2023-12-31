@@ -14,7 +14,6 @@ from django.utils.translation import gettext_lazy as _
 
 from apis_core.apis_entities.fields import ListSelect2
 from apis_core.apis_entities.models import AbstractEntity
-
 # from dal.autocomplete import ListSelect2
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations.models import AbstractRelation

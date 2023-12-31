@@ -116,7 +116,7 @@ def get_or_create_person_from_wikidata(uri):
 
 
 def import_from_normdata(raw_url, entity_type):
-    normalized_url = get_normalized_uri(raw_url)
+    normalized_url = get_normalized_uri(raw_url.strip())
     try:
         entity = Uri.objects.get(uri=normalized_url).entity
         return entity

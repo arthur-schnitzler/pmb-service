@@ -10,7 +10,7 @@ from apis_core.apis_entities.models import Place
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     PlaceType,
-    PlaceWorkRelation,
+    PlaceWorkRelation
 )
 from apis_core.helper_functions.utils import get_child_classes
 from browsing.browsing_utils import GenericListView
