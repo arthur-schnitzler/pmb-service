@@ -131,7 +131,7 @@ class EntitiesTestCase(TestCase):
                 self.assertContains(response, item.id)
                 item.delete()
 
-    def test_010_import_nordmdata_view(self):
+    def test_011_import_nordmdata_view(self):
         client.login(**USER)
         payload = {
             "normdata_url": "http://lobid.org/gnd/118566512",
@@ -165,10 +165,10 @@ class EntitiesTestCase(TestCase):
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_011_import_normdata_form(self):
+    def test_012_import_normdata_form(self):
         payload = {
             "normdata_url": "http://lobid.org/gnd/118566512",
-            "entity_type": "person"
+            "entity_type": "person",
         }
         form = NormDataImportForm(data=payload)
         self.assertTrue(form.is_valid())
