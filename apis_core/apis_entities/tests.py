@@ -11,7 +11,7 @@ from normdata.forms import NormDataImportForm
 from normdata.utils import (
     get_or_create_person_from_wikidata,
     get_or_create_place_from_wikidata,
-    import_from_normdata
+    import_from_normdata,
 )
 
 client = Client()
@@ -217,3 +217,15 @@ class EntitiesTestCase(TestCase):
         )
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 404)
+
+    def test_017_import_gndplacewithoutwikidata(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://d-nb.info/gnd/10053010-2",
+            "entity_type": "place",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)

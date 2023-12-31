@@ -1,12 +1,7 @@
 from rest_framework import serializers
 
-from apis_core.apis_entities.serializers import (
-    PersonSerializer,
-    PlaceSerializer
-)
-from apis_core.apis_vocabularies.serializers import (
-    PersonPlaceRelationSerializer
-)
+from apis_core.apis_entities.serializers import PersonSerializer, PlaceSerializer
+from apis_core.apis_vocabularies.serializers import PersonPlaceRelationSerializer
 
 from .models import (
     EventEvent,
@@ -23,7 +18,7 @@ from .models import (
     PlaceEvent,
     PlacePlace,
     PlaceWork,
-    WorkWork
+    WorkWork,
 )
 
 

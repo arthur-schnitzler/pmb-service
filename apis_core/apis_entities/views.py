@@ -18,10 +18,7 @@ from apis_core.apis_entities.models import AbstractEntity
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
-from apis_core.apis_relations.tables import (
-    LabelTableEdit,
-    get_generic_relations_table
-)
+from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 
 from .forms import MergeForm, get_entities_form
 

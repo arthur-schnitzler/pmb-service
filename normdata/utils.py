@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from icecream import ic
+from pylobid.pylobid import PyLobidPlace
 
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
@@ -23,6 +24,31 @@ def get_uri_domain(uri):
             return x[1]
 
 
+def get_or_create_place_from_gnd(uri):
+    uri = get_normalized_uri(uri)
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Place.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        fetched_item = PyLobidPlace(uri)
+        apis_entity = {"name": fetched_item.pref_name}
+        try:
+            lng, lat = fetched_item.coords
+        except ValueError:
+            lng = False
+        if lng:
+            apis_entity["lat"] = lat
+            apis_entity["lng"] = lng
+        entity = Place.objects.create(**apis_entity)
+        Uri.objects.create(
+            uri=uri,
+            domain="gnd",
+            entity=entity,
+        )
+        return entity
+
+
 def get_or_create_place_from_geonames(uri):
     uri = get_normalized_uri(uri)
     try:
@@ -30,11 +56,11 @@ def get_or_create_place_from_geonames(uri):
         entity = Place.objects.get(id=entity.id)
         return entity
     except ObjectDoesNotExist:
-        geonames_obj = gn_as_object(uri)
+        fetched_item = gn_as_object(uri)
         apis_entity = {
-            "name": geonames_obj["name"],
-            "lat": geonames_obj["latitude"],
-            "lng": geonames_obj["longitude"],
+            "name": fetched_item["name"],
+            "lat": fetched_item["latitude"],
+            "lng": fetched_item["longitude"],
         }
         entity = Place.objects.create(**apis_entity)
         Uri.objects.create(
@@ -151,6 +177,13 @@ def import_from_normdata(raw_url, entity_type):
         try:
             wikidata_url = gnd_to_wikidata(normalized_url)["wikidata"]
         except (IndexError, KeyError):
+            if entity_type == "place":
+                try:
+                    entity = get_or_create_place_from_gnd(normalized_url)
+                    return entity
+                except Exception as e:
+                    ic(e)
+                    wikidata_url = False
             wikidata_url = False
     elif domain == "geonames":
         try:

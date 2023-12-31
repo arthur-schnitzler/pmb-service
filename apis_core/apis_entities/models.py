@@ -16,7 +16,7 @@ from apis_core.apis_vocabularies.models import (
     PlaceType,
     ProfessionType,
     Title,
-    WorkType
+    WorkType,
 )
 from apis_core.helper_functions import EntityRelationFieldGenerator
 
