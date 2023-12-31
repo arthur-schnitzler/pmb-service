@@ -2,11 +2,17 @@ from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
+from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import Uri
 from normdata.forms import NormDataImportForm
+from normdata.utils import (
+    get_or_create_person_from_wikidata,
+    get_or_create_place_from_wikidata,
+    import_from_normdata,
+)
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
@@ -172,3 +178,54 @@ class EntitiesTestCase(TestCase):
         }
         form = NormDataImportForm(data=payload)
         self.assertTrue(form.is_valid())
+
+    def test_013_import_normdata_no_wikidata(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://www.geonames.org/2461492/graret-um-igufen.html",
+            "entity_type": "person",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_014_wikidata_place_exist(self):
+        entity = get_or_create_place_from_wikidata(
+            "http://www.wikidata.org/entity/Q1741"
+        )
+        ic(entity)
+        for x in entity.uri_set.all():
+            entity = get_or_create_place_from_wikidata(x.uri)
+            self.assertTrue(entity)
+
+    def test_015_wikidata_person_exist(self):
+        entity = import_from_normdata("http://lobid.org/gnd/133430553", "person")
+        for x in entity.uri_set.all():
+            entity = get_or_create_person_from_wikidata(x.uri)
+            self.assertTrue(entity)
+
+    def test_016_import_nonsense_geonames(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://www.geonames.org/2461123321492/graret-um-igufen.html",
+            "entity_type": "place",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_017_import_gndplacewithoutwikidata(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://d-nb.info/gnd/10053010-2",
+            "entity_type": "place",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
