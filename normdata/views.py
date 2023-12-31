@@ -1,7 +1,6 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect
 from django.views.generic.edit import FormView
-from icecream import ic
 
 from .forms import NormDataImportForm
 from .utils import import_from_normdata
@@ -18,9 +17,6 @@ class NormDataImportFormView(FormView):
         if temp_ent is not None:
             entity = temp_ent.get_child_entity()
             redirect_url = entity.get_edit_url()
-            ic(temp_ent)
-            ic(entity)
-            ic(redirect_url)
             return redirect(redirect_url)
         else:
             return HttpResponseNotFound(

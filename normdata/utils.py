@@ -1,9 +1,11 @@
+from acdh_geonames_utils.gn_client import gn_as_object
 from acdh_id_reconciler import geonames_to_wikidata, gnd_to_wikidata
 from acdh_wikidata_pyutils import WikiDataPerson, WikiDataPlace
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
+from icecream import ic
 
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
@@ -19,6 +21,28 @@ def get_uri_domain(uri):
     for x in DOMAIN_MAPPING:
         if x[0] in uri:
             return x[1]
+
+
+def get_or_create_place_from_geonames(uri):
+    uri = get_normalized_uri(uri)
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Place.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        geonames_obj = gn_as_object(uri)
+        apis_entity = {
+            "name": geonames_obj["name"],
+            "lat": geonames_obj["latitude"],
+            "lng": geonames_obj["longitude"],
+        }
+        entity = Place.objects.create(**apis_entity)
+        Uri.objects.create(
+            uri=uri,
+            domain="geonames",
+            entity=entity,
+        )
+        return entity
 
 
 def get_or_create_place_from_wikidata(uri):
@@ -132,7 +156,12 @@ def import_from_normdata(raw_url, entity_type):
         try:
             wikidata_url = geonames_to_wikidata(normalized_url)["wikidata"]
         except (IndexError, KeyError):
-            wikidata_url = False
+            try:
+                entity = get_or_create_place_from_geonames(normalized_url)
+                return entity
+            except Exception as e:
+                ic(e)
+                wikidata_url = False
     elif domain == "wikidata":
         wikidata_url = normalized_url
     else:

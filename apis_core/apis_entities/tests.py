@@ -189,7 +189,7 @@ class EntitiesTestCase(TestCase):
             "normdata:import_from_normdata",
         )
         response = client.post(url, payload, follow=True)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
 
     def test_014_wikidata_place_exist(self):
         entity = get_or_create_place_from_wikidata(
@@ -197,18 +197,23 @@ class EntitiesTestCase(TestCase):
         )
         ic(entity)
         for x in entity.uri_set.all():
-            ic(x)
-            ic(x.uri)
             entity = get_or_create_place_from_wikidata(x.uri)
-            ic(entity)
             self.assertTrue(entity)
 
     def test_015_wikidata_person_exist(self):
         entity = import_from_normdata("http://lobid.org/gnd/133430553", "person")
-        ic(entity)
         for x in entity.uri_set.all():
-            ic(x)
-            ic(x.uri)
             entity = get_or_create_person_from_wikidata(x.uri)
-            ic(entity)
             self.assertTrue(entity)
+
+    def test_016_import_nonsense_geonames(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://www.geonames.org/2461123321492/graret-um-igufen.html",
+            "entity_type": "place",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 404)
