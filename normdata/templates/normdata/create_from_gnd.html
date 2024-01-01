@@ -1,14 +1,47 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% block title %} Normdatenimport {% endblock title %}
 {% block content %}
 <div class="container">
-    <h1 class="p-3 text-center">Neue Entität aus GND/WikiData/GeoNames importieren</h1>
+    <h1 class="p-3 text-center">
+        Neue Entität aus GND/WikiData/GeoNames importieren<br>
+        <i class="btn bi bi-question-circle" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+    </h1>
     <form action="." method="post">
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" class="btn btn-primary" value="Importieren">
     </form>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Normdatenimport</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                Auf dieser Seite können Entitäten vom Typ <strong>Person</strong> oder <strong>Ort</strong> aus den Normdatenquellen
+                <ul>
+                    <li><a href="https://www.wikidata.org/">WikiData</a></li>
+                    <li><a href="http://lobid.org/gnd">GND</a></li>
+                    <li>und <a href="https://www.geonames.org/">GeoNames</a></li>
+                </ul>
+                importiert werden.</p>
+                <p>Als Hauptdatenquelle dient dafür jedoch WikiData. Das heißt im Falle von GND oder GeoNames Uris wird zuerst überprüft ob in WikiData ein entsprechender Eintrag existiert. Wenn dem so ist, werden Teile der in WikiData hinterlegten Informationen in die PMB importiert, gemeinsam mit den GND/GeoNames URIs.</p>
+                <p>
+                <p>Nur wenn kein WikiData Eintrag gefunden werden konnte, werden Informationen aus GND/GeoNames importiert.</p>
+                Sollte auch in GND oder GeoNames kein passender Eintrag gefunden werden könne, wirft die Seite eine entsprechende Fehlermeldung aus.
+                </p>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
