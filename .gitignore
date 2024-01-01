@@ -169,3 +169,8 @@ pmb_dump.sql
 play.ipynb
 pmb_play_dump.sql
 notes.sql
+media/listplace.xml
+media/listperson.xml
+media/pmb-log.csv
+media/listorg.xml
+media/listbibl.xml
