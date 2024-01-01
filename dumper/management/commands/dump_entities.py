@@ -4,6 +4,7 @@ from datetime import datetime
 import lxml.etree as ET
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from icecream import ic
 from tqdm import tqdm
 
 from apis_core.apis_entities.models import Institution, Person, Place, Work
@@ -89,7 +90,10 @@ class Command(BaseCommand):
             files = list()
             files.append(save_path)
             if not kwargs["limit"]:
-                upload_files_to_owncloud(files)
+                try:
+                    upload_files_to_owncloud(files)
+                except Exception as e:
+                    ic(e)
             end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
             report = [f"{os.path.basename(__file__)}: {key}", start_time, end_time]
             write_report(report)
