@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from icecream import ic
-from pylobid.pylobid import PyLobidPlace
+from pylobid.pylobid import PyLobidPerson, PyLobidPlace
 
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
@@ -22,6 +22,18 @@ def get_uri_domain(uri):
     for x in DOMAIN_MAPPING:
         if x[0] in uri:
             return x[1]
+
+
+def get_gender_from_pylobid(fetched_item):
+    ent_dict = fetched_item.get_entity_json()
+    try:
+        gender = ent_dict["gender"][0]["id"]
+    except (KeyError, IndexError):
+        return None
+    if "female" in gender:
+        return "female"
+    else:
+        return "male"
 
 
 def get_or_create_place_from_gnd(uri):
@@ -116,6 +128,35 @@ def get_or_create_place_from_wikidata(uri):
         return entity
 
 
+def get_or_create_person_from_gnd(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Person.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        fetched_item = PyLobidPerson(uri)
+        pref_name = fetched_item.pref_name
+        if ", " in pref_name:
+            name, first_name = pref_name.split(", ")
+        else:
+            name, first_name = pref_name, None
+        apis_entity = {
+            "name": name,
+            "first_name": first_name,
+            "gender": get_gender_from_pylobid(fetched_item),
+        }
+        life_dates = fetched_item.get_life_dates()
+        apis_entity["start_date_written"] = life_dates.get("birth_date_str", None)
+        apis_entity["end_date_written"] = life_dates.get("death_date_str", None)
+        entity = Person.objects.create(**apis_entity)
+        Uri.objects.create(
+            uri=uri,
+            domain="gnd",
+            entity=entity,
+        )
+        return entity
+
+
 def get_or_create_person_from_wikidata(uri):
     try:
         entity = Uri.objects.get(uri=uri).entity
@@ -145,7 +186,12 @@ def get_or_create_person_from_wikidata(uri):
                 except IntegrityError:
                     pass
             if wd_entity.place_of_birth:
-                relation_type = PersonPlaceRelation.objects.get(id=BIRTH_REL[0])
+                try:
+                    relation_type = PersonPlaceRelation.objects.get(id=BIRTH_REL[0])
+                except ObjectDoesNotExist:
+                    relation_type, _ = PersonPlaceRelation.objects.get_or_create(
+                        name="geboren in"
+                    )
                 place = get_or_create_place_from_wikidata(wd_entity.place_of_birth)
                 rel, _ = PersonPlace.objects.get_or_create(
                     related_person=entity,
@@ -154,7 +200,12 @@ def get_or_create_person_from_wikidata(uri):
                     start_date_written=apis_entity["start_date_written"],
                 )
             if wd_entity.place_of_death:
-                relation_type = PersonPlaceRelation.objects.get(id=DEATH_REL[0])
+                try:
+                    relation_type = PersonPlaceRelation.objects.get(id=DEATH_REL[0])
+                except ObjectDoesNotExist:
+                    relation_type, _ = PersonPlaceRelation.objects.get_or_create(
+                        name="gestorben in"
+                    )
                 place = get_or_create_place_from_wikidata(wd_entity.place_of_death)
                 rel, _ = PersonPlace.objects.get_or_create(
                     related_person=entity,
@@ -180,6 +231,13 @@ def import_from_normdata(raw_url, entity_type):
             if entity_type == "place":
                 try:
                     entity = get_or_create_place_from_gnd(normalized_url)
+                    return entity
+                except Exception as e:
+                    ic(e)
+                    wikidata_url = False
+            if entity_type == "person":
+                try:
+                    entity = get_or_create_person_from_gnd(normalized_url)
                     return entity
                 except Exception as e:
                     ic(e)
