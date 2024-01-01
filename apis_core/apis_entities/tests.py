@@ -229,3 +229,15 @@ class EntitiesTestCase(TestCase):
         )
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_017_import_gndpersonwithoutwikidata(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://d-nb.info/gnd/1168743451",
+            "entity_type": "person",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
