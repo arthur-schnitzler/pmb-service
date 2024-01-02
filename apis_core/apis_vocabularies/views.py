@@ -16,7 +16,7 @@ def dl_vocabs_as_csv(request, model_name):
         ).model_class()
     except ObjectDoesNotExist:
         return HttpResponseNotFound(
-            f"<h1>Error</h1><p>Es konnte keine Klasse mit dem Name <strong>{model_name} gefunden werden</p>"
+            f"<h1>Error</h1><p>Es konnte keine Klasse mit dem Name <strong>{model_name}</strong> gefunden werden</p>"
         )
     data = [[x.id, x.name, x.parent_class] for x in model.objects.all()]
     columns = ["id", "name", "parent_class"]
