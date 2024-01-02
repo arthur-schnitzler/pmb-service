@@ -241,3 +241,22 @@ class EntitiesTestCase(TestCase):
         )
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_018_download_vocabs(self):
+        model_name = "worktype"
+        url = reverse(
+            "apis_core:apis_vocabularies:dl-vocabs", kwargs={"model_name": model_name}
+        )
+        client.login(**USER)
+        response = client.get(url, follow=True)
+        content_disposition = response.headers["Content-Disposition"]
+        self.assertTrue(model_name in content_disposition)
+
+    def test_019_download_vocabs_not_exist(self):
+        model_name = "doesnotexistworktype"
+        url = reverse(
+            "apis_core:apis_vocabularies:dl-vocabs", kwargs={"model_name": model_name}
+        )
+        client.login(**USER)
+        response = client.get(url, follow=True)
+        self.assertTrue(response.status_code, 404)
