@@ -260,3 +260,19 @@ class EntitiesTestCase(TestCase):
         client.login(**USER)
         response = client.get(url, follow=True)
         self.assertTrue(response.status_code, 404)
+
+    def test_020_api_list_view(self):
+        url = "/apis/api/"
+        response = client.get(url, follow=True)
+        self.assertTrue(response.status_code, 200)
+        data = response.json()
+        for key, value in data.items():
+            r = client.get(value)
+            self.assertTrue(r.status_code, 200)
+            if key.startswith("relation"):
+                try:
+                    r = client.get(f"{value}?format=json%2Bnet")
+                    self.assertTrue(r.status_code, 200)
+                except Exception as e:
+                    print(value, e)
+                    continue
