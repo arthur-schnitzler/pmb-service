@@ -36,7 +36,7 @@ def reconcile(request):
                 query_string = value["query"]
                 try:
                     query_type = value["type"]
-                except:
+                except KeyError:
                     query_type = "/person"
                 model_name = query_type.split("/")[-1]
                 cur_model = model_dict[model_name]
