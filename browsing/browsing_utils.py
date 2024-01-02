@@ -1,25 +1,9 @@
 import django_tables2
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.utils.safestring import mark_safe
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django_tables2.export.views import ExportMixin
-
-input_form = """
-  <input type="checkbox" name="keep" value="{}" title="keep this"/> |
-  <input type="checkbox" name="remove" value="{}" title="remove this"/>
-"""
-
-
-class MergeColumn(django_tables2.Column):
-    """renders a column with to checkbox - used to select objects for merging"""
-
-    def __init__(self, *args, **kwargs):
-        super(MergeColumn, self).__init__(*args, **kwargs)
-
-    def render(self, value):
-        return mark_safe(input_form.format(value, value))
 
 
 def get_entities_table(model_class):
@@ -50,7 +34,6 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
     paginate_by = 25
     template_name = "browsing/generic_list.html"
     init_columns = []
-    enable_merge = False
     excluded_cols = []
     verbose_name = "Personen"
     help_text = "Personen help text"
@@ -85,7 +68,6 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super(GenericListView, self).get_context_data()
-        context["enable_merge"] = self.enable_merge
         togglable_colums = {
             key: value
             for key, value in self.get_all_cols().items()
@@ -147,65 +129,4 @@ class BaseUpdateView(UpdateView):
         context = super(BaseUpdateView, self).get_context_data()
         context["docstring"] = "{}".format(self.model.__doc__)
         context["class_name"] = "{}".format(self.model.__name__)
-        # if self.model.__name__.endswith('s'):
-        #     context['class_name'] = "{}".format(self.model.__name__)
-        # else:
-        #     context['class_name'] = "{}s".format(self.model.__name__)
         return context
-
-
-def model_to_dict(instance):
-    """
-    serializes a model.object to dict, including non editable fields as well as
-    ManyToManyField fields
-    """
-    field_dicts = []
-    for x in instance._meta.get_fields():
-        f_type = "{}".format(type(x))
-        field_dict = {
-            "name": x.name,
-            "help_text": getattr(x, "help_text", ""),
-        }
-        try:
-            field_dict["extra_fields"] = x.extra
-        except AttributeError:
-            field_dict["extra_fields"] = None
-        if "reverse_related" in f_type:
-            values = getattr(instance, x.name, None)
-            if values is not None:
-                field_dict["value"] = values.all()
-            else:
-                field_dict["value"] = []
-            if getattr(x, "related_name", None) is not None:
-                field_dict["verbose_name"] = getattr(x, "related_name", x.name)
-            else:
-                field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["f_type"] = "REVRESE_RELATION"
-        elif "related.ForeignKey" in f_type:
-            field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["value"] = getattr(instance, x.name, "")
-            field_dict["f_type"] = "FK"
-        elif "TreeForeignKey" in f_type:
-            field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["value"] = getattr(instance, x.name, "")
-            field_dict["f_type"] = "FK"
-        elif "related.ManyToManyField" in f_type:
-            values = getattr(instance, x.name, None)
-            if values is not None:
-                field_dict["value"] = values.all()
-            else:
-                field_dict["value"] = []
-            field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["f_type"] = "M2M"
-        elif "fields.DateTimeField" in f_type:
-            field_value = getattr(instance, x.name, "")
-            field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["f_type"] = "DateTime"
-            if field_value:
-                field_dict["value"] = field_value.strftime("%Y-%m-%d %H:%M:%S")
-        else:
-            field_dict["verbose_name"] = getattr(x, "verbose_name", x.name)
-            field_dict["value"] = f"{getattr(instance, x.name, '')}"
-            field_dict["f_type"] = "SIMPLE"
-        field_dicts.append(field_dict)
-    return field_dicts
