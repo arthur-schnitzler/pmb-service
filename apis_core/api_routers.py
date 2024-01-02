@@ -3,6 +3,7 @@ from functools import reduce
 from django.conf import settings
 from django.urls import reverse
 from django_filters import rest_framework as filters
+from icecream import ic
 from rest_framework import pagination, renderers, serializers, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
@@ -24,12 +25,6 @@ def deep_get(dictionary, keys, default=None):
         keys.split("."),
         dictionary,
     )
-
-
-# def create_query_parameters(entity):
-#     print(entity)
-#     for f in entity._meta.fields:
-#         print(f.name, f.__class__.__name__)
 
 
 class CustomPagination(pagination.LimitOffsetPagination):
@@ -173,6 +168,10 @@ def generic_serializer_creation_factory():
         exclude_lst = []
         if app_label == "apis_entities":
             exclude_lst = deep_get(test_search, "{}.api_exclude".format(entity_str), [])
+            for f in entity._meta.get_fields():
+                if "_set" in str(f):
+                    to_exclude = str(f).split(".")[-1]
+                    exclude_lst.append(to_exclude)
         else:
             set_prem = getattr(settings, cont.__module__.split(".")[1].upper(), {})
             exclude_lst = deep_get(set_prem, "exclude", [])
@@ -344,7 +343,7 @@ def generic_serializer_creation_factory():
                     entity_str = self._entity.__name__
                     app_label = self._app_label
                     self._include_relations = self.context["request"].query_params.get(
-                        "include_relations", True
+                        "include_relations", False
                     )
                     if self._include_relations in ["false", "False", "0"]:
                         self._include_relations = False
@@ -374,21 +373,6 @@ def generic_serializer_creation_factory():
                             self.fields[f.name] = LabelSerializer(
                                 many=ck_many, read_only=True
                             )
-                    # include = list(ContentType.objects.filter(app_label="apis_relations", model__icontains=entity_str).values_list('model', flat=True))
-                    include = [
-                        x
-                        for x in lst_cont
-                        if x.__module__ == "apis_core.apis_relations.models"
-                        and entity_str.lower() in x.__name__.lower()
-                    ]
-                    if len(include) > 0 and len(args) > 0 and self._include_relations:
-                        inst_pk2 = args[0].pk
-                        self.fields["relations"] = RelationObjectSerializer2(
-                            read_only=True,
-                            source="get_related_relation_instances",
-                            many=True,
-                            pk_instance=inst_pk2,
-                        )
 
         TemplateSerializerRetrieve.__name__ = (
             TemplateSerializerRetrieve.__qualname__
@@ -448,7 +432,7 @@ def generic_serializer_creation_factory():
 
         filterset_dict["Meta"] = MetaFilter
 
-        class TemplateViewSet(viewsets.ModelViewSet):
+        class TemplateViewSet(viewsets.ReadOnlyModelViewSet):
             _select_related = select_related
             _prefetch_rel = prefetch_rel
             pagination_class = CustomPagination
@@ -473,32 +457,10 @@ def generic_serializer_creation_factory():
 
             def get_serializer_context(self):
                 context = super(self.__class__, self).get_serializer_context()
-                if self.action == "retrieve" and self.model.__name__.lower() == "text":
-                    cont = {}
-                    cont["highlight"] = self.request.query_params.get("highlight", None)
-                    cont["ann_proj_pk"] = self.request.query_params.get(
-                        "ann_proj_pk", None
-                    )
-                    cont["types"] = self.request.query_params.get("types", None)
-                    cont["users_show"] = self.request.query_params.get(
-                        "users_show", None
-                    )
-                    cont["inline_annotations"] = self.request.query_params.get(
-                        "inline_annotations", True
-                    )
-                    context.update(cont)
                 return context
 
             def get_queryset(self):
-                if "apis_relations" in str(self.model):
-                    qs = self.model.objects.filter_for_user()
-                else:
-                    qs = self.model.objects.all()
-                if len(self._prefetch_rel) > 0:
-                    qs = qs.prefetch_related(*self._prefetch_rel)
-                if len(self._select_related) > 0:
-                    qs = qs.select_related(*self._select_related)
-                return qs
+                return self.model.objects.all()
 
             def list_viewset(self, request):
                 res = super(self.__class__, self).list(request)
@@ -521,6 +483,4 @@ def generic_serializer_creation_factory():
 
 serializers_dict = dict()
 views = dict()
-# filter_classes = dict()
-# lst_filter_classes_check = []
 generic_serializer_creation_factory()
