@@ -36,6 +36,7 @@ if os.environ.get("NEW_PMB"):
     ]
 else:
     urlpatterns = [
+        path("api/", include((router.urls, "apis_core"), namespace="apis_api")),
         path("beacon/", beacon, name="beacon"),
         path("labels/", include("apis_core.apis_labels.urls", namespace="apis_labels")),
         path("tei/", include("apis_core.apis_tei.tei_urls", namespace="apis_tei")),
