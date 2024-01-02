@@ -57,10 +57,11 @@ class DumperTestCase(TestCase):
         self.assertTrue(uris.count())
 
     def test_04_wikidata_minter(self):
+        Uri.objects.filter(domain="wikidata").first().delete()
         before_uris = Uri.objects.all().count()
         call_command("wikidata_minter")
         after_uris = Uri.objects.all().count()
-        self.assertEqual(before_uris, after_uris)
+        self.assertTrue(before_uris < after_uris)
 
     def test_05_startpage(self):
         url = reverse("dumper:home")
