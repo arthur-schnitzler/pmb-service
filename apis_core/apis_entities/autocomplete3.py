@@ -129,7 +129,7 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
         test_stanbol = False
         more = True
         if not db_include:
-            for r in res[offset: offset + page_size]:
+            for r in res[offset : offset + page_size]:
                 if int(r.pk) == int(ent_merge_pk):
                     continue
 
@@ -185,7 +185,7 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                     {"id": x.pk, "text": x.label}
                     for x in vocab_model.objects.filter(name__icontains=q).order_by(
                         "parent_class__name", "name"
-                    )[offset: offset + page_size]
+                    )[offset : offset + page_size]
                 ]
             else:
                 choices = [
@@ -193,7 +193,7 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                     for x in vocab_model.objects.filter(
                         Q(name__icontains=q) | Q(name_reverse__icontains=q)
                     ).order_by("parent_class__name", "name")[
-                        offset: offset + page_size
+                        offset : offset + page_size
                     ]
                 ]
         elif direct == "reverse":
@@ -201,7 +201,7 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                 {"id": x.pk, "text": x.label_reverse}
                 for x in vocab_model.objects.filter(
                     Q(name__icontains=q) | Q(name_reverse__icontains=q)
-                ).order_by("parent_class__name", "name")[offset: offset + page_size]
+                ).order_by("parent_class__name", "name")[offset : offset + page_size]
             ]
         if len(choices) == page_size:
             more = True

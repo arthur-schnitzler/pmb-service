@@ -2,7 +2,7 @@ import lxml.etree as ET
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 
-from apis_core.apis_entities.detail_views import get_object_from_pk_or_uri
+from apis_core.utils import get_object_from_pk_or_uri
 from apis_core.apis_entities.models import Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
 
@@ -12,7 +12,7 @@ from .tei_utils import get_node_from_template
 def person_as_tei(request, pk):
     full = request.GET.get("full")
     model = Person
-    res = get_object_from_pk_or_uri(request, pk)
+    res = get_object_from_pk_or_uri(pk)
     if not isinstance(res, model):
         return HttpResponse(
             f"Requested object is not an instance of {model.__name__}",
@@ -26,7 +26,7 @@ def person_as_tei(request, pk):
 def place_as_tei(request, pk):
     full = request.GET.get("full")
     model = Place
-    res = get_object_from_pk_or_uri(request, pk)
+    res = get_object_from_pk_or_uri(pk)
     if not isinstance(res, model):
         return HttpResponse(
             f"Requested object is not an instance of {model.__name__}",
@@ -40,7 +40,7 @@ def place_as_tei(request, pk):
 def work_as_tei(request, pk):
     full = request.GET.get("full")
     model = Work
-    res = get_object_from_pk_or_uri(request, pk)
+    res = get_object_from_pk_or_uri(pk)
     if not isinstance(res, model):
         return HttpResponse(
             f"Requested object is not an instance of {model.__name__}",
@@ -54,7 +54,7 @@ def work_as_tei(request, pk):
 def org_as_tei(request, pk):
     full = request.GET.get("full")
     model = Institution
-    res = get_object_from_pk_or_uri(request, pk)
+    res = get_object_from_pk_or_uri(pk)
     if not isinstance(res, model):
         return HttpResponse(
             f"Requested object is not an instance of {model.__name__}",
@@ -76,6 +76,6 @@ def uri_to_tei(request):
         return redirect(redirect_url)
     else:
         return HttpResponse(
-            f"no URI provided, please try e.g. uri-to-tei?uri=https://whatever.you/want",
+            "no URI provided, please try e.g. uri-to-tei?uri=https://whatever.you/want",
             content_type="text/plain",
         )
