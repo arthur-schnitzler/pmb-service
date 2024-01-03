@@ -30,8 +30,18 @@ class EntitiesTestCase(TestCase):
     ]
 
     def setUp(self):
-        # Create two users
         User.objects.create_user(**USER)
+
+    def test_001a_entity_resolver(self):
+        url = reverse("entity-resolver", kwargs={"pk": 4})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 404)
+        url = reverse("entity-resolver", kwargs={"pk": 44442344})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 404)
+        url = reverse("entity-resolver", kwargs={"pk": 1})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 302)
 
     def test_001_list_view(self):
         for x in MODELS:
