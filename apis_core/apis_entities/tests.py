@@ -5,7 +5,7 @@ from django.urls import reverse
 from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
-from apis_core.apis_entities.models import Person
+from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
 from normdata.forms import NormDataImportForm
 from normdata.utils import (
@@ -30,8 +30,18 @@ class EntitiesTestCase(TestCase):
     ]
 
     def setUp(self):
-        # Create two users
         User.objects.create_user(**USER)
+
+    def test_001a_entity_resolver(self):
+        url = reverse("entity-resolver", kwargs={"pk": 4})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 404)
+        url = reverse("entity-resolver", kwargs={"pk": 44442344})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 404)
+        url = reverse("entity-resolver", kwargs={"pk": 1})
+        r = client.get(url)
+        self.assertEqual(r.status_code, 302)
 
     def test_001_list_view(self):
         for x in MODELS:
@@ -275,3 +285,25 @@ class EntitiesTestCase(TestCase):
                 except Exception as e:
                     print(value, e)
                     continue
+
+    def test_021_api_detail_view(self):
+        item = Person.objects.last()
+        r = client.get(item.get_api_url())
+        self.assertTrue(r.status_code, 200)
+        item = Place.objects.last()
+        r = client.get(item.get_api_url())
+        self.assertTrue(r.status_code, 200)
+
+    def test_022_resolver_view(self):
+        target = Person.objects.last()
+        source = Person.objects.create(**{"name": "wirdgleichgemerged"})
+        source_id = source.id
+        source_uri = f"https://pmb.acdh.oeaw.ac.at/entity/{source.id}/"
+        target.merge_with(source_id)
+        url = reverse("uri-resolver")
+        r = client.get(url)
+        self.assertTrue(r.status_code, 404)
+        r = client.get(f"{url}?uri={source_uri}")
+        self.assertTrue(r.status_code, 302)
+        r = client.get(f"{url}?uri=https://dasgibtsjagarnicht.com")
+        self.assertTrue(r.status_code, 404)

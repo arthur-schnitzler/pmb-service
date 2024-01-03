@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db.models import Q
-from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template.loader import select_template
 from django.views import View
 from django_tables2 import RequestConfig
@@ -10,32 +10,7 @@ from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import LabelTableBase, get_generic_relations_table
-
-from .models import BASE_URI, TempEntityClass
-
-
-def get_object_from_pk_or_uri(request, pk):
-    """checks if the given pk exists, if not checks if a matching apis-default uri exists
-    and returns its entity"""
-    try:
-        instance = TempEntityClass.objects_inheritance.get_subclass(pk=pk)
-        return instance
-    except TempEntityClass.DoesNotExist:
-        domain = BASE_URI
-        new_uri = f"{domain}entity/{pk}/"
-        uri2 = Uri.objects.filter(uri=new_uri)
-        if uri2.count() == 1:
-            instance = TempEntityClass.objects_inheritance.get_subclass(
-                pk=uri2[0].entity_id
-            )
-        elif uri2.count() == 0:
-            temp_obj = get_object_or_404(Uri, uri=new_uri[:-1])
-            instance = TempEntityClass.objects_inheritance.get_subclass(
-                pk=temp_obj.entity_id
-            )
-        else:
-            raise Http404
-        return instance
+from apis_core.utils import get_object_from_pk_or_uri
 
 
 class GenericEntitiesDetailView(View):
@@ -44,8 +19,7 @@ class GenericEntitiesDetailView(View):
     def get(self, request, *args, **kwargs):
         entity = kwargs["entity"].lower()
         pk = kwargs["pk"]
-        instance = get_object_from_pk_or_uri(request, pk)
-        # print(instance.id, pk)
+        instance = get_object_from_pk_or_uri(pk)
         if f"{instance.id}" == f"{pk}":
             pass
         else:
