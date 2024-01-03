@@ -1,4 +1,3 @@
-apis-override-select2js==0.1
 acdh-django-browsing
 acdh_geonames_utils
 acdh-id-reconciler>=0.2,<1
