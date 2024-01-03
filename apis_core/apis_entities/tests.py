@@ -106,14 +106,13 @@ class EntitiesTestCase(TestCase):
         before = Person.objects.all().count()
         source = Person.objects.all().first()
         target = Person.objects.all().last()
-        target_uri = target.uri_set.all().first()
         form_kwargs = {"entity": "person"}
         form_kwargs["ent_merge_pk"] = source.id
         url = reverse(
             "apis:apis_entities:merge_view",
             kwargs={"entity": "person", "ent_merge_pk": source.id},
         )
-        response = client.post(url, {"entity": target_uri})
+        response = client.post(url, {"entity": target.id})
         self.assertEqual(response.status_code, 302)
         after = Person.objects.all().count()
         self.assertTrue(before > after)
