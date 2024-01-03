@@ -55,7 +55,7 @@
         <div class="col-md-2">
             {% if object.get_next_url %}
                 <h2>
-                    <a href="{{ object.get_next_url}}" style="float:left">
+                    <a href="{{ object.get_next_url }}" style="float:left">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                             <polyline points="9 18 15 12 9 6" />
                         </svg>
@@ -69,7 +69,7 @@
         <div class="col-md-5">
             <h3 class="text-center">
                 General Info
-                <a href="/entity/{{object.id}}/?data-view=true">
+                <a href="{{ object.get_api_url }}">
                     <small>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
                             <ellipse cx="12" cy="5" rx="9" ry="3" />
@@ -78,7 +78,7 @@
                         </svg>
                     </small>
                 </a>
-                {% if entity_type != 'event' %}| <a href="/apis/tei/{{ entity_type }}/{{ object.id }}"><abbr title="link to a project specific TEI-serialisation of this entity">TEI</abbr></a>{% endif %}
+                {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}"><abbr title="link to a project specific TEI-serialisation of this entity">TEI</abbr></a>{% endif %}
             </h3>
             {% block info-table %}
             <table class="table">
