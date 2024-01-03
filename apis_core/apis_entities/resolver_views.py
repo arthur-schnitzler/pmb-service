@@ -44,4 +44,6 @@ def entity_resolver(request, pk):
                 url = entity.get_api_url()
             except NoReverseMatch:
                 raise Http404
+        else:
+            raise Http404
     return redirect(url)
