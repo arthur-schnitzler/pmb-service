@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_vocabularies.models import (
@@ -515,6 +516,12 @@ class Person(AbstractEntity):
             "id",
         ]
 
+    def get_tei_url(self):
+        return reverse("apis_core:apis_tei:person_as_tei", kwargs={"pk": self.id})
+
+    def get_api_url(self):
+        return f"/apis/api/entities/person/{self.id}/"
+
 
 class Place(AbstractEntity):
     kind = models.ForeignKey(
@@ -534,6 +541,12 @@ class Place(AbstractEntity):
             "id",
         ]
 
+    def get_tei_url(self):
+        return reverse("apis_core:apis_tei:place_as_tei", kwargs={"pk": self.id})
+
+    def get_api_url(self):
+        return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
+
 
 class Institution(AbstractEntity):
     kind = models.ForeignKey(
@@ -544,6 +557,12 @@ class Institution(AbstractEntity):
         ordering = [
             "id",
         ]
+
+    def get_tei_url(self):
+        return reverse("apis_core:apis_tei:org_as_tei", kwargs={"pk": self.id})
+
+    def get_api_url(self):
+        return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
 
 
 class Event(AbstractEntity):
@@ -556,6 +575,9 @@ class Event(AbstractEntity):
             "id",
         ]
 
+    def get_api_url(self):
+        return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
+
 
 class Work(AbstractEntity):
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
@@ -564,6 +586,12 @@ class Work(AbstractEntity):
         ordering = [
             "id",
         ]
+
+    def get_tei_url(self):
+        return reverse("apis_core:apis_tei:work_as_tei", kwargs={"pk": self.id})
+
+    def get_api_url(self):
+        return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)

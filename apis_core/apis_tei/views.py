@@ -72,7 +72,7 @@ def uri_to_tei(request):
         uri_entity_id = uri.entity.id
         uri_entity_class = uri.entity.get_child_entity()
         uri_entity_class_name = uri_entity_class.__class__.__name__.lower()
-        redirect_url = f"/apis/entities/tei/{uri_entity_class_name}/{uri_entity_id}"
+        redirect_url = f"/apis/tei/{uri_entity_class_name}/{uri_entity_id}"
         return redirect(redirect_url)
     else:
         return HttpResponse(
