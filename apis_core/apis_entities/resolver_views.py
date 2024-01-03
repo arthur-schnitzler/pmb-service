@@ -32,4 +32,16 @@ def entity_resolver(request, pk):
         url = entity.get_absolute_url()
     except NoReverseMatch:
         raise Http404
+    format_param = request.GET.get("format", False)
+    if format_param:
+        if format_param == "tei":
+            try:
+                url = entity.get_tei_url()
+            except (NoReverseMatch, AttributeError):
+                raise Http404
+        elif format_param == "json":
+            try:
+                url = entity.get_api_url()
+            except NoReverseMatch:
+                raise Http404
     return redirect(url)
