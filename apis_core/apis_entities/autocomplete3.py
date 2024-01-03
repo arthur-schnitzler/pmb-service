@@ -5,16 +5,12 @@ import operator
 import re
 from functools import reduce
 
-import dateutil.parser
-import requests
 from dal import autocomplete
 from django import http
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import FieldError
 from django.db.models import Q
 
-from apis_core.apis_metainfo.models import Collection, Uri
 from apis_core.apis_vocabularies.models import VocabsBaseClass
 
 from .models import AbstractEntity
@@ -77,37 +73,6 @@ class CustomEntityAutocompletes(object):
 
 
 class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
-    @staticmethod
-    def parse_stanbol_object(obj, key, *args):
-        if len(args) > 0:
-            lst1 = args[0]
-        else:
-            lst1 = None
-        if obj[1] == "GNDDate":
-            if lst1 is not None:
-                try:
-                    return dateutil.parser.parse(lst1[key][0]["value"])
-                except:
-                    return lst1[key][0]["value"]
-            else:
-                return obj[0]
-        elif obj[1] == "String":
-            if lst1 is not None:
-                return lst1[key][0]["value"]
-            else:
-                return obj[0]
-        elif obj[1] == "gndLong":
-            if lst1 is not None:
-                try:
-                    return re.search(
-                        "Point \( [+-]([0-9\.]+) [+-]([0-9\.]+)", lst1[key][0]["value"]
-                    ).group(1)
-                except:
-                    print("extract fails")
-                    return None
-            else:
-                print("no match")
-
     def get(self, request, *args, **kwargs):
         page_size = 20
         offset = (int(self.request.GET.get("page", 1)) - 1) * page_size
@@ -115,7 +80,6 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
         db_include = self.kwargs.get("db_include", False)
         ent_merge_pk = self.kwargs.get("ent_merge_pk", False)
         choices = []
-        headers = {"Content-Type": "application/json"}
         ent_model = AbstractEntity.get_entity_class_of_name(ac_type)
         if not self.q:
             q3 = False
@@ -163,27 +127,18 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
             res = []
         test_db = True
         test_stanbol = False
-        test_stanbol_list = dict()
         more = True
         if not db_include:
-            for r in res[offset : offset + page_size]:
+            for r in res[offset: offset + page_size]:
                 if int(r.pk) == int(ent_merge_pk):
                     continue
 
                 f = dict()
                 dataclass = ""
                 try:
-                    f["id"] = Uri.objects.filter(
-                        entity=r, uri__contains=f"/entity/{r.id}"
-                    )[0].uri
+                    f["id"] = r.id
                 except:
                     continue
-                if hasattr(r, "lng"):
-                    if r.lng and r.lat:
-                        dataclass = 'data-vis-tooltip="{}" data-lat="{}" \
-                        data-long="{}"  class="apis-autocomplete-span"'.format(
-                            ac_type, r.lat, r.lng
-                        )
                 f[
                     "text"
                 ] = "<span {}><small>db</small> <b>{}</b> <small>db-ID: {}</small> </span> ".format(
@@ -230,7 +185,7 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                     {"id": x.pk, "text": x.label}
                     for x in vocab_model.objects.filter(name__icontains=q).order_by(
                         "parent_class__name", "name"
-                    )[offset : offset + page_size]
+                    )[offset: offset + page_size]
                 ]
             else:
                 choices = [
@@ -238,7 +193,7 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                     for x in vocab_model.objects.filter(
                         Q(name__icontains=q) | Q(name_reverse__icontains=q)
                     ).order_by("parent_class__name", "name")[
-                        offset : offset + page_size
+                        offset: offset + page_size
                     ]
                 ]
         elif direct == "reverse":
@@ -246,50 +201,11 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
                 {"id": x.pk, "text": x.label_reverse}
                 for x in vocab_model.objects.filter(
                     Q(name__icontains=q) | Q(name_reverse__icontains=q)
-                ).order_by("parent_class__name", "name")[offset : offset + page_size]
+                ).order_by("parent_class__name", "name")[offset: offset + page_size]
             ]
         if len(choices) == page_size:
             more = True
         return http.HttpResponse(
             json.dumps({"results": choices + [], "pagination": {"more": more}}),
-            content_type="application/json",
-        )
-
-
-class GenericNetworkEntitiesAutocomplete(autocomplete.Select2ListView):
-    def get(self, request, *args, **kwargs):
-        page_size = 20
-        offset = (int(self.request.GET.get("page", 1)) - 1) * page_size
-        more = False
-        entity = self.kwargs["entity"]
-        q = self.q
-        if q.startswith("cl:"):
-            res = Collection.objects.filter(name__icontains=q[3:])
-            results = [{"id": "cl:" + str(x.pk), "text": x.name} for x in res]
-        else:
-            ent_model = ContentType.objects.get(
-                app_label__startswith="apis_", model=entity
-            ).model_class()
-            try:
-                arg_list = [
-                    Q(**{x + "__icontains": q})
-                    for x in settings.APIS_ENTITIES[entity.title()]["search"]
-                ]
-            except KeyError:
-                arg_list = [Q(**{x + "__icontains": q}) for x in ["name"]]
-            try:
-                res = ent_model.objects.filter(
-                    reduce(operator.or_, arg_list)
-                ).distinct()[offset : offset + page_size]
-            except FieldError:
-                arg_list = [Q(**{x + "__icontains": q}) for x in ["text"]]
-                res = ent_model.objects.filter(
-                    reduce(operator.or_, arg_list)
-                ).distinct()[offset : offset + page_size]
-            results = [{"id": x.pk, "text": str(x)} for x in res]
-        if len(results) == page_size:
-            more = True
-        return http.HttpResponse(
-            json.dumps({"results": results, "pagination": {"more": more}}),
             content_type="application/json",
         )

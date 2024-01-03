@@ -1,6 +1,5 @@
 import importlib
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -14,9 +13,8 @@ from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
 
-from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_entities.models import AbstractEntity, TempEntityClass
 from apis_core.apis_labels.models import Label
-from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 
@@ -97,7 +95,7 @@ class GenericEntitiesEditView(View):
         form = get_entities_form(entity.title())
         form = form(request.POST, instance=instance)
         if form.is_valid():
-            entity_2 = form.save()
+            form.save()
             return redirect(
                 reverse(
                     "apis:apis_entities:generic_entities_edit_view",
@@ -194,10 +192,9 @@ class MergeEntitiesView(View):
         ent_merge_pk = kwargs.get("ent_merge_pk", False)
         form = MergeForm(entity, request.POST, ent_merge_pk=ent_merge_pk)
         if form.is_valid():
-            uri = form.data["entity"]
+            target_id = form.data["entity"]
             if ent_merge_pk:
-                uri_obj = Uri.objects.get(uri=uri)
-                target = uri_obj.entity
+                target = TempEntityClass.objects.get(id=target_id)
                 entity_model_class = ContentType.objects.get(
                     app_label="apis_entities", model__iexact=entity
                 ).model_class()
