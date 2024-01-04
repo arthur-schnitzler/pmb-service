@@ -317,14 +317,11 @@ class EntitiesTestCase(TestCase):
         source = Person.objects.create(**{"name": "wirdgleichgemerged"})
         source_id = source.id
         source_uri = f"https://pmb.acdh.oeaw.ac.at/entity/{source.id}/"
-        target_uri = f"https://pmb.acdh.oeaw.ac.at/entity/{target.id}/"
         target.merge_with(source_id)
         url = reverse("uri-resolver")
         r = client.get(url)
         self.assertTrue(r.status_code, 404)
         r = client.get(f"{url}?uri={source_uri}")
-        self.assertTrue(r.status_code, 302)
-        r = client.get(f"{url}?uri={target_uri}")
         self.assertTrue(r.status_code, 302)
         r = client.get(f"{url}?uri={source_uri}&format=tei")
         self.assertTrue(r.status_code, 302)

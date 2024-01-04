@@ -16,7 +16,8 @@ def uri_resolver(request):
             uri = Uri.objects.get(uri=uri)
         except ObjectDoesNotExist:
             raise Http404
-        entity = TempEntityClass.objects_inheritance.get_subclass(pk=uri.entity_id)
+        temp_ent = uri.entity
+        entity = TempEntityClass.objects_inheritance.get_subclass(pk=temp_ent.id)
         if format_param:
             if format_param == "tei":
                 try:
@@ -30,6 +31,8 @@ def uri_resolver(request):
                     raise Http404
             else:
                 raise Http404
+        else:
+            url = entity.get_absolute_url()
         return redirect(url)
 
 
