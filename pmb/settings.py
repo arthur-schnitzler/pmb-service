@@ -14,6 +14,8 @@ SECRET_KEY = "django-insecure-vz%#&+qlze@#cfc8aakgx2vy@k^cl)$$y%te#&q%u*_vd&rwlt
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get("DEBUG"):
     DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -24,6 +26,7 @@ DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 # Application definition
 
 INSTALLED_APPS = [
+    "apis_override_select2js",
     "dal",
     "dal_select2",
     "django_extensions",
