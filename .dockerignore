@@ -1,7 +1,10 @@
 myenv
 env
+venv
+staticfiles
 db.sqlite3
 cover
+htmlcov
 media/uploads/*.rdf
 media/uploads/*.ttl
 .secret
