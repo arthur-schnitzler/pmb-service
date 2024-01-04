@@ -26,6 +26,7 @@ DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 # Application definition
 
 INSTALLED_APPS = [
+    "apis_override_select2js",
     "dal",
     "dal_select2",
     "django_extensions",
