@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Imprint{% endblock %}
+
+{% block content %}
+  <div class="container pt-4">
+    {{ imprint_body|safe }}
+  </div>
+{% endblock %}
