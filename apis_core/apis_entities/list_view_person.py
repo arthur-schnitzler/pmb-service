@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Person
+from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     PersonInstitutionRelation,
     PersonPersonRelation,
@@ -15,6 +16,7 @@ from apis_core.apis_vocabularies.models import (
     ProfessionType,
 )
 from apis_core.helper_functions.utils import get_child_classes
+
 from browsing.browsing_utils import GenericListView
 
 excluded_cols = [
@@ -44,11 +46,12 @@ PERSON_INSTITUTION_RELATION_CHOICES = [
 ]
 
 
-class PersonListFilter(django_filters.FilterSet):
+class PersonListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
-        label="Nachname",
-        help_text="eingegebene Zeichenkette muss im Nachnamen enthalten sein",
+        label="Name oder Label der Person",
+        method="name_label_filter",
+        help_text="eingegebene Zeichenkette muss im Vornamen, Nachnamem oder in einem Label enthalten sein",
     )
     gender = django_filters.ChoiceFilter(
         choices=(("", "egal"), ("male", "männlich"), ("female", "weiblich"))
@@ -96,19 +99,6 @@ class PersonListFilter(django_filters.FilterSet):
         help_text="Name einer Institution und die Art des Beziehung, z.B. 'Znanie' und 'besitzt'",
         method="related_institution_filter",
     )
-
-    def related_institution_filter(self, qs, name, value):
-        rels = get_child_classes(
-            [
-                value.lookup_expr,
-            ],
-            PersonInstitutionRelation,
-        )
-        qs = qs.filter(
-            personinstitution_set__related_institution__name__icontains=value.value,
-            personinstitution_set__relation_type__in=rels,
-        )
-        return qs
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(

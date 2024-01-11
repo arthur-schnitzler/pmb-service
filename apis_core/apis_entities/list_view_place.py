@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Place
+from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     PlaceType,
@@ -44,7 +45,7 @@ PLACE_WORK_RELATION_CHOICES = [
 # ]
 
 
-class PlaceListFilter(django_filters.FilterSet):
+class PlaceListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Ortsname",
