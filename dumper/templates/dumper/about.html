@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Über das Projekt{% endblock %}
+
+{% block content %}
+  <div class="container pt-4">
+    <h1 class="display-1 text-center">PMB</h1>
+    <h2>Personen der Moderne Basis*</h2>
+    <p>Die PMB ist ein Webservice für Personen, Werke, Institutionen, Orte und Ereignisse speziell
+        für die Zeit in Wien um 1900. Ihre einfachste Funktion besteht darin, für verschiedene
+        Projekte eine gemeinsame Datenbank zu schaffen. Das erleichtert einerseits die Erfassung von
+        Personen, wenn diese bereits angelegt sind. Es vereinfacht andererseits die Suche über
+        mehrere Projekte hinweg. Verweise auf andere Normdatensätze (GND, geonames.org) erlauben den
+        automatisierten Abgleich, ohne Fehler von diesen übernehmen zu müssen.</p>
+    <h1>Datenherkunft</h1>
+    <p>Größere Bestände und der Zeitpunkt ihrer Aufnahme</p>
+    <ul>
+        <li>Peter Michael Braunwarth: Personen-, Werk- und Ortindex: Arthur Schnitzler: Tagebuch
+            1879–1931. Herausgegeben von der Kommission für literarische Gebrauchsformen der
+            Österreichischen Akademie der Wissenschaften, Obmann: Werner Welzig. Wien: Verlag der
+            Österreichischen Akademie der Wissenschaften, 1981–2000.<br/>
+            <i>10.772 Entitäten</i> (Februar 2019)</li>
+        <li>Martin Anton Müller: Personen-, Werk-, Organisations- und Ortindex für die Edition:
+            Arthur Schnitzler – Briefwechsel mit Autorinnen und Autoren (2018–2021). Diese sind eine
+            Weiterführung von den von Kurt Ifkovits und Martin Anton Müller erstellten Daten zu:
+            Hermann Bahr, Arthur Schnitzler: Briefwechsel, Aufzeichnungen, Dokumente. Hg. K. I. und
+            M. A. M. Göttingen: Wallstein 2018.<br/>
+            <i>6.755 Entitäten</i> (Februar 2019)</li>
+<li>Martin Anton Müller: Hermann Bahr – Textverzeichnis. Weimar: VDG 2014<br/><i>rund 7.000 Entitäten</i>  (März 2023)</li>
+    </ul>
+    <p>Die Entitäten werden kontinuierlich erweitert, durchgesehen und auch miteinander in Beziehung
+        gesetzt. </p>
+    <p>Folgende Projekte erweitern und korrigieren die Daten:</p>
+    <ul>
+        <li>Arthur Schnitzler – Briefwechsel mit Autorinnen und Autoren, <a
+                href="https://schnitzler-briefe.acdh.oeaw.ac.at">link</a> (2018–[2024])</li>
+        <li>Intertextuality in the Legal Papers of Karl Kraus – A Scholarly Digital Edition, <a
+                href="https://www.kraus.wienbibliothek.at"
+                >link</a> (2019–2022)</li>
+    </ul>
+    <p>* <i>Der Name ist ein Sonderfall eines Akronyms. Er versteht sich als Referenz auf Peter
+            Michael Braunwarth, dessen Arbeit den Grundstock bildet.</i></p>
+    <br/>
+<h1>Open Source</h1>
+<p>Wir freuen uns, wenn sich weitere Unternehmungen anschließen und die PMB für die Erfassung ihrer Entitäten verwenden würden. Wir stellen die Daten aber auch tagesaktuell Open Access zur Verfügung. Einerseits kann das über die API erfolgen (die JSON- oder TEI-Links bei einem Eintrag auswählen), andererseits können hier die Listen zur Gänze geladen werden: <a href="https://pmb-service.acdh-dev.oeaw.ac.at" target="_blank">PMB-Listen</a>.</p>
+    <h1>Richtlinien</h1>
+    <p>Die Herkunft der Anfangsdaten brachten als Erbe einige Uneinheitlichkeiten mit sich. Im
+        Folgenden werden die unterschiedlichen Funktionen beschrieben und skizziert, wie die
+        Einträge möglichst regelkonform angelegt werden.</p>
+    <h1>Personen</h1>
+    <p>Zumindest das grundsätzliche Verständnis, was eine Person ist, dürfte zu wenig Diskussion
+        führen. Die relevante Unterscheidung: Die PMB verzeichnet real existierende Personen und
+        solche, von denen angenommen werden kann, dass sie existierten (»Homer«), aber keine
+        mythologische Gestalten (»Prometheus«). </p>
+    <p>Der Ansetzungsname ist dabei der für das Erwachsenenleben hauptsächlich gültige – jener Name,
+        von dem angenommen wird, dass sie darunter den meisten Menschen bekannt ist. Beispielsweise
+        wird »Marie Bernardt« als »Sarah Bernhardt« geführt. Ihr Geburtsname wird ebenso wie andere
+        Namensformen (Ehename »Damala«) als <b>Label</b> angelegt.</p>
+    <p>Unsichere Lebensdaten können wörtlich eingegeben werden. Es ist in diesen Fällen aber
+        sinnvoll, eine ISO-Fassung separat anzugeben: »4.?4.1919 &lt;1919-04-04&gt;« </p>
+    <p><b>Geburts-</b> und <b>Todesort</b> werden als Beziehung zu bestimmten Orten angelegt. Die
+        Orte werden dabei nach ihrem heutigen Namen angelegt, nicht nach dem zu dem Zeitpunkt
+        gültigen. So starb Hugo von Hofmannsthal in Rodaun, das erst seit 1938 zu Wien gehört.
+        Trotzdem ist in der Datenbank Rodaun als zu Wien gehörig angelegt. (Die Editor*innen des
+        Schnitzler-Tagebuchs hielten das anders, weswegen noch viele solcher Einträge in der
+        Datenbank sind.)</p>
+    <h3>Berufe</h3>
+    <p>Die Angabe von Berufen erfolgt nach einer vorgegebenen Liste, wobei unbeschränkt Berufe
+        angegeben werden können. Gegenwärtig ist kein Vokabular für die Berufe vorgesehen, doch
+        sollte sich das zu einem späteren Zeitpunkt ändern.</p>
+    <h3>Nicht näher zu ermittelnde Personen</h3>
+    <p>Unbekannte, nicht einmal durch einen Familien- oder Vornamen zu identifizierende Personen
+        werden im Familiennamen mit »??« markiert und in mit einer kurzen Beschreibung in eckigen
+        Klammern versehen, z. B. »?? [Vermieterin von F. M. Fels]«. In den respektiven
+        Relationsfeldern wird die Person durch nähere Angaben bestimmt. Hier scheint es besonders
+        angebracht, auch die Relationen zu datieren, etwa »gearbeitet in Wien 1904« oder »Arbeitet
+        für Hermann Bahr 1904« etc.</p>
+    <h3>Normdaten</h3>
+    <p>Schon bei der Anlage einer Person kann dies über den Import durch die Normdatei GND
+        geschehen. Sollte die GND-Nummer später nachgetragen werden, geschieht das durch Verknüpfen
+        einer URI im Menüpunkt URIs. </p>
+    <h3>Relationen</h3>
+    <h4>Von Person zu Person</h4>
+    <p>Hier lassen sich Verwandtschafts- und Beziehungsverhältnisse eintragen. Beispielsweise:</p>
+    <ul>
+        <li>Freundschaft</li>
+        <li>in beruflichem Bezug zu</li>
+        <li>
+            <ul>
+                <li>arbeitet für</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>arbeitet zusammen mit</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Arbeitgeber/Arbeitgeberin für</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Lehrer/Lehrerin von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Schüler/Schülerin von</li>
+            </ul>
+        </li>
+        <li>in intimer Beziehung zu</li>
+        <li>
+            <ul>
+                <li>ist verheiratet mit</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>
+                    <ul>
+                        <li>hinterlässt durch Tod</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>
+                    <ul>
+                        <li>ist durch Tod getrennt von</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>
+                    <ul>
+                        <li>ist geschieden von</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>ist verwandt zu</li>
+        <li>
+            <ul>
+                <li>ist adoptiertes Kind von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Cousin/Cousine von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Elternteil von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li><ul><li>ist adoptiertes Elternteil von</li></ul></li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li><ul><li>ist Stiefelternteil von</li></ul></li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Enkel von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Geschwister von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Großelternteil von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Großneffe/Großnichte von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Großonkel/Großtante von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Halbgeschwister von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Kind von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li><ul><li>ist Stiefkind von</li></ul></li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Neffe/Nichte von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist Onkel/Tante von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist verschwägert mit</li>
+            </ul>
+        </li>
+        <li>in Bezug zu</li>
+    </ul>
+    <h4>Von Person zu Ereignis</h4>
+    <ul>
+        <li>teilgenommen an</li>
+        <li>ist Arbeitskraft bei</li>
+    </ul>
+    <h4>Von Person zu Institution</h4>
+    <ul>
+        <li>unterstützt</li>
+        <li>besitzt</li>
+        <li>arbeitet für</li>
+        <li>in Bezug zu</li>
+    </ul>
+    <h4>Von Person zu Werk</h4>
+    <ul>
+        <li>hat geschaffen</li>
+        <li>hat unter Pseudonym geschrieben</li>
+        <li>hat unter einem Kürzel veröffentlicht</li>
+        <li>hat anonym veröffentlicht</li>
+        <li>bekommt zugeschrieben</li>
+        <li>verfasste einen Beitrag zu</li>
+        <li>hat ein Vorwort/Nachwort verfasst zu</li>
+        <li>hat illustriert</li>
+        <li>hat vertont</li>
+        <li>hat herausgegeben</li>
+        <li>hat übersetzt</li>
+        <li>steht in Bezug zu</li>
+        <li>wird erwähnt in</li>
+        <li>wird ausführlicher behandelt in</li>
+    </ul>
+    <h4>Von Person zu Ort</h4>
+    <ul>
+        <li>geboren in</li>
+        <li>
+            <ul>
+                <li>vielleicht geboren in</li>
+            </ul>
+        </li>
+        <li>gelebt in</li>
+        <li>wohnhaft in</li>
+        <li>ist Staatsbürger von</li>
+        <li>arbeitet in</li>
+        <li>ist Eigentümer/Eigentümerin von</li>
+        <li>gestorben in</li>
+        <li>
+            <ul>
+                <li>vielleicht gestorben in</li>
+            </ul>
+        </li>
+        <li>deportiert nach</li>
+        <li>beerdigt in</li>
+        <li>in Bezug zu</li>
+    </ul>
+    <h3>Labels</h3>
+    <p>Die verschiedenen Labels sind über das Dropdown-Menü auszuwählen und weitgehend
+        selbsterklärend. Sie enthalten bei Personen vor allem Namensvarianten wie Geburtsname,
+        Pseudonym, Rufname.</p>
+    <h1>Werke</h1>
+    <p>Werke werden nach Möglichkeit in der ersten Fassung aufgenommen (»Lieutenant Gustl«), weitere
+        Namensvarianten (»Leutnant Gustl«) können als Label erfasst werden. Ein Werk und seine
+        Übersetzung werden im Normalfall als zwei Werke geführt, die beiden durch eine Relation
+        »Übersetzung« verknüpft. Die Jahresangabe nennt den Zeitpunkt, an dem das Werk von der
+        Öffentlichkeit rezipiert werden konnte. Bei Bühnenwerken sind d. h. erste Aufführung oder
+        erster Druck relevant. Sofern nicht ohnedies getrennt angelegt, ist bei fremdsprachigen
+        Werken die Datierung auf das Original bezogen, nicht die deutsche Übersetzung. Aus dem
+        Nachlass veröffentlichte Werke werden also nach dem Ableben – mit dem postumen
+        Erscheinungsdatum – datiert. Die Entstehungszeit des Werks kann bei der Relation zum
+        Künstler eingegeben werden.</p>
+    <h3>Zeitungen, Zeitschriften und Periodika</h3>
+    <p>Diese werden – soweit es sich um literarische Werke handelt – als Werk behandelt.
+        Entsprechend sind Texte, die in einer Zeitung erschienen sind, über eine Werk–Werk-Beziehung
+        abzubilden. (»enthalten in«). Eine genauere bibliografische Angabe kann über das
+        entsprechende Label gegeben werden. Jede Zeitschrift ist zudem als Institution (die
+        Redaktion, das Redaktionsbüro, die Organisation) anzulegen (Relation Type: »in Beziehung
+        zu«) und auch als Ort, sofern der geografische Ort der Druckerei oder des Redaktion
+        angesprochen wird.</p>
+    <h3>Verlage</h3>
+    <p>Das Erscheinen eines Werks in einem Verlag wird durch eine datierte Beziehung zu dem Verlag
+        als Organisation gemacht, beispielsweise »Lieutenant Gustl enthalten in S. Fischer Verlag
+        1901«.</p>
+    <h3>Unter Pseudonym oder Kürzel veröffentlicht</h3>
+    <p>Abweichungen bei den Autoren- und Autorinnennamen, die nur für ein Werk gelten, sind beim
+        Eintrag zum Werk zu hinterlegen. Also einerseits die entsprechende Beziehung »unter
+        Pseudonym geschaffen von«, »ohne Namensnennung geschaffen von«, »unter Kürzel
+        veröffentlicht«. Die Namensvariante, das Pseudonym selbst ist dann mit dem Label »unter
+        diesem Namen veröffentlicht« zu vermerken.</p>
+    <h3>Beziehungen</h3>
+    <h4>Von Werk zu Ereignis</h4>
+    <ul>
+        <li>Aufführung von</li>
+        <li>
+            <ul>
+                <li>Uraufführung von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>Premiere von</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>Probe</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>
+                    <ul>
+                        <li>Generalprobe</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>Vortrag/Vorlesung von</li>
+        <li>wird rezensiert in</li>
+    </ul>
+    <h4>Von Werk zu Werk</h4>
+    <ul>
+        <li>ist eine frühere Fassung von</li>
+        <li>ist eine spätere Fassung von</li>
+        <li>ist eine Bearbeitung von</li>
+        <li>wurde bearbeitet als</li>
+        <li>
+            <ul>
+                <li>übersetzt als</li>
+            </ul>
+        </li>
+        <li>
+            <ul>
+                <li>ist eine Übersetzung von</li>
+            </ul>
+        </li>
+        <li>vorangegangen ist</li>
+        <li>fortgeführt als</li>
+        <li>enthält</li>
+        <li>enthalten in</li>
+        <li>wird rezensiert in</li>
+        <li>ist eine Rezension von</li>
+        <li>in Bezug zu</li>
+    </ul>
+    <h4>Von Werk zu Ort</h4>
+    <ul>
+        <li>enthält</li>
+        <li>ist Erscheinungsort von</li>
+        <li>hatte am Spielplan</li>
+        <li>aufgeführt am</li>
+    </ul>
+    <h4>Von Werk zu Institution</h4>
+    <ul>
+        <li>in Beziehung zu</li>
+        <li>enthält</li>
+        <li>enthalten in</li>
+    </ul>
+   
+    <h1>Institutionen</h1>
+    <p>Als Institutionen werden juristische, politische oder anderweitige Einrichtungen erfasst,
+        deren Handlungsraum nicht genau lokalisierbar sind. Dazu gehören neben Unternehmen auch
+        Verlage und Literaturpreise, da ihre Produkte nicht an einem bestimmten Ort rezipiert
+        werden. Im speziellen Fall existieren bestimmte Institutionen sowohl als Institutionen wie
+        als Orte, etwa wenn Schnitzler im Verlagsgebäude ist, um Widmungsexemplare zu unterzeichnen.
+        In solchen Fällen legt man Beziehungen zwischen Institution und Ort an.</p>
+    <h3>Relationen</h3>
+    <h4>Von einer Institution zu einem Ereignis</h4>
+    <ul>
+        <li>veranstaltet</li>
+    </ul>
+    <h4>Von einer Institution zu einer Institution</h4>
+    <ul>
+        <li>enthält</li>
+        <li>ist Teil von</li>
+        <li>in Relation zu</li>
+        <li>Vorgänger war</li>
+        <li>aufgegangen in</li>
+    </ul>
+    <h4>Von einer Institution zu einem Ort</h4>
+    <ul>
+        <li>angesiedelt in</li>
+    </ul>
+    <h1>Orte</h1>
+    <p>Orte sind im einfachsten Sinne gemeint, als Stellen, zu denen man physisch hingehen kann.
+        Anders gesagt: Gibt es einen Längen- und einen Breitengrad, ist es ein Ort. Das umfasst also auch
+        Organisationen wie Theater – die man physisch aufsucht.</p>
+    <h3>Ortstypen</h3>
+    <p>Ein Teil der Orte sind mit einem eigenen Vokabular gekennzeichnet. Dieses findet sich hier:
+            <a href="https://vocabs.acdh-dev.oeaw.ac.at/pmbplacetypes/de/?clang=de"
+            >https://vocabs.acdh-dev.oeaw.ac.at/pmbplacetypes/de/?clang=de</a>. Die meisten Orte
+        sind aber nach Geonames klassifiziert.</p>
+    <p>Für Orte sollte nach Möglichkeit eine Geonames-URI vorhanden sein.</p>
+    <h3>Beziehungen</h3>
+    <h4>Beziehungen von Ort zu Ort</h4>
+    <ul>
+        <li>gehört zu</li>
+        <li>enthält</li>
+    </ul>
+    <h1>Wichtige Ressourcen</h1>
+    <h3>URIs</h3>
+    <p>URIs sind beständige, eindeutige Marker, mit denen sich Verbindungen zu
+    anderen Projekten herstellen lassen. Dieses Projekt verwendet hauptsächlich drei davon:</p>
+    <ul>
+       <li><a href="https://lobid.org/gnd">GND-Suche via lobid</a></li>
+        <li><a href="https://www.geonames.org/">Geonames</a></li>
+        <li><a href="https://www.wikidata.org">Wikidata</a></li>
+    </ul>
+    <p>Wikipedia-Einträge werden nicht direkt verlinkt. Auf der linken Seite im Menü eines Wikipedia-Eintrags
+    steht ein Link auf das entsprechende Wikidata-Objekt.</p>
+    
+    <h3>Zur Personensuche</h3>
+    <h4>Wien</h4>
+    <ul>
+        <li><a href="https://genteam.at">https://genteam.at</a> (Nach Registrierung kostenfreie
+            Datenbank mit Geburts- und Sterbeeinträgen vor allem zu Wien. Die dortigen Angaben nach
+            Möglichkeit an den Quellen überprüfen)</li>
+        <li><a href="http://data.matricula-online.eu/de/oesterreich/wien/">Matrikula</a> (Tauf-,
+            Eheregister u.w. für Wien und weitere Orte)</li>
+        <li><a href="https://www.familysearch.org/search/collection/2028320">Jüdische Matrikeln</a>
+            (Kostenfreie Registrierung. Achtung: Nicht auf die Datenbank setzen, sondern die Bilder
+            ansehen. Einträge vor allem in Wien-Allgemein und Wien I.)</li>
+        <li><a href="https://www.digital.wienbibliothek.at/wbrobv/periodical/titleinfo/2316398"
+                >Lehmann online OCR</a> (Adressbuch Wien. Wenn die Volltexterkennung nicht
+            funktioniert, ist die herkömmliche Blätterversion besser).</li>
+        <li><a href="http://anno.onb.ac.at">ANNO Zeitungen</a> (Grade für Namen empfiehlt sich die
+            Abstandsuche: "Johann Goethe"~2 findet auch "Johann Wolfgang Goethe")</li>
+    </ul>
+    <h4>Berlin</h4>
+    <ul>
+        <li>
+            <a href="https://digital.zlb.de/viewer/cms/155/">Adressbuch Berlin</a>
+        </li>
+        <li><a href="http://www.theeuropeanlibrary.org/tel4/">The European Library</a>
+            (Internationale Zeitungen, auch Berlin.)</li>
+    </ul>
+  </div>
+{% endblock %}

@@ -81,3 +81,13 @@ class DumperTestCase(TestCase):
         form_data = {"username": "whatever", "password": USER["password"]}
         rv = self.client.post(reverse("dumper:user_login"), form_data, follow=True)
         self.assertContains(rv, "user does not exist")
+
+    def test_07_imprint(self):
+        url = reverse("dumper:imprint")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_08_imprint(self):
+        url = reverse("dumper:about")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
