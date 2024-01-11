@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Work
+from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     PersonWorkRelation,
@@ -46,7 +47,7 @@ WORK_INSTITUTION_RELATION_CHOICES = [
 ]
 
 
-class WorkListFilter(django_filters.FilterSet):
+class WorkListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Werktitel",

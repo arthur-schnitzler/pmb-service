@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Person
+from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     PersonInstitutionRelation,
     PersonPersonRelation,
@@ -45,12 +46,12 @@ PERSON_INSTITUTION_RELATION_CHOICES = [
 ]
 
 
-class PersonListFilter(django_filters.FilterSet):
+class PersonListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
-        label="Nachname",
+        label="Name oder Label der Person",
         method="name_label_filter",
-        help_text="eingegebene Zeichenkette muss im Nachnamen enthalten sein",
+        help_text="eingegebene Zeichenkette muss im Vornamen, Nachnamem oder in einem Label enthalten sein",
     )
     gender = django_filters.ChoiceFilter(
         choices=(("", "egal"), ("male", "männlich"), ("female", "weiblich"))
@@ -98,62 +99,6 @@ class PersonListFilter(django_filters.FilterSet):
         help_text="Name einer Institution und die Art des Beziehung, z.B. 'Znanie' und 'besitzt'",
         method="related_institution_filter",
     )
-
-    def construct_lookup(self, value):
-        """
-        Parses user input for wildcards and returns a tuple containing the interpreted django lookup string and the trimmed value
-        E.g.
-            'example' -> ('__icontains', 'example')
-            '*example' -> ('__iendswith', 'example')
-            'example*' -> ('__istartswith', 'example')
-            '"example"' -> ('__iexact', 'example')
-
-        :param value : str : text to be parsed for *
-        :return: (lookup : str, value : str)
-        """
-
-        if value.startswith("*") and not value.endswith("*"):
-
-            value = value[1:]
-            return "__iendswith", value
-
-        elif not value.startswith("*") and value.endswith("*"):
-
-            value = value[:-1]
-            return "__istartswith", value
-
-        elif value.startswith('"') and value.endswith('"'):
-
-            value = value[1:-1]
-            return "__iexact", value
-
-        else:
-
-            if value.startswith("*") and value.endswith("*"):
-
-                value = value[1:-1]
-
-            return "__icontains", value
-
-    def name_label_filter(self, queryset, name, value):
-        # TODO __sresch__ : include alternative names queries
-        lookup, value = self.construct_lookup(value)
-        queryset_related_label = queryset.filter(**{"label__label" + lookup: value})
-        queryset_self_name = queryset.filter(**{name + lookup: value})
-        return (queryset_related_label | queryset_self_name).distinct().all()
-
-    def related_institution_filter(self, qs, name, value):
-        rels = get_child_classes(
-            [
-                value.lookup_expr,
-            ],
-            PersonInstitutionRelation,
-        )
-        qs = qs.filter(
-            personinstitution_set__related_institution__name__icontains=value.value,
-            personinstitution_set__relation_type__in=rels,
-        )
-        return qs
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(

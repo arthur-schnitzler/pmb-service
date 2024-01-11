@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Event
+from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     EventEventRelation,
     EventType,
@@ -51,7 +52,7 @@ EVENT_WORK_RELATION_CHOICES = [
 ]
 
 
-class EventListFilter(django_filters.FilterSet):
+class EventListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Name des Ereignisses",
