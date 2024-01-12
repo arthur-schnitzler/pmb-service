@@ -1,0 +1,57 @@
+{% extends "apis_entities/detail_views/entity_detail_generic.html" %}
+
+    {% block info-table %}
+    {% if object.lat %}
+        <div id="map" style="height: 300px;"></div>
+        <script>
+            var lat = "{{ object.lat }}".replace(",", "."); 
+            var lng = "{{ object.lng }}".replace(",", "."); 
+            console.log(lat, lng)
+            var map = L.map('map').setView([lat, lng], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+            var marker = L.marker([lat, lng]).addTo(map);
+            marker.bindPopup("{{ object.name }}").openPopup();
+        </script>
+    {% endif %}
+    <table class="table">
+        {% if no_merge_labels %}
+        <tr>
+            <th>
+                Alternative Namen
+            </th>
+            <td>
+                {% for x in no_merge_labels %}
+                    <li class="list-unstyled">
+                        <small>{{ x.label_type }}: </small>{{ x.label }}
+                    </li>
+                {% endfor %}
+                
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th>
+                ID
+            </th>
+            <td>
+                {{ object.id }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Koordinaten
+            </th>
+            <td>
+                {{ object.lat }} {{ object.lng}}
+            </td>
+        </tr>
+        <tr>
+            <th>Ortstype</th>
+            <td>{{ object.kind }}</td>
+        </tr>
+    </table>
+    
+    {% endblock info-table %}
