@@ -11,6 +11,13 @@
     <h1 class="display-1 text-center apis-{{ entity }}">
         <i class="{{ icon }}"> {{ verbose_name }}</i>
     </h1>
+    {% if user.is_authenticated %}{% if create_view_link %}
+    <h2 class="text-center">
+        <a href="{{ create_view_link }}">
+            <i class="bi bi-plus-square" title="neues Objekt anlegen"></i>
+        </a>
+    </h2>
+    {% endif %}{% endif %}
     <div class="row">
         <div class="col-md-4" id="searchpane">
             <h2 class="text-center">Suchen & Filtern</h2>
@@ -45,13 +52,6 @@
             </div>
         </div>
     </div>
-    {% if user.is_authenticated %}
-    {% if create_view_link %}
-    <div class="d-grid gap-2">
-        <a class="btn btn-primary float-center ms-5 me-5" href="{{ create_view_link }}">Create new {{ class_name }}</a>
-    </div>
-    {% endif %}
-    {% endif %}
 
 </div>
 {% endblock %}
