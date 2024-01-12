@@ -2,106 +2,100 @@
 {% load static %}
 {% load django_tables2 %}
 {% block title %} {{ object }} {% endblock %}
-{% block scriptHeader %}
-{{ block.super }}
-
-{% endblock scriptHeader %}
 {% block content %}
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-2">
-                    {% if object.get_prev_url %}
-                        <h2>
-                            <a href="{{ object.get_prev_url }}" style="float:right">
-                                <i data-feather="chevron-left" title="previous"></i>
-                            </a>
-                        </h2>
-                    {% endif %}
-                </div>
-                <div class="col-md-8">
-                    <h2 style="text-align: center;">
-                        {% if object.get_listview_url %}
-                            <a href="{{ object.get_listview_url }}">
-                                <small>URIs</small>
-                            </a>
-                        {% else %}
-                            <small>URIs</small>
-                        {% endif %}
-                        {{ object }}
-                        {% if user.is_authenticated %}
-                            {% if object.get_edit_url %}
-                                    <a href="{{ object.get_edit_url }}">
-                                        <i class="feather-32" data-feather="edit" title="edit"></i>
-                                    </a>
-                            {% endif %}
-                            {% if object.get_delete_url %}
-                                |
-                                    <a href="{{ object.get_delete_url }}">
-                                        <i class="feather-32" data-feather="trash" title="delete"></i>
-                                    </a>
-                            {% endif %}
-                        {% endif %}
-                    </h2>
-                </div>
-            <div class="col-md-2">
-                {% if object.get_next_url %}
-                    <h2>
-                        <a href="{{ object.get_next_url}}" style="float:left">
-                            <i data-feather="chevron-right" title="next"></i>
-                        </a>
-                    </h2>
+{% include "partials/entity_styles.html" %}
+
+
+<div class="container-fluid pt-2">
+    <div class="row">
+        <div class="col-md-2">
+            {% if object.get_prev_url %}
+                <h2>
+                    <a href="{{ object.get_prev_url }}" style="float:right">
+                        <i data-feather="chevron-left" title="previous"></i>
+                    </a>
+                </h2>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h2 class="display-4 text-center">
+                    <a href="{{ object.get_listview_url }}">
+                        <small>URIs</small>
+                    </a>
+                {{ object }}
+                {% if user.is_authenticated %}
+                <h2 class="text-center">
+                    {% if object.get_edit_url %}
+                    <a href="{{ object.get_edit_url }}">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
                 {% endif %}
-            </div>
+                {% if object.get_delete_url %}
+                    |
+                        <a href="{{ object.get_delete_url }}">
+                            <i class="bi bi-trash3"></i>
+                        </a>
+                {% endif %}
+                </h2>
+                
+                {% endif %}
+            </h2>
         </div>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-hover">
-                <tr>
-                    <th>
-                        Entity
-                    </th>
-                    <td>
-                        <a href="{{ object.entity.get_absolute_url }}">{{ object.entity }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Uri
-                    </th>
-                    <td>
-                        {{ object.uri }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Domain
-                    </th>
-                    <td>
-                        {{ object.domain }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        RDF Link
-                    </th>
-                    <td>
-                        {{ object.rdf_link }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <abbr title="loaded set to True when RDF was loaded and parsed into the data model">Loaded</abbr>
-                    </th>
-                    <td>
-                        {{ object.rdf_link }} {% if object.loaded_time %} (object.loaded_time) {% endif %}
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <div class="col-md-2">
+            {% if object.get_next_url %}
+                <h2>
+                    <a href="{{ object.get_next_url}}" style="float:left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </a>
+                </h2>
+            {% endif %}
         </div>
     </div>
+    
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                Entity
+            </th>
+            <td>
+                <a href="{{ object.entity.get_absolute_url }}">{{ object.entity }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Uri
+            </th>
+            <td>
+                {{ object.uri }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Domain
+            </th>
+            <td>
+                {{ object.domain }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                RDF Link
+            </th>
+            <td>
+                {{ object.rdf_link }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <abbr title="loaded set to True when RDF was loaded and parsed into the data model">Loaded</abbr>
+            </th>
+            <td>
+                {{ object.rdf_link }} {% if object.loaded_time %} (object.loaded_time) {% endif %}
+            </td>
+        </tr>
+    </table>
 </div>
 {% endblock content %}
 {% block scripts %}
