@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "apis_override_select2js",
     "dal",
     "dal_select2",
+    "django.contrib.humanize",
     "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
