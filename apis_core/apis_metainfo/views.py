@@ -1,3 +1,4 @@
+from typing import Any
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -30,6 +31,11 @@ class UriDetailView(DetailView):
     model = Uri
     template_name = "apis_metainfo/uri_detail.html"
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["entity_type"] = "uri"
+        return context
+
 
 class UriCreate(BaseCreateView):
     model = Uri
@@ -51,7 +57,7 @@ class UriUpdate(BaseUpdateView):
 
 class UriDelete(DeleteView):
     model = Uri
-    template_name = "webpage/confirm_delete.html"
+    template_name = "apis_entities/confirm_delete.html"
     success_url = reverse_lazy("apis_core:apis_metainfo:uri_browse")
 
     @method_decorator(login_required)
