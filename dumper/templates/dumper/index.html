@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -22,7 +23,7 @@
                     <i class="bi bi-people apis-person big-icons"></i>
                 </a>
             </p>
-            <h2>{{ person_count }} Personen</h2>
+            <h2>{{ person_count|intcomma }} Personen</h2>
             <p>Welche Personen in den Dokumenten von
                 Karl Kraus, Arthur Schnitzler und
                 ihren Zeitgenoss:innen erwähnt werden und
@@ -36,7 +37,7 @@
                     <i class="bi bi-map apis-place big-icons"></i>
                 </a>
             </p>
-            <h2>{{ place_count }} Orte</h2>
+            <h2>{{ place_count|intcomma }} Orte</h2>
             <p>Hier sind alle durch Längen- und Breitengrade lokalisierbaren Plätze in der heutigen politischen Zuordnung
                 verzeichnet, auf die in verschiedenen Projekten Bezug genommen werden.</p>
         </div>
@@ -47,7 +48,7 @@
                     <i class="bi bi-book apis-work big-icons"></i>
                 </a>
             </p>
-            <h2>{{ work_count }} Werke</h2>
+            <h2>{{ work_count|intcomma }} Werke</h2>
             <p>Literarische und künstlerische Kunstwerke, einschließlich
                 Zeitungen und Zeitschriften, die bislang erfasst sind. Fast 
                 ein Drittel der Werke stammt von Hermann Bahr.
@@ -62,7 +63,7 @@
                     <i class="bi bi-calendar3 apis-event big-icons"></i>
                 </a>
             </p>
-            <h2>{{ event_count }} Ereignisse</h2>
+            <h2>{{ event_count|intcomma }} Ereignisse</h2>
             <p>Die Kategorie mit den wenigsten Einträgen umfasst bislang vor allem Aufführungen von
                 Theaterstücken. Und, wann Arthur Schnitzler sie besucht hat.</p>
         </div>
@@ -73,7 +74,7 @@
                     <i class="bi bi-building-gear apis-institution big-icons"></i>
                 </a>
             </p>
-            <h2>{{ institution_count }} Institutionen</h2>
+            <h2>{{ institution_count|intcomma }} Institutionen</h2>
             <p>Jegliche Art von Organisation, aber auch sonst schwer zuordenbares wie Bahnlinien und
                 Kunstpreise sind hier verzeichnet.</p>
         </div>
@@ -84,7 +85,7 @@
                     <i class="bi bi-link-45deg apis-uri big-icons"></i>
                 </a>
             </p>
-            <h2>{{ uri_count }} URIs</h2>
+            <h2>{{ uri_count|intcomma }} URIs</h2>
             <p>Damit nicht nur wir, sondern auch die Maschine und in Folge andere Projekte wissen, wovon
                 die Rede ist.
             </p>
