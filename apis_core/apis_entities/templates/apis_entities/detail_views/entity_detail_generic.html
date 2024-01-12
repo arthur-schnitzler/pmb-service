@@ -29,6 +29,7 @@
                     <small>{{ entity_type }}s</small>
                 {% endif %}
                 {{ object }}
+                </h2>
                 {% if user.is_authenticated %}
                 <h2 class="text-center">
                     {% if object.get_edit_url %}
@@ -44,7 +45,6 @@
                     {% endif %}
                 </h2>
                 {% endif %}
-            </h2>
         </div>
         <div class="col-md-2">
             {% if object.get_next_url %}
@@ -146,6 +146,16 @@
             {% endblock info-table %}
             {% block info-metadata %}
                 <table class="table">
+                    <tr>
+                        <th>
+                            Uri(s)
+                        </th>
+                        <td>
+                            {% for x in object.uri_set.all %}
+                                <a href="{{ x }}">{{ x }}</a> <br />
+                            {% endfor %}
+                        </td>
+                    </tr>
                     {% if object.collection.all %}
                     <tr>
                         <th>
@@ -160,16 +170,6 @@
                         </td>
                     </tr>
                     {% endif %}
-                    <tr>
-                        <th>
-                            Uri(s)
-                        </th>
-                        <td>
-                            {% for x in object.uri_set.all %}
-                                <a href="{{ x }}">{{ x }}</a> <br />
-                            {% endfor %}
-                        </td>
-                    </tr>
                     {% if object.notes %}
                         <tr>
                             <th>
