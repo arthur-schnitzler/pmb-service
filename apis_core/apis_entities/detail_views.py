@@ -79,7 +79,7 @@ class GenericEntitiesDetailView(View):
         RequestConfig(request, paginate={"per_page": 10}).configure(tb_label)
         template = select_template(
             [
-                "apis_entities/detail_views/{}_detail_generic.html".format(entity),
+                "apis_entities/detail_views/{}_detail.html".format(entity),
                 "apis_entities/detail_views/entity_detail_generic.html",
             ]
         )
