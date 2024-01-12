@@ -24,6 +24,8 @@ DOMAIN_MAPPING = [
     ("kraus.wienbibliothek.at", "legalkraus"),
     ("kraus1933", "dritte-walpurgisnacht"),
     ("pmb.acdh.oeaw.ac.at", "pmb"),
+    ("anno", "anno"),
+    ("geschichtewiki.wien", "wiengeschichtewiki"),
 ]
 
 

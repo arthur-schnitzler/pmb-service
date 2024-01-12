@@ -1,0 +1,4 @@
+[run]
+branch = True
+omit = dumper/management/commands/labels_to_uris.py
+    
