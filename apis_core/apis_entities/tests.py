@@ -1,3 +1,4 @@
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
@@ -331,3 +332,9 @@ class EntitiesTestCase(TestCase):
         self.assertTrue(r.status_code, 404)
         r = client.get(f"{url}?uri=https://dasgibtsjagarnicht.com")
         self.assertTrue(r.status_code, 404)
+
+    def test_023_save_uris(self):
+        wd_uri = "https://www.wikidata.org/wiki/Q2"
+        entity = Person.objects.last()
+        new_uri = Uri.objects.create(uri=wd_uri, entity=entity)
+        self.assertEqual(new_uri.uri, get_normalized_uri(wd_uri))
