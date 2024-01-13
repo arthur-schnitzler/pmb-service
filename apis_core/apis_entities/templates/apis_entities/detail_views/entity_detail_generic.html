@@ -5,7 +5,7 @@
 {% block content %}
 {% include "partials/entity_styles.html" %}
 
-<div class="container-fluid pt-2">
+<div class="container-fluid pt-4">
     
     <div class="row">
         <div class="col-md-2">
@@ -21,16 +21,12 @@
         </div>
         <div class="col-md-8">
             <h2 class="display-4 text-center">
-                {% if object.get_listview_url %}
-                    <a href="{{ object.get_listview_url }}">
-                        <small>{{ entity_type }}s</small>
-                    </a>
-                {% else %}
-                    <small>{{ entity_type }}s</small>
-                {% endif %}
-                {{ object }}
-                </h2>
-                {% if user.is_authenticated %}
+                <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
+                    <i class="{{ object.get_icon }}"></i>
+                </a>
+               {{ object }}
+            </h2>
+            {% if user.is_authenticated %}
                 <h2 class="text-center">
                     {% if object.get_edit_url %}
                             <a href="{{ object.get_edit_url }}">
@@ -44,7 +40,7 @@
                             </a>
                     {% endif %}
                 </h2>
-                {% endif %}
+            {% endif %}
         </div>
         <div class="col-md-2">
             {% if object.get_next_url %}

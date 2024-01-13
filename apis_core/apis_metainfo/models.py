@@ -9,6 +9,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from model_utils.managers import InheritanceManager
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
@@ -385,6 +386,10 @@ class Uri(models.Model):
         }
         return result
 
+    def save(self, *args, **kwargs):
+        self.uri = get_normalized_uri(self.uri)
+        super().save(*args, **kwargs)
+
     @classmethod
     def get_listview_url(self):
         return reverse("apis_core:apis_metainfo:uri_browse")
@@ -401,3 +406,7 @@ class Uri(models.Model):
 
     def get_edit_url(self):
         return reverse("apis_core:apis_metainfo:uri_edit", kwargs={"pk": self.id})
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-link-45deg apis-uri"

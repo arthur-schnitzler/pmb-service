@@ -169,4 +169,3 @@ class WorkListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Werke"
     help_text = "Werke help text"
-    icon = "bi bi-book apis-work big-icons"

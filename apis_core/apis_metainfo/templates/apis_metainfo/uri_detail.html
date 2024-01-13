@@ -6,7 +6,7 @@
 {% include "partials/entity_styles.html" %}
 
 
-<div class="container-fluid pt-2">
+<div class="container pt-4">
     <div class="row">
         <div class="col-md-2">
             {% if object.get_prev_url %}
@@ -19,9 +19,9 @@
         </div>
         <div class="col-md-8">
             <h2 class="display-4 text-center">
-                    <a href="{{ object.get_listview_url }}">
-                        <small>URIs</small>
-                    </a>
+                <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
+                    <i class="{{ object.get_icon }}"></i>
+                </a>
                 {{ object }}
                 {% if user.is_authenticated %}
                 <h2 class="text-center">
@@ -53,49 +53,35 @@
             {% endif %}
         </div>
     </div>
+    <div class="pt-4">
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    Entity
+                </th>
+                <td>
+                    <a href="{{ object.entity.get_absolute_url }}">{{ object.entity }}</a>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Uri
+                </th>
+                <td>
+                    {{ object.uri }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Domain
+                </th>
+                <td>
+                    {{ object.domain }}
+                </td>
+            </tr>
+        </table>
+    </div>
     
-    <table class="table table-bordered table-hover">
-        <tr>
-            <th>
-                Entity
-            </th>
-            <td>
-                <a href="{{ object.entity.get_absolute_url }}">{{ object.entity }}</a>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Uri
-            </th>
-            <td>
-                {{ object.uri }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Domain
-            </th>
-            <td>
-                {{ object.domain }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                RDF Link
-            </th>
-            <td>
-                {{ object.rdf_link }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <abbr title="loaded set to True when RDF was loaded and parsed into the data model">Loaded</abbr>
-            </th>
-            <td>
-                {{ object.rdf_link }} {% if object.loaded_time %} (object.loaded_time) {% endif %}
-            </td>
-        </tr>
-    </table>
 </div>
 {% endblock content %}
 {% block scripts %}

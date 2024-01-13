@@ -22,7 +22,7 @@ from apis_core.apis_vocabularies.models import (
 from apis_core.helper_functions import EntityRelationFieldGenerator
 
 BASE_URI = getattr(settings, "APIS_BASE_URI", "http://apis.info/")
-DOMAIN_DEFAULT = getattr(settings, "APIS_DEFAULT_DOMAIN", "apis default")
+DOMAIN_DEFAULT = "pmb"
 
 
 class AbstractEntity(TempEntityClass):
@@ -522,6 +522,10 @@ class Person(AbstractEntity):
     def get_api_url(self):
         return f"/apis/api/entities/person/{self.id}/"
 
+    @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
 
 class Place(AbstractEntity):
     kind = models.ForeignKey(
@@ -547,6 +551,10 @@ class Place(AbstractEntity):
     def get_api_url(self):
         return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
 
+    @classmethod
+    def get_icon(self):
+        return "bi bi-map apis-place"
+
 
 class Institution(AbstractEntity):
     kind = models.ForeignKey(
@@ -564,6 +572,10 @@ class Institution(AbstractEntity):
     def get_api_url(self):
         return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
 
+    @classmethod
+    def get_icon(self):
+        return "bi bi-building-gear apis-institution"
+
 
 class Event(AbstractEntity):
     kind = models.ForeignKey(
@@ -577,6 +589,10 @@ class Event(AbstractEntity):
 
     def get_api_url(self):
         return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-calendar3 apis-event"
 
 
 class Work(AbstractEntity):
@@ -592,6 +608,10 @@ class Work(AbstractEntity):
 
     def get_api_url(self):
         return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-book apis-work"
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)

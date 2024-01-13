@@ -1,7 +1,9 @@
 import os
 
 import owncloud
+import pandas as pd
 import requests
+from io import BytesIO
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -80,3 +82,13 @@ def process_beacon(beacon_url, domain):
                 new_uri.save()
                 created += 1
     return created
+
+
+def gsheet_to_df(sheet_id):
+    GDRIVE_BASE_URL = "https://docs.google.com/spreadsheet/ccc?key="
+    url = f"{GDRIVE_BASE_URL}{sheet_id}&output=csv"
+    r = requests.get(url)
+    print(r.status_code)
+    data = r.content
+    df = pd.read_csv(BytesIO(data))
+    return df
