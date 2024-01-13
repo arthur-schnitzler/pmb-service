@@ -50,7 +50,7 @@
         </tr>
         <tr>
             <th>Ortstype</th>
-            <td>{{ object.kind }}</td>
+            <td>{% if object.kind.description %} {{ object.kind }} <small>{{ object.kind.description }}</small> {% else %} {{ object.kind }} {% endif %}</td>
         </tr>
     </table>
     
