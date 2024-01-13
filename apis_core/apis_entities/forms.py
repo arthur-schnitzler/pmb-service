@@ -22,7 +22,7 @@ class MergeForm(forms.Form):
 
     def __init__(self, entity, *args, **kwargs):
         attrs = {
-            "data-placeholder": "Type to get suggestions",
+            "data-placeholder": "Tippe um Vorschläge zu bekommen",
             "data-minimum-input-length": 1,
             "data-html": True,
             "style": "width: auto",
@@ -45,7 +45,7 @@ class MergeForm(forms.Form):
                 args=[entity.title(), ent_merge_pk],
             )
             label = f"Suche nach Objekten vom Type: {entity.title()}"
-            button_label = "Merge"
+            button_label = "zusammenführen"
         self.helper.form_action = reverse(
             "apis:apis_entities:merge_view", kwargs=form_kwargs
         )
@@ -88,8 +88,8 @@ def get_entities_form(entity):
             acc_grp1 = Fieldset("Metadata {}".format(entity.title()))
             acc_grp2 = AccordionGroup("MetaInfo", "references", "notes", "review")
             attrs = {
-                "data-placeholder": "Type to get suggestions",
-                "data-minimum-input-length": getattr(settings, "APIS_MIN_CHAR", 3),
+                "data-placeholder": "Tippe um Vorschläge zu bekommen",
+                "data-minimum-input-length": 1,
                 "data-html": True,
             }
 
