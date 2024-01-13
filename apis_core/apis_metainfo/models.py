@@ -401,3 +401,7 @@ class Uri(models.Model):
 
     def get_edit_url(self):
         return reverse("apis_core:apis_metainfo:uri_edit", kwargs={"pk": self.id})
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-link-45deg apis-uri"

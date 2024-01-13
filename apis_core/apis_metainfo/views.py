@@ -34,6 +34,8 @@ class UriDetailView(DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["entity_type"] = "uri"
+        print(context["object"].get_icon())
+        context["icon"] = context["object"].get_icon()
         return context
 
 
