@@ -65,6 +65,8 @@ class GenericRelationForm(forms.ModelForm):
             x = self.relation_form.objects.get(pk=instance)
         else:
             x = self.relation_form()
+        if f"{site_instance.id}" == f'{cd["target"]}':
+            return x
         x.relation_type_id = cd["relation_type"]
         x.start_date_written = cd["start_date_written"]
         x.end_date_written = cd["end_date_written"]
