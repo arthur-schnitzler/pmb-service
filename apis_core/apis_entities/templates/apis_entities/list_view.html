@@ -7,7 +7,7 @@
 {% block content %}
 {% include "partials/entity_styles.html" %}
 
-<div class="container">
+<div class="container pt-4">
     <h1 class="display-1 text-center apis-{{ entity }}">
         <i class="{{ icon }}"> {{ verbose_name }}</i>
     </h1>
@@ -18,7 +18,7 @@
         </a>
     </h2>
     {% endif %}{% endif %}
-    <div class="row">
+    <div class="row pt-4">
         <div class="col-md-4" id="searchpane">
             <h2 class="text-center">Suchen & Filtern</h2>
             {% block customView %}{% endblock %}

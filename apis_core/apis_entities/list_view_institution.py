@@ -213,4 +213,3 @@ class InstitutionListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Institution"
     help_text = "Institution help text"
-    icon = "bi bi-building-gear apis-institution big-icons"

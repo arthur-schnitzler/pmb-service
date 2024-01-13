@@ -144,4 +144,3 @@ class PlaceListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Orte"
     help_text = "Orte help text"
-    icon = "bi bi-map apis-place big-icons"

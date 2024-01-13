@@ -187,4 +187,3 @@ class EventListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Ereignisse"
     help_text = "Ereignisse help text"
-    icon = "bi bi-calendar3 apis-event big-icons"

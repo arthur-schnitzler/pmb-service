@@ -77,4 +77,3 @@ class UriListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Uris"
     help_text = "Uris help text"
-    icon = "bi bi-link-45deg apis-uri big-icons"
