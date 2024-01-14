@@ -16,8 +16,11 @@ MODELS = list(apps.all_models["apis_entities"].values())
 
 
 class TeiTestCase(TestCase):
+    fixtures = [
+        "db.json",
+    ]
+
     def setUp(self):
-        # Create two users
         User.objects.create_user(**USER)
         Person.objects.create(**BAHR)
 
@@ -38,3 +41,17 @@ class TeiTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         response = client.get(f"{url}?q=Bahr")
         self.assertTrue("Hermann" in str(response.content))
+
+    def test_03_tei_views(self):
+        for x in MODELS:
+            item = x.objects.first()
+            try:
+                url = item.get_tei_url()
+            except AttributeError:
+                url = False
+            if url:
+                try:
+                    response = client.get(url)
+                except TypeError:
+                    continue
+                self.assertEqual(response.status_code, 200)
