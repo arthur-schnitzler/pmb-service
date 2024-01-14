@@ -8,6 +8,7 @@ from dal import autocomplete
 
 from apis_core.apis_entities.models import Event
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     EventEventRelation,
     EventType,
@@ -87,6 +88,7 @@ class EventListFilter(MyBaseFilter):
             url="/apis/vocabularies/autocomplete/eventtype/normal/",
         ),
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -142,6 +144,7 @@ class EventFilterFormHelper(FormHelper):
                     "name",
                     "kind",
                     "year_of_creation",
+                    "collection",
                     css_id="more",
                 ),
                 AccordionGroup(

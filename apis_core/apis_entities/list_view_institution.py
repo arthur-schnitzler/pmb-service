@@ -7,6 +7,7 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 
 from apis_core.apis_entities.models import Institution
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_vocabularies.models import (
     InstitutionEventRelation,
@@ -93,6 +94,7 @@ class InstitutionListFilter(MyBaseFilter):
             url="/apis/vocabularies/autocomplete/institutiontype/normal/",
         ),
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_event_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -161,6 +163,7 @@ class InstitutionFilterFormHelper(FormHelper):
                     "name",
                     "kind",
                     "year_of_creation",
+                    "collection",
                     css_id="more",
                 ),
                 AccordionGroup(
