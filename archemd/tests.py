@@ -1,11 +1,9 @@
 from django.apps import apps
-from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 
 from apis_core.apis_entities.models import Person, Place
 from archemd.arche_md_utils import ArcheMd
-from normdata.utils import import_from_normdata
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
@@ -23,11 +21,9 @@ URIS = [
 
 
 class ArcheMedTestCase(TestCase):
-    def setUp(self):
-        User.objects.create_user(**USER)
-        Person.objects.create(**BAHR)
-        for x in URIS:
-            import_from_normdata(x[0], x[1])
+    fixtures = [
+        "db.json",
+    ]
 
     def test_01_archemd(self):
         item = Person.objects.last()

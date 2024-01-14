@@ -18,6 +18,7 @@ else:
     DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
 
 APIS_LIST_VIEWS_ALLOWED = True
 APIS_DETAIL_VIEWS_ALLOWED = True

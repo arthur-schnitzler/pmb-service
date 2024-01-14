@@ -1,5 +1,5 @@
 [run]
 branch = True
 omit = 
-    dumper/management/commands/labels_to_uris.py
-    dumper/management/commands/add_gn_feature_codes.py
+    ./dumper/management/commands/*
+    manage.py
