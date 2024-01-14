@@ -8,6 +8,7 @@ from dal import autocomplete
 
 from apis_core.apis_entities.models import Place
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     PlaceType,
@@ -65,6 +66,7 @@ class PlaceListFilter(MyBaseFilter):
             url="/apis/vocabularies/autocomplete/placetype/normal/",
         ),
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -112,6 +114,7 @@ class PlaceFilterFormHelper(FormHelper):
                     "Beziehungen",
                     "related_with_person",
                     "related_with_work",
+                    "collection",
                     css_id="admin_search",
                 ),
             )

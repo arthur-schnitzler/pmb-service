@@ -8,6 +8,7 @@ from dal import autocomplete
 
 from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     PersonInstitutionRelation,
     PersonPersonRelation,
@@ -99,6 +100,7 @@ class PersonListFilter(MyBaseFilter):
         help_text="Name einer Institution und die Art des Beziehung, z.B. 'Znanie' und 'besitzt'",
         method="related_institution_filter",
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -163,6 +165,7 @@ class PersonFilterFormHelper(FormHelper):
                     "gender",
                     "birth_year",
                     "death_year",
+                    "collection",
                     css_id="more",
                 ),
                 AccordionGroup(
