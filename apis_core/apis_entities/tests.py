@@ -338,3 +338,12 @@ class EntitiesTestCase(TestCase):
         entity = Person.objects.last()
         new_uri = Uri.objects.create(uri=wd_uri, entity=entity)
         self.assertEqual(new_uri.uri, get_normalized_uri(wd_uri))
+
+    def test_024_autocompletes(self):
+        models = ["person", "place", "event", "institution", "work"]
+        for x in models:
+            url = reverse(
+                "apis:apis_entities:generic_entities_autocomplete", kwargs={"entity": x}
+            )
+            r = client.get(f"{url}?q=a")
+            self.assertEqual(r.status_code, 200)
