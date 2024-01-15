@@ -14,6 +14,7 @@ RUN pip install -U pip --no-cache-dir && pip install -r /opt/app/requirements.tx
 RUN pip install gunicorn
 COPY . /opt/app
 WORKDIR /opt/app
+RUN ./download_files.sh
 RUN chown -R www-data:www-data /opt/app && chmod -R 755 /opt/app/media
 ADD crontab /etc/cron.d/container_cronjob
 RUN chmod 0644 /etc/cron.d/container_cronjob
