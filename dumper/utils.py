@@ -36,7 +36,7 @@ PMB_ENTITIES = "pmb_entities"
 
 def upload_files_to_owncloud(
     file_list, user=settings.OWNCLOUD_USER, pw=settings.OWNCLOUD_PW, folder=PMB_ENTITIES
-):
+):  # pragma: no cover
     collection = folder
     oc = owncloud.Client("https://oeawcloud.oeaw.ac.at")
     oc.login(user, pw)
@@ -54,7 +54,7 @@ def upload_files_to_owncloud(
         oc.put_file(owncloud_name, x)
 
 
-def write_report(report, report_file=settings.PMB_LOG_FILE):
+def write_report(report, report_file=settings.PMB_LOG_FILE):  # pragma: no cover
     with open(report_file, "a") as f:
         f.write(f'{",".join(report)}\n')
         return "done"

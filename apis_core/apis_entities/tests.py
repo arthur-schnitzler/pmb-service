@@ -338,3 +338,37 @@ class EntitiesTestCase(TestCase):
         entity = Person.objects.last()
         new_uri = Uri.objects.create(uri=wd_uri, entity=entity)
         self.assertEqual(new_uri.uri, get_normalized_uri(wd_uri))
+
+    def test_024_autocompletes(self):
+        models = ["person", "place", "event", "institution", "work"]
+        for x in models:
+            url = reverse(
+                "apis:apis_entities:generic_entities_autocomplete", kwargs={"entity": x}
+            )
+            r = client.get(f"{url}?q=a")
+            self.assertEqual(r.status_code, 200)
+
+    def test_024_vocabs_dl(self):
+        models = ["placetype", "worktype"]
+        client.login(**USER)
+        for x in models:
+            url = reverse("apis:apis_vocabularies:dl-vocabs", kwargs={"model_name": x})
+            r = client.get(f"{url}")
+            self.assertEqual(r.status_code, 200)
+
+    def test_025_vocabs_ac(self):
+        models = ["placetype", "worktype", "personplacerelation", "personworkrelation"]
+        client = Client()
+        for x in models:
+            for y in ["normal", "reverse"]:
+                if y == "reverse" and x.endswith("type"):
+                    continue
+                r = None
+                url = reverse(
+                    "apis:apis_vocabularies:generic_vocabularies_autocomplete",
+                    kwargs={"vocab": x, "direct": y},
+                )
+                r = client.get(f"{url}")
+                self.assertEqual(r.status_code, 200)
+                r = client.get(f"{url}?q=g")
+                self.assertEqual(r.status_code, 200)
