@@ -55,6 +55,10 @@ class VocabsBaseClass(models.Model):
 
     @cached_property
     def label(self):
+        return self.name
+
+    @cached_property
+    def full_label(self):
         d = self
         res = self.name
         while d.parent_class:

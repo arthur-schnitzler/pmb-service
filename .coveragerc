@@ -1,0 +1,5 @@
+[run]
+branch = True
+omit = 
+    ./dumper/management/commands/*
+    manage.py

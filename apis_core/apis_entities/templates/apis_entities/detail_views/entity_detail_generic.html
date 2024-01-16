@@ -5,60 +5,46 @@
 {% block content %}
 {% include "partials/entity_styles.html" %}
 
-<div class="container-fluid pt-2">
+<div class="container-fluid pt-4">
     
     <div class="row">
         <div class="col-md-2">
             {% if object.get_prev_url %}
                 <h2>
                     <a href="{{ object.get_prev_url }}" style="float:right">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
+                        <i class="bi bi-chevron-left" title="vorige Entität"></i>
                     </a>
                 </h2>
             {% endif %}
         </div>
         <div class="col-md-8">
             <h2 class="display-4 text-center">
-                {% if object.get_listview_url %}
-                    <a href="{{ object.get_listview_url }}">
-                        <small>{{ entity_type }}s</small>
-                    </a>
-                {% else %}
-                    <small>{{ entity_type }}s</small>
-                {% endif %}
-                {{ object }}
-                {% if user.is_authenticated %}
+                <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
+                    <i class="{{ object.get_icon }}"></i>
+                </a>
+               {{ object }}
+            </h2>
+            {% if user.is_authenticated %}
                 <h2 class="text-center">
                     {% if object.get_edit_url %}
                             <a href="{{ object.get_edit_url }}">
-                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                </svg>
+                                <i class="bi bi-pencil-square" title="Entität bearbeiten"></i>
                             </a>
                     {% endif %}
                     {% if object.get_delete_url %}
                         |
                             <a href="{{ object.get_delete_url }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
+                                <i class="bi bi-trash3" title="Entität löschen"></i>
                             </a>
                     {% endif %}
                 </h2>
-                {% endif %}
-            </h2>
+            {% endif %}
         </div>
         <div class="col-md-2">
             {% if object.get_next_url %}
                 <h2>
                     <a href="{{ object.get_next_url }}" style="float:left">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
+                        <i class="bi bi-chevron-right" title="nächste Entität"></i>
                     </a>
                 </h2>
             {% endif %}
@@ -68,17 +54,10 @@
     <div class="row">
         <div class="col-md-5">
             <h3 class="text-center">
-                General Info
                 <a href="{{ object.get_api_url }}">
-                    <small>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database">
-                            <ellipse cx="12" cy="5" rx="9" ry="3" />
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                        </svg>
-                    </small>
+                    <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
                 </a>
-                {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}"><abbr title="link to a project specific TEI-serialisation of this entity">TEI</abbr></a>{% endif %}
+                {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a>{% endif %}
             </h3>
             {% block info-table %}
             <table class="table">
@@ -152,6 +131,20 @@
             {% endblock info-table %}
             {% block info-metadata %}
                 <table class="table">
+                    <tr>
+                        <th>
+                            Uri(s)
+                        </th>
+                        <td>
+                            {% for x in object.uri_set.all %}
+                                <a href="{{ x }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a> | <a href="{{ x.get_delete_url }}" title="URI löschen">
+                                    <i class="bi bi-trash3"></i>
+                                </a>{% endif %}<br />
+                            {% endfor %}
+                        </td>
+                    </tr>
                     {% if object.collection.all %}
                     <tr>
                         <th>
@@ -166,16 +159,6 @@
                         </td>
                     </tr>
                     {% endif %}
-                    <tr>
-                        <th>
-                            Uri(s)
-                        </th>
-                        <td>
-                            {% for x in object.uri_set.all %}
-                                <a href="{{ x }}">{{ x }}</a> <br />
-                            {% endfor %}
-                        </td>
-                    </tr>
                     {% if object.notes %}
                         <tr>
                             <th>

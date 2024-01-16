@@ -8,6 +8,7 @@ from dal import autocomplete
 
 from apis_core.apis_entities.models import Place
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     PlaceType,
@@ -37,19 +38,13 @@ PLACE_PERSON_RELATION_CHOICES = [
 PLACE_WORK_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})") for x in PlaceWorkRelation.objects.all()
 ]
-# WORK_WORK_RELATION_CHOICES = [
-#     (f"{x.id}", f"{x} (ID: {x.id})") for x in WorkWorkRelation.objects.all()
-# ]
-# WORK_INSTITUTION_RELATION_CHOICES = [
-#     (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionWorkRelation.objects.all()
-# ]
 
 
 class PlaceListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
-        lookup_expr="icontains",
+        method="name_label_filter",
         label="Ortsname",
-        help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
+        help_text="eingegebene Zeichenkette muss im Ortsnamen oder in einem der Labels enthalten sein",
     )
     related_with_person = django_filters.LookupChoiceFilter(
         lookup_choices=PLACE_PERSON_RELATION_CHOICES,
@@ -71,6 +66,7 @@ class PlaceListFilter(MyBaseFilter):
             url="/apis/vocabularies/autocomplete/placetype/normal/",
         ),
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -118,6 +114,7 @@ class PlaceFilterFormHelper(FormHelper):
                     "Beziehungen",
                     "related_with_person",
                     "related_with_work",
+                    "collection",
                     css_id="admin_search",
                 ),
             )
@@ -150,4 +147,3 @@ class PlaceListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Orte"
     help_text = "Orte help text"
-    icon = "bi bi-map apis-place big-icons"

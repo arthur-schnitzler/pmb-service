@@ -37,7 +37,6 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
     excluded_cols = []
     verbose_name = "Personen"
     help_text = "Personen help text"
-    icon = "bi bi-people apis-person big-icons"
 
     def get_table_class(self):
         if self.table_class:
@@ -92,7 +91,7 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         context["app_name"] = self.model._meta.app_label
         context["verbose_name"] = self.verbose_name
         context["help_text"] = self.help_text
-        context["icon"] = self.icon
+        context["icon"] = self.model.get_icon()
         return context
 
 

@@ -175,3 +175,5 @@ media/pmb-log.csv
 media/listorg.xml
 media/listbibl.xml
 staticfiles/
+hansi.csv
+.docker

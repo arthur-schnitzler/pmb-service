@@ -8,6 +8,7 @@ from dal import autocomplete
 
 from apis_core.apis_entities.models import Work
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     PersonWorkRelation,
@@ -76,6 +77,7 @@ class WorkListFilter(MyBaseFilter):
             url="/apis/vocabularies/autocomplete/worktype/normal/",
         ),
     )
+    collection = django_filters.ModelChoiceFilter(queryset=Collection.objects.all())
 
     def related_work_filter(self, qs, name, value):
         rels = get_child_classes(
@@ -117,6 +119,7 @@ class WorkFilterFormHelper(FormHelper):
                     "name",
                     "kind",
                     "year_of_creation",
+                    "collection",
                     css_id="more",
                 ),
                 AccordionGroup(
@@ -169,4 +172,3 @@ class WorkListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Werke"
     help_text = "Werke help text"
-    icon = "bi bi-book apis-work big-icons"

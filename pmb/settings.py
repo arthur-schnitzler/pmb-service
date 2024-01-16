@@ -18,6 +18,7 @@ else:
     DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
 
 APIS_LIST_VIEWS_ALLOWED = True
 APIS_DETAIL_VIEWS_ALLOWED = True
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     "apis_override_select2js",
     "dal",
     "dal_select2",
+    "django.contrib.humanize",
     "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -105,7 +107,7 @@ DATABASES = {
         "USER": os.environ.get("POSTGRES_USER", "postgres"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
         "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTEGRES_PORT", "5432"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
