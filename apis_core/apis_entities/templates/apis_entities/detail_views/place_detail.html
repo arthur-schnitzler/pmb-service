@@ -52,6 +52,12 @@
             <th>Ortstype</th>
             <td>{% if object.kind.description %} {{ object.kind }} <small>{{ object.kind.description }}</small> {% else %} {{ object.kind }} {% endif %}</td>
         </tr>
+        {% if object.start_date_written or object.end_date_written %}
+        <tr>
+            <th>von – bis</th>
+            <td>{% if object.start_date_written %}{{ object.start_date_written }}{% endif %}{% if object.end_date_written %} – {{ object.end_date_written }}{% endif %}</td>
+        </tr>
+        {% endif %}
     </table>
     
     {% endblock info-table %}

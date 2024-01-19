@@ -320,8 +320,8 @@ def parse_date(date_string: str) -> (datetime, datetime, datetime):
 
                 date_single = date_bis
 
-    except Exception as e:
-        print("Could not parse date: '", date_string, "' due to error: ", e)
+    except Exception:  # noqa
+        pass
 
     return date_single, date_ab, date_bis
 
