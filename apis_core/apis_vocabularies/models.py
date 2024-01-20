@@ -84,21 +84,7 @@ class RelationBaseClass(VocabsBaseClass):
 
     @cached_property
     def label_reverse(self):
-        d = self
-        if len(self.name_reverse) < 1:
-            res = "(" + self.name + ")"
-        else:
-            res = self.name_reverse
-        while d.parent_class:
-            try:
-                t = RelationBaseClass.objects.get(pk=d.parent_class.pk).name_reverse
-                if len(t) < 1:
-                    t = "(" + d.parent_class.name + ")"
-            except Exception as e:
-                t = "(" + d.parent_class.name + ")"
-            res = t + " >> " + res
-            d = d.parent_class
-        return res
+        return f"{self.name_reverse}"
 
     def save(self, *args, **kwargs):
         if self.name_reverse != unicodedata.normalize("NFC", self.name_reverse):
