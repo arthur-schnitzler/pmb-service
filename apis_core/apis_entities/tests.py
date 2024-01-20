@@ -34,10 +34,6 @@ class EntitiesTestCase(TestCase):
         User.objects.create_user(**USER)
 
     def test_001a_entity_resolver(self):
-        url = reverse("entity-resolver", kwargs={"pk": 4})
-        r = client.get(url)
-        self.assertEqual(r.status_code, 404)
-
         url = reverse("entity-resolver", kwargs={"pk": 44442344})
         r = client.get(url)
         self.assertEqual(r.status_code, 404)
@@ -58,7 +54,7 @@ class EntitiesTestCase(TestCase):
         r = client.get(f"{url}?format=asdf")
         self.assertEqual(r.status_code, 404)
 
-        url = reverse("entity-resolver", kwargs={"pk": 9})
+        url = reverse("entity-resolver", kwargs={"pk": 11})
         r = client.get(f"{url}?format=tei")
         self.assertEqual(r.status_code, 404)
 
