@@ -34,4 +34,9 @@
   {% include 'apis_tei/date.xml' %}
 </note>
 {% endif %}
+{% if object.img_url %}
+<figure>
+    <graphic url="{{ object.img_url }}"/>
+</figure>
+{% endif %}
 </place>
