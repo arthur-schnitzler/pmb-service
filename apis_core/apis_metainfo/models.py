@@ -60,6 +60,8 @@ class TempEntityClass(models.Model):
     published = models.BooleanField(default=False)
     objects = models.Manager()
     objects_inheritance = InheritanceManager()
+    created = models.DateTimeField(auto_now_add=True, verbose_name="angelegt")
+    updated = models.DateTimeField(auto_now=True, verbose_name="zuletzt geändert")
 
     def __str__(self):
         if self.name != "" and hasattr(
