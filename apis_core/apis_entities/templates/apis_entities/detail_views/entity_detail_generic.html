@@ -59,6 +59,11 @@
                 </a>
                 {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a>{% endif %}
             </h3>
+            {% if object.img_url %}
+            <div class="text-center p-3">
+                <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
+              </div>
+            {% endif %}
             {% block info-table %}
             <table class="table">
                 <tr>

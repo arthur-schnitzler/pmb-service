@@ -38,4 +38,9 @@
 {% if object.references %}
   <note type="references">{{ object.references }}</note>
 {% endif %}
+{% if object.img_url %}
+<figure>
+    <graphic url="{{ object.img_url }}"/>
+</figure>
+{% endif %}
 </bibl>
