@@ -12,7 +12,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="tempentityclass",
             name="img_last_checked",
-            field=models.DateTimeField(auto_now=True, verbose_name="geprüft am"),
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="geprüft am",
+                help_text="Datum an dem die Bild-URL eingetragen wurde."
+            ),
         ),
         migrations.AddField(
             model_name="tempentityclass",
@@ -21,6 +24,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 help_text="URL zu einem Bild der Entität",
                 null=True,
+                max_length=300,
                 verbose_name="Bild URL",
             ),
         ),

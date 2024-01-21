@@ -1,5 +1,6 @@
 import unicodedata
 
+from datetime import datetime
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import Group
@@ -10,6 +11,7 @@ from django.db.models.query import QuerySet
 from django.urls import reverse
 from model_utils.managers import InheritanceManager
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
+from acdh_wikidata_pyutils import fetch_image
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
@@ -65,10 +67,16 @@ class TempEntityClass(models.Model):
     img_url = models.URLField(
         blank=True,
         null=True,
+        max_length=300,
         verbose_name="Bild URL",
-        help_text="URL zu einem Bild der Entität"
+        help_text="URL zu einem Bild der Entität",
     )
-    img_last_checked = models.DateTimeField(auto_now=True, verbose_name="geprüft am")
+    img_last_checked = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="geprüft am",
+        help_text="Datum an dem die Bild-URL eingetragen wurde.",
+    )
 
     def __str__(self):
         if self.name != "" and hasattr(
@@ -116,6 +124,11 @@ class TempEntityClass(models.Model):
         if self.name:
             self.name = unicodedata.normalize("NFC", self.name)
 
+        if self.img_url and not self.img_last_checked:
+            self.img_last_checked = datetime.now()
+        if self.img_url is None:
+            self.img_last_checked = None
+
         super(TempEntityClass, self).save(*args, **kwargs)
 
         return self
@@ -130,6 +143,16 @@ class TempEntityClass(models.Model):
                 except ObjectDoesNotExist:
                     pass
         return None
+
+    def fetch_image(self):
+        wikidata_uri = self.uri_set.filter(domain__icontains="wikidata").first()
+        if wikidata_uri and self.img_url is None and not self.img_last_checked:
+            self.img_last_checked = datetime.now()
+            img_url = fetch_image(wikidata_uri.uri)
+            if img_url:
+                self.img_url = img_url
+            self.save()
+        return self
 
     @classmethod
     def get_listview_url(self):

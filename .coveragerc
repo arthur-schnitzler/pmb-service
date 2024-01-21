@@ -2,4 +2,5 @@
 branch = True
 omit = 
     ./dumper/management/commands/*
+    ./apis_core/apis_entities/management/commands/*
     manage.py
