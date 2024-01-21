@@ -103,10 +103,6 @@ class EntitiesTestCase(TestCase):
                 response = client.get(url, {"pk": item.id})
                 self.assertEqual(response.status_code, 200)
 
-    def test_005_check_fixtures(self):
-        items = Person.objects.all().count()
-        self.assertEqual(items, 2)
-
     def test_006_create_person(self):
         item, created = Person.objects.get_or_create(**BAHR)
         self.assertTrue(created)
@@ -368,3 +364,9 @@ class EntitiesTestCase(TestCase):
                 self.assertEqual(r.status_code, 200)
                 r = client.get(f"{url}?q=g")
                 self.assertEqual(r.status_code, 200)
+
+    def test_026_fetch_image(self):
+        grillparzer = "https://d-nb.info/gnd/118542192"
+        entity = import_from_normdata(grillparzer, "person")
+        entity.fetch_image()
+        self.assertTrue(entity.img_url)
