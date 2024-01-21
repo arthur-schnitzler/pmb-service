@@ -62,6 +62,13 @@ class TempEntityClass(models.Model):
     objects_inheritance = InheritanceManager()
     created = models.DateTimeField(auto_now_add=True, verbose_name="angelegt")
     updated = models.DateTimeField(auto_now=True, verbose_name="zuletzt geändert")
+    img_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Bild URL",
+        help_text="URL zu einem Bild der Entität"
+    )
+    img_last_checked = models.DateTimeField(auto_now=True, verbose_name="geprüft am")
 
     def __str__(self):
         if self.name != "" and hasattr(
