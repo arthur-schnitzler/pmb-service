@@ -150,7 +150,8 @@ class TempEntityClass(models.Model):
             self.img_last_checked = datetime.now()
             img_url = fetch_image(wikidata_uri.uri)
             if img_url:
-                self.img_url = img_url
+                if len(img_url) < 301:
+                    self.img_url = img_url
             self.save()
         return self
 

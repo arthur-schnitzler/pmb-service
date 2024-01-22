@@ -23,7 +23,11 @@ class Command(BaseCommand):
         )
         print(f"start fetching images for {items.count()} persons without images")
         for x in tqdm(items[:200]):
-            x.fetch_image()
+            try:
+                x.fetch_image()
+            except Exception as e:
+                print(x.id, e)
+                continue
             time.sleep(0.5)
         end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
