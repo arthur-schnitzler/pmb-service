@@ -375,4 +375,4 @@ class EntitiesTestCase(TestCase):
     def test_027_img_credit(self):
         entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
         self.assertTrue(entity.img_url)
-        self.assertTrue("Wikimedia Commons", entity.img_credit)
+        self.assertIsNone(entity.img_credit)
