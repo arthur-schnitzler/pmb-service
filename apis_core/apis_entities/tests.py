@@ -370,3 +370,8 @@ class EntitiesTestCase(TestCase):
         entity = import_from_normdata(grillparzer, "person")
         entity.fetch_image()
         self.assertTrue(entity.img_url)
+        self.assertTrue("Wikimedia Commons" in entity.img_credit())
+
+    def test_027_img_credit(self):
+        entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
+        self.assertIsNone(entity.img_credit())

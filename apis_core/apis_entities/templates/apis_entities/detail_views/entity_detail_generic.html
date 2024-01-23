@@ -62,7 +62,12 @@
             {% if object.img_url %}
             <div class="text-center p-3">
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
+                {% if object.img_credit %}
+                <figcaption class="figure-caption"><a href="{{ object.img_url }}">{{ object.img_credit }}</a></figcaption>
+                {% endif %}
               </div>
+              
+
             {% endif %}
             {% block info-table %}
             <table class="table">

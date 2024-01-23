@@ -155,6 +155,13 @@ class TempEntityClass(models.Model):
             self.save()
         return self
 
+    def img_credit(self):
+        credit = None
+        if self.img_url is not None:
+            if "commons.wikimedia.org/w/index" in self.img_url:
+                credit = "Wikimedia Commons"
+        return credit
+
     @classmethod
     def get_listview_url(self):
         entity = self.__name__.lower()
