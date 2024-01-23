@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 from apis_core.apis_entities.models import Person
 from dumper.utils import write_report
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 
 class Command(BaseCommand):
