@@ -53,26 +53,31 @@
    
     <div class="row">
         <div class="col-md-5">
-            <h4 class="text-left">
+            <h4 class="text-left" style="padding-left: 20px;">
                 <a href="{{ object.get_api_url }}">
                     <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
                 </a>
                 {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a>{% endif %}
             </h3>
             {% if object.img_url %}
-            <div class="text-center p-3">
+            <table class="table">
+                <tr>
+                    <th class="left-width"/>
+                    <td>
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
                 {% if object.img_credit %}
-                <figcaption class="figure-caption"><a href="{{ object.img_credit }}">{{ object.img_credit_label }}</a></figcaption>
+                <figcaption class="figure-caption"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit_label }}</a></figcaption>
                 {% endif %}
-              </div>
+                </td>
+                </tr>
+            </table>
               
 
             {% endif %}
             {% block info-table %}
             <table class="table">
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Titel
                     </th>
                     <td>
@@ -81,7 +86,7 @@
                 </tr>
                 {% if no_merge_labels %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Labels
                     </th>
                     <td>
@@ -97,7 +102,7 @@
                 </tr>
                 {% endif %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         ID
                     </th>
                     <td>
@@ -105,8 +110,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        Type
+                    <th class="left-width">
+                        Typ
                     </th>
                     <td>
                         {{ object.kind}}
@@ -114,7 +119,7 @@
                 </tr>
                 {% if object.start_date or object.end_date %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Datum
                     </th>
                     <td>
@@ -129,7 +134,7 @@
                 {% endif %}
                 {% if object.lat %}
                     <tr>
-                        <th>
+                        <th class="left-width">
                             Länge/Breite
                         </th>
                         <td>
@@ -145,7 +150,7 @@
                         <th class="left-width">
                             URI
                         </th>
-                        <td>
+                        <td style="padding-left: 20px;">
                             {% for x in object.uri_set.all %}
                                 <a href="{{ x }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
                                     <i class="bi bi-pencil-square"></i>
@@ -157,10 +162,10 @@
                     </tr>
                     {% if object.collection.all %}
                     <tr>
-                        <th>
+                        <th class="left-width">
                             Sammlungen
                         </th>
-                        <td>
+                        <td style="padding-left: 20px;">
                             {% for x in object.collection.all %}
                                 {{ x }}<br />
                             {% endfor %}
