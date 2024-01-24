@@ -53,7 +53,7 @@
    
     <div class="row">
         <div class="col-md-5">
-            <h3 class="text-center">
+            <h4 class="text-left">
                 <a href="{{ object.get_api_url }}">
                     <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
                 </a>
@@ -115,7 +115,7 @@
                 {% if object.start_date or object.end_date %}
                 <tr>
                     <th>
-                        Date
+                        Datum
                     </th>
                     <td>
                         {% if object.start_date_written %}
@@ -130,7 +130,7 @@
                 {% if object.lat %}
                     <tr>
                         <th>
-                            Lat/Lng
+                            Länge/Breite
                         </th>
                         <td>
                             {{ object.lat }} / {{ object.lng }}
@@ -142,8 +142,8 @@
             {% block info-metadata %}
                 <table class="table">
                     <tr>
-                        <th>
-                            Uri(s)
+                        <th class="left-width">
+                            URI
                         </th>
                         <td>
                             {% for x in object.uri_set.all %}
@@ -158,7 +158,7 @@
                     {% if object.collection.all %}
                     <tr>
                         <th>
-                            Collection(s)
+                            Sammlungen
                         </th>
                         <td>
                             {% for x in object.collection.all %}
@@ -172,7 +172,7 @@
                     {% if object.notes %}
                         <tr>
                             <th>
-                                Notes
+                                Anmerkungen
                             </th>
                             <td>
                                 {{ object.notes }}
@@ -182,7 +182,7 @@
                     {% if object.references %}
                         <tr>
                             <th>
-                                References
+                                Belege
                             </th>
                             <td>
                                 {{ object.references }}
@@ -195,13 +195,13 @@
             {% endblock left-pane-additional %}
         </div>
         <div class="col-md-7">
-            <h3 class="text-center">Relations</h3>
+            <h3 class="text-center">Beziehungen</h3>
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}
                         <h4 > {{ obj.0 }}</h4>
                     
-                        <div id="tab_{{ obj.2 }}" >
+                        <div id="tab_{{ obj.2 }}" style="margin-bottom: 50px;">
                             {% render_table obj.1 %}
                         </div>
                     {% endif %}

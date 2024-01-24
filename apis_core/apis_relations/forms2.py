@@ -110,7 +110,7 @@ class GenericRelationForm(forms.ModelForm):
             table_html = table(data=objects, prefix=prefix)
         else:
             tab_query = {"related_" + entity_type.lower(): site_instance}
-            ttab = self.relation_form.objects.filter(**tab_query)
+            ttab = self.relation_form.objects.filter(**ttoquery)
             table_html = table(data=ttab, prefix=prefix)
         return table_html
 
