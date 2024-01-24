@@ -290,12 +290,8 @@ class EntitiesTestCase(TestCase):
             r = client.get(value)
             self.assertTrue(r.status_code, 200)
             if key.startswith("relation"):
-                try:
-                    r = client.get(f"{value}?format=json%2Bnet")
-                    self.assertTrue(r.status_code, 200)
-                except Exception as e:
-                    print(value, e)
-                    continue
+                r = client.get(f"{value}?format=json%2Bnet")
+                self.assertTrue(r.status_code, 200)
 
     def test_021_api_detail_view(self):
         item = Person.objects.last()
@@ -370,8 +366,10 @@ class EntitiesTestCase(TestCase):
         entity = import_from_normdata(grillparzer, "person")
         entity.fetch_image()
         self.assertTrue(entity.img_url)
-        self.assertTrue("Wikimedia Commons" in entity.img_credit())
+        self.assertTrue("Wikimedia Commons" in entity.img_credit_label())
+        self.assertTrue("File:" in entity.img_credit())
 
     def test_027_img_credit(self):
         entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
         self.assertIsNone(entity.img_credit())
+        self.assertIsNone(entity.img_credit_label())

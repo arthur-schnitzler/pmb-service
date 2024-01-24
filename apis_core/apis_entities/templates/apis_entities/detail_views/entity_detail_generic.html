@@ -145,10 +145,9 @@
                         </th>
                         <td style="padding-left: 20px;">
                             {% for x in object.collection.all %}
-                                <li>
-                                    {{ x }}
-                                </li>
+                                {{ x }}<br />
                             {% endfor %}
+                            
                         </td>
                     </tr>
                     {% endif %}
