@@ -162,10 +162,9 @@
                         </th>
                         <td>
                             {% for x in object.collection.all %}
-                                <li>
-                                    {{ x }}
-                                </li>
+                                {{ x }}<br />
                             {% endfor %}
+                            
                         </td>
                     </tr>
                     {% endif %}

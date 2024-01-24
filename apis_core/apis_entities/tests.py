@@ -290,12 +290,8 @@ class EntitiesTestCase(TestCase):
             r = client.get(value)
             self.assertTrue(r.status_code, 200)
             if key.startswith("relation"):
-                try:
-                    r = client.get(f"{value}?format=json%2Bnet")
-                    self.assertTrue(r.status_code, 200)
-                except Exception as e:
-                    print(value, e)
-                    continue
+                r = client.get(f"{value}?format=json%2Bnet")
+                self.assertTrue(r.status_code, 200)
 
     def test_021_api_detail_view(self):
         item = Person.objects.last()
