@@ -8,15 +8,7 @@
 <div class="container-fluid pt-4">
     
     <div class="row">
-        <div class="col-md-2">
-            {% if object.get_prev_url %}
-                <h2>
-                    <a href="{{ object.get_prev_url }}" style="float:right">
-                        <i class="bi bi-chevron-left" title="vorige Entität"></i>
-                    </a>
-                </h2>
-            {% endif %}
-        </div>
+        
         <div class="col-md-8">
             <h2 class="display-4 text-center">
                 <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
@@ -40,20 +32,11 @@
                 </h2>
             {% endif %}
         </div>
-        <div class="col-md-2">
-            {% if object.get_next_url %}
-                <h2>
-                    <a href="{{ object.get_next_url }}" style="float:left">
-                        <i class="bi bi-chevron-right" title="nächste Entität"></i>
-                    </a>
-                </h2>
-            {% endif %}
-        </div>
     </div>
    
     <div class="row">
         <div class="col-md-5">
-            <h4 class="text-left">
+            <h4 class="text-left" style="padding-left: 20px;">
                 <a href="{{ object.get_api_url }}">
                     <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
                 </a>
@@ -63,7 +46,7 @@
             <div class="text-center p-3">
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
                 {% if object.img_credit %}
-                <figcaption class="figure-caption"><a href="{{ object.img_url }}">{{ object.img_credit }}</a></figcaption>
+                <figcaption class="figure-caption"><a href="{{ object.img_url }}" style="color: dimgrey;">{{ object.img_credit }}</a></figcaption>
                 {% endif %}
               </div>
               
@@ -105,8 +88,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        Type
+                    <th class="left-width">
+                        Typ
                     </th>
                     <td>
                         {{ object.kind}}
@@ -129,7 +112,7 @@
                 {% endif %}
                 {% if object.lat %}
                     <tr>
-                        <th>
+                        <th class="left-width">
                             Länge/Breite
                         </th>
                         <td>
@@ -145,7 +128,7 @@
                         <th class="left-width">
                             URI
                         </th>
-                        <td>
+                        <td style="padding-left: 20px;">
                             {% for x in object.uri_set.all %}
                                 <a href="{{ x }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
                                     <i class="bi bi-pencil-square"></i>
@@ -157,10 +140,10 @@
                     </tr>
                     {% if object.collection.all %}
                     <tr>
-                        <th>
+                        <th class="left-width">
                             Sammlungen
                         </th>
-                        <td>
+                        <td style="padding-left: 20px;">
                             {% for x in object.collection.all %}
                                 <li>
                                     {{ x }}

@@ -159,7 +159,7 @@ class TempEntityClass(models.Model):
         credit = None
         if self.img_url is not None:
             if "commons.wikimedia.org/w/index" in self.img_url:
-                credit = "Wikimedia Commons"
+                credit = "Wikimedia"
         return credit
 
     @classmethod
