@@ -8,17 +8,16 @@
 <div class="container-fluid pt-4">
     
     <div class="row">
-        
+        <div class="col-md-2">
+            {% if object.get_prev_url %}
+                <h2>
+                    <a href="{{ object.get_prev_url }}" style="float:right">
+                        <i class="bi bi-chevron-left" title="vorige Entität"></i>
+                    </a>
+                </h2>
+            {% endif %}
+        </div>
         <div class="col-md-8">
-            <div class="col-md-2">
-                {% if object.get_prev_url %}
-                    <h2>
-                        <a href="{{ object.get_prev_url }}" style="float:right">
-                            <i class="bi bi-chevron-left" title="vorige Entität"></i>
-                        </a>
-                    </h2>
-                {% endif %}
-            </div>
             <h2 class="display-4 text-center">
                 <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
                     <i class="{{ object.get_icon }}"></i>
@@ -67,7 +66,7 @@
                     <td>
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
                 {% if object.img_credit %}
-                <figcaption class="figure-caption"><a href="{{ object.img_url }}" style="color: dimgrey;">{{ object.img_credit }}</a></figcaption>
+                <figcaption class="figure-caption"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit_label }}</a></figcaption>
                 {% endif %}
                 </td>
                 </tr>
