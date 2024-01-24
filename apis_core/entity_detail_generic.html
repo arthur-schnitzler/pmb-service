@@ -64,7 +64,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3>General Info</h3>
+                            <h3>Allgemein</h3>
                         </div>
                         <div class="card-body">
                             {% block info-table %}
@@ -88,7 +88,7 @@
                                 {% if object.start_date or object.end_date %}
                                 <tr>
                                     <th>
-                                        Date
+                                        Datum
                                     </th>
                                     <td>
                                         {% if object.start_date %}
@@ -143,7 +143,7 @@
             {% if object.text.all %}
                 <div class="card-body">
                     <legend>
-                        Texts
+                        Texte
                     </legend>
                     {% for x in object.text.all %}
                         <div class="card card-default">
@@ -160,7 +160,7 @@
                 </div>
             {% else %}
                 <div class="card-body">
-                    <legend>No text provided for this {{entity}}</legend>
+                    <legend>Kein Text verfügbar für {{entity}}</legend>
                 </div>
             {% endif %}
         </div>

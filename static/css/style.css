@@ -100,3 +100,7 @@ main {
     margin-right: .75rem;
     margin-left: .75rem;
 }
+
+.left-width {
+    width: 100px;
+}
