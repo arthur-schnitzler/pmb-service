@@ -63,7 +63,7 @@
             <div class="text-center p-3">
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
                 {% if object.img_credit %}
-                <figcaption class="figure-caption"><a href="{{ object.img_url }}">{{ object.img_credit }}</a></figcaption>
+                <figcaption class="figure-caption"><a href="{{ object.img_credit }}">{{ object.img_credit_label }}</a></figcaption>
                 {% endif %}
               </div>
               
