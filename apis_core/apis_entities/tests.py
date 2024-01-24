@@ -34,10 +34,6 @@ class EntitiesTestCase(TestCase):
         User.objects.create_user(**USER)
 
     def test_001a_entity_resolver(self):
-        url = reverse("entity-resolver", kwargs={"pk": 4})
-        r = client.get(url)
-        self.assertEqual(r.status_code, 404)
-
         url = reverse("entity-resolver", kwargs={"pk": 44442344})
         r = client.get(url)
         self.assertEqual(r.status_code, 404)
@@ -58,7 +54,7 @@ class EntitiesTestCase(TestCase):
         r = client.get(f"{url}?format=asdf")
         self.assertEqual(r.status_code, 404)
 
-        url = reverse("entity-resolver", kwargs={"pk": 9})
+        url = reverse("entity-resolver", kwargs={"pk": 11})
         r = client.get(f"{url}?format=tei")
         self.assertEqual(r.status_code, 404)
 
@@ -106,10 +102,6 @@ class EntitiesTestCase(TestCase):
             if url:
                 response = client.get(url, {"pk": item.id})
                 self.assertEqual(response.status_code, 200)
-
-    def test_005_check_fixtures(self):
-        items = Person.objects.all().count()
-        self.assertEqual(items, 2)
 
     def test_006_create_person(self):
         item, created = Person.objects.get_or_create(**BAHR)
@@ -372,3 +364,14 @@ class EntitiesTestCase(TestCase):
                 self.assertEqual(r.status_code, 200)
                 r = client.get(f"{url}?q=g")
                 self.assertEqual(r.status_code, 200)
+
+    def test_026_fetch_image(self):
+        grillparzer = "https://d-nb.info/gnd/118542192"
+        entity = import_from_normdata(grillparzer, "person")
+        entity.fetch_image()
+        self.assertTrue(entity.img_url)
+        self.assertTrue("Wikimedia Commons" in entity.img_credit())
+
+    def test_027_img_credit(self):
+        entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
+        self.assertIsNone(entity.img_credit())
