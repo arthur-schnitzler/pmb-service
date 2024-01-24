@@ -3,7 +3,7 @@
     {% block info-table %}
     <table class="table">
         <tr>
-            <th>
+            <th class="left-width">
                 Name
             </th>
             <td>
@@ -13,7 +13,7 @@
         {% if no_merge_labels %}
         <tr>
             <th>
-                Alternative Namen
+                anderer Name
             </th>
             <td>
                 {% for x in no_merge_labels %}
@@ -44,7 +44,7 @@
         {% if object.start_date or object.end_date %}
         <tr>
             <th>
-                Lifespan
+                Lebensspanne
             </th>
             <td>
                 {% if object.start_date %}
@@ -59,7 +59,7 @@
         {% if object.profession.all %}
         <tr>
             <th>
-                Professions
+                Berufe
             </th>
             <td>
               {% for prof in object.profession.all %}
