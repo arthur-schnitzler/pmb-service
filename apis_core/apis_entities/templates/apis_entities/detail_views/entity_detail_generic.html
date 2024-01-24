@@ -10,6 +10,15 @@
     <div class="row">
         
         <div class="col-md-8">
+            <div class="col-md-2">
+                {% if object.get_prev_url %}
+                    <h2>
+                        <a href="{{ object.get_prev_url }}" style="float:right">
+                            <i class="bi bi-chevron-left" title="vorige Entität"></i>
+                        </a>
+                    </h2>
+                {% endif %}
+            </div>
             <h2 class="display-4 text-center">
                 <a href="{{ object.get_listview_url }}" title="zurück zur Übersicht">
                     <i class="{{ object.get_icon }}"></i>
@@ -32,6 +41,15 @@
                 </h2>
             {% endif %}
         </div>
+        <div class="col-md-2">
+            {% if object.get_next_url %}
+                <h2>
+                    <a href="{{ object.get_next_url }}" style="float:left">
+                        <i class="bi bi-chevron-right" title="nächste Entität"></i>
+                    </a>
+                </h2>
+            {% endif %}
+        </div>
     </div>
    
     <div class="row">
@@ -43,19 +61,24 @@
                 {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a>{% endif %}
             </h3>
             {% if object.img_url %}
-            <div class="text-center p-3">
+            <table class="table">
+                <tr>
+                    <th class="left-width"/>
+                    <td>
                 <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
                 {% if object.img_credit %}
                 <figcaption class="figure-caption"><a href="{{ object.img_url }}" style="color: dimgrey;">{{ object.img_credit }}</a></figcaption>
                 {% endif %}
-              </div>
+                </td>
+                </tr>
+            </table>
               
 
             {% endif %}
             {% block info-table %}
             <table class="table">
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Titel
                     </th>
                     <td>
@@ -64,7 +87,7 @@
                 </tr>
                 {% if no_merge_labels %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Labels
                     </th>
                     <td>
@@ -80,7 +103,7 @@
                 </tr>
                 {% endif %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         ID
                     </th>
                     <td>
@@ -97,7 +120,7 @@
                 </tr>
                 {% if object.start_date or object.end_date %}
                 <tr>
-                    <th>
+                    <th class="left-width">
                         Datum
                     </th>
                     <td>
