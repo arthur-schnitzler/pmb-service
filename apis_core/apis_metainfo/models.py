@@ -276,7 +276,7 @@ class TempEntityClass(models.Model):
         if not isinstance(entities, list) and not isinstance(entities, QuerySet):
             entities = [entities]
             entities = [
-                self_model_class.objects.get(pk=ent) if type(ent) == int else ent
+                self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
                 for ent in entities
             ]
         rels = ContentType.objects.filter(
@@ -304,7 +304,7 @@ class TempEntityClass(models.Model):
             for u in Uri.objects.filter(entity=ent):
                 u.entity = self
                 u.save()
-            for l in Label.objects.filter(temp_entity=ent):
+            for l in Label.objects.filter(temp_entity=ent):  # noqa: E741
                 l.temp_entity = self
                 l.save()
             for r in rels.filter(model__icontains=e_b):
