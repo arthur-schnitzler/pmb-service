@@ -158,9 +158,11 @@ class TempEntityClass(models.Model):
     def img_credit(self):
         credit = None
         if self.img_url is not None:
-            img_name = self.img_url.split("/")[-1]
             if "commons.wikimedia.org/w/index" in self.img_url:
+                img_name = self.img_url.split("/")[-1]
                 credit = f"https://commons.wikimedia.org/wiki/File:{img_name}"
+            elif "AKON" in self.img_url:
+                credit = self.img_url
         return credit
 
     def img_credit_label(self):
@@ -168,6 +170,8 @@ class TempEntityClass(models.Model):
         if self.img_url is not None:
             if "commons.wikimedia.org/w/index" in self.img_url:
                 return "Wikimedia Commons"
+            elif "AKON" in self.img_url:
+                credit = "AKON"
         return credit
 
     @classmethod
