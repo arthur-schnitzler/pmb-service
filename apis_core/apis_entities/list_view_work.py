@@ -135,6 +135,10 @@ class WorkFilterFormHelper(FormHelper):
 class WorkTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     name = tables.columns.Column(verbose_name="Titel")
+    start_date_written = tables.TemplateColumn(
+        "<abbr title='{{ record.start_date_written }}'>{{ record.start_date|date:'Y' }}</a>",
+        verbose_name="Erscheinungsjahr",
+    )
     label_set = tables.ManyToManyColumn(verbose_name="Labels")
     personwork_set = tables.ManyToManyColumn(
         verbose_name="AutorIn",
@@ -163,7 +167,7 @@ class WorkListView(GenericListView):
     init_columns = [
         "id",
         "name",
-        "start_date",
+        "start_date_written",
         "personwork_set",
         "kind",
     ]

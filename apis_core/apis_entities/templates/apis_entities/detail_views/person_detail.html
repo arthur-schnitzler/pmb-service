@@ -1,9 +1,8 @@
 {% extends "apis_entities/detail_views/entity_detail_generic.html" %}
 
     {% block info-table %}
-    <table class="table">
         <tr>
-            <th class="left-width">
+            <th class="w-25">
                 Name
             </th>
             <td>
@@ -12,7 +11,7 @@
         </tr>
         {% if no_merge_labels %}
         <tr>
-            <th class="left-width">
+            <th class="w-25">
                 anderer Name
             </th>
             <td>
@@ -26,7 +25,7 @@
         </tr>
         {% endif %}
         <tr>
-            <th class="left-width">
+            <th class="w-25">
                 ID
             </th>
             <td>
@@ -34,7 +33,7 @@
             </td>
         </tr>
         <tr>
-          <th class="left-width">
+          <th class="w-25">
             Gender
           </th>
           <td>
@@ -43,7 +42,7 @@
         </tr>
         {% if object.start_date or object.end_date %}
         <tr>
-            <th class="left-width">
+            <th class="w-25">
                 Zeit
             </th>
             <td>
@@ -58,7 +57,7 @@
         {% endif %}
         {% if object.profession.all %}
         <tr>
-            <th class="left-width">
+            <th class="w-25">
                 Berufe
             </th>
             <td>
@@ -68,5 +67,4 @@
             </td>
         </tr>
         {% endif %}
-    </table>
     {% endblock info-table %}

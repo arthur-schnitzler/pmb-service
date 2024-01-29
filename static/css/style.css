@@ -18,9 +18,9 @@ a {
     text-decoration: unset;
 }
 
-a:hover { 
+a:hover {
     color: var(--pmb-hover)
-} 
+}
 
 main {
     padding-top: 5.50em;
@@ -101,6 +101,6 @@ main {
     margin-left: .75rem;
 }
 
-.left-width {
-    width: 100px;
+.table-borderless {
+    border: none;
 }
