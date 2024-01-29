@@ -15,14 +15,11 @@ from django.utils.translation import gettext_lazy as _
 from apis_core.apis_entities.fields import ListSelect2
 from apis_core.apis_entities.models import AbstractEntity
 
-# from dal.autocomplete import ListSelect2
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions import DateParser
 
 from .tables import get_generic_relations_table
-
-# from dal.autocomplete import ListSelect2
 
 
 def validate_target_autocomplete(value):
@@ -130,7 +127,7 @@ class GenericRelationForm(forms.ModelForm):
         """
         attrs = {
             "data-placeholder": "Type to get suggestions",
-            "data-minimum-input-length": getattr(settings, "APIS_MIN_CHAR", 3),
+            "data-minimum-input-length": 0,
             "data-html": True,
             "style": "width: 100%",
         }
@@ -262,7 +259,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
                 widget=ListSelect2(
-                    # url='/vocabularies/autocomplete/{}{}relation/reverse'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
                     url=reverse(
                         "apis:apis_vocabularies:generic_vocabularies_autocomplete",
                         args=[
@@ -282,7 +278,6 @@ class GenericRelationForm(forms.ModelForm):
             self.fields["target"] = autocomplete.Select2ListCreateChoiceField(
                 label=lst_src_target[0],
                 widget=ListSelect2(
-                    # url='/entities/autocomplete/{}'.format(lst_src_target[0].lower()),
                     url=reverse(
                         "apis:apis_entities:generic_entities_autocomplete",
                         args=[lst_src_target[0].lower()],
