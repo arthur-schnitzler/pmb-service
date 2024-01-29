@@ -5,7 +5,7 @@
 {% block content %}
 {% include "partials/entity_styles.html" %}
 
-<div class="container-fluid pt-4">
+<div class="container-fluid pt-4 ps-4 pe-4">
     
     <div class="row">
         <div class="col-md-2">
@@ -51,33 +51,21 @@
         </div>
     </div>
    
-    <div class="row">
-        <div class="col-md-5">
-            <h4 class="text-left" style="padding-left: 20px;">
-                <a href="{{ object.get_api_url }}">
-                    <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
-                </a>
-                {% if entity_type != 'event' %}| <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a>{% endif %}
-            </h3>
-            {% if object.img_url %}
-            <table class="table">
+    <div class="row p-5">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover ps-3 ">
                 <tr>
-                    <th class="left-width"/>
+                    <th class="w-25">Abbildung</th>
                     <td>
-                <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
-                {% if object.img_credit %}
-                <figcaption class="figure-caption"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit_label }}</a></figcaption>
-                {% endif %}
-                </td>
+                        <img src="{{ object.img_url }}" class="rounded" alt="Bild von {{ object }}" style="height: 200px">
+                        {% if object.img_credit %}
+                        <figcaption class="figure-caption"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit_label }}</a></figcaption>
+                        {% endif %}
+                    </td>
                 </tr>
-            </table>
-              
-
-            {% endif %}
             {% block info-table %}
-            <table class="table">
                 <tr>
-                    <th class="left-width">
+                    <th class="w-25">
                         Titel
                     </th>
                     <td>
@@ -86,23 +74,18 @@
                 </tr>
                 {% if no_merge_labels %}
                 <tr>
-                    <th class="left-width">
+                    <th class="w-25">
                         Labels
                     </th>
                     <td>
-                        <ul >
                         {% for x in no_merge_labels %}
-                            <li class="list-unstyled">
-                                <small>{{ x.label_type }}: </small>{{ x.label }}
-                            </li>
+                        <small>{{ x.label_type }}: </small>{{ x.label }}<br >
                         {% endfor %}
-                        </ul>
-                        
                     </td>
                 </tr>
                 {% endif %}
                 <tr>
-                    <th class="left-width">
+                    <th class="w-25">
                         ID
                     </th>
                     <td>
@@ -110,7 +93,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="left-width">
+                    <th class="w-25">
                         Typ
                     </th>
                     <td>
@@ -119,7 +102,7 @@
                 </tr>
                 {% if object.start_date or object.end_date %}
                 <tr>
-                    <th class="left-width">
+                    <th class="w-25">
                         Datum
                     </th>
                     <td>
@@ -132,40 +115,40 @@
                     </td>
                 </tr>
                 {% endif %}
-                {% if object.lat %}
-                    <tr>
-                        <th class="left-width">
-                            Länge/Breite
-                        </th>
-                        <td>
-                            {{ object.lat }} / {{ object.lng }}
-                        </td>
-                    </tr>
-                {% endif %}
-            </table>
             {% endblock info-table %}
             {% block info-metadata %}
-                <table class="table">
-                    <tr>
-                        <th class="left-width">
-                            URI
-                        </th>
-                        <td style="padding-left: 20px;">
-                            {% for x in object.uri_set.all %}
-                                <a href="{{ x }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a> | <a href="{{ x.get_delete_url }}" title="URI löschen">
-                                    <i class="bi bi-trash3"></i>
-                                </a>{% endif %}<br />
-                            {% endfor %}
-                        </td>
-                    </tr>
+                <tr>
+                    <th class="w-25">JSON-EXPORT</th>
+                    <td><a href="{{ object.get_api_url }}">
+                        <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
+                    </a></td>
+                </tr>
+                {% if entity_type != 'event' %}
+                <tr>
+                    <th class="w-25">TEI/XML-EXPORT</th>
+                    <td><a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität"><i class="bi bi-filetype-xml"></i></a></td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th class="w-25">
+                        URI
+                    </th>
+                    <td>
+                        {% for x in object.uri_set.all %}
+                            <a href="{{ x }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
+                                <i class="bi bi-pencil-square"></i>
+                            </a> | <a href="{{ x.get_delete_url }}" title="URI löschen">
+                                <i class="bi bi-trash3"></i>
+                            </a>{% endif %}<br />
+                        {% endfor %}
+                    </td>
+                </tr>
                     {% if object.collection.all %}
                     <tr>
                         <th class="left-width">
                             Sammlungen
                         </th>
-                        <td style="padding-left: 20px;">
+                        <td>
                             {% for x in object.collection.all %}
                                 {{ x }}<br />
                             {% endfor %}
@@ -175,7 +158,7 @@
                     {% endif %}
                     {% if object.notes %}
                         <tr>
-                            <th>
+                            <th class="w-25">
                                 Anmerkungen
                             </th>
                             <td>
@@ -185,7 +168,7 @@
                     {% endif %}
                     {% if object.references %}
                         <tr>
-                            <th>
+                            <th class="w-25">
                                 Belege
                             </th>
                             <td>
@@ -198,6 +181,7 @@
             {% block left-pane-additional %}
             {% endblock left-pane-additional %}
         </div>
+        <div class="col-md-1"></div>
         <div class="col-md-7">
             <h3 class="text-center">Beziehungen</h3>
             {% block relations %}
@@ -205,7 +189,7 @@
                     {% if obj.1.data|length > 0 %}
                         <h4 > {{ obj.0 }}</h4>
                     
-                        <div id="tab_{{ obj.2 }}" style="margin-bottom: 50px;">
+                        <div id="tab_{{ obj.2 }}" class="mb-5">
                             {% render_table obj.1 %}
                         </div>
                     {% endif %}

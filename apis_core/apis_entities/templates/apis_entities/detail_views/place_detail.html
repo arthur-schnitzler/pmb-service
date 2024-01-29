@@ -16,10 +16,10 @@
             marker.bindPopup("{{ object.name }}").openPopup();
         </script>
     {% endif %}
-    <table class="table">
+
         {% if no_merge_labels %}
         <tr>
-            <th>
+            <th class="w-25">
                 Alternative Namen
             </th>
             <td>
@@ -33,7 +33,7 @@
         </tr>
         {% endif %}
         <tr>
-            <th>
+            <th class="w-25">
                 ID
             </th>
             <td>
@@ -41,7 +41,7 @@
             </td>
         </tr>
         <tr>
-            <th>
+            <th class="w-25">
                 Koordinaten
             </th>
             <td>
@@ -49,15 +49,14 @@
             </td>
         </tr>
         <tr>
-            <th>Ortstype</th>
+            <th class="w-25">Ortstype</th>
             <td>{% if object.kind.description %} {{ object.kind }} <small>{{ object.kind.description }}</small> {% else %} {{ object.kind }} {% endif %}</td>
         </tr>
         {% if object.start_date_written or object.end_date_written %}
         <tr>
-            <th>von – bis</th>
+            <th class="w-25">von – bis</th>
             <td>{% if object.start_date_written %}{{ object.start_date_written }}{% endif %}{% if object.end_date_written %} – {{ object.end_date_written }}{% endif %}</td>
         </tr>
         {% endif %}
-    </table>
     
     {% endblock info-table %}

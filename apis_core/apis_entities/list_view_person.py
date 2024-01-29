@@ -182,6 +182,14 @@ class PersonFilterFormHelper(FormHelper):
 
 class PersonTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
+    start_date_written = tables.TemplateColumn(
+        "<abbr title='{{ record.start_date_written }}'>{{ record.start_date|date:'Y' }}</a>",
+        verbose_name="Geburtsjahr",
+    )
+    end_date_written = tables.TemplateColumn(
+        "<abbr title='{{ record.end_date_written }}'>{{ record.end_date|date:'Y' }}</a>",
+        verbose_name="Todesjahr",
+    )
     personplace_set = tables.ManyToManyColumn(
         verbose_name="Geburtsort",
         transform=lambda x: x.related_place,
@@ -209,8 +217,8 @@ class PersonListView(GenericListView):
         "name",
         "first_name",
         "uris",
-        "start_date",
-        "end_date",
+        "start_date_written",
+        "end_date_written",
         "personplace_set",
     ]
     exclude_columns = excluded_cols
