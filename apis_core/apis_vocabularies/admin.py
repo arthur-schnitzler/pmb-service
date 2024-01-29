@@ -33,7 +33,7 @@ class BaseAdminVocabularies(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         attrs = {
             "data-placeholder": "Type to get suggestions",
-            "data-minimum-input-length": getattr(settings, "APIS_MIN_CHAR", 3),
+            "data-minimum-input-length": 0,
             "data-html": True,
         }
         c_name = db_field.model.__name__
