@@ -120,14 +120,14 @@
             {% endblock info-table %}
             {% block info-metadata %}
                 <tr>
-                    <th class="w-25">EXPORT</th>
+                    <th class="w-25">Export</th>
                     <td>{% if entity_type != 'event' %}
                         <a href="{{ object.get_tei_url }}" title="zur TEI-Ansicht der Entität">
-                            <i class="bi bi-filetype-xml"></i>
+                            <i class="bi bi-filetype-xml"></i> TEI
                         </a>
                         |{% endif %}
                         <a href="{{ object.get_api_url }}">
-                            <i class="bi bi-database" title="zur API-Ansicht der Entität"></i>
+                            <i class="bi bi-database" title="zur API-Ansicht der Entität"></i> JSON
                         </a> 
                     </td>
                 </tr>
