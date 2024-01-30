@@ -158,9 +158,11 @@ class TempEntityClass(models.Model):
     def img_credit(self):
         credit = None
         if self.img_url is not None:
-            img_name = self.img_url.split("/")[-1]
             if "commons.wikimedia.org/w/index" in self.img_url:
+                img_name = self.img_url.split("/")[-1]
                 credit = f"https://commons.wikimedia.org/wiki/File:{img_name}"
+            elif "AKON" in self.img_url:
+                credit = self.img_url
         return credit
 
     def img_credit_label(self):
@@ -168,6 +170,8 @@ class TempEntityClass(models.Model):
         if self.img_url is not None:
             if "commons.wikimedia.org/w/index" in self.img_url:
                 return "Wikimedia Commons"
+            elif "AKON" in self.img_url:
+                credit = "AKON"
         return credit
 
     @classmethod
@@ -276,7 +280,7 @@ class TempEntityClass(models.Model):
         if not isinstance(entities, list) and not isinstance(entities, QuerySet):
             entities = [entities]
             entities = [
-                self_model_class.objects.get(pk=ent) if type(ent) == int else ent
+                self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
                 for ent in entities
             ]
         rels = ContentType.objects.filter(
@@ -304,7 +308,7 @@ class TempEntityClass(models.Model):
             for u in Uri.objects.filter(entity=ent):
                 u.entity = self
                 u.save()
-            for l in Label.objects.filter(temp_entity=ent):
+            for l in Label.objects.filter(temp_entity=ent):  # noqa: E741
                 l.temp_entity = self
                 l.save()
             for r in rels.filter(model__icontains=e_b):

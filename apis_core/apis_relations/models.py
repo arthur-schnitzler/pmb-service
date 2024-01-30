@@ -22,6 +22,7 @@ class AbstractRelation(TempEntityClass):
     class Meta:
         abstract = True
         default_manager_name = "objects"
+        ordering = ["start_date", "id"]
 
     def save(self, *args, **kwargs):
         if (
