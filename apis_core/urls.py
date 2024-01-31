@@ -5,7 +5,7 @@ from django.urls import path
 from rest_framework import routers
 
 from apis_core.api_routers import views
-from apis_core.apis_metainfo.views import beacon
+from apis_core.apis_metainfo.views import beacon, wikidata_beacon
 from apis_core.apis_vocabularies.api_views import UserViewSet
 from apis_core.helper_functions.ContentType import GetContentTypes
 from apis_core.apis_entities.autocomplete3 import GenericEntitiesAutocomplete
@@ -43,7 +43,8 @@ else:
             GenericEntitiesAutocomplete.as_view(),
             name="network-ac",
         ),
-        path("beacon/", beacon, name="beacon"),
+        path("gnd-beacon/", beacon, name="beacon"),
+        path("wikidata-beacon/", wikidata_beacon, name="wikidata_beacon"),
         path("labels/", include("apis_core.apis_labels.urls", namespace="apis_labels")),
         path("tei/", include("apis_core.apis_tei.tei_urls", namespace="apis_tei")),
         path(

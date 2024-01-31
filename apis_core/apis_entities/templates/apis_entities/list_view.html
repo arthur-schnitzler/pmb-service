@@ -46,9 +46,11 @@
                 {% block pagination.allpages %}
                 {% include 'browsing/partials/pagination.html' %}
                 {% endblock pagination.allpages %}
+                {% if download %}
                 <div class="float-end">
                     {% include "browsing/partials/download_menu.html" %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

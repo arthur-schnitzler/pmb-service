@@ -27,6 +27,18 @@ def beacon(request):
     return HttpResponse(result, content_type="text/plain")
 
 
+def wikidata_beacon(request):
+    domain = request.build_absolute_uri("/")
+    result = f"#FORMAT: BEACON\n#NAME: {PROJECT_NAME}\n"
+    uris = [
+        (x.uri, x.entity.name, x.entity.id)
+        for x in Uri.objects.filter(uri__icontains="wikidata.org/entity/")
+    ]
+    for x in uris:
+        result = result + f"{x[0]}|" f"{x[1]}|" f"{domain}entity/{x[2]}/\n"
+    return HttpResponse(result, content_type="text/plain")
+
+
 class UriDetailView(DetailView):
     model = Uri
     template_name = "apis_metainfo/uri_detail.html"

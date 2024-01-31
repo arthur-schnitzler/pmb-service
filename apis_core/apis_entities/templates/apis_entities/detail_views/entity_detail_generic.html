@@ -152,7 +152,10 @@
                         </th>
                         <td>
                             {% for x in object.collection.all %}
-                                {{ x }}<br />
+                            {% if "Wikipedia" in x.name %}
+                            {% else %}
+                            {{ x }}<br />
+                            {% endif %}
                             {% endfor %}
                             
                         </td>
