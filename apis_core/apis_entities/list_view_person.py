@@ -183,12 +183,12 @@ class PersonFilterFormHelper(FormHelper):
 class PersonTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     start_date_written = tables.TemplateColumn(
-        "<abbr title='{{ record.start_date_written }}'>{{ record.start_date|date:'Y' }}</a>",
-        verbose_name="Geburtsjahr",
+        "{% if record.start_date_written %} {{ record.start_date_written }} {% endif %}",
+        verbose_name="geboren",
     )
     end_date_written = tables.TemplateColumn(
-        "<abbr title='{{ record.end_date_written }}'>{{ record.end_date|date:'Y' }}</a>",
-        verbose_name="Todesjahr",
+        "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
+        verbose_name="gestorben",
     )
     personplace_set = tables.ManyToManyColumn(
         verbose_name="Geburtsort",
