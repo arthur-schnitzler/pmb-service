@@ -373,3 +373,11 @@ class EntitiesTestCase(TestCase):
         entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
         self.assertIsNone(entity.img_credit())
         self.assertIsNone(entity.img_credit_label())
+
+    def test_028_beacons(self):
+        url = reverse("apis_core:beacon")
+        r = client.get(url)
+        self.assertEqual(r.status_code, 200)
+        url = reverse("apis_core:wikidata_beacon")
+        r = client.get(url)
+        self.assertEqual(r.status_code, 200)
