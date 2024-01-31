@@ -92,6 +92,10 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         context["verbose_name"] = self.verbose_name
         context["help_text"] = self.help_text
         context["icon"] = self.model.get_icon()
+        if self.get_queryset().count() < 1001:
+            context["download"] = True
+        else:
+            context["download"] = False
         return context
 
 
