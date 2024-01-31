@@ -45,8 +45,17 @@
     <br/>
 <h1>Open Source</h1>
 <p>Alle Daten sind mit der Lizenz <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> versehen und können ohne Rücksprache verwendet und weiter
-    bearbeitet werden. Als Listen können sie zur Gänze geladen werden:</p>
-   <p>  <a href="https://pmb.acdh.oeaw.ac.at/media/" target="_blank">PMB-Listen</a>.</p>
+    bearbeitet werden. Als Listen können sie zur Gänze geladen werden (rechte Maustaste: »speichern unter«):</p>
+<ul>
+    <li><a href="https://pmb.acdh.oeaw.ac.at/media/listperson.xml" target="_blank">Personen</a>.</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listbibl.xml" target="_blank">Werke</a>.</li>
+            <li><a href="https://pmb.acdh.oeaw.ac.at/media/listplace.xml" target="_blank">Orte</a>.</li>
+                <li><a href="https://pmb.acdh.oeaw.ac.at/media/listorg" target="_blank">Institutionen</a>.</li>
+                    <li><a href="https://pmb.acdh.oeaw.ac.at/media/" target="_blank">Verzeichnis</a>.</li>
+
+
+</ul>
+
    <p>Einzelne Einträge können über die API (die JSON- oder TEI-Symbole bei einem Eintrag) geladen werden.</p>
    <p>Wir freuen uns, wenn sich weitere Unternehmungen anschließen und die PMB für die Erfassung ihrer Entitäten verwenden würden
     und bitten um Kontaktaufnahme.</p>
@@ -83,9 +92,9 @@
         angebracht, auch die Relationen zu datieren, etwa »gearbeitet in Wien 1904« oder »Arbeitet
         für Hermann Bahr 1904« etc.</p>
     <h3>Normdaten</h3>
-    <p>Schon bei der Anlage einer Person kann dies über den Import durch die Normdatei GND
-        geschehen. Sollte die GND-Nummer später nachgetragen werden, geschieht das durch Verknüpfen
-        einer URI im Menüpunkt URIs. </p>
+    <p>Schon bei der Anlage einer Person kann dies über den Import durch die Wikidata-URI
+        geschehen. Sollte eine weitere Normdaten-URI später nachgetragen werden, geschieht das durch Verknüpfen
+        im Menüpunkt URIs. </p>
     <h3>Relationen</h3>
     <h4>Von Person zu Person</h4>
     <p>Hier lassen sich Verwandtschafts- und Beziehungsverhältnisse eintragen. Beispielsweise:</p>
@@ -432,12 +441,12 @@
     <p>URIs sind beständige, eindeutige Marker, mit denen sich Verbindungen zu
     anderen Projekten herstellen lassen. Dieses Projekt verwendet hauptsächlich drei davon:</p>
     <ul>
+        <li><a href="https://www.wikidata.org">Wikidata</a></li>
        <li><a href="https://lobid.org/gnd">GND-Suche via lobid</a></li>
         <li><a href="https://www.geonames.org/">Geonames</a></li>
-        <li><a href="https://www.wikidata.org">Wikidata</a></li>
     </ul>
     <p>Eine Konkordanz zwischen <strong>PMB-URIs</strong> und <strong>GND-URIs</strong> kann über folgende <a href="{% url 'apis_core:beacon' %}">BEACON Datei<a/> bezogen werden.</p>
-    <p>Eine Konkordanz zwischen <strong>PMB-URIs</strong> und <strong>Wikidata-URIs</strong> kann über folgende <a href="{% url 'apis_core:wikidata_beacon' %}">BEACON Datei<a/> bezogen werden</p>
+    <p>Eine Konkordanz zwischen <strong>PMB-URIs</strong> und <strong>Wikidata-URIs</strong> kann über folgende <a href="{% url 'apis_core:wikidata_beacon' %}">BEACON Datei<a/> bezogen werden.</p>
     <p>Wikipedia-Einträge werden nicht direkt verlinkt. Auf der linken Seite im Menü eines Wikipedia-Eintrags
     steht ein Link auf das entsprechende Wikidata-Objekt.</p>
     
