@@ -27,7 +27,6 @@ excluded_cols = [
     "end_end_date",
     "status",
     "source",
-    "references",
     "published",
     "tempentityclass_ptr",
     "review",
@@ -53,6 +52,11 @@ class PersonListFilter(MyBaseFilter):
         label="Name oder Label der Person",
         method="name_label_filter",
         help_text="eingegebene Zeichenkette muss im Vornamen, Nachnamem oder in einem Label enthalten sein",
+    )
+    references = django_filters.CharFilter(
+        lookup_expr="icontains",
+        label="Referenzen",
+        help_text="eingegebene Zeichenkette muss im Textfeld 'Referenzen' enthalten sein",
     )
     gender = django_filters.ChoiceFilter(
         choices=(("", "egal"), ("male", "männlich"), ("female", "weiblich"))
@@ -166,6 +170,7 @@ class PersonFilterFormHelper(FormHelper):
                     "birth_year",
                     "death_year",
                     "collection",
+                    "references",
                     css_id="more",
                 ),
                 AccordionGroup(
