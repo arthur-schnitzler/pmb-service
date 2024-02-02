@@ -26,7 +26,6 @@ excluded_cols = [
     "end_end_date",
     "status",
     "source",
-    "references",
     "published",
     "tempentityclass_ptr",
     "review",
@@ -52,6 +51,11 @@ class WorkListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Werktitel",
+        help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
+    )
+    references = django_filters.CharFilter(
+        lookup_expr="icontains",
+        label="Referenzen",
         help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
     )
     year_of_creation = django_filters.NumberFilter(
@@ -120,6 +124,7 @@ class WorkFilterFormHelper(FormHelper):
                     "kind",
                     "year_of_creation",
                     "collection",
+                    "references",
                     css_id="more",
                 ),
                 AccordionGroup(
