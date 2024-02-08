@@ -1,0 +1,64 @@
+<event xml:id="event__{{ object.id }}" when-iso="{{ object.start_date|date:'Y-m-d' }}">
+    <eventName>{{ object.name }}</eventName>
+    {% if object.institutionevent_set.all %}
+    <note type="listorg">
+        <listOrg>
+            {% for x in object.institutionevent_set.all %}
+            <org role="{{ x.relation_type.name_reverse }}">
+                <orgName key="pmb{{ x.related_institution.id }}" >{{ x.related_institution }}</orgName>
+            </org>
+            {% endfor %}
+        </listOrg>
+    </note>
+    {% endif %}
+
+
+{% for x in object.uri_set.all %}
+  <idno type="URL" {% if x.domain %} subtype="{{ x.domain|slugify }}" {% endif %}>{{ x }}</idno>
+{% endfor %}
+{% if object.collection.all %}
+{% include 'apis_tei/collections.xml' %}
+{% endif %}
+{% if object.note %}
+  <note type="note">{{ object.note }}</note>
+{% endif %}
+{% if object.references %}
+  <note type="references">{{ object.references }}</note>
+{% endif %}
+{% if object.eventwork_set.all %}
+<listBibl>
+    {% for x in object.eventwork_set.all %}
+    <bibl>
+        <title key="pmb{{ x.related_work.id }}">{{ x.related_work }}</title>
+        <note type="relation-type">{{ x.relation_type }}</note>
+    </bibl>
+    {% endfor %}
+</listBibl>
+{% endif %}
+{% if object.personevent_set.all %}
+<listPerson>
+    {% for x in object.personevent_set.all %}
+    <person role="{{ x.relation_type.name_reverse }}">
+        <persName key="pmb{{ x.related_person.id }}">{{ x.related_person }}</persName>
+    </person>
+    {% endfor %}
+</listPerson>
+{% endif %}
+{% if object.placeevent_set.all %}
+<listPlace>
+    {% for x in object.placeevent_set.all %}
+    <place>
+        <placeName role="{{ x.relation_type.name_reverse }}" key="pmb{{ x.related_place.id }}">{{ x.related_place }}</placeName>
+        {% if x.related_place.lat %}
+        <location>
+            <geo>{{ x.related_place.lat }} {{ x.related_place.lng }}</geo>
+        </location>{% endif %}
+    </place>
+    {% endfor %}
+</listPlace>
+{% endif %}
+
+
+
+
+</event>

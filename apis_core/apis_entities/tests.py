@@ -56,7 +56,7 @@ class EntitiesTestCase(TestCase):
 
         url = reverse("entity-resolver", kwargs={"pk": 11})
         r = client.get(f"{url}?format=tei")
-        self.assertEqual(r.status_code, 404)
+        self.assertEqual(r.status_code, 302)
 
     def test_001_list_view(self):
         for x in MODELS:
