@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 
 from apis_core.utils import get_object_from_pk_or_uri
-from apis_core.apis_entities.models import Institution, Person, Place, Work
+from apis_core.apis_entities.models import Institution, Person, Place, Work, Event
 from apis_core.apis_metainfo.models import Uri
 
 from .tei_utils import get_node_from_template
@@ -61,6 +61,20 @@ def org_as_tei(request, pk):
             content_type="text/plain",
         )
     doc = get_node_from_template("apis_tei/org.xml", res, full=full)
+    tei = ET.tostring(doc, pretty_print=True, encoding="UTF-8")
+    return HttpResponse(tei, content_type="application/xml")
+
+
+def event_as_tei(request, pk):
+    full = request.GET.get("full")
+    model = Event
+    res = get_object_from_pk_or_uri(pk)
+    if not isinstance(res, model):
+        return HttpResponse(
+            f"Requested object is not an instance of {model.__name__}",
+            content_type="text/plain",
+        )
+    doc = get_node_from_template("apis_tei/event.xml", res, full=full)
     tei = ET.tostring(doc, pretty_print=True, encoding="UTF-8")
     return HttpResponse(tei, content_type="application/xml")
 
