@@ -587,6 +587,9 @@ class Event(AbstractEntity):
             "id",
         ]
 
+    def get_tei_url(self):
+        return reverse("apis_core:apis_tei:event_as_tei", kwargs={"pk": self.id})
+
     def get_api_url(self):
         return f"/apis/api/entities/{self.__class__.__name__.lower()}/{self.id}/"
 

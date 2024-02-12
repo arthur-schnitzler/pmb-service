@@ -177,3 +177,6 @@ media/listbibl.xml
 staticfiles/
 hansi.csv
 .docker
+media/duplicated_*.csv
+Untitled.ipynb
+listevent.xml

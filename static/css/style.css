@@ -104,3 +104,9 @@ main {
 .table-borderless {
     border: none;
 }
+
+.table-relations th,
+.table-relations th
+ {
+    width: 25% !important;
+}

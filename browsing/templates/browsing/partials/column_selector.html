@@ -1,5 +1,5 @@
 {% if togglable_colums %}
-<label class="form-label pt-3" for="column_selector">Select additional columns:</label>
+<label class="form-label pt-3" for="column_selector">Weitere Spalten hinzufügen</label>
 <select class="form-control mb-3" multiple name="columns" id="column_selector">
     {% for key, value in togglable_colums.items %}
     {% if key == 'merge' and user.is_authenticated and enable_merge %}

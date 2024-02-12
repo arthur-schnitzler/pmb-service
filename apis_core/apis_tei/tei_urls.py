@@ -22,5 +22,6 @@ urlpatterns = [
     path("org/<int:pk>", views.org_as_tei, name="org_as_tei"),
     path("institution/<int:pk>", views.org_as_tei, name="org_as_tei"),
     path("work/<int:pk>", views.work_as_tei, name="work_as_tei"),
+    path("event/<int:pk>", views.event_as_tei, name="event_as_tei"),
     path("uri-to-tei/", views.uri_to_tei, name="uri_to_tei"),
 ]

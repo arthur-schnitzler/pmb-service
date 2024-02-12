@@ -27,7 +27,6 @@ excluded_cols = [
     "end_end_date",
     "status",
     "source",
-    "references",
     "published",
     "tempentityclass_ptr",
     "review",

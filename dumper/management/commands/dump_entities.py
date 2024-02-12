@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from icecream import ic
 from tqdm import tqdm
 
-from apis_core.apis_entities.models import Institution, Person, Place, Work
+from apis_core.apis_entities.models import Institution, Person, Place, Work, Event
 from apis_core.apis_tei.tei_utils import get_node_from_template, tei_header
 from dumper.utils import upload_files_to_owncloud, write_report
 
@@ -16,6 +16,7 @@ ENTITY_MAP = {
     "place": {"model": Place, "template": "place"},
     "bibl": {"model": Work, "template": "work"},
     "org": {"model": Institution, "template": "org"},
+    "event": {"model": Event, "template": "event"},
 }
 
 

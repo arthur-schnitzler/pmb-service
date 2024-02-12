@@ -19,3 +19,4 @@ pyocclient==0.6
 icecream
 flake8
 black
+recordlinkage>0.15,<1
