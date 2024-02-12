@@ -110,3 +110,12 @@ main {
  {
     width: 25% !important;
 }
+
+.anchor-link {
+	padding: 0 .175rem;
+	font-weight: 400;
+	color: rgba(13,110,253,0.5);
+	text-decoration: none;
+	opacity: 0;
+	transition: color 0.15s ease-in-out,opacity 0.15s ease-in-out;
+}
