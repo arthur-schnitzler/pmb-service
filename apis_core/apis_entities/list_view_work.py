@@ -49,9 +49,9 @@ WORK_INSTITUTION_RELATION_CHOICES = [
 
 class WorkListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
-        lookup_expr="icontains",
+        method="name_label_filter",
         label="Werktitel",
-        help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
+        help_text="eingegebene Zeichenkette muss im Titel oder in einem der Labels enthalten sein",
     )
     references = django_filters.CharFilter(
         lookup_expr="icontains",
