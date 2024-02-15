@@ -1,6 +1,7 @@
 import inspect
 import sys
 
+from icecream import ic
 from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import TempEntityClass
 
@@ -45,28 +46,16 @@ class AbstractRelation(TempEntityClass):
         )
 
     def get_web_object(self):
-        namea = self.get_related_entity_instancea().name
-        nameb = self.get_related_entity_instanceb().name
-
-        if self.get_related_entity_classa() == Person:
-            namea += ", "
-            if self.get_related_entity_instancea().first_name is None:
-                namea += "-"
-            else:
-                namea += self.get_related_entity_instancea().first_name
-
-        if self.get_related_entity_classb() == Person:
-            nameb += ", "
-            if self.get_related_entity_instanceb().first_name is None:
-                nameb += "-"
-            else:
-                nameb += self.get_related_entity_instanceb().first_name
+        namea = self.get_related_entity_instancea()
+        nameb = self.get_related_entity_instanceb()
 
         result = {
             "relation_pk": self.pk,
             "relation_type": self.relation_type.name,
-            self.get_related_entity_field_namea(): namea,
-            self.get_related_entity_field_nameb(): nameb,
+            "source": namea,
+            "target": nameb,
+            "source_id": namea.id,
+            "target_id": nameb.id,
             "start_date": self.start_date_written,
             "end_date": self.end_date_written,
         }
