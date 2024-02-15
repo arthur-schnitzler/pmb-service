@@ -73,8 +73,19 @@ class GenericRelationForm(forms.ModelForm):
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd["target"])
         setattr(x, self.rel_accessor[2], t1)
+        params = {
+            self.rel_accessor[3]: site_instance,
+            self.rel_accessor[2]: t1,
+            "start_date_written": cd["start_date_written"],
+            "end_date_written": cd["end_date_written"],
+            "relation_type_id": cd["relation_type"],
+        }
         if commit:
-            x.save()
+            qs = x.__class__.objects.filter(**params)
+            if qs.count() > 0:
+                pass
+            else:
+                x.save()
         return x
 
     def get_text_id(self):
