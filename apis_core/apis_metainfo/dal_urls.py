@@ -9,5 +9,7 @@ urlpatterns = [
         "tempentity-autocomplete/",
         dal_views.TempEntityClassAC.as_view(),
         name="apis_tempentity-autocomplete",
-    )
+    ),
+    path("collection", dal_views.CollectionAC.as_view(), name="collection-ac"),
+
 ]
