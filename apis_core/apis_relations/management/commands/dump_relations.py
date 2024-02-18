@@ -41,7 +41,9 @@ class Command(BaseCommand):
         df = pd.read_csv(save_path).fillna("nodate")
         df.set_index("relation_pk", inplace=True, drop=False)
         indexer = recordlinkage.Index()
-        indexer.block(["relation_type", "source_id", "target_id", "start_date", "end_date"])
+        indexer.block(
+            ["relation_type", "source_id", "target_id", "start_date", "end_date"]
+        )
         duplicates = indexer.index(df)
         print(f"deleting {len(duplicates)} duplicated relations")
 
