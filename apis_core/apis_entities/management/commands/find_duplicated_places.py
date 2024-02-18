@@ -16,16 +16,15 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> str | None:
         print("searching for potential duplicates")
 
-        props = [
-            "id",
-            "name",
-            "lat",
-            "lng"
-        ]
-        df = pd.DataFrame(
-            Place.objects.values_list(*props),
-            columns=props,
-        ).astype("str").fillna("nix")
+        props = ["id", "name", "lat", "lng"]
+        df = (
+            pd.DataFrame(
+                Place.objects.values_list(*props),
+                columns=props,
+            )
+            .astype("str")
+            .fillna("nix")
+        )
         df["custom_index"] = df["id"].astype(str) + " " + df["name"]
         df.set_index("custom_index", inplace=True)
         indexer = recordlinkage.Index()
