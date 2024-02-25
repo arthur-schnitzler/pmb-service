@@ -298,3 +298,12 @@ APIS_ENTITIES = {
         ],
     },
 }
+
+PMB_COLORS = {
+    "Person": "#720e07",
+    "Ort": "#5bc0eb",
+    "Werk": "#ff8600",
+    "Ereignis": "#9bc53d",
+    "Institution": "#1d3461",
+    "PMB": "#9B5F98",
+}

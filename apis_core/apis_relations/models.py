@@ -53,9 +53,11 @@ class AbstractRelation(TempEntityClass):
             "relation_pk": self.pk,
             "relation_type": self.relation_type.name,
             "source": namea,
-            "target": nameb,
             "source_id": namea.id,
+            "source_type": namea._meta.verbose_name,
+            "target": nameb,
             "target_id": nameb.id,
+            "target_type": nameb._meta.verbose_name,
             "start_date": self.start_date_written,
             "end_date": self.end_date_written,
         }

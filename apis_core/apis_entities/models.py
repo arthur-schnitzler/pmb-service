@@ -512,6 +512,8 @@ class Person(AbstractEntity):
         return self
 
     class Meta:
+        verbose_name = "Person"
+        verbose_name_plural = "Personen"
         ordering = [
             "id",
         ]
@@ -541,6 +543,8 @@ class Place(AbstractEntity):
         return self
 
     class Meta:
+        verbose_name = "Ort"
+        verbose_name_plural = "Orte"
         ordering = [
             "id",
         ]
@@ -562,6 +566,8 @@ class Institution(AbstractEntity):
     )
 
     class Meta:
+        verbose_name = "Institution"
+        verbose_name_plural = "Institutionen"
         ordering = [
             "id",
         ]
@@ -583,6 +589,8 @@ class Event(AbstractEntity):
     )
 
     class Meta:
+        verbose_name = "Ereignis"
+        verbose_name_plural = "Ereignisse"
         ordering = [
             "id",
         ]
@@ -602,6 +610,8 @@ class Work(AbstractEntity):
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
+        verbose_name = "Werk"
+        verbose_name_plural = "Werke"
         ordering = [
             "id",
         ]

@@ -1,13 +1,14 @@
 import os
 import pandas as pd
+import networkx as nx
 import recordlinkage
+from tqdm import tqdm
 
 from datetime import datetime
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from icecream import ic
-from tqdm import tqdm
 from typing import Any
 from apis_core.apis_relations.models import AbstractRelation
 from dumper.utils import upload_files_to_owncloud, write_report
@@ -61,14 +62,62 @@ class Command(BaseCommand):
         df.drop(deleted)
         save_path = os.path.join(settings.MEDIA_ROOT, "relations.csv")
         df.to_csv(save_path, index=False)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
-        report = [os.path.basename(__file__), start_time, end_time]
-        write_report(report)
         print(f"serialized {len(df)} relations")
         files = list()
         files.append(save_path)
         try:
             upload_files_to_owncloud(files)
+            print(f"uploading {save_path} to owncloud")
         except Exception as e:
             ic(e)
+        print("and now serialize relations as network graph")
+        colors = settings.PMB_COLORS
+        G = nx.Graph()
+        for i, row in tqdm(df.iterrows(), total=len(df)):
+            G.add_nodes_from(
+                [
+                    (
+                        row["source_id"],
+                        {
+                            "label": row["source"],
+                            "type": row["source_type"],
+                            "color": colors[row["source_type"]],
+                        },
+                    )
+                ]
+            )
+            G.add_nodes_from(
+                [
+                    (
+                        row["target_id"],
+                        {
+                            "label": row["target"],
+                            "type": row["target_type"],
+                            "color": colors[row["target_type"]],
+                        },
+                    )
+                ]
+            )
+            G.add_edges_from(
+                [
+                    (
+                        row["source_id"],
+                        row["target_id"],
+                        {"label": row["relation_type"], "id": row["relation_pk"]},
+                    )
+                ]
+            )
+        save_path = os.path.join(settings.MEDIA_ROOT, "relations.gexf")
+        nx.write_gexf(G, save_path)
+        print(f"serialized {len(df)} relations")
+        files = list()
+        files.append(save_path)
+        try:
+            upload_files_to_owncloud(files)
+            print(f"uploading {save_path} to owncloud")
+        except Exception as e:
+            ic(e)
+        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        report = [os.path.basename(__file__), start_time, end_time]
+        write_report(report)
         return "done"
