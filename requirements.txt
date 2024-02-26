@@ -4,7 +4,7 @@ acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=1.1,<2
 acdh-wikidata-pyutils==1.0
 apis-override-select2js==0.1
-Django>4.1,<6
+Django>=5.0,<6
 django-admin-csvexport
 django-autocomplete-light
 django-crispy-forms
@@ -16,6 +16,7 @@ pandas
 pylobid
 psycopg2
 pyocclient==0.6
+networkx>=3.2.1,<4
 icecream
 flake8
 black

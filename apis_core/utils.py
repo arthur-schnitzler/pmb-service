@@ -3,7 +3,6 @@ from django.http import Http404
 
 from django.shortcuts import get_object_or_404
 
-# from apis_core.apis_entities.detail_views import get_object_from_pk_or_uri
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 
 

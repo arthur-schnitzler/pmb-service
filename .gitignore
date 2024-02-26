@@ -181,3 +181,7 @@ media/duplicated_*.csv
 Untitled.ipynb
 listevent.xml
 relations.csv
+hansi.*
+media/relations.gexf
+edges.csv
+nodes.csv
