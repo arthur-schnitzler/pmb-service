@@ -512,6 +512,8 @@ class Person(AbstractEntity):
         return self
 
     class Meta:
+        verbose_name = "Person"
+        verbose_name_plural = "Personen"
         ordering = [
             "id",
         ]
@@ -525,6 +527,10 @@ class Person(AbstractEntity):
     @classmethod
     def get_icon(self):
         return "bi bi-people apis-person"
+
+    @classmethod
+    def get_color(self):
+        return "#720e07"
 
 
 class Place(AbstractEntity):
@@ -541,6 +547,8 @@ class Place(AbstractEntity):
         return self
 
     class Meta:
+        verbose_name = "Ort"
+        verbose_name_plural = "Orte"
         ordering = [
             "id",
         ]
@@ -555,6 +563,10 @@ class Place(AbstractEntity):
     def get_icon(self):
         return "bi bi-map apis-place"
 
+    @classmethod
+    def get_color(self):
+        return "#5bc0eb"
+
 
 class Institution(AbstractEntity):
     kind = models.ForeignKey(
@@ -562,6 +574,8 @@ class Institution(AbstractEntity):
     )
 
     class Meta:
+        verbose_name = "Institution"
+        verbose_name_plural = "Institutionen"
         ordering = [
             "id",
         ]
@@ -576,6 +590,10 @@ class Institution(AbstractEntity):
     def get_icon(self):
         return "bi bi-building-gear apis-institution"
 
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
+
 
 class Event(AbstractEntity):
     kind = models.ForeignKey(
@@ -583,6 +601,8 @@ class Event(AbstractEntity):
     )
 
     class Meta:
+        verbose_name = "Ereignis"
+        verbose_name_plural = "Ereignisse"
         ordering = [
             "id",
         ]
@@ -597,11 +617,17 @@ class Event(AbstractEntity):
     def get_icon(self):
         return "bi bi-calendar3 apis-event"
 
+    @classmethod
+    def get_color(self):
+        return "#9bc53d"
+
 
 class Work(AbstractEntity):
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
+        verbose_name = "Werk"
+        verbose_name_plural = "Werke"
         ordering = [
             "id",
         ]
@@ -615,6 +641,10 @@ class Work(AbstractEntity):
     @classmethod
     def get_icon(self):
         return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#ff8600"
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)

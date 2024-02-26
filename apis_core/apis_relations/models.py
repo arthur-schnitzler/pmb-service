@@ -52,12 +52,24 @@ class AbstractRelation(TempEntityClass):
         result = {
             "relation_pk": self.pk,
             "relation_type": self.relation_type.name,
-            "source": namea,
-            "target": nameb,
+            "relation_class": f"{namea._meta.verbose_name} -> {nameb._meta.verbose_name}",
+            "relation_name": self.__str__(),
+            "relation_start_date": f"{self.start_date}",
+            "relation_end_date": f"{self.end_date}",
+            "relation_start_date_written": f"{self.start_date_written}",
+            "relation_end_date_written": f"{self.end_date_written}",
+            "source": namea.__str__(),
             "source_id": namea.id,
+            "source_type": namea._meta.verbose_name,
+            "source_start_date": f"{namea.start_date}",
+            "source_start_date_written": f"{namea.start_date_written}",
+            "source_color": namea.get_color(),
+            "target": nameb.__str__(),
             "target_id": nameb.id,
-            "start_date": self.start_date_written,
-            "end_date": self.end_date_written,
+            "target_type": nameb._meta.verbose_name,
+            "target_start_date": f"{nameb.start_date}",
+            "target_start_date_written": f"{nameb.start_date_written}",
+            "target_color": nameb.get_color(),
         }
         return result
 
