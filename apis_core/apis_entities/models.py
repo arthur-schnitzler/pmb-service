@@ -528,6 +528,10 @@ class Person(AbstractEntity):
     def get_icon(self):
         return "bi bi-people apis-person"
 
+    @classmethod
+    def get_color(self):
+        return "#720e07"
+
 
 class Place(AbstractEntity):
     kind = models.ForeignKey(
@@ -559,6 +563,10 @@ class Place(AbstractEntity):
     def get_icon(self):
         return "bi bi-map apis-place"
 
+    @classmethod
+    def get_color(self):
+        return "#5bc0eb"
+
 
 class Institution(AbstractEntity):
     kind = models.ForeignKey(
@@ -581,6 +589,10 @@ class Institution(AbstractEntity):
     @classmethod
     def get_icon(self):
         return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
 
 
 class Event(AbstractEntity):
@@ -605,6 +617,10 @@ class Event(AbstractEntity):
     def get_icon(self):
         return "bi bi-calendar3 apis-event"
 
+    @classmethod
+    def get_color(self):
+        return "#9bc53d"
+
 
 class Work(AbstractEntity):
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
@@ -625,6 +641,10 @@ class Work(AbstractEntity):
     @classmethod
     def get_icon(self):
         return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#ff8600"
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)

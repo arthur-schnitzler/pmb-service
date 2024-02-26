@@ -43,7 +43,13 @@ class Command(BaseCommand):
         df.set_index("relation_pk", inplace=True, drop=False)
         indexer = recordlinkage.Index()
         indexer.block(
-            ["relation_type", "source_id", "target_id", "start_date", "end_date"]
+            [
+                "relation_type",
+                "source_id",
+                "target_id",
+                "relation_start_date_written",
+                "relation_end_date_written",
+            ]
         )
         duplicates = indexer.index(df)
         print(f"deleting {len(duplicates)} duplicated relations")
@@ -71,7 +77,6 @@ class Command(BaseCommand):
         except Exception as e:
             ic(e)
         print("and now serialize relations as network graph")
-        colors = settings.PMB_COLORS
         G = nx.Graph()
         for i, row in tqdm(df.iterrows(), total=len(df)):
             G.add_nodes_from(
@@ -81,7 +86,7 @@ class Command(BaseCommand):
                         {
                             "label": row["source"],
                             "type": row["source_type"],
-                            "color": colors[row["source_type"]],
+                            "color": row["source_color"],
                         },
                     )
                 ]
@@ -93,7 +98,7 @@ class Command(BaseCommand):
                         {
                             "label": row["target"],
                             "type": row["target_type"],
-                            "color": colors[row["target_type"]],
+                            "color": row["target_color"],
                         },
                     )
                 ]
