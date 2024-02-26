@@ -66,62 +66,91 @@ class Command(BaseCommand):
                 break
         print(deleted)
         df.drop(deleted)
-        save_path = os.path.join(settings.MEDIA_ROOT, "relations.csv")
-        df.to_csv(save_path, index=False)
+        relations_csv = os.path.join(settings.MEDIA_ROOT, "relations.csv")
+        df.to_csv(relations_csv, index=False)
         print(f"serialized {len(df)} relations")
         files = list()
-        files.append(save_path)
-        try:
-            upload_files_to_owncloud(files)
-            print(f"uploading {save_path} to owncloud")
-        except Exception as e:
-            ic(e)
+        files.append(relations_csv)
+
         print("and now serialize relations as network graph")
         G = nx.Graph()
+        nodes = {}
+        edges = []
+        edges_labels = ["source", "target", "type", "label", "date"]
         for i, row in tqdm(df.iterrows(), total=len(df)):
-            G.add_nodes_from(
-                [
-                    (
-                        row["source_id"],
-                        {
-                            "label": row["source"],
-                            "type": row["source_type"],
-                            "color": row["source_color"],
-                        },
-                    )
-                ]
-            )
-            G.add_nodes_from(
-                [
-                    (
-                        row["target_id"],
-                        {
-                            "label": row["target"],
-                            "type": row["target_type"],
-                            "color": row["target_color"],
-                        },
-                    )
-                ]
-            )
+            source_node = {
+                "id": row["source_id"],
+                "label": row["source"],
+                "type": row["source_type"],
+                "color": row["source_color"],
+                "start_date": row["source_start_date"],
+                "start_date_written": row["source_start_date_written"],
+            }
+            nodes[row["source_id"]] = source_node
+            G.add_nodes_from([(row["source_id"], source_node)])
+            target_node = {
+                "id": row["target_id"],
+                "label": row["target"],
+                "type": row["target_type"],
+                "color": row["target_color"],
+                "date": row["target_start_date"],
+                "start_date_written": row["target_start_date_written"],
+            }
+            nodes[row["target_id"]] = target_node
+            G.add_nodes_from([(row["target_id"], target_node)])
             G.add_edges_from(
                 [
                     (
                         row["source_id"],
                         row["target_id"],
-                        {"label": row["relation_type"], "id": row["relation_pk"]},
+                        {
+                            "relation_class": row["relation_class"],
+                            "label": row["relation_type"],
+                            "id": row["relation_pk"],
+                            "start_date": row["relation_start_date"],
+                            "start_date_written": row["relation_start_date_written"],
+                            "end_date": row["relation_end_date"],
+                            "end_date_written": row["relation_end_date_written"],
+                        },
                     )
                 ]
             )
-        save_path = os.path.join(settings.MEDIA_ROOT, "relations.gexf")
-        nx.write_gexf(G, save_path)
+            edges.append(
+                [
+                    row["source_id"],
+                    row["target_id"],
+                    row["relation_class"],
+                    row["relation_type"],
+                    row["relation_start_date"],
+                ]
+            )
+        gexf_file = os.path.join(settings.MEDIA_ROOT, "relations.gexf")
+        nx.write_gexf(G, gexf_file)
         print(f"serialized {len(df)} relations")
-        files = list()
-        files.append(save_path)
+        files.append(gexf_file)
+
+        ndf = pd.DataFrame(edges, columns=edges_labels)
+        edges_file = os.path.join(settings.MEDIA_ROOT, "edges.csv")
+        ndf.to_csv(edges_file, index=False)
+        files.append(edges_file)
+
+        data = []
+        for key, value in nodes.items():
+            data.append(value)
+
+        df = pd.DataFrame(data)
+        nodes_file = os.path.join(settings.MEDIA_ROOT, "nodes.csv")
+        df.to_csv(nodes_file, index=False)
+        files.append(nodes_file)
+        ic(files)
+
         try:
             upload_files_to_owncloud(files)
-            print(f"uploading {save_path} to owncloud")
+            for x in files:
+                print(f"uploading {x} to owncloud")
         except Exception as e:
             ic(e)
+
         end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)
