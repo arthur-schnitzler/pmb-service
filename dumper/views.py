@@ -22,6 +22,10 @@ class AboutView(TemplateView):
     template_name = "dumper/about.html"
 
 
+class ExportView(TemplateView):
+    template_name = "dumper/export.html"
+
+
 class ImprintView(TemplateView):
     template_name = "dumper/imprint.html"
 
