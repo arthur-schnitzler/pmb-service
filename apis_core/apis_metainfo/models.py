@@ -288,7 +288,13 @@ class TempEntityClass(models.Model):
         rels = ContentType.objects.filter(
             app_label="apis_relations", model__icontains=e_a
         )
+        notes = []
+        references = []
         for ent in entities:
+            if isinstance(ent.notes, str):
+                notes.append(ent.notes)
+            if isinstance(ent.references, str):
+                references.append(ent.references)
             e_b = type(ent).__name__
             e_b_pk = ent.pk
             if e_b_pk == e_a_pk:
@@ -332,8 +338,18 @@ class TempEntityClass(models.Model):
                     for t in k:
                         setattr(t, "related_{}".format(e_a.lower()), self)
                         t.save()
-
             ent.delete()
+            save_target = False
+            if len(notes) > 0:
+                additional_notes = " ".join(notes)
+                self.notes = f"{self.notes} {additional_notes}"
+                save_target = True
+            if len(references) > 0:
+                additional_references = " ".join(references)
+                self.references = f"{self.references} {additional_references}"
+                save_target = True
+            if save_target:
+                self.save()
 
 
 class Source(models.Model):

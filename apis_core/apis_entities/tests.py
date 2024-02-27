@@ -138,6 +138,27 @@ class EntitiesTestCase(TestCase):
         after = Person.objects.all().count()
         self.assertTrue(before > after)
 
+    def test_009a_merge_notesandreferences(self):
+        source_one = Person.objects.create(
+            name="Person which will be merged",
+            notes="notes_one",
+            references="references_one",
+        )
+        source_two = Person.objects.create(
+            name="Person two which will be merged",
+        )
+        target = Person.objects.create(
+            name="Person which will be kept",
+            notes="target_notes",
+            references="target_references",
+        )
+        target.merge_with(source_one.id)
+        self.assertTrue("notes_one" in target.notes)
+        self.assertTrue("target_notes" in target.notes)
+        self.assertTrue("references_one" in target.references)
+        self.assertTrue("target_references" in target.references)
+        target.merge_with(source_two)
+
     def test_010_delete_views(self):
         client.login(**USER)
         for x in MODELS:

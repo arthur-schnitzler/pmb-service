@@ -1,6 +1,7 @@
 import inspect
 import sys
 
+from icecream import ic
 from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import TempEntityClass
 
@@ -45,30 +46,30 @@ class AbstractRelation(TempEntityClass):
         )
 
     def get_web_object(self):
-        namea = self.get_related_entity_instancea().name
-        nameb = self.get_related_entity_instanceb().name
-
-        if self.get_related_entity_classa() == Person:
-            namea += ", "
-            if self.get_related_entity_instancea().first_name is None:
-                namea += "-"
-            else:
-                namea += self.get_related_entity_instancea().first_name
-
-        if self.get_related_entity_classb() == Person:
-            nameb += ", "
-            if self.get_related_entity_instanceb().first_name is None:
-                nameb += "-"
-            else:
-                nameb += self.get_related_entity_instanceb().first_name
+        namea = self.get_related_entity_instancea()
+        nameb = self.get_related_entity_instanceb()
 
         result = {
             "relation_pk": self.pk,
             "relation_type": self.relation_type.name,
-            self.get_related_entity_field_namea(): namea,
-            self.get_related_entity_field_nameb(): nameb,
-            "start_date": self.start_date_written,
-            "end_date": self.end_date_written,
+            "relation_class": f"{namea._meta.verbose_name} -> {nameb._meta.verbose_name}",
+            "relation_name": self.__str__(),
+            "relation_start_date": f"{self.start_date}",
+            "relation_end_date": f"{self.end_date}",
+            "relation_start_date_written": f"{self.start_date_written}",
+            "relation_end_date_written": f"{self.end_date_written}",
+            "source": namea.__str__(),
+            "source_id": namea.id,
+            "source_type": namea._meta.verbose_name,
+            "source_start_date": f"{namea.start_date}",
+            "source_start_date_written": f"{namea.start_date_written}",
+            "source_color": namea.get_color(),
+            "target": nameb.__str__(),
+            "target_id": nameb.id,
+            "target_type": nameb._meta.verbose_name,
+            "target_start_date": f"{nameb.start_date}",
+            "target_start_date_written": f"{nameb.start_date_written}",
+            "target_color": nameb.get_color(),
         }
         return result
 
