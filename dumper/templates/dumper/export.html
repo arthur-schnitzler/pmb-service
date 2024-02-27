@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Exportmöglichkeiten{% endblock %}
+
+{% block content %}
+<div class="container pt-4">
+    <h1 class="display-1 text-center">Export</h1>
+    <p>Die in der PMB verzeichneten Inhalte stehen frei zur Verfügung. Sie sind mit der Lizenz <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>
+        versehen und können ohne Rücksprache verwendet und weiter
+        bearbeitet werden.</p>
+        <p>Einzelne Einträge können über die API (die JSON- oder TEI-Symbole bei einem Eintrag) geladen werden.</p>
+        <p>Die REST-API ist über "https://pmb.acdh.oeaw.ac.at/apis/api/" anzusprechen, beispielsweise "https://pmb.acdh.oeaw.ac.at/apis/api/entities/place/5/".</p>
+        <p>Als TEI-XML-Listen können sie zur Gänze geladen werden (rechte Maustaste: »speichern unter«):</p>
+    <ul>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listperson.xml" target="_blank">Personen</a>.</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listbibl.xml" target="_blank">Werke</a>.</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listplace.xml" target="_blank">Orte</a>.</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listorg.xml" target="_blank">Institutionen</a>.</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/media/listevent.xml" target="_blank">Ereignisse</a>.</li>
+    </ul>
+    <p>Wir freuen uns, wenn sich weitere Unternehmungen anschließen und die PMB für die Erfassung ihrer Entitäten
+        verwenden würden
+        und bitten um Kontaktaufnahme.</p>
+
+    <p>Im Ordner <a href="https://pmb.acdh.oeaw.ac.at/media/" target="_blank">media</a> finden sich noch weitere
+tagesaktuelle Auswertungen, die beispielsweise für die Visualisierung hilfreich sein können. Eine einfache Möglichkeit,
+Inhalte der PMB zu visualisieren, kann durch den Service <a href="https://apis-hub.acdh-dev.oeaw.ac.at" target="_blank">APIS-Hub</a>
+erfolgen. (Beispielsweise: "Source entity type" auf "Person" stellen, "Target entity type" auf "event" und auf "Load" drücken.)
+Eine andere Möglichkeit besteht darin, in <a href="https://cosmograph.app/run/" target="_blank">Cosmograph</a> die Dateien "edges.csv" als data-file und
+"nodes.csv" als metadata file hochladen. (Tipp: "node label by" auf "label" umstellen.)</p>
+
+   </div>
+   
+{% endblock %}
