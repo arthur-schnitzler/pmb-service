@@ -26,6 +26,10 @@ class ExportView(TemplateView):
     template_name = "dumper/export.html"
 
 
+class ViteView(TemplateView):
+    template_name = "dumper/vite.html"
+
+
 class ImprintView(TemplateView):
     template_name = "dumper/imprint.html"
 

@@ -7,6 +7,7 @@ app_name = "dumper"
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="home"),
     path("about/", views.AboutView.as_view(), name="about"),
+    path("vite/", views.ViteView.as_view(), name="vite"),
     path("export/", views.ExportView.as_view(), name="export"),
     path("imprint/", views.ImprintView.as_view(), name="imprint"),
     path("login/", views.user_login, name="user_login"),
