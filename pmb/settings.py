@@ -298,3 +298,5 @@ APIS_ENTITIES = {
         ],
     },
 }
+
+DJANGO_VITE = {"default": {"dev_mode": True}}
