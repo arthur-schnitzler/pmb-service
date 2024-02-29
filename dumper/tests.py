@@ -67,3 +67,8 @@ class DumperTestCase(TestCase):
         url = reverse("dumper:about")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_09_imprint(self):
+        url = reverse("dumper:export")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
