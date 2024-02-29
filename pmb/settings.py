@@ -14,8 +14,10 @@ SECRET_KEY = "django-insecure-vz%#&+qlze@#cfc8aakgx2vy@k^cl)$$y%te#&q%u*_vd&rwlt
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get("DEBUG"):
     DEBUG = True
+    VITE_DEV = True
 else:
     DEBUG = False
+    VITE_DEV = False
 
 ALLOWED_HOSTS = ["*"]
 FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
@@ -300,4 +302,9 @@ APIS_ENTITIES = {
     },
 }
 
-DJANGO_VITE = {"default": {"dev_mode": True}}
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": VITE_DEV,
+        "manifest_path": "static/dist/manifest.info"
+    }
+}

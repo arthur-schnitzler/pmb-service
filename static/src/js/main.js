@@ -1,4 +1,4 @@
-import { Cosmograph } from '@cosmograph/cosmograph'
+import { Cosmograph, CosmographSearch } from '@cosmograph/cosmograph'
 import * as d3 from 'd3';
 
 const edge_csv = "http://127.0.0.1:8000/static/src/edges.csv";
@@ -24,12 +24,18 @@ Promise.all([edge_promis, node_promis]).then(([edge_data, node_data]) => {
     const canvas = document.createElement("div");
     canvas.style.height = "800px"
     appNode.appendChild(canvas);
+    const searchContainer = document.createElement('div')
+    appNode.appendChild(searchContainer);
     const config = {
         nodeColor: d => d.color,
+        nodeLabelAccessor: d => d.label,
+        nodeLabelColor: "white",
+        hoveredNodeLabelColor: "white",
         linkWidth: 2
     }
     const cosmograph = new Cosmograph(canvas, config)
+    const search = new CosmographSearch(cosmograph, searchContainer)
     cosmograph.setData(nodes, links)
-    console.log(cosmograph)
+    search.setData(nodes)
 })
 

@@ -18,15 +18,12 @@ module.exports = {
   build: {
     outDir: resolve('./static/dist'),
     assetsDir: '',
-    manifest: true,
+    manifest: "manifest.info",
     emptyOutDir: true,
     target: 'es2015',
     rollupOptions: {
       input: {
         main: resolve('./static/src/js/main.js'),
-      },
-      output: {
-        chunkFileNames: undefined,
       },
     },
   },
