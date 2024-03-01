@@ -185,3 +185,4 @@ hansi.*
 media/relations.gexf
 edges.csv
 nodes.csv
+node_modules/
