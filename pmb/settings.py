@@ -142,6 +142,7 @@ MEDIA_URL = "media/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    BASE_DIR / "static" / "vite",
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -303,8 +304,5 @@ APIS_ENTITIES = {
 }
 
 DJANGO_VITE = {
-    "default": {
-        "dev_mode": VITE_DEV,
-        "manifest_path": "static/dist/manifest.info"
-    }
+    "default": {"dev_mode": VITE_DEV, "manifest_path": "static/vite/manifest.info"}
 }

@@ -26,8 +26,8 @@ class ExportView(TemplateView):
     template_name = "dumper/export.html"
 
 
-class ViteView(TemplateView):
-    template_name = "dumper/vite.html"
+class NetworkView(TemplateView):
+    template_name = "dumper/network.html"
 
 
 class ImprintView(TemplateView):

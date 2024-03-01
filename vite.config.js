@@ -16,7 +16,7 @@ module.exports = {
     extensions: ['.js', '.json'],
   },
   build: {
-    outDir: resolve('./static/dist'),
+    outDir: resolve('./static/vite'),
     assetsDir: '',
     manifest: "manifest.info",
     emptyOutDir: true,
