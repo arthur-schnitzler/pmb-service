@@ -1,17 +1,17 @@
 {
-  "_browser-Co2CjrBv.js": {
-    "file": "browser-Co2CjrBv.js",
+  "_browser-C1tfp1OT.js": {
+    "file": "browser-C1tfp1OT.js",
     "isDynamicEntry": true,
     "imports": [
       "js/main.js"
     ]
   },
   "js/main.js": {
-    "file": "main-BgjuSik3.js",
+    "file": "main-CE-ujooY.js",
     "src": "js/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "_browser-Co2CjrBv.js"
+      "_browser-C1tfp1OT.js"
     ]
   }
 }

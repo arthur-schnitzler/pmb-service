@@ -7,6 +7,7 @@ const node_csv = "/media/nodes.csv";
 const edge_promis = d3.csv(edge_csv);
 const node_promis = d3.csv(node_csv);
 const spinnerNode = document.getElementById("spinner");
+const legendNode = document.getElementById("legend");
 const canvas = document.createElement("div");
     canvas.style.height = "800px"
 
@@ -27,6 +28,7 @@ Promise.all([edge_promis, node_promis]).then(([edge_data, node_data]) => {
     
     // remove spinner
     spinnerNode.style.visibility = "hidden";
+    legendNode.style.visibility = "visible";
     appNode.appendChild(canvas);
     const searchContainer = document.createElement('div')
     appNode.appendChild(searchContainer);

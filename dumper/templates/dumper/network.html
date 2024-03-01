@@ -24,7 +24,24 @@
         <span class="visually-hidden">Lade die Netzwerkdaten...</span>
       </div>
     </div>
+    <div class="row">
+      <div class="col-2" >
+        <div class="p2" style="visibility: hidden;" id="legend">
+          <ul>
+            {% for x in model_list %}
+            <li>
+              <i class="{{ x.icon }}"></i> {{ x.name }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-10">
+        <div id="app"></div>
 
-    <div id="app"></div>
+      </div>
+    </div>
+    
+    
   </div>
 {% endblock %}
