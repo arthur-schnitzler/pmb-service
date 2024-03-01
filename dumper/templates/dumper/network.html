@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_vite %}
+
+{% block title %}Vite{% endblock %}
+{% block scripts %}
+{% vite_hmr_client %}
+{% vite_asset 'js/main.js' %}
+{% endblock scripts %}
+
+{% block content %}
+  <div class="container pt-4">
+    <h1 class="display-3 text-center">Netzwerk aller Verbindungen</h1>
+    <div class="d-flex justify-content-center">
+      <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <div>
+          Hierbei handelt es sich nur um ein Proof of Concept
+        </div>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-center" id="spinner">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Lade die Netzwerkdaten...</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2" >
+        <div class="p2" style="visibility: hidden;" id="legend">
+          <ul>
+            {% for x in model_list %}
+            <li>
+              <i class="{{ x.icon }}"></i> {{ x.name }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-10">
+        <div id="app"></div>
+
+      </div>
+    </div>
+    
+    
+  </div>
+{% endblock %}

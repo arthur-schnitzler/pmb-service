@@ -14,8 +14,10 @@ SECRET_KEY = "django-insecure-vz%#&+qlze@#cfc8aakgx2vy@k^cl)$$y%te#&q%u*_vd&rwlt
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get("DEBUG"):
     DEBUG = True
+    VITE_DEV = True
 else:
     DEBUG = False
+    VITE_DEV = False
 
 ALLOWED_HOSTS = ["*"]
 FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_tables2",
     "django_filters",
+    "django_vite",
     "apis_core.apis_entities",
     "apis_core.apis_metainfo",
     "apis_core.apis_relations",
@@ -139,6 +142,7 @@ MEDIA_URL = "media/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    BASE_DIR / "static" / "vite",
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -297,4 +301,8 @@ APIS_ENTITIES = {
             "related_relationtype_name",
         ],
     },
+}
+
+DJANGO_VITE = {
+    "default": {"dev_mode": VITE_DEV, "manifest_path": "static/vite/manifest.info"}
 }
