@@ -1,6 +1,5 @@
-import math
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 def parse_date(date_string: str) -> (datetime, datetime, datetime):
@@ -303,12 +302,7 @@ def parse_date(date_string: str) -> (datetime, datetime, datetime):
                 if date_ab > date_bis:
                     raise ValueError("'ab-date' must be before 'bis-date' in time")
 
-                # calculate difference between start and end date of range,
-                # and use it to calculate a single date for usage as median.
-                days_delta_half = math.floor(
-                    (date_bis - date_ab).days / 2,
-                )
-                date_single = date_ab + timedelta(days=days_delta_half)
+                date_single = date_ab
 
             elif date_ab is not None and date_bis is None:
                 # date is only the start of a range, save it also as the single date
