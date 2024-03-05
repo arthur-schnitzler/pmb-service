@@ -42,6 +42,5 @@ Promise.all([edge_promis, node_promis]).then(([edge_data, node_data]) => {
     const cosmograph = new Cosmograph(canvas, config)
     const search = new CosmographSearch(cosmograph, searchContainer)
     cosmograph.setData(nodes, links)
-    search.setData(nodes)
 })
 
