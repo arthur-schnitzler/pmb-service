@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls.exceptions import NoReverseMatch
 
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
+from apis_core.utils import get_object_from_pk_or_uri
 
 
 def uri_resolver(request):
@@ -37,11 +38,7 @@ def uri_resolver(request):
 
 
 def entity_resolver(request, pk):
-    try:
-        TempEntityClass.objects.get(id=pk)
-    except ObjectDoesNotExist:
-        raise Http404
-    entity = TempEntityClass.objects_inheritance.get_subclass(pk=pk)
+    entity = get_object_from_pk_or_uri(pk)
     try:
         url = entity.get_absolute_url()
     except NoReverseMatch:
