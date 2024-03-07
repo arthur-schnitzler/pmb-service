@@ -10,7 +10,7 @@
       {% if object.start_end_date %}
         notAfter-iso="{{ object.start_end_date|date:'Y-m-d' }}"
       {% endif %}
-    >{{ object.start_date_written }}</date>
+    >{{ object.clean_start_date_written }}</date>
   {% for x in birth_rel %}
   {% if FULL %}
     <settlement key="{{ x.related_place.id }}">
@@ -48,7 +48,7 @@
       {% if object.end_end_date %}
         notAfter-iso="{{ object.end_end_date|date:'Y-m-d' }}"
       {% endif %}
-      >{{ object.end_date_written }}</date>
+      >{{ object.clean_end_date_written }}</date>
       {% for x in death_rel %}
       {% if FULL %}
       <settlement key="{{ x.related_place.id }}">
