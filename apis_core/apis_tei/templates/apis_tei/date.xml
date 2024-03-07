@@ -1,5 +1,5 @@
 {% if object.start_date_written == object.end_date_written %}
-<date>{{ object.start_date_written }}</date>
+<date>{{ object.clean_start_date_written }}</date>
 {% elif object.start_date_written and object.end_date_written %}
 <date
       {% if object.start_start_date %}
@@ -8,7 +8,7 @@
       {% if object.end_date %}
         to-iso="{{ object.end_date|date:'Y-m-d' }}"
       {% endif %}
-    >{{ object.start_date_written }}  – {{ object.end_date_written }}</date>
+    >{{ object.clean_start_date_written }} – {{ object.clean_end_date_written }}</date>
 {% elif object.start_date_written %}
 <date
       {% if object.start_start_date %}
@@ -17,7 +17,7 @@
       {% if object.start_date %}
         when-iso="{{ object.start_date|date:'Y-m-d' }}"
       {% endif %}
-    >{{ object.start_date_written }}</date>
+    >{{ object.clean_start_date_written }}</date>
 {% elif object.end_date_written %}
 <date
       {% if object.end_date %}
@@ -26,6 +26,6 @@
       {% if object.end_end_date %}
         notAfter-iso="{{ object.end_end_date|date:'Y-m-d' }}"
       {% endif %}
-    >{{ object.end_date_written }}</date>
+    >{{ object.clean_end_date_written }}</date>
 {% else %}
 {% endif %}

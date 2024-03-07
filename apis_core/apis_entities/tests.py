@@ -416,3 +416,12 @@ class EntitiesTestCase(TestCase):
             for i, r in enumerate(results):
                 date_str = f"{r}"[:10]
                 self.assertEqual(date_str, x[1][i])
+
+    def test_030_clean_written_dates(self):
+        item = Person.objects.create(
+            start_date_written="1800<1812-01-04>", end_date_written="um 1900"
+        )
+        self.assertFalse("<" in item.clean_start_date_written())
+        self.assertFalse("<" in item.clean_end_date_written())
+        self.assertTrue("<" in item.start_date_written)
+        self.assertFalse("<" in item.end_date_written)
