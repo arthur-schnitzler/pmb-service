@@ -1,3 +1,5 @@
+from typing import Any
+from django.apps import apps
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -20,6 +22,31 @@ def get_imprint_url():
 
 class AboutView(TemplateView):
     template_name = "dumper/about.html"
+
+
+class ExportView(TemplateView):
+    template_name = "dumper/export.html"
+
+
+class NetworkView(TemplateView):
+    template_name = "dumper/network.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        MODELS = list(apps.all_models["apis_entities"].values())
+        model_list = []
+        for x in MODELS:
+            try:
+                item = {
+                    "color": x.get_color(),
+                    "icon": x.get_icon(),
+                    "name": x._meta.verbose_name,
+                }
+            except AttributeError:
+                continue
+            model_list.append(item)
+        context["model_list"] = model_list
+        return context
 
 
 class ImprintView(TemplateView):

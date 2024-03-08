@@ -35,8 +35,10 @@
 </note>
 {% endif %}
 {% if object.img_url %}
-<figure>
+<note type="image">
+  <figure>
     <graphic url="{{ object.img_url }}"/>
-</figure>
+  </figure>
+</note>
 {% endif %}
 </place>

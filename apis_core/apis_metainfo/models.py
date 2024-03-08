@@ -174,6 +174,20 @@ class TempEntityClass(models.Model):
                 credit = "AKON"
         return credit
 
+    def clean_start_date_written(self):
+        clean_date = self.start_date_written
+        if self.start_date_written:
+            if "<" in self.start_date_written:
+                clean_date = self.start_date_written.split("<")[0]
+        return clean_date
+
+    def clean_end_date_written(self):
+        clean_date = self.end_date_written
+        if self.end_date_written:
+            if "<" in self.end_date_written:
+                clean_date = self.end_date_written.split("<")[0]
+        return clean_date
+
     @classmethod
     def get_listview_url(self):
         entity = self.__name__.lower()

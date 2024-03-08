@@ -19,3 +19,18 @@ maybe in future also with PMB CRUD included
 ## set up new instance
 
 in order to avoid errors on a new instance you'll need to set an environment variable `PMB_NEW=whatever`. After you run the inital `python manage.py migrate` you should `unset PMB_NEW`
+
+
+## vite
+
+* bundling js-code (used for network-vis) is not part of the docker-setup
+* for development make sure the vite-dev-server is running `pnpm run vite`
+* for building new bundle, run `pn run build`
+
+
+## reset sequence 
+```SQL
+BEGIN; 
+SELECT setval(pg_get_serial_sequence('"django_migrations"','id'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "django_migrations";
+COMMIT;
+```

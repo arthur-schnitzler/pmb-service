@@ -7,6 +7,7 @@ from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
+from apis_core.helper_functions.DateParser import parse_date
 from apis_core.apis_metainfo.models import Uri
 from normdata.forms import NormDataImportForm
 from normdata.utils import (
@@ -402,3 +403,25 @@ class EntitiesTestCase(TestCase):
         url = reverse("apis_core:wikidata_beacon")
         r = client.get(url)
         self.assertEqual(r.status_code, 200)
+
+    def test_029_parse_date(self):
+        dates = [
+            ["1900", ["1900-01-01", "1900-01-01", "1900-12-31"]],
+            ["1800-02", ["1800-02-01", "1800-02-01", "1800-02-28"]],
+            ["1800-02-02", ["1800-02-02", "None", "None"]],
+            ["um 1900<1900-03-03>", ["1900-03-03", "None", "None"]],
+        ]
+        for x in dates:
+            results = parse_date(x[0])
+            for i, r in enumerate(results):
+                date_str = f"{r}"[:10]
+                self.assertEqual(date_str, x[1][i])
+
+    def test_030_clean_written_dates(self):
+        item = Person.objects.create(
+            start_date_written="1800<1812-01-04>", end_date_written="um 1900"
+        )
+        self.assertFalse("<" in item.clean_start_date_written())
+        self.assertFalse("<" in item.clean_end_date_written())
+        self.assertTrue("<" in item.start_date_written)
+        self.assertFalse("<" in item.end_date_written)
