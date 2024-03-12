@@ -332,5 +332,4 @@ DOMAIN_MAPPING = [
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/pmb", "bahr-textverzeichnis", "#8E4162"),
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/TSN-", "bahr-TSN", DEFAULT_COLOR),
     ("amp.acdh.oeaw.ac.at", "auden-musulin-papers", DEFAULT_COLOR),
-
 ]

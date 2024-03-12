@@ -1,5 +1,6 @@
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -425,3 +426,17 @@ class EntitiesTestCase(TestCase):
         self.assertFalse("<" in item.clean_end_date_written())
         self.assertTrue("<" in item.start_date_written)
         self.assertFalse("<" in item.end_date_written)
+
+    def test_031_get_colo(self):
+        DEFAULT_COLOR = settings.DEFAULT_COLOR
+        DOMAIN_MAPPING = settings.DOMAIN_MAPPING
+        item = Person.objects.create(name="hansi4ever")
+        for x in DOMAIN_MAPPING[:3]:
+            uri = Uri.objects.create(
+                uri=f"https://{x[0]}/sumsi.com", domain=x[1], entity=item
+            )
+            self.assertEqual(uri.get_color(), x[2])
+        uri = Uri.objects.create(
+            uri="https://whatdoicare/123.at", domain="somethingveryrandom", entity=item
+        )
+        self.assertEqual(uri.get_color(), DEFAULT_COLOR)
