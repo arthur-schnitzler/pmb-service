@@ -6,13 +6,14 @@ from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
 from apis_core.apis_metainfo.models import Uri
-from dumper.utils import DOMAIN_MAPPING, write_report
+from dumper.utils import write_report
 
 
 class Command(BaseCommand):
     help = "Command to harmonize URL-Domains"
 
     def handle(self, *args, **kwargs):
+        DOMAIN_MAPPING = settings.DOMAIN_MAPPING
         start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
         print("start fixing domains")
         domains = [x[1] for x in DOMAIN_MAPPING]
