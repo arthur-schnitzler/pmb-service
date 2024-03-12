@@ -18,6 +18,10 @@ from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextTy
 from apis_core.helper_functions import DateParser
 
 
+DOMAIN_MAPPING = settings.DOMAIN_MAPPING
+DEFAULT_COLOR = settings.DEFAULT_COLOR
+
+
 class TempEntityClass(models.Model):
     """Base class to bind common attributes to many classes.
 
@@ -294,9 +298,7 @@ class TempEntityClass(models.Model):
         if not isinstance(entities, list) and not isinstance(entities, QuerySet):
             entities = [entities]
             entities = [
-                self_model_class.objects.get(pk=ent)
-                if type(ent) == int
-                else ent  # noqa: E721
+                self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
                 for ent in entities
             ]
         rels = ContentType.objects.filter(
@@ -458,6 +460,14 @@ class Uri(models.Model):
 
     def __str__(self):
         return str(self.uri)
+
+    def get_color(self):
+        color = DEFAULT_COLOR
+        for x in DOMAIN_MAPPING:
+            if x[1] == self.domain:
+                color = x[2]
+                break
+        return color
 
     def get_web_object(self):
         result = {
