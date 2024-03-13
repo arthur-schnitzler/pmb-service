@@ -12,8 +12,8 @@ from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import PersonPlace
 from apis_core.apis_vocabularies.models import PersonPlaceRelation
-from dumper.utils import DOMAIN_MAPPING
 
+DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 BIRTH_REL = getattr(settings, "BIRTH_REL")
 DEATH_REL = getattr(settings, "DEATH_REL")
 

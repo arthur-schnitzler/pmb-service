@@ -15,6 +15,10 @@ maybe in future also with PMB CRUD included
 
 `python manage.py process_beacon --beacon=https://thun-korrespondenz.acdh.oeaw.ac.at/beacon.txt --domain=thun-korrespondenz`
 
+`python manage.py process_beacon --beacon=https://raw.githubusercontent.com/Auden-Musulin-Papers/amp-entities/main/out/beacon.txt --domain=Auden-Musulin-Papers`
+
+`python manage.py process_beacon --beacon=https://raw.githubusercontent.com/Hanslick-Online/hsl-entities/main/out/beacon.txt --domain=Hanslick`
+
 
 ## set up new instance
 

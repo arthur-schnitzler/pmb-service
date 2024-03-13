@@ -11,25 +11,6 @@ from tqdm import tqdm
 
 from apis_core.apis_metainfo.models import Uri
 
-DOMAIN_MAPPING = [
-    ("d-nb.info/gnd", "gnd"),
-    ("geonames", "geonames"),
-    ("wikidata", "wikidata"),
-    ("wikipedia", "wikipedia"),
-    ("fackel.oeaw.ac.at", "fackel"),
-    ("schnitzler-tagebuch", "schnitzler-tagebuch"),
-    ("schnitzler-bahr", "schnitzler-bahr"),
-    ("schnitzler-briefe", "schnitzler-briefe"),
-    ("schnitzler-lektueren", "schnitzler-lektueren"),
-    ("//doi.org/10.1553", "oebl"),
-    ("dx.doi.org/10.1553", "oeml"),
-    ("kraus.wienbibliothek.at", "legalkraus"),
-    ("kraus1933", "dritte-walpurgisnacht"),
-    ("pmb.acdh.oeaw.ac.at", "pmb"),
-    ("anno", "anno"),
-    ("geschichtewiki.wien", "wiengeschichtewiki"),
-]
-
 
 PMB_ENTITIES = "pmb_entities"
 
