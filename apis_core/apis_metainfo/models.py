@@ -298,17 +298,23 @@ class TempEntityClass(models.Model):
         if not isinstance(entities, list) and not isinstance(entities, QuerySet):
             entities = [entities]
             entities = [
-                self_model_class.objects.get(pk=ent)
-                if type(ent) == int
-                else ent  # noqa: E721
+                self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
                 for ent in entities
             ]
         rels = ContentType.objects.filter(
             app_label="apis_relations", model__icontains=e_a
         )
+        try:
+            self_gender = self.gender
+        except AttributeError:
+            self_gender = False
         notes = []
         references = []
         for ent in entities:
+            try:
+                ent_gender = ent.gender
+            except AttributeError:
+                ent_gender = False
             if isinstance(ent.notes, str):
                 notes.append(ent.notes)
             if isinstance(ent.references, str):
@@ -357,6 +363,12 @@ class TempEntityClass(models.Model):
                         setattr(t, "related_{}".format(e_a.lower()), self)
                         t.save()
             ent.delete()
+            if self_gender:
+                pass
+            elif ent_gender:
+                self.gender = ent_gender
+            else:
+                pass
             save_target = False
             if len(notes) > 0:
                 additional_notes = " ".join(notes)
