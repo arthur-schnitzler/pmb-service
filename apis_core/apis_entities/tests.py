@@ -166,7 +166,7 @@ class EntitiesTestCase(TestCase):
 
         place_target = Place.objects.create(name="Sumsi")
         place_source = Place.objects.create(name="Dumsi")
-        place_target.merge(place_source.id)
+        place_target.merge_with(place_source.id)
 
     def test_010_delete_views(self):
         client.login(**USER)
