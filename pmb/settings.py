@@ -310,7 +310,7 @@ DJANGO_VITE = {
 DEFAULT_COLOR = "#9B5F98"
 DOMAIN_MAPPING = [
     ("d-nb.info", "gnd", "#006AB3"),
-    ("geonames", "geonames", "##363"),
+    ("geonames", "geonames", "#363"),
     ("wikidata", "wikidata", "#0645ad"),
     ("wikipedia", "wikipedia", "#0645AD"),
     ("fackel.oeaw.ac.at", "fackel", "#CE0F0B"),
