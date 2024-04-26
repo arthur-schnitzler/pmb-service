@@ -310,7 +310,7 @@ DJANGO_VITE = {
 DEFAULT_COLOR = "#9B5F98"
 DOMAIN_MAPPING = [
     ("d-nb.info", "gnd", "#006AB3"),
-    ("geonames", "geonames", "##363"),
+    ("geonames", "geonames", "#363"),
     ("wikidata", "wikidata", "#0645ad"),
     ("wikipedia", "wikipedia", "#0645AD"),
     ("fackel.oeaw.ac.at", "fackel", "#CE0F0B"),
@@ -332,4 +332,6 @@ DOMAIN_MAPPING = [
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/pmb", "bahr-textverzeichnis", "#8E4162"),
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/TSN-", "bahr-TSN", "#ce0000"),
     ("amp.acdh.oeaw.ac.at", "auden-musulin-papers", "#b59890"),
+    ("schnitzler-zeitungen.", "schnitzler-zeitungen", "#8E8575"),
+    ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
 ]
