@@ -332,4 +332,6 @@ DOMAIN_MAPPING = [
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/pmb", "bahr-textverzeichnis", "#8E4162"),
     ("bahr-textverzeichnis.acdh.oeaw.ac.at/TSN-", "bahr-TSN", "#ce0000"),
     ("amp.acdh.oeaw.ac.at", "auden-musulin-papers", "#b59890"),
+    ("schnitzler-zeitungen.", "schnitzler-zeitungen", DEFAULT_COLOR),
+    ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", DEFAULT_COLOR),
 ]
