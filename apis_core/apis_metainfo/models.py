@@ -179,18 +179,24 @@ class TempEntityClass(models.Model):
         return credit
 
     def clean_start_date_written(self):
-        clean_date = self.start_date_written
         if self.start_date_written:
-            if "<" in self.start_date_written:
-                clean_date = self.start_date_written.split("<")[0]
-        return clean_date.strip()
+            clean_date = self.start_date_written
+            if self.start_date_written:
+                if "<" in self.start_date_written:
+                    clean_date = self.start_date_written.split("<")[0]
+            return clean_date.strip()
+        else:
+            return ""
 
     def clean_end_date_written(self):
-        clean_date = self.end_date_written
         if self.end_date_written:
-            if "<" in self.end_date_written:
-                clean_date = self.end_date_written.split("<")[0]
-        return clean_date.strip()
+            clean_date = self.end_date_written
+            if self.end_date_written:
+                if "<" in self.end_date_written:
+                    clean_date = self.end_date_written.split("<")[0]
+            return clean_date.strip()
+        else:
+            return ""
 
     @classmethod
     def get_listview_url(self):

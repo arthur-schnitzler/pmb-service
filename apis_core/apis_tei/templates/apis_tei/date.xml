@@ -1,4 +1,4 @@
-{% if object.start_date_written == object.end_date_written %}
+{% if object.start_date_written == object.end_date_written and object.start_date_written %}
 <date>{{ object.clean_start_date_written }}</date>
 {% elif object.start_date_written and object.end_date_written %}
 <date
