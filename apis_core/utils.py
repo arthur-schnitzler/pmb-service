@@ -5,26 +5,30 @@ from django.shortcuts import get_object_or_404
 
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 
+entity_list = ["place", "person", "work", "event", "institution"]
+
 
 def get_object_from_pk_or_uri(pk):
     """checks if the given pk exists, if not checks if a matching apis-default uri exists
     and returns its entity"""
     try:
-        instance = TempEntityClass.objects_inheritance.get_subclass(pk=pk)
+        instance = TempEntityClass.objects_inheritance.select_subclasses(
+            *entity_list
+        ).get(pk=pk)
         return instance
     except ObjectDoesNotExist:
         domain = "https://pmb.acdh.oeaw.ac.at/"
         new_uri = f"{domain}entity/{pk}/"
         uri2 = Uri.objects.filter(uri=new_uri)
         if uri2.count() == 1:
-            instance = TempEntityClass.objects_inheritance.get_subclass(
-                pk=uri2[0].entity_id
-            )
+            instance = TempEntityClass.objects_inheritance.select_subclasses(
+                *entity_list
+            ).get(pk=uri2[0].entity_id)
         elif uri2.count() == 0:
             temp_obj = get_object_or_404(Uri, uri=new_uri[:-1])
-            instance = TempEntityClass.objects_inheritance.get_subclass(
-                pk=temp_obj.entity_id
-            )
+            instance = TempEntityClass.objects_inheritance.select_subclasses(
+                *entity_list
+            ).get(pk=temp_obj.entity_id)
         else:
             raise Http404
         return instance
