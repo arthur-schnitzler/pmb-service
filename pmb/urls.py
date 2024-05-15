@@ -4,10 +4,15 @@ from django.contrib import admin
 from django.urls import include, path
 
 from apis_core.apis_entities import resolver_views
+from django.views.generic.base import TemplateView
 
 
 urlpatterns = (
     [
+        path(
+            "robots.txt",
+            TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+        ),
         path("apis/", include("apis_core.urls", namespace="apis")),
         path("normdata/", include("normdata.urls", namespace="normdata")),
         path("admin/", admin.site.urls),
