@@ -16,9 +16,15 @@ class Command(BaseCommand):
     help = "mint WikiData IDs for GND-URIs"
 
     def handle(self, *args, **kwargs):
-        LIMIT = 100
+        LIMIT = 2
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(name="No WikiData-ID found")
+        ents = TempEntityClass.objects.filter(uri__uri__icontains="wikidata").filter(collection=col)
+        print(f"found {ents.count()} entities with wikidata-ids but related to {col}")
+        if ents:
+            print(f"remove relation to {col}")
+            for x in tqdm(ents, total=ents.count()):
+                x.collection.remove(col)
         types = ["d-nb.info", "geonames"]
         for uri_type in types:
             print(f"processing URIS with type: {uri_type}")
