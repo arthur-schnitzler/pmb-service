@@ -16,7 +16,7 @@ class Command(BaseCommand):
     help = "mint WikiData IDs for GND-URIs"
 
     def handle(self, *args, **kwargs):
-        LIMIT = 2
+        LIMIT = 150
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(name="No WikiData-ID found")
         ents = TempEntityClass.objects.filter(uri__uri__icontains="wikidata").filter(collection=col)
