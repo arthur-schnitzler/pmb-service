@@ -10,5 +10,5 @@ class NormDataImportForm(forms.Form):
     entity_type = forms.ChoiceField(
         label="Entität",
         help_text="Wähle die Art der Entität: Person, Ort, ...",
-        choices=(("person", "Person"), ("place", "Ort")),
+        choices=(("person", "Person"), ("place", "Ort"), ("institution", "Institution")),
     )
