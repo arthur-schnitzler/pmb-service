@@ -292,6 +292,18 @@ class EntitiesTestCase(TestCase):
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 200)
 
+    def test_017_import_institution(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://d-nb.info/gnd/414136-2",
+            "entity_type": "institution",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_018_download_vocabs(self):
         model_name = "worktype"
         url = reverse(

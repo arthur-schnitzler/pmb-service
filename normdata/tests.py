@@ -5,6 +5,7 @@ from normdata.utils import (
     get_or_create_person_from_gnd,
     get_or_create_place_from_geonames,
     get_or_create_place_from_gnd,
+    get_or_create_org_from_wikidata,
 )
 
 GEONAMES_URL = "https://www.geonames.org/2461464/graret-oum-sedra.html"
@@ -52,3 +53,8 @@ class NormdataTestCase(TestCase):
             self.assertEqual(gnd_uri.count(), 1)
             self.assertEqual(entity.gender, gender[i])
         entity = get_or_create_person_from_gnd(x)
+
+    def test_005_get_or_create_org_from_wikidata(self):
+        entity = get_or_create_org_from_wikidata("https://www.wikidata.org/wiki/Q7191")
+        entity = get_or_create_org_from_wikidata("https://www.wikidata.org/wiki/Q7191")
+        self.assertEqual(entity.name, "Nobel Prize")
