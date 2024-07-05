@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from icecream import ic
-from pylobid.pylobid import PyLobidPerson, PyLobidPlace
+from pylobid.pylobid import PyLobidPerson, PyLobidPlace, PyLobidOrg
 
 from apis_core.apis_entities.models import Person, Place, Institution
 from apis_core.apis_metainfo.models import Uri
@@ -158,6 +158,26 @@ def get_or_create_person_from_gnd(uri):
         return entity
 
 
+def get_or_create_org_from_gnd(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Institution.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        fetched_item = PyLobidOrg(uri)
+        pref_name = fetched_item.pref_name
+        apis_entity = {
+            "name": pref_name,
+        }
+        entity = Institution.objects.create(**apis_entity)
+        Uri.objects.create(
+            uri=uri,
+            domain="gnd",
+            entity=entity,
+        )
+        return entity
+
+
 def get_or_create_person_from_wikidata(uri):
     try:
         entity = Uri.objects.get(uri=uri).entity
@@ -281,9 +301,16 @@ def import_from_normdata(raw_url, entity_type):
                 except Exception as e:
                     ic(e)
                     wikidata_url = False
-            if entity_type == "person":
+            elif entity_type == "person":
                 try:
                     entity = get_or_create_person_from_gnd(normalized_url)
+                    return entity
+                except Exception as e:
+                    ic(e)
+                    wikidata_url = False
+            elif entity_type == "institution":
+                try:
+                    entity = get_or_create_org_from_gnd(normalized_url)
                     return entity
                 except Exception as e:
                     ic(e)
