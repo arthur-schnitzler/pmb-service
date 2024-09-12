@@ -24,17 +24,103 @@
     acdh:hasDescription """The PMB is a web service for persons, works, institutions, places and events specifically for the period in Vienna around 1900. The simplest function is to create a common database for various projects. This data collection consists of data extracts from the PMB in machine-readable and human-readable formats such as TEI/XML or GEXF."""@en ;
     acdh:hasPrincipalInvestigator <https://d-nb.info/gnd/1050382196> ;
     acdh:hasPrincipalInvestigator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContact <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasCurator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasDepositor <https://d-nb.info/gnd/1043833846> ;
     acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
     acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
     acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
-    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;
-    acdh:hasDepositor <https://d-nb.info/gnd/1043833846> ;
-    acdh:hasCurator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
     acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
     acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
     acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
     acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
     acdh:hasSubject "Wiener Moderne"@de ;
+    acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
+
+
+<https://id.acdh.oeaw.ac.at/pmb/listperson.xml> a acdh:Resource ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/pmb> ;
+    acdh:hasTitle "Personenregister"@de;
+    acdh:hasDescription """TEI/XML Serialisierung der Personeneinträge in der PMB"""@de ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text> ;
+    acdh:hasDepositor <https://orcid.org/0000-0003-2682-8933> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
+
+
+<https://id.acdh.oeaw.ac.at/pmb/listplace.xml> a acdh:Resource ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/pmb> ;
+    acdh:hasTitle "Ortsregister"@de;
+    acdh:hasDescription """TEI/XML Serialisierung der Ortseinträge in der PMB"""@de ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text> ;
+    acdh:hasDepositor <https://orcid.org/0000-0003-2682-8933> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
+
+
+<https://id.acdh.oeaw.ac.at/pmb/listbibl.xml> a acdh:Resource ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/pmb> ;
+    acdh:hasTitle "Werkregister"@de;
+    acdh:hasDescription """TEI/XML Serialisierung der Werkeinträge in der PMB"""@de ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text> ;
+    acdh:hasDepositor <https://orcid.org/0000-0003-2682-8933> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
+
+
+<https://id.acdh.oeaw.ac.at/pmb/listevent.xml> a acdh:Resource ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/pmb> ;
+    acdh:hasTitle "Register der Ereignisse"@de;
+    acdh:hasDescription """TEI/XML Serialisierung der Ereigniseinträge in der PMB"""@de ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text> ;
+    acdh:hasDepositor <https://orcid.org/0000-0003-2682-8933> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
+
+
+<https://id.acdh.oeaw.ac.at/pmb/listorg.xml> a acdh:Resource ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/pmb> ;
+    acdh:hasTitle "Register der Institutionen"@de;
+    acdh:hasDescription """TEI/XML Serialisierung der Institutioneneinträge in der PMB"""@de ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text> ;
+    acdh:hasDepositor <https://orcid.org/0000-0003-2682-8933> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1050382196> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1289549982> ;
+    acdh:hasContributor <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasContributor <https://d-nb.info/gnd/11082959X> ;  
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasOwner <https://id.acdh.oeaw.ac.at/acdh> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
     acdh:hasRightsHolder <https://id.acdh.oeaw.ac.at/oeaw> .
 
 
