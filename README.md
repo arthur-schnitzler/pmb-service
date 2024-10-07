@@ -8,6 +8,24 @@ lightweight APIS-PMB instance to generate TEI/XML dumps
 
 maybe in future also with PMB CRUD included
 
+## install
+
+* clone the repo
+* create a virtual env `python -m venv venv`
+* activate it `source venv/bin/activate`
+* install packages `pip install -r requirements_dev.txt`
+* get a recent db-dump (`./dump_and_restore.sh`) (create a postgres-db `pmb` and run `./dump_and_restore.sh`, make sure you tunneled to production db first)
+* set env variables
+* run `python manage.py runserver`
+* (create a superuser) `python manage.py creatsuperuser`
+
+
+
+## jupyter notebook
+* `pip install notebook` (1 time)
+* set env varibles `./set_env_variables`
+* `python manage.py shell_plus --lab`
+
 
 ## cheat-sheet
 
