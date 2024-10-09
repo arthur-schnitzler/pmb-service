@@ -56,7 +56,8 @@ class EventListFilter(MyBaseFilter):
     name = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Name des Ereignisses",
-        help_text="eingegebene Zeichenkette muss im Titel enthalten sein",
+        method="name_label_filter",
+        help_text="eingegebene Zeichenkette muss im Titel oder in einem der Labels enthalten sein",
     )
     year_of_creation = django_filters.NumberFilter(
         field_name="start_date__year", label="Schöpfungsdatum", help_text="z.B. 1880"
