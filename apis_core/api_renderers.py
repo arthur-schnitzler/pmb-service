@@ -34,11 +34,11 @@ class NetJsonRenderer(renderers.JSONRenderer):
             for d in data["results"]:
                 d2 = OrderedDict(
                     [
-                        ("target", v)
-                        if k == target
-                        else ("source", v)
-                        if k == source
-                        else (k, v)
+                        (
+                            ("target", v)
+                            if k == target
+                            else ("source", v) if k == source else (k, v)
+                        )
                         for k, v in d.items()
                     ]
                 )

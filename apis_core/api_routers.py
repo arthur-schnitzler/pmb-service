@@ -246,9 +246,9 @@ def generic_serializer_creation_factory():
                                 many=ck_many, read_only=True
                             )
 
-        TemplateSerializer.__name__ = (
-            TemplateSerializer.__qualname__
-        ) = f"{entity_str.title().replace(' ', '')}Serializer"
+        TemplateSerializer.__name__ = TemplateSerializer.__qualname__ = (
+            f"{entity_str.title().replace(' ', '')}Serializer"
+        )
 
         class TemplateSerializerRetrieve(TemplateSerializer):
             if entity_str.lower() == "text":
@@ -323,9 +323,9 @@ def generic_serializer_creation_factory():
                         "IntegerField",
                         "AutoField",
                     ]:
-                        filter_fields[
-                            f"{field.name}__{f2.name}"
-                        ] = allowed_fields_filter[f2.__class__.__name__]
+                        filter_fields[f"{field.name}__{f2.name}"] = (
+                            allowed_fields_filter[f2.__class__.__name__]
+                        )
                 continue
             if field.__class__.__name__ in allowed_fields_filter.keys():
                 filter_fields[field.name] = allowed_fields_filter[
@@ -388,9 +388,9 @@ def generic_serializer_creation_factory():
                 res = super(self.__class__, self).retrieve(request, pk=pk)
                 return res
 
-        TemplateViewSet.__name__ = (
-            TemplateViewSet.__qualname__
-        ) = f"Generic{entity_str.title().replace(' ', '')}ViewSet"
+        TemplateViewSet.__name__ = TemplateViewSet.__qualname__ = (
+            f"Generic{entity_str.title().replace(' ', '')}ViewSet"
+        )
 
         serializers_dict[TemplateSerializer.__name__] = TemplateSerializer
         views[f"{entity_str.lower().replace(' ', '')}"] = TemplateViewSet

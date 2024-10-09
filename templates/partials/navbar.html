@@ -70,6 +70,21 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Relationen
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:person_place' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen und Orte
+                                    <i class="bi bi-map apis-place"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'normdata:import_from_normdata' %}">Import</a>

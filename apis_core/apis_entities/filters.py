@@ -121,14 +121,14 @@ class GenericListFilter(django_filters.FilterSet):
                         ]
 
                         if "method" in enabled_filter_settings_dict:
-                            default_filter_dict[
-                                enabled_filter_key
-                            ].method = enabled_filter_settings_dict["method"]
+                            default_filter_dict[enabled_filter_key].method = (
+                                enabled_filter_settings_dict["method"]
+                            )
 
                         if "label" in enabled_filter_settings_dict:
-                            default_filter_dict[
-                                enabled_filter_key
-                            ].label = enabled_filter_settings_dict["label"]
+                            default_filter_dict[enabled_filter_key].label = (
+                                enabled_filter_settings_dict["label"]
+                            )
 
                         filter_dict_tmp[enabled_filter_key] = default_filter_dict[
                             enabled_filter_key

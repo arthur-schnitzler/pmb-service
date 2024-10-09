@@ -1,10 +1,16 @@
 from django.urls import path
 
 from . import views
+from . import relation_views
 
 app_name = "apis_relations"
 
 urlpatterns = [
+    path(
+        "person-place/",
+        relation_views.PersonPlaceListView.as_view(),
+        name="person_place",
+    ),
     path(
         "delete/<int:relation_id>/",
         views.delete_relation_view,

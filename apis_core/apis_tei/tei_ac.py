@@ -57,9 +57,9 @@ class TeiCompleterAc(autocomplete.Select2ListView):
                 ent_type = "org"
             else:
                 ent_type = "{}".format(ac_type)
-            f[
-                "tc:description"
-            ] = f"name: {str(r)}, type: {ent_type}, dates: {dates}".format(dates)
+            f["tc:description"] = (
+                f"name: {str(r)}, type: {ent_type}, dates: {dates}".format(dates)
+            )
             choices.append(f)
         return http.HttpResponse(
             json.dumps({"tc:suggestion": choices + [], "pagination": {"more": True}}),

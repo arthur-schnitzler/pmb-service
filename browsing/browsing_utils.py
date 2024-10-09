@@ -91,7 +91,14 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         context["app_name"] = self.model._meta.app_label
         context["verbose_name"] = self.verbose_name
         context["help_text"] = self.help_text
-        context["icon"] = self.model.get_icon()
+        try:
+            context["icon"] = self.model.get_icon()
+        except AttributeError:
+            context["icon"] = "bi bi-infinity"
+        try:
+            context["second_icon"] = self.model.get_second_icon()
+        except AttributeError:
+            context["second_icon"] = "bi bi-infinity"
         if self.get_queryset().count() < 1001:
             context["download"] = True
         else:
