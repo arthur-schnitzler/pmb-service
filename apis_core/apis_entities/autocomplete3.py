@@ -139,10 +139,10 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
                     f["id"] = r.id
                 except:
                     continue
-                f[
-                    "text"
-                ] = "<span {}><small>db</small> <b>{}</b> <small>db-ID: {}</small> </span> ".format(
-                    dataclass, str(r), str(r.id)
+                f["text"] = (
+                    "<span {}><small>db</small> <b>{}</b> <small>db-ID: {}</small> </span> ".format(
+                        dataclass, str(r), str(r.id)
+                    )
                 )
                 choices.append(f)
             if len(choices) < page_size:

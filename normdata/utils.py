@@ -11,7 +11,10 @@ from pylobid.pylobid import PyLobidPerson, PyLobidPlace, PyLobidOrg
 from apis_core.apis_entities.models import Person, Place, Institution
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_relations.models import PersonPlace, InstitutionPlace
-from apis_core.apis_vocabularies.models import PersonPlaceRelation, InstitutionPlaceRelation
+from apis_core.apis_vocabularies.models import (
+    PersonPlaceRelation,
+    InstitutionPlaceRelation,
+)
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 BIRTH_REL = getattr(settings, "BIRTH_REL")
@@ -267,7 +270,9 @@ def get_or_create_org_from_wikidata(uri):
                     pass
             if wd_entity.location:
                 try:
-                    relation_type = InstitutionPlaceRelation.objects.get(id=LOCATED_REL[0])
+                    relation_type = InstitutionPlaceRelation.objects.get(
+                        id=LOCATED_REL[0]
+                    )
                 except ObjectDoesNotExist:
                     relation_type, _ = InstitutionPlaceRelation.objects.get_or_create(
                         name="angesiedelt in"

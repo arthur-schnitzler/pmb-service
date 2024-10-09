@@ -19,7 +19,9 @@ class Command(BaseCommand):
         LIMIT = 150
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(name="No WikiData-ID found")
-        ents = TempEntityClass.objects.filter(uri__uri__icontains="wikidata").filter(collection=col)
+        ents = TempEntityClass.objects.filter(uri__uri__icontains="wikidata").filter(
+            collection=col
+        )
         print(f"found {ents.count()} entities with wikidata-ids but related to {col}")
         if ents:
             print(f"remove relation to {col}")

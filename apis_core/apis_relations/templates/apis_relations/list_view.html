@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_tables2 %}
+{% load crispy_forms_field %}
+{% load crispy_forms_tags %}
+{% block title %} Alle {{ verbose_name }} {% endblock %}
+{% block content %}
+{% include "partials/entity_styles.html" %}
+
+<div class="container pt-4">
+    <h1 class="display-1 text-center apis-{{ entity }}">
+        <i class="{{ icon }}"></i> {{ verbose_name }} <i class="{{ second_icon }}"></i>
+    </h1>
+    {% if user.is_authenticated %}{% if create_view_link %}
+    <h2 class="text-center">
+        <a href="{{ create_view_link }}">
+            <i class="bi bi-plus-square" title="neues Objekt anlegen"></i>
+        </a>
+    </h2>
+    {% endif %}{% endif %}
+    <div class="row pt-4">
+        <div class="col-md-4" id="searchpane">
+            <h2 class="text-center">Suchen & Filtern</h2>
+            {% block customView %}{% endblock %}
+            {% block create_button %}{% endblock %}
+            <!--Search mask-->
+            {% load django_tables2 crispy_forms_tags %}
+            <form action="." class="uniForm" method="get">
+                {% crispy filter.form filter.form.helper %}
+                {% include 'browsing/partials/column_selector.html' %}
+                <a class="btn btn-primary" href=".">Zurücksetzen</a>
+                <button type="submit" class="btn btn-primary">Suchen & Filtern</button>
+            </form>
+
+
+        </div>
+        <div class="col-md-8" id="results">
+
+            {% with table.paginator.count as total %}
+            <h2 class="text-center">{{ total }} Result(s)</h2>
+            {% endwith %}
+            <div>
+                {% block table %}
+                {% include 'browsing/partials/table.html' %}
+                {% endblock table %}
+                {% block pagination.allpages %}
+                {% include 'browsing/partials/pagination.html' %}
+                {% endblock pagination.allpages %}
+                {% if download %}
+                <div class="float-end">
+                    {% include "browsing/partials/download_menu.html" %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block scripts2 %}
+<script src="{% static 'browsing/js/set-form-attributes.js' %}"></script>
+<script src="{% static 'browsing/js/filter-for-blank-fields.js' %}"></script>
+{% endblock scripts2 %}

@@ -1,8 +1,8 @@
 import inspect
 import sys
 
-from icecream import ic
-from apis_core.apis_entities.models import Person
+from django.urls import reverse_lazy
+
 from apis_core.apis_metainfo.models import TempEntityClass
 
 #######################################################################
@@ -226,9 +226,9 @@ class AbstractRelation(TempEntityClass):
 
         # save into the dictionary, which uses the entity class as key and the extended list above as value.
         cls._relation_classes_of_entity_class[entity_class] = relation_class_list
-        cls._relation_classes_of_entity_name[
-            entity_class.__name__.lower()
-        ] = relation_class_list
+        cls._relation_classes_of_entity_name[entity_class.__name__.lower()] = (
+            relation_class_list
+        )
 
     @classmethod
     def get_relation_field_names_of_entity_class(cls, entity_class):
@@ -341,7 +341,21 @@ class PersonPerson(AbstractRelation):
 
 
 class PersonPlace(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return reverse_lazy("apis:apis_relations:person_place")
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-map apis-place"
+
+    @classmethod
+    def get_color(self):
+        return "#720e07"
 
 
 class PersonInstitution(AbstractRelation):

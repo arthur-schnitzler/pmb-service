@@ -60,6 +60,7 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         table = super(GenericListView, self).get_table()
         default_cols = self.init_columns
         all_cols = table.base_columns.keys()
+        print(default_cols, all_cols)
         selected_cols = self.request.GET.getlist("columns") + default_cols
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals
@@ -91,7 +92,14 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         context["app_name"] = self.model._meta.app_label
         context["verbose_name"] = self.verbose_name
         context["help_text"] = self.help_text
-        context["icon"] = self.model.get_icon()
+        try:
+            context["icon"] = self.model.get_icon()
+        except AttributeError:
+            context["icon"] = "bi bi-infinity"
+        try:
+            context["second_icon"] = self.model.get_second_icon()
+        except AttributeError:
+            context["second_icon"] = "bi bi-infinity"
         if self.get_queryset().count() < 1001:
             context["download"] = True
         else:
