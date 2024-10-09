@@ -60,7 +60,6 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         table = super(GenericListView, self).get_table()
         default_cols = self.init_columns
         all_cols = table.base_columns.keys()
-        print(default_cols, all_cols)
         selected_cols = self.request.GET.getlist("columns") + default_cols
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals

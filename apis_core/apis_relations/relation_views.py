@@ -3,9 +3,10 @@ from dal import autocomplete
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from django.urls import reverse_lazy
-from django_filters import FilterSet, ModelMultipleChoiceFilter
+from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
 from apis_core.apis_entities.models import Person, Place
+
 from .models import PersonPlace
 
 
@@ -20,20 +21,6 @@ excluded_cols = [
     "tempentityclass_ptr",
     "review",
 ]
-
-
-class PersonPlaceFormHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super(PersonPlaceFormHelper, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.form_class = "genericFilterForm"
-        self.form_method = "GET"
-        self.form_tag = False
-        self.layout = Layout(
-            "related_person",
-            "related_place",
-            "relation_type",
-        )
 
 
 class PersonPlaceListFilter(FilterSet):
@@ -59,6 +46,12 @@ class PersonPlaceListFilter(FilterSet):
             ),
         ),
     )
+    start_date__year = RangeFilter(
+        label="Anfang (Jahr)",
+    )
+    end_date__year = RangeFilter(
+        label="Ende (Jahr)",
+    )
 
     class Meta:
         model = PersonPlace
@@ -66,7 +59,25 @@ class PersonPlaceListFilter(FilterSet):
             "related_person",
             "related_place",
             "relation_type",
+            "start_date__year",
+            "end_date__year",
         ]
+
+
+class PersonPlaceFormHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(PersonPlaceFormHelper, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.form_class = "genericFilterForm"
+        self.form_method = "GET"
+        self.form_tag = False
+        self.layout = Layout(
+            "related_person",
+            "related_place",
+            "relation_type",
+            "start_date__year",
+            "end_date__year",
+        )
 
 
 class PersonPlaceTable(tables.Table):
