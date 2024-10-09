@@ -256,6 +256,13 @@ class EntitiesTestCase(TestCase):
             entity = get_or_create_person_from_wikidata(x.uri)
             self.assertTrue(entity)
 
+    def test_015a_dont_duplicate_first_name_in_name(self):
+        """see issue https://github.com/arthur-schnitzler/pmb-service/issues/217"""
+        entity = import_from_normdata(
+            "https://www.wikidata.org/wiki/Q2835019", "person"
+        )
+        self.assertFalse(entity.first_name in entity.name)
+
     def test_016_import_nonsense_geonames(self):
         client.login(**USER)
         payload = {
