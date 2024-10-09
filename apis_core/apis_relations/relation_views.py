@@ -33,6 +33,7 @@ class PersonPlaceListFilter(FilterSet):
                 "apis:apis_entities:generic_entities_autocomplete",
                 kwargs={"entity": "person"},
             ),
+            attrs={"data-html": True},
         ),
     )
     related_place = ModelMultipleChoiceFilter(
@@ -44,6 +45,7 @@ class PersonPlaceListFilter(FilterSet):
                 "apis:apis_entities:generic_entities_autocomplete",
                 kwargs={"entity": "place"},
             ),
+            attrs={"data-html": True},
         ),
     )
     start_date__year = RangeFilter(
@@ -82,12 +84,16 @@ class PersonPlaceFormHelper(FormHelper):
 
 class PersonPlaceTable(tables.Table):
     related_person = tables.TemplateColumn(
-        "{{ record.related_person }}", verbose_name="Person"
+        """<a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>""",
+        verbose_name="Person",
     )
     related_place = tables.TemplateColumn(
-        "{{ record.related_place }}", verbose_name="Ort"
+        """<a href="{{ record.related_place.get_absolute_url }}">{{ record.related_place }}</a>""",
+        verbose_name="Ort",
     )
-    relation_type = tables.TemplateColumn("{{ record.relation_type }}")
+    relation_type = tables.TemplateColumn(
+        "{{ record.relation_type }}", verbose_name="Art der Beziehung"
+    )
     start_date_written = tables.TemplateColumn(
         "{% if record.start_date_written %} {{ record.start_date_written }} {% endif %}",
         verbose_name="Start",
@@ -114,7 +120,6 @@ class PersonPlaceListView(GenericListView):
     formhelper_class = PersonPlaceFormHelper
     table_class = PersonPlaceTable
     init_columns = [
-        "id",
         "start_date_written",
         "end_date_written",
         "related_person",
