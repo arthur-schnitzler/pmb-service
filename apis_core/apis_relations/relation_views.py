@@ -5,7 +5,9 @@ from crispy_forms.layout import Layout
 from django.urls import reverse_lazy
 from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
+
 from apis_core.apis_entities.models import Person, Place
+from apis_core.apis_vocabularies.models import PersonPlaceRelation
 
 from .models import PersonPlace
 
@@ -47,6 +49,11 @@ class PersonPlaceListFilter(FilterSet):
             ),
             attrs={"data-html": True},
         ),
+    )
+    relation_type = ModelMultipleChoiceFilter(
+        queryset=PersonPlaceRelation.objects.all().order_by("name"),
+        label="Art der Beziehung",
+        help_text="Mehrfachauswahl möglich",
     )
     start_date__year = RangeFilter(
         label="Anfang (Jahr)",
