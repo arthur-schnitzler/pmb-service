@@ -51,6 +51,16 @@ urlpatterns = [
         name="personperson",
     ),
     path(
+        "person-person/create/",
+        person_person_relation_views.PersonPersonCreate.as_view(),
+        name="personperson_create",
+    ),
+    path(
+        "person-person/edit/<int:pk>",
+        person_person_relation_views.PersonPersonUpdate.as_view(),
+        name="personperson_edit",
+    ),
+    path(
         "delete/<int:relation_id>/",
         views.delete_relation_view,
         name="delete_relation",
