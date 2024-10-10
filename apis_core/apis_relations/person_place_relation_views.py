@@ -149,7 +149,9 @@ class PersonPlaceFormHelper(FormHelper):
 
 class PersonPlaceTable(tables.Table):
     related_person = tables.TemplateColumn(
-        """<a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>""",
+        """
+        <a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>
+        """,
         verbose_name="Person",
     )
     related_place = tables.TemplateColumn(
@@ -167,6 +169,18 @@ class PersonPlaceTable(tables.Table):
         "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
         verbose_name="End",
     )
+    crud = tables.TemplateColumn(
+        """
+            <a href="{{ record.get_edit_url }}">
+                <i class="bi bi-pencil-square p-1 fs-5" title="Verbindung bearbeiten" aria-hidden="true">
+                    <span class="visually-hidden">Verbindung bearbeiten</span>
+                </i>
+            </a>
+            <i class="bi bi-clipboard p-1 fs-5"></i>
+            <i class="bi bi-trash p-1 fs-5"></i>
+        """,
+        verbose_name="Ändern, Kopieren oder Löschen",
+    )
 
     class Meta:
         model = PersonPlace
@@ -176,6 +190,8 @@ class PersonPlaceTable(tables.Table):
             "relation_type",
             "related_place",
             "start_date_written",
+            "end_date_written",
+            "crud",
         )
 
 
@@ -190,6 +206,7 @@ class PersonPlaceListView(GenericListView):
         "related_person",
         "relation_type",
         "related_place",
+        "crud",
     ]
     verbose_name = "Personen und Orte"
     exclude_columns = FIELDS_TO_EXCLUDE
