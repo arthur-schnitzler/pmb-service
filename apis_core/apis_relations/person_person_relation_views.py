@@ -6,10 +6,10 @@ from django.urls import reverse_lazy
 from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
 
-from apis_core.apis_entities.models import Person, Place
-from apis_core.apis_vocabularies.models import PersonPlaceRelation
+from apis_core.apis_entities.models import Person
+from apis_core.apis_vocabularies.models import PersonPersonRelation
 
-from .models import PersonPlace
+from .models import PersonPerson
 
 
 excluded_cols = [
@@ -25,8 +25,8 @@ excluded_cols = [
 ]
 
 
-class PersonPlaceListFilter(FilterSet):
-    related_person = ModelMultipleChoiceFilter(
+class PersonPersonListFilter(FilterSet):
+    related_persona = ModelMultipleChoiceFilter(
         queryset=Person.objects.all(),
         help_text="Wähle eine oder mehrere Personen",
         label="Personen",
@@ -38,20 +38,20 @@ class PersonPlaceListFilter(FilterSet):
             attrs={"data-html": True},
         ),
     )
-    related_place = ModelMultipleChoiceFilter(
-        queryset=Place.objects.all(),
-        help_text="Wähle einen oder mehrere Orte",
-        label="Orte",
+    related_personb = ModelMultipleChoiceFilter(
+        queryset=Person.objects.all(),
+        help_text="Wähle einen oder mehrere Persone",
+        label="Persone",
         widget=autocomplete.Select2Multiple(
             url=reverse_lazy(
                 "apis:apis_entities:generic_entities_autocomplete",
-                kwargs={"entity": "place"},
+                kwargs={"entity": "person"},
             ),
             attrs={"data-html": True},
         ),
     )
     relation_type = ModelMultipleChoiceFilter(
-        queryset=PersonPlaceRelation.objects.all().order_by("name"),
+        queryset=PersonPersonRelation.objects.all().order_by("name"),
         label="Art der Beziehung",
         help_text="Mehrfachauswahl möglich",
     )
@@ -63,40 +63,40 @@ class PersonPlaceListFilter(FilterSet):
     )
 
     class Meta:
-        model = PersonPlace
+        model = PersonPerson
         fields = [
-            "related_person",
-            "related_place",
+            "related_persona",
+            "related_personb",
             "relation_type",
             "start_date__year",
             "end_date__year",
         ]
 
 
-class PersonPlaceFormHelper(FormHelper):
+class PersonPersonFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(PersonPlaceFormHelper, self).__init__(*args, **kwargs)
+        super(PersonPersonFormHelper, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"
         self.form_tag = False
         self.layout = Layout(
-            "related_person",
-            "related_place",
+            "related_persona",
+            "related_personb",
             "relation_type",
             "start_date__year",
             "end_date__year",
         )
 
 
-class PersonPlaceTable(tables.Table):
-    related_person = tables.TemplateColumn(
-        """<a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>""",
+class PersonPersonTable(tables.Table):
+    related_persona = tables.TemplateColumn(
+        """<a href="{{ record.related_persona.get_absolute_url }}">{{ record.related_persona }}</a>""",
         verbose_name="Person",
     )
-    related_place = tables.TemplateColumn(
-        """<a href="{{ record.related_place.get_absolute_url }}">{{ record.related_place }}</a>""",
-        verbose_name="Ort",
+    related_personb = tables.TemplateColumn(
+        """<a href="{{ record.related_personb.get_absolute_url }}">{{ record.related_personb }}</a>""",
+        verbose_name="Person",
     )
     relation_type = tables.TemplateColumn(
         "{{ record.relation_type }}", verbose_name="Art der Beziehung"
@@ -111,29 +111,29 @@ class PersonPlaceTable(tables.Table):
     )
 
     class Meta:
-        model = PersonPlace
+        model = PersonPerson
         sequence = (
             "id",
-            "related_person",
+            "related_persona",
             "relation_type",
-            "related_place",
+            "related_personb",
             "start_date_written",
         )
 
 
-class PersonPlaceListView(GenericListView):
-    model = PersonPlace
-    filter_class = PersonPlaceListFilter
-    formhelper_class = PersonPlaceFormHelper
-    table_class = PersonPlaceTable
+class PersonPersonListView(GenericListView):
+    model = PersonPerson
+    filter_class = PersonPersonListFilter
+    formhelper_class = PersonPersonFormHelper
+    table_class = PersonPersonTable
     init_columns = [
         "start_date_written",
         "end_date_written",
-        "related_person",
+        "related_persona",
         "relation_type",
-        "related_place",
+        "related_personb",
     ]
-    verbose_name = "Personen und Orte"
+    verbose_name = "Personen und Personen"
     exclude_columns = excluded_cols
     enable_merge = False
     template_name = "apis_relations/list_view.html"

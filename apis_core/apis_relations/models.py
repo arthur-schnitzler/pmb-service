@@ -337,7 +337,21 @@ class AbstractRelation(TempEntityClass):
 
 
 class PersonPerson(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return reverse_lazy("apis:apis_relations:person_person")
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
+    def get_color(self):
+        return "#720e07"
 
 
 class PersonPlace(AbstractRelation):
@@ -359,11 +373,15 @@ class PersonPlace(AbstractRelation):
 
 
 class PersonInstitution(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class PersonEvent(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class PersonWork(AbstractRelation):
@@ -392,19 +410,27 @@ class PersonWork(AbstractRelation):
 
 
 class InstitutionInstitution(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class InstitutionPlace(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class InstitutionEvent(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class InstitutionWork(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 #######################################################################
@@ -415,15 +441,21 @@ class InstitutionWork(AbstractRelation):
 
 
 class PlacePlace(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class PlaceEvent(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class PlaceWork(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 #######################################################################
@@ -434,11 +466,15 @@ class PlaceWork(AbstractRelation):
 
 
 class EventEvent(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 class EventWork(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
 
 
 #######################################################################
@@ -449,4 +485,6 @@ class EventWork(AbstractRelation):
 
 
 class WorkWork(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return None
