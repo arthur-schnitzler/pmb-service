@@ -62,6 +62,12 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         all_cols = table.base_columns.keys()
         selected_cols = self.request.GET.getlist("columns") + default_cols
         exclude_vals = [x for x in all_cols if x not in selected_cols]
+        if self.request.user.is_authenticated:
+            pass
+        elif "crud" in all_cols:
+            exclude_vals += [
+                "crud",
+            ]
         table.exclude = exclude_vals
         return table
 

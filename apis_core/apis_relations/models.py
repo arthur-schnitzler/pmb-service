@@ -317,7 +317,6 @@ class AbstractRelation(TempEntityClass):
         :return: the name of the field of the A side of the current relation class or instance
         E.g. PersonWork -> "related_person"
         """
-        print(dir(cls))
         return None
 
     @classmethod
@@ -339,7 +338,7 @@ class AbstractRelation(TempEntityClass):
 class PersonPerson(AbstractRelation):
     @classmethod
     def get_listview_url(self):
-        return reverse_lazy("apis:apis_relations:person_person")
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
 
     @classmethod
     def get_icon(self):
@@ -357,7 +356,7 @@ class PersonPerson(AbstractRelation):
 class PersonPlace(AbstractRelation):
     @classmethod
     def get_listview_url(self):
-        return reverse_lazy("apis:apis_relations:person_place")
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
 
     @classmethod
     def get_icon(self):
@@ -370,6 +369,27 @@ class PersonPlace(AbstractRelation):
     @classmethod
     def get_color(self):
         return "#720e07"
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?{self.get_related_entity_field_namea()}={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class PersonInstitution(AbstractRelation):
@@ -387,7 +407,7 @@ class PersonEvent(AbstractRelation):
 class PersonWork(AbstractRelation):
     @classmethod
     def get_listview_url(self):
-        return reverse_lazy("apis:apis_relations:person_work")
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
 
     @classmethod
     def get_icon(self):

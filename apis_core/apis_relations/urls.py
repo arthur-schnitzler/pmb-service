@@ -4,24 +4,41 @@ from . import views
 from . import person_place_relation_views
 from . import person_work_relation_views
 from . import person_person_relation_views
+from .views import copy_relation
+
 
 app_name = "apis_relations"
 
 urlpatterns = [
     path(
+        "copy/<relation_class>/<int:pk>",
+        copy_relation,
+        name="copy_relation",
+    ),
+    path(
         "person-place/",
         person_place_relation_views.PersonPlaceListView.as_view(),
-        name="person_place",
+        name="personplace",
+    ),
+    path(
+        "person-place/create/",
+        person_place_relation_views.PersonPlaceCreate.as_view(),
+        name="personplace_create",
+    ),
+    path(
+        "person-place/edit/<int:pk>",
+        person_place_relation_views.PersonPlaceUpdate.as_view(),
+        name="personplace_edit",
     ),
     path(
         "person-work/",
         person_work_relation_views.PersonWorkListView.as_view(),
-        name="person_work",
+        name="personwork",
     ),
     path(
         "person-person/",
         person_person_relation_views.PersonPersonListView.as_view(),
-        name="person_person",
+        name="personperson",
     ),
     path(
         "delete/<int:relation_id>/",
