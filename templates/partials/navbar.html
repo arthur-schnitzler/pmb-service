@@ -83,6 +83,20 @@
                                     <i class="bi bi-map apis-place"></i>
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:person_work' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen und Werke
+                                    <i class="bi bi-book apis-work"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:person_person' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen und Personen
+                                    <i class="bi bi-people apis-person"></i>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     {% if user.is_authenticated %}

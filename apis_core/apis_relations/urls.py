@@ -1,15 +1,27 @@
 from django.urls import path
 
 from . import views
-from . import relation_views
+from . import person_place_relation_views
+from . import person_work_relation_views
+from . import person_person_relation_views
 
 app_name = "apis_relations"
 
 urlpatterns = [
     path(
         "person-place/",
-        relation_views.PersonPlaceListView.as_view(),
+        person_place_relation_views.PersonPlaceListView.as_view(),
         name="person_place",
+    ),
+    path(
+        "person-work/",
+        person_work_relation_views.PersonWorkListView.as_view(),
+        name="person_work",
+    ),
+    path(
+        "person-person/",
+        person_person_relation_views.PersonPersonListView.as_view(),
+        name="person_person",
     ),
     path(
         "delete/<int:relation_id>/",

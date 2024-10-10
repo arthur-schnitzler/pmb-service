@@ -26,6 +26,8 @@ ENTITY_TYPES = ["person", "place", "event", "work", "institution"]
 
 MODELS = list(apps.all_models["apis_entities"].values())
 
+RELATION_MODELS = list(apps.all_models["apis_relations"].values())
+
 
 class EntitiesTestCase(TestCase):
     fixtures = [
@@ -62,6 +64,16 @@ class EntitiesTestCase(TestCase):
 
     def test_001_list_view(self):
         for x in MODELS:
+            try:
+                url = x.get_listview_url()
+            except AttributeError:
+                url = False
+            if url:
+                response = client.get(url)
+                self.assertEqual(response.status_code, 200)
+
+    def test_001a_relation_list_view(self):
+        for x in RELATION_MODELS:
             try:
                 url = x.get_listview_url()
             except AttributeError:
