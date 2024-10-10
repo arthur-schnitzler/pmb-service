@@ -18,27 +18,27 @@ urlpatterns = [
     path(
         "person-place/",
         person_place_relation_views.PersonPlaceListView.as_view(),
-        name="person_place",
+        name="personplace",
     ),
     path(
         "person-place/create/",
         person_place_relation_views.PersonPlaceCreate.as_view(),
-        name="person_place_create",
+        name="personplace_create",
     ),
     path(
         "person-place/edit/<int:pk>",
         person_place_relation_views.PersonPlaceUpdate.as_view(),
-        name="person_place_edit",
+        name="personplace_edit",
     ),
     path(
         "person-work/",
         person_work_relation_views.PersonWorkListView.as_view(),
-        name="person_work",
+        name="personwork",
     ),
     path(
         "person-person/",
         person_person_relation_views.PersonPersonListView.as_view(),
-        name="person_person",
+        name="personperson",
     ),
     path(
         "delete/<int:relation_id>/",

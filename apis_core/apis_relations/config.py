@@ -29,4 +29,5 @@ CRUD_COLUMN = tables.TemplateColumn(
         <i class="bi bi-trash p-1 fs-5"></i>
     """,
     verbose_name="Ändern, Kopieren oder Löschen",
+    orderable=False,
 )

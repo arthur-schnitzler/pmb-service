@@ -43,6 +43,7 @@ from .tables import LabelTableEdit
 form_module_list = [relation_form_module]
 
 
+@login_required
 def copy_relation(request, relation_class, pk):
     cur_model = apps.get_model(app_label="apis_relations", model_name=relation_class)
     original_object = get_object_or_404(cur_model, id=pk)

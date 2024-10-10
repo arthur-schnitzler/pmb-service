@@ -75,8 +75,7 @@ class PersonPlaceUpdate(BaseUpdateView):
     form_class = PersonPlaceForm
 
     def get_success_url(self):
-        related_person = self.object.related_person
-        return f"{self.model.get_listview_url()}?related_person={related_person.id}&sort=-id"
+        return self.object.get_object_list_view()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
