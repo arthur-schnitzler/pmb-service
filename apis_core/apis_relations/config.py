@@ -23,7 +23,9 @@ CRUD_COLUMN = tables.TemplateColumn(
                 <span class="visually-hidden">Verbindung bearbeiten</span>
             </i>
         </a>
-        <i class="bi bi-clipboard p-1 fs-5"></i>
+        <a href="{{ record.get_copy_url }}">
+            <i class="bi bi-clipboard p-1 fs-5"></i>
+        </a>
         <i class="bi bi-trash p-1 fs-5"></i>
     """,
     verbose_name="Ändern, Kopieren oder Löschen",

@@ -1,9 +1,11 @@
 import inspect
 import re
 
+from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.template import loader
 
 from apis_core.apis_entities.models import (
@@ -39,6 +41,15 @@ from .models import (
 from .tables import LabelTableEdit
 
 form_module_list = [relation_form_module]
+
+
+def copy_relation(request, relation_class, pk):
+    cur_model = apps.get_model(app_label="apis_relations", model_name=relation_class)
+    original_object = get_object_or_404(cur_model, id=pk)
+    original_object.id = None
+    original_object.pk = None
+    original_object.save()
+    return redirect(original_object.get_edit_url())
 
 
 def turn_form_modules_into_dict(form_module_list):

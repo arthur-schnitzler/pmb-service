@@ -384,6 +384,12 @@ class PersonPlace(AbstractRelation):
             "apis:apis_relations:person_place_edit", kwargs={"pk": self.id}
         )
 
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": "personplace"},
+        )
+
 
 class PersonInstitution(AbstractRelation):
     @classmethod
