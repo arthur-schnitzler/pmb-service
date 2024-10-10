@@ -367,7 +367,21 @@ class PersonEvent(AbstractRelation):
 
 
 class PersonWork(AbstractRelation):
-    pass
+    @classmethod
+    def get_listview_url(self):
+        return reverse_lazy("apis:apis_relations:person_work")
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#720e07"
 
 
 #######################################################################
