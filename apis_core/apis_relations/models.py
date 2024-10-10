@@ -317,7 +317,6 @@ class AbstractRelation(TempEntityClass):
         :return: the name of the field of the A side of the current relation class or instance
         E.g. PersonWork -> "related_person"
         """
-        print(dir(cls))
         return None
 
     @classmethod
@@ -374,6 +373,16 @@ class PersonPlace(AbstractRelation):
     @classmethod
     def get_createview_url(self):
         return reverse_lazy("apis:apis_relations:person_place_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?{self.get_related_entity_field_namea()}={main_id}&sort=-id"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:person_place_edit", kwargs={"pk": self.id}
+        )
 
 
 class PersonInstitution(AbstractRelation):

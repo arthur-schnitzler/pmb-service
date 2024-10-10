@@ -19,6 +19,11 @@ urlpatterns = [
         name="person_place_create",
     ),
     path(
+        "person-place/edit/<int:pk>",
+        person_place_relation_views.PersonPlaceUpdate.as_view(),
+        name="person_place_edit",
+    ),
+    path(
         "person-work/",
         person_work_relation_views.PersonWorkListView.as_view(),
         name="person_work",

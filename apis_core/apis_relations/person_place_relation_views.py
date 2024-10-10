@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 
-from browsing.browsing_utils import GenericListView, BaseCreateView
+from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 from dal import autocomplete
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
@@ -60,7 +60,19 @@ class PersonPlaceCreate(BaseCreateView):
 
     model = PersonPlace
     form_class = PersonPlaceForm
-    success_url = PersonPlace.get_listview_url()
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPlaceCreate, self).dispatch(*args, **kwargs)
+
+
+class PersonPlaceUpdate(BaseUpdateView):
+
+    model = PersonPlace
+    form_class = PersonPlaceForm
 
     def get_success_url(self):
         related_person = self.object.related_person
@@ -68,7 +80,7 @@ class PersonPlaceCreate(BaseCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PersonPlaceCreate, self).dispatch(*args, **kwargs)
+        return super(PersonPlaceUpdate, self).dispatch(*args, **kwargs)
 
 
 class PersonPlaceListFilter(FilterSet):
