@@ -1,16 +1,85 @@
-from browsing.browsing_utils import GenericListView
+from django import forms
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+
+from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 from dal import autocomplete
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from django.urls import reverse_lazy
+from crispy_forms.layout import Layout, Submit
 from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
 
 from apis_core.apis_entities.models import Person, Work
 from apis_core.apis_vocabularies.models import PersonWorkRelation
 
-from .config import FIELDS_TO_EXCLUDE
 from .models import PersonWork
+from .config import FIELDS_TO_EXCLUDE, CRUD_COLUMN
+
+
+class PersonWorkForm(forms.ModelForm):
+
+    class Meta:
+        model = PersonWork
+        exclude = FIELDS_TO_EXCLUDE + [
+            "collection",
+        ]
+        widgets = {
+            "related_person": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "person"},
+                ),
+                attrs={"data-html": True},
+            ),
+            "related_work": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "work"},
+                ),
+                attrs={"data-html": True},
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PersonWorkForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.fields["related_person"].required = True
+        self.fields["related_work"].required = True
+        self.fields["relation_type"].required = True
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-md-3"
+        self.helper.field_class = "col-md-9"
+        self.helper.add_input(
+            Submit("submit", "save"),
+        )
+
+
+class PersonWorkCreate(BaseCreateView):
+
+    model = PersonWork
+    form_class = PersonWorkForm
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonWorkCreate, self).dispatch(*args, **kwargs)
+
+
+class PersonWorkUpdate(BaseUpdateView):
+
+    model = PersonWork
+    form_class = PersonWorkForm
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonWorkUpdate, self).dispatch(*args, **kwargs)
 
 
 class PersonWorkListFilter(FilterSet):
@@ -79,7 +148,9 @@ class PersonWorkFormHelper(FormHelper):
 
 class PersonWorkTable(tables.Table):
     related_person = tables.TemplateColumn(
-        """<a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>""",
+        """
+        <a href="{{ record.related_person.get_absolute_url }}">{{ record.related_person }}</a>
+        """,
         verbose_name="Person",
     )
     related_work = tables.TemplateColumn(
@@ -97,6 +168,7 @@ class PersonWorkTable(tables.Table):
         "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
         verbose_name="End",
     )
+    crud = CRUD_COLUMN
 
     class Meta:
         model = PersonWork
@@ -106,6 +178,8 @@ class PersonWorkTable(tables.Table):
             "relation_type",
             "related_work",
             "start_date_written",
+            "end_date_written",
+            "crud",
         )
 
 
@@ -120,6 +194,7 @@ class PersonWorkListView(GenericListView):
         "related_person",
         "relation_type",
         "related_work",
+        "crud",
     ]
     verbose_name = "Personen und Werke"
     exclude_columns = FIELDS_TO_EXCLUDE
