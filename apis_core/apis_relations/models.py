@@ -338,7 +338,7 @@ class AbstractRelation(TempEntityClass):
 class PersonPerson(AbstractRelation):
     @classmethod
     def get_listview_url(self):
-        return reverse_lazy("apis:apis_relations:person_person")
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
 
     @classmethod
     def get_icon(self):
@@ -407,7 +407,7 @@ class PersonEvent(AbstractRelation):
 class PersonWork(AbstractRelation):
     @classmethod
     def get_listview_url(self):
-        return reverse_lazy("apis:apis_relations:personwork")
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
 
     @classmethod
     def get_icon(self):
