@@ -36,6 +36,16 @@ urlpatterns = [
         name="personwork",
     ),
     path(
+        "person-work/create/",
+        person_work_relation_views.PersonWorkCreate.as_view(),
+        name="personwork_create",
+    ),
+    path(
+        "person-work/edit/<int:pk>",
+        person_work_relation_views.PersonWorkUpdate.as_view(),
+        name="personwork_edit",
+    ),
+    path(
         "person-person/",
         person_person_relation_views.PersonPersonListView.as_view(),
         name="personperson",
