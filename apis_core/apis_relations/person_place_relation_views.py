@@ -14,7 +14,7 @@ from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_vocabularies.models import PersonPlaceRelation
 
 from .models import PersonPlace
-from .config import FIELDS_TO_EXCLUDE
+from .config import FIELDS_TO_EXCLUDE, CRUD_COLUMN
 
 
 class PersonPlaceForm(forms.ModelForm):
@@ -169,18 +169,7 @@ class PersonPlaceTable(tables.Table):
         "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
         verbose_name="End",
     )
-    crud = tables.TemplateColumn(
-        """
-            <a href="{{ record.get_edit_url }}">
-                <i class="bi bi-pencil-square p-1 fs-5" title="Verbindung bearbeiten" aria-hidden="true">
-                    <span class="visually-hidden">Verbindung bearbeiten</span>
-                </i>
-            </a>
-            <i class="bi bi-clipboard p-1 fs-5"></i>
-            <i class="bi bi-trash p-1 fs-5"></i>
-        """,
-        verbose_name="Ändern, Kopieren oder Löschen",
-    )
+    crud = CRUD_COLUMN
 
     class Meta:
         model = PersonPlace
