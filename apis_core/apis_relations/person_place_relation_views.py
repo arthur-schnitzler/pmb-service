@@ -1,8 +1,12 @@
-from browsing.browsing_utils import GenericListView
+from django import forms
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+
+from browsing.browsing_utils import GenericListView, BaseCreateView
 from dal import autocomplete
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from django.urls import reverse_lazy
+from crispy_forms.layout import Layout, Submit
 from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
 
@@ -10,19 +14,61 @@ from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_vocabularies.models import PersonPlaceRelation
 
 from .models import PersonPlace
+from .config import FIELDS_TO_EXCLUDE
 
 
-excluded_cols = [
-    "start_start_date",
-    "start_end_date",
-    "end_start_date",
-    "end_end_date",
-    "status",
-    "source",
-    "published",
-    "tempentityclass_ptr",
-    "review",
-]
+class PersonPlaceForm(forms.ModelForm):
+
+    class Meta:
+        model = PersonPlace
+        exclude = FIELDS_TO_EXCLUDE + [
+            "collection",
+        ]
+        widgets = {
+            "related_person": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "person"},
+                ),
+                attrs={"data-html": True},
+            ),
+            "related_place": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "place"},
+                ),
+                attrs={"data-html": True},
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PersonPlaceForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.fields["related_person"].required = True
+        self.fields["related_place"].required = True
+        self.fields["relation_type"].required = True
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-md-3"
+        self.helper.field_class = "col-md-9"
+        self.helper.add_input(
+            Submit("submit", "save"),
+        )
+
+
+class PersonPlaceCreate(BaseCreateView):
+
+    model = PersonPlace
+    form_class = PersonPlaceForm
+    success_url = PersonPlace.get_listview_url()
+
+    def get_success_url(self):
+        related_person = self.object.related_person
+        return f"{self.model.get_listview_url()}?related_person={related_person.id}&sort=-id"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPlaceCreate, self).dispatch(*args, **kwargs)
 
 
 class PersonPlaceListFilter(FilterSet):
@@ -134,6 +180,6 @@ class PersonPlaceListView(GenericListView):
         "related_place",
     ]
     verbose_name = "Personen und Orte"
-    exclude_columns = excluded_cols
+    exclude_columns = FIELDS_TO_EXCLUDE
     enable_merge = False
     template_name = "apis_relations/list_view.html"

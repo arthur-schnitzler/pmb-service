@@ -371,6 +371,10 @@ class PersonPlace(AbstractRelation):
     def get_color(self):
         return "#720e07"
 
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy("apis:apis_relations:person_place_create")
+
 
 class PersonInstitution(AbstractRelation):
     @classmethod

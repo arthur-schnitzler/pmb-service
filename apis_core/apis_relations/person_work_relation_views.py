@@ -9,20 +9,8 @@ import django_tables2 as tables
 from apis_core.apis_entities.models import Person, Work
 from apis_core.apis_vocabularies.models import PersonWorkRelation
 
+from .config import FIELDS_TO_EXCLUDE
 from .models import PersonWork
-
-
-excluded_cols = [
-    "start_start_date",
-    "start_end_date",
-    "end_start_date",
-    "end_end_date",
-    "status",
-    "source",
-    "published",
-    "tempentityclass_ptr",
-    "review",
-]
 
 
 class PersonWorkListFilter(FilterSet):
@@ -134,6 +122,6 @@ class PersonWorkListView(GenericListView):
         "related_work",
     ]
     verbose_name = "Personen und Werke"
-    exclude_columns = excluded_cols
+    exclude_columns = FIELDS_TO_EXCLUDE
     enable_merge = False
     template_name = "apis_relations/list_view.html"
