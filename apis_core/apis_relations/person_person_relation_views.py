@@ -1,16 +1,85 @@
-from browsing.browsing_utils import GenericListView
+from django import forms
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+
+from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 from dal import autocomplete
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from django.urls import reverse_lazy
+from crispy_forms.layout import Layout, Submit
 from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
 import django_tables2 as tables
 
 from apis_core.apis_entities.models import Person
 from apis_core.apis_vocabularies.models import PersonPersonRelation
 
-from .config import FIELDS_TO_EXCLUDE
 from .models import PersonPerson
+from .config import FIELDS_TO_EXCLUDE, CRUD_COLUMN
+
+
+class PersonPersonForm(forms.ModelForm):
+
+    class Meta:
+        model = PersonPerson
+        exclude = FIELDS_TO_EXCLUDE + [
+            "collection",
+        ]
+        widgets = {
+            "related_persona": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "person"},
+                ),
+                attrs={"data-html": True},
+            ),
+            "related_personb": autocomplete.ModelSelect2(
+                url=reverse_lazy(
+                    "apis:apis_entities:generic_entities_autocomplete",
+                    kwargs={"entity": "person"},
+                ),
+                attrs={"data-html": True},
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PersonPersonForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.fields["related_persona"].required = True
+        self.fields["related_personb"].required = True
+        self.fields["relation_type"].required = True
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-md-3"
+        self.helper.field_class = "col-md-9"
+        self.helper.add_input(
+            Submit("submit", "save"),
+        )
+
+
+class PersonPersonCreate(BaseCreateView):
+
+    model = PersonPerson
+    form_class = PersonPersonForm
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPersonCreate, self).dispatch(*args, **kwargs)
+
+
+class PersonPersonUpdate(BaseUpdateView):
+
+    model = PersonPerson
+    form_class = PersonPersonForm
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPersonUpdate, self).dispatch(*args, **kwargs)
 
 
 class PersonPersonListFilter(FilterSet):
@@ -28,8 +97,8 @@ class PersonPersonListFilter(FilterSet):
     )
     related_personb = ModelMultipleChoiceFilter(
         queryset=Person.objects.all(),
-        help_text="Wähle einen oder mehrere Persone",
-        label="Persone",
+        help_text="Wähle einen oder mehrere Personen",
+        label="Personen",
         widget=autocomplete.Select2Multiple(
             url=reverse_lazy(
                 "apis:apis_entities:generic_entities_autocomplete",
@@ -79,7 +148,9 @@ class PersonPersonFormHelper(FormHelper):
 
 class PersonPersonTable(tables.Table):
     related_persona = tables.TemplateColumn(
-        """<a href="{{ record.related_persona.get_absolute_url }}">{{ record.related_persona }}</a>""",
+        """
+        <a href="{{ record.related_persona.get_absolute_url }}">{{ record.related_persona }}</a>
+        """,
         verbose_name="Person",
     )
     related_personb = tables.TemplateColumn(
@@ -97,6 +168,7 @@ class PersonPersonTable(tables.Table):
         "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
         verbose_name="End",
     )
+    crud = CRUD_COLUMN
 
     class Meta:
         model = PersonPerson
@@ -106,6 +178,8 @@ class PersonPersonTable(tables.Table):
             "relation_type",
             "related_personb",
             "start_date_written",
+            "end_date_written",
+            "crud",
         )
 
 
@@ -120,6 +194,7 @@ class PersonPersonListView(GenericListView):
         "related_persona",
         "relation_type",
         "related_personb",
+        "crud",
     ]
     verbose_name = "Personen und Personen"
     exclude_columns = FIELDS_TO_EXCLUDE
