@@ -16,12 +16,17 @@ from . import institution_event_relation_views
 from . import event_event_relation_views
 from . import event_work_relation_views
 from . import work_work_relation_views
-from .views import copy_relation
+from .views import copy_relation, GenericRelationDeleteView
 
 
 app_name = "apis_relations"
 
 urlpatterns = [
+    path(
+        "delete/<relation_class>/<int:pk>",
+        GenericRelationDeleteView.as_view(),
+        name="generic_delete_relation",
+    ),
     path(
         "copy/<relation_class>/<int:pk>",
         copy_relation,

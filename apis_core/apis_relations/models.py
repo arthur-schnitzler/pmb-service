@@ -370,6 +370,12 @@ class PersonPerson(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class PersonPlace(AbstractRelation):
 
@@ -407,6 +413,12 @@ class PersonPlace(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -449,6 +461,12 @@ class PersonInstitution(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class PersonEvent(AbstractRelation):
     @classmethod
@@ -485,6 +503,12 @@ class PersonEvent(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -525,6 +549,12 @@ class PersonWork(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -574,6 +604,12 @@ class InstitutionInstitution(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class InstitutionPlace(AbstractRelation):
     @classmethod
@@ -610,6 +646,12 @@ class InstitutionPlace(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -652,6 +694,12 @@ class InstitutionEvent(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class InstitutionWork(AbstractRelation):
     @classmethod
@@ -688,6 +736,12 @@ class InstitutionWork(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -733,6 +787,12 @@ class PlacePlace(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class PlaceEvent(AbstractRelation):
     @classmethod
@@ -772,6 +832,12 @@ class PlaceEvent(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class PlaceWork(AbstractRelation):
     @classmethod
@@ -808,6 +874,12 @@ class PlaceWork(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -857,6 +929,12 @@ class EventEvent(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class EventWork(AbstractRelation):
     @classmethod
@@ -893,6 +971,12 @@ class EventWork(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
@@ -939,5 +1023,11 @@ class WorkWork(AbstractRelation):
     def get_copy_url(self):
         return reverse_lazy(
             "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )

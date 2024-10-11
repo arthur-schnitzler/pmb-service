@@ -62,7 +62,9 @@ def generate_relation_table(MyModelClass):
                 <a href="{{ record.get_copy_url }}">
                     <i class="bi bi-clipboard p-1 fs-5"></i>
                 </a>
-                <i class="bi bi-trash p-1 fs-5"></i>
+                <a href="{{ record.get_delete_url }}">
+                    <i class="bi bi-trash p-1 fs-5"></i>
+                </a>
             """,
             verbose_name="Ändern, Kopieren oder Löschen",
             orderable=False,
