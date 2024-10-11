@@ -166,6 +166,12 @@
                                 Ereignisse und Werke
                                 <i class="bi bi-book apis-work"></i>
                             </a>
+                            <li><hr class="dropdown-divider"></li>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:workwork' %}">
+                                <i class="bi bi-book apis-work"></i>
+                                Werke und Werke
+                                <i class="bi bi-book apis-work"></i>
+                            </a>
                         </ul>
                     </li>
                     {% if user.is_authenticated %}

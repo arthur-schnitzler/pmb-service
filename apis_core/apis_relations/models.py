@@ -906,5 +906,38 @@ class EventWork(AbstractRelation):
 
 class WorkWork(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#ff8600"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )

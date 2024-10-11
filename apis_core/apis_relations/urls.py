@@ -15,6 +15,7 @@ from . import institution_work_relation_views
 from . import institution_event_relation_views
 from . import event_event_relation_views
 from . import event_work_relation_views
+from . import work_work_relation_views
 from .views import copy_relation
 
 
@@ -25,6 +26,21 @@ urlpatterns = [
         "copy/<relation_class>/<int:pk>",
         copy_relation,
         name="copy_relation",
+    ),
+    path(
+        "work-work/",
+        work_work_relation_views.WorkWorkListView.as_view(),
+        name="workwork",
+    ),
+    path(
+        "work-work/create/",
+        work_work_relation_views.WorkWorkCreate.as_view(),
+        name="workwork_create",
+    ),
+    path(
+        "work-work/edit/<int:pk>",
+        work_work_relation_views.WorkWorkUpdate.as_view(),
+        name="workwork_edit",
     ),
     path(
         "event-work/",
