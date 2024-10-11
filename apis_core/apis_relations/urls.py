@@ -6,16 +6,181 @@ from . import person_work_relation_views
 from . import person_person_relation_views
 from . import person_institution_relation_views
 from . import person_event_relation_views
-from .views import copy_relation
+from . import place_place_relation_views
+from . import place_event_relation_views
+from . import place_work_relation_views
+from . import institution_institution_relation_views
+from . import institution_place_relation_views
+from . import institution_work_relation_views
+from . import institution_event_relation_views
+from . import event_event_relation_views
+from . import event_work_relation_views
+from . import work_work_relation_views
+from .views import copy_relation, GenericRelationDeleteView
 
 
 app_name = "apis_relations"
 
 urlpatterns = [
     path(
+        "delete/<relation_class>/<int:pk>",
+        GenericRelationDeleteView.as_view(),
+        name="generic_delete_relation",
+    ),
+    path(
         "copy/<relation_class>/<int:pk>",
         copy_relation,
         name="copy_relation",
+    ),
+    path(
+        "work-work/",
+        work_work_relation_views.WorkWorkListView.as_view(),
+        name="workwork",
+    ),
+    path(
+        "work-work/create/",
+        work_work_relation_views.WorkWorkCreate.as_view(),
+        name="workwork_create",
+    ),
+    path(
+        "work-work/edit/<int:pk>",
+        work_work_relation_views.WorkWorkUpdate.as_view(),
+        name="workwork_edit",
+    ),
+    path(
+        "event-work/",
+        event_work_relation_views.EventWorkListView.as_view(),
+        name="eventwork",
+    ),
+    path(
+        "event-work/create/",
+        event_work_relation_views.EventWorkCreate.as_view(),
+        name="eventwork_create",
+    ),
+    path(
+        "event-work/edit/<int:pk>",
+        event_work_relation_views.EventWorkUpdate.as_view(),
+        name="eventwork_edit",
+    ),
+    path(
+        "event-event/",
+        event_event_relation_views.EventEventListView.as_view(),
+        name="eventevent",
+    ),
+    path(
+        "event-event/create/",
+        event_event_relation_views.EventEventCreate.as_view(),
+        name="eventevent_create",
+    ),
+    path(
+        "event-event/edit/<int:pk>",
+        event_event_relation_views.EventEventUpdate.as_view(),
+        name="eventevent_edit",
+    ),
+    path(
+        "institution-event/",
+        institution_event_relation_views.InstitutionEventListView.as_view(),
+        name="institutionevent",
+    ),
+    path(
+        "institution-event/create/",
+        institution_event_relation_views.InstitutionEventCreate.as_view(),
+        name="institutionevent_create",
+    ),
+    path(
+        "institution-event/edit/<int:pk>",
+        institution_event_relation_views.InstitutionEventUpdate.as_view(),
+        name="institutionevent_edit",
+    ),
+    path(
+        "institution-work/",
+        institution_work_relation_views.InstitutionWorkListView.as_view(),
+        name="institutionwork",
+    ),
+    path(
+        "institution-work/create/",
+        institution_work_relation_views.InstitutionWorkCreate.as_view(),
+        name="institutionwork_create",
+    ),
+    path(
+        "institution-work/edit/<int:pk>",
+        institution_work_relation_views.InstitutionWorkUpdate.as_view(),
+        name="institutionwork_edit",
+    ),
+    path(
+        "institution-place/",
+        institution_place_relation_views.InstitutionPlaceListView.as_view(),
+        name="institutionplace",
+    ),
+    path(
+        "institution-place/create/",
+        institution_place_relation_views.InstitutionPlaceCreate.as_view(),
+        name="institutionplace_create",
+    ),
+    path(
+        "institution-place/edit/<int:pk>",
+        institution_place_relation_views.InstitutionPlaceUpdate.as_view(),
+        name="institutionplace_edit",
+    ),
+    path(
+        "institution-institution/",
+        institution_institution_relation_views.InstitutionInstitutionListView.as_view(),
+        name="institutioninstitution",
+    ),
+    path(
+        "institution-institution/create/",
+        institution_institution_relation_views.InstitutionInstitutionCreate.as_view(),
+        name="institutioninstitution_create",
+    ),
+    path(
+        "institution-institution/edit/<int:pk>",
+        institution_institution_relation_views.InstitutionInstitutionUpdate.as_view(),
+        name="institutioninstitution_edit",
+    ),
+    path(
+        "place-work/",
+        place_work_relation_views.PlaceWorkListView.as_view(),
+        name="placework",
+    ),
+    path(
+        "place-work/create/",
+        place_work_relation_views.PlaceWorkCreate.as_view(),
+        name="placework_create",
+    ),
+    path(
+        "place-work/edit/<int:pk>",
+        place_work_relation_views.PlaceWorkUpdate.as_view(),
+        name="placework_edit",
+    ),
+    path(
+        "place-event/",
+        place_event_relation_views.PlaceEventListView.as_view(),
+        name="placeevent",
+    ),
+    path(
+        "place-event/create/",
+        place_event_relation_views.PlaceEventCreate.as_view(),
+        name="placeevent_create",
+    ),
+    path(
+        "place-event/edit/<int:pk>",
+        place_event_relation_views.PlaceEventUpdate.as_view(),
+        name="placeevent_edit",
+    ),
+    path(
+        "place_place/",
+        place_place_relation_views.PlacePlaceListView.as_view(),
+        name="placeplace",
+    ),
+    path(
+        "place_place/create/",
+        place_place_relation_views.PlacePlaceCreate.as_view(),
+        name="placeplace_create",
+    ),
+    path(
+        "place_place/edit/<int:pk>",
+        place_place_relation_views.PlacePlaceUpdate.as_view(),
+        name="placeplace_edit",
     ),
     path(
         "person-event/",

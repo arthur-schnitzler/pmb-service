@@ -2,11 +2,14 @@ import inspect
 import re
 
 from django.apps import apps
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template import loader
+from django.views.generic.edit import DeleteView
+
 
 from apis_core.apis_entities.models import (
     AbstractEntity,
@@ -51,6 +54,25 @@ def copy_relation(request, relation_class, pk):
     original_object.pk = None
     original_object.save()
     return redirect(original_object.get_edit_url())
+
+
+class GenericRelationDeleteView(DeleteView):
+    template_name = "apis_entities/confirm_delete.html"
+
+    def get_model(self):
+        model_name = self.kwargs.get("relation_class")
+        model = apps.get_model(app_label="apis_relations", model_name=model_name)
+        return model
+
+    def get_object(self):
+        model = self.get_model()
+        obj = get_object_or_404(model, pk=self.kwargs["pk"])
+        return obj
+
+    def get_success_url(self):
+        obj = self.get_object()
+        url = obj.get_listview_url()
+        return url
 
 
 def turn_form_modules_into_dict(form_module_list):
