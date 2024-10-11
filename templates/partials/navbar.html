@@ -113,6 +113,27 @@
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:institutioninstitution' %}">
+                                <i class="bi bi-building-gear apis-institution"></i>
+                                Institutionen und Institutionen
+                                <i class="bi bi-building-gear apis-institution"></i>
+                            </a>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:institutionplace' %}">
+                                <i class="bi bi-building-gear apis-institution"></i>
+                                Institutionen und Orte
+                                <i class="bi bi-building-gear apis-place"></i>
+                            </a>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:institutionwork' %}">
+                                <i class="bi bi-building-gear apis-institution"></i>
+                                Institutionen und Werke
+                                <i class="bi bi-book apis-work"></i>
+                            </a>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:institutionevent' %}">
+                                <i class="bi bi-building-gear apis-institution"></i>
+                                Institutionen und Ereignisse
+                                <i class="bi bi-building-gear apis-event"></i>
+                            </a>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'apis:apis_relations:placeplace' %}">
                                     <i class="bi bi-map apis-place"></i>

@@ -232,7 +232,6 @@ def generate_relation_form(MyModelClass):
                         "Datumsfelder",
                         "start_date",
                         "end_date",
-                        "end_end_date",
                     ),
                 )
             )

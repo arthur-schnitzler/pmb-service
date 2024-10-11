@@ -9,6 +9,10 @@ from . import person_event_relation_views
 from . import place_place_relation_views
 from . import place_event_relation_views
 from . import place_work_relation_views
+from . import institution_institution_relation_views
+from . import institution_place_relation_views
+from . import institution_work_relation_views
+from . import institution_event_relation_views
 from .views import copy_relation
 
 
@@ -19,6 +23,66 @@ urlpatterns = [
         "copy/<relation_class>/<int:pk>",
         copy_relation,
         name="copy_relation",
+    ),
+    path(
+        "institution-event/",
+        institution_event_relation_views.InstitutionEventListView.as_view(),
+        name="institutionevent",
+    ),
+    path(
+        "institution-event/create/",
+        institution_event_relation_views.InstitutionEventCreate.as_view(),
+        name="institutionevent_create",
+    ),
+    path(
+        "institution-event/edit/<int:pk>",
+        institution_event_relation_views.InstitutionEventUpdate.as_view(),
+        name="institutionevent_edit",
+    ),
+    path(
+        "institution-work/",
+        institution_work_relation_views.InstitutionWorkListView.as_view(),
+        name="institutionwork",
+    ),
+    path(
+        "institution-work/create/",
+        institution_work_relation_views.InstitutionWorkCreate.as_view(),
+        name="institutionwork_create",
+    ),
+    path(
+        "institution-work/edit/<int:pk>",
+        institution_work_relation_views.InstitutionWorkUpdate.as_view(),
+        name="institutionwork_edit",
+    ),
+    path(
+        "institution-place/",
+        institution_place_relation_views.InstitutionPlaceListView.as_view(),
+        name="institutionplace",
+    ),
+    path(
+        "institution-place/create/",
+        institution_place_relation_views.InstitutionPlaceCreate.as_view(),
+        name="institutionplace_create",
+    ),
+    path(
+        "institution-place/edit/<int:pk>",
+        institution_place_relation_views.InstitutionPlaceUpdate.as_view(),
+        name="institutionplace_edit",
+    ),
+    path(
+        "institution-institution/",
+        institution_institution_relation_views.InstitutionInstitutionListView.as_view(),
+        name="institutioninstitution",
+    ),
+    path(
+        "institution-institution/create/",
+        institution_institution_relation_views.InstitutionInstitutionCreate.as_view(),
+        name="institutioninstitution_create",
+    ),
+    path(
+        "institution-institution/edit/<int:pk>",
+        institution_institution_relation_views.InstitutionInstitutionUpdate.as_view(),
+        name="institutioninstitution_edit",
     ),
     path(
         "place-work/",
