@@ -155,6 +155,17 @@
                                     <i class="bi bi-calendar3 apis-event"></i>
                                 </a>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:eventevent' %}">
+                                <i class="bi bi-map apis-event"></i>
+                                Ereignisse und Ereignisse
+                                <i class="bi bi-calendar3 apis-event"></i>
+                            </a>
+                            <a class="dropdown-item" href="{% url 'apis:apis_relations:eventwork' %}">
+                                <i class="bi bi-map apis-event"></i>
+                                Ereignisse und Werke
+                                <i class="bi bi-book apis-work"></i>
+                            </a>
                         </ul>
                     </li>
                     {% if user.is_authenticated %}

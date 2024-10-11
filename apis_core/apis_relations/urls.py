@@ -13,6 +13,8 @@ from . import institution_institution_relation_views
 from . import institution_place_relation_views
 from . import institution_work_relation_views
 from . import institution_event_relation_views
+from . import event_event_relation_views
+from . import event_work_relation_views
 from .views import copy_relation
 
 
@@ -23,6 +25,36 @@ urlpatterns = [
         "copy/<relation_class>/<int:pk>",
         copy_relation,
         name="copy_relation",
+    ),
+    path(
+        "event-work/",
+        event_work_relation_views.EventWorkListView.as_view(),
+        name="eventwork",
+    ),
+    path(
+        "event-work/create/",
+        event_work_relation_views.EventWorkCreate.as_view(),
+        name="eventwork_create",
+    ),
+    path(
+        "event-work/edit/<int:pk>",
+        event_work_relation_views.EventWorkUpdate.as_view(),
+        name="eventwork_edit",
+    ),
+    path(
+        "event-event/",
+        event_event_relation_views.EventEventListView.as_view(),
+        name="eventevent",
+    ),
+    path(
+        "event-event/create/",
+        event_event_relation_views.EventEventCreate.as_view(),
+        name="eventevent_create",
+    ),
+    path(
+        "event-event/edit/<int:pk>",
+        event_event_relation_views.EventEventUpdate.as_view(),
+        name="eventevent_edit",
     ),
     path(
         "institution-event/",
