@@ -3,8 +3,8 @@ from django.utils.decorators import method_decorator
 
 from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 
-from apis_core.apis_vocabularies.models import PersonWorkRelation
-from apis_core.apis_relations.models import PersonWork
+from apis_core.apis_vocabularies.models import PlaceEventRelation
+from apis_core.apis_relations.models import PlaceEvent
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
 from apis_core.apis_relations.utils import (
     generate_relation_form,
@@ -14,37 +14,37 @@ from apis_core.apis_relations.utils import (
 )
 
 
-class PersonWorkCreate(BaseCreateView):
+class PlaceEventCreate(BaseCreateView):
 
-    model = PersonWork
-    form_class = generate_relation_form(PersonWork)
-
-    def get_success_url(self):
-        return self.object.get_object_list_view()
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PersonWorkCreate, self).dispatch(*args, **kwargs)
-
-
-class PersonWorkUpdate(BaseUpdateView):
-
-    model = PersonWork
-    form_class = generate_relation_form(PersonWork)
+    model = PlaceEvent
+    form_class = generate_relation_form(PlaceEvent)
 
     def get_success_url(self):
         return self.object.get_object_list_view()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PersonWorkUpdate, self).dispatch(*args, **kwargs)
+        return super(PlaceEventCreate, self).dispatch(*args, **kwargs)
 
 
-class PersonWorkListView(GenericListView):
-    model = PersonWork
-    filter_class = generate_relation_filter(PersonWork, PersonWorkRelation)
+class PlaceEventUpdate(BaseUpdateView):
+
+    model = PlaceEvent
+    form_class = generate_relation_form(PlaceEvent)
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PlaceEventUpdate, self).dispatch(*args, **kwargs)
+
+
+class PlaceEventListView(GenericListView):
+    model = PlaceEvent
+    filter_class = generate_relation_filter(PlaceEvent, PlaceEventRelation)
     formhelper_class = generate_relation_filter_formhelper()
-    table_class = generate_relation_table(PersonWork)
+    table_class = generate_relation_table(PlaceEvent)
     init_columns = [
         "start_date_written",
         "end_date_written",
@@ -53,7 +53,7 @@ class PersonWorkListView(GenericListView):
         "target",
         "crud",
     ]
-    verbose_name = "Personen und Orte"
+    verbose_name = "Orte und Ereignisse"
     exclude_columns = FIELDS_TO_EXCLUDE
     enable_merge = False
     template_name = "apis_relations/list_view.html"

@@ -1,127 +1,59 @@
-from browsing.browsing_utils import GenericListView
-from dal import autocomplete
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from django.urls import reverse_lazy
-from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
-import django_tables2 as tables
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-from apis_core.apis_entities.models import Person
+from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
+
 from apis_core.apis_vocabularies.models import PersonPersonRelation
-
-from .config import FIELDS_TO_EXCLUDE
-from .models import PersonPerson
-
-
-class PersonPersonListFilter(FilterSet):
-    related_persona = ModelMultipleChoiceFilter(
-        queryset=Person.objects.all(),
-        help_text="Wähle eine oder mehrere Personen",
-        label="Personen",
-        widget=autocomplete.Select2Multiple(
-            url=reverse_lazy(
-                "apis:apis_entities:generic_entities_autocomplete",
-                kwargs={"entity": "person"},
-            ),
-            attrs={"data-html": True},
-        ),
-    )
-    related_personb = ModelMultipleChoiceFilter(
-        queryset=Person.objects.all(),
-        help_text="Wähle einen oder mehrere Persone",
-        label="Persone",
-        widget=autocomplete.Select2Multiple(
-            url=reverse_lazy(
-                "apis:apis_entities:generic_entities_autocomplete",
-                kwargs={"entity": "person"},
-            ),
-            attrs={"data-html": True},
-        ),
-    )
-    relation_type = ModelMultipleChoiceFilter(
-        queryset=PersonPersonRelation.objects.all().order_by("name"),
-        label="Art der Beziehung",
-        help_text="Mehrfachauswahl möglich",
-    )
-    start_date__year = RangeFilter(
-        label="Anfang (Jahr)",
-    )
-    end_date__year = RangeFilter(
-        label="Ende (Jahr)",
-    )
-
-    class Meta:
-        model = PersonPerson
-        fields = [
-            "related_persona",
-            "related_personb",
-            "relation_type",
-            "start_date__year",
-            "end_date__year",
-        ]
+from apis_core.apis_relations.models import PersonPerson
+from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
+from apis_core.apis_relations.utils import (
+    generate_relation_form,
+    generate_relation_filter_formhelper,
+    generate_relation_filter,
+    generate_relation_table,
+)
 
 
-class PersonPersonFormHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super(PersonPersonFormHelper, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.form_class = "genericFilterForm"
-        self.form_method = "GET"
-        self.form_tag = False
-        self.layout = Layout(
-            "related_persona",
-            "related_personb",
-            "relation_type",
-            "start_date__year",
-            "end_date__year",
-        )
+class PersonPersonCreate(BaseCreateView):
+
+    model = PersonPerson
+    form_class = generate_relation_form(PersonPerson)
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPersonCreate, self).dispatch(*args, **kwargs)
 
 
-class PersonPersonTable(tables.Table):
-    related_persona = tables.TemplateColumn(
-        """<a href="{{ record.related_persona.get_absolute_url }}">{{ record.related_persona }}</a>""",
-        verbose_name="Person",
-    )
-    related_personb = tables.TemplateColumn(
-        """<a href="{{ record.related_personb.get_absolute_url }}">{{ record.related_personb }}</a>""",
-        verbose_name="Person",
-    )
-    relation_type = tables.TemplateColumn(
-        "{{ record.relation_type }}", verbose_name="Art der Beziehung"
-    )
-    start_date_written = tables.TemplateColumn(
-        "{% if record.start_date_written %} {{ record.start_date_written }} {% endif %}",
-        verbose_name="Start",
-    )
-    end_date_written = tables.TemplateColumn(
-        "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
-        verbose_name="End",
-    )
+class PersonPersonUpdate(BaseUpdateView):
 
-    class Meta:
-        model = PersonPerson
-        sequence = (
-            "id",
-            "related_persona",
-            "relation_type",
-            "related_personb",
-            "start_date_written",
-        )
+    model = PersonPerson
+    form_class = generate_relation_form(PersonPerson)
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonPersonUpdate, self).dispatch(*args, **kwargs)
 
 
 class PersonPersonListView(GenericListView):
     model = PersonPerson
-    filter_class = PersonPersonListFilter
-    formhelper_class = PersonPersonFormHelper
-    table_class = PersonPersonTable
+    filter_class = generate_relation_filter(PersonPerson, PersonPersonRelation)
+    formhelper_class = generate_relation_filter_formhelper()
+    table_class = generate_relation_table(PersonPerson)
     init_columns = [
         "start_date_written",
         "end_date_written",
-        "related_persona",
+        "source",
         "relation_type",
-        "related_personb",
+        "target",
+        "crud",
     ]
-    verbose_name = "Personen und Personen"
+    verbose_name = "Personen und Orte"
     exclude_columns = FIELDS_TO_EXCLUDE
     enable_merge = False
     template_name = "apis_relations/list_view.html"

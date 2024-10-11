@@ -336,13 +336,6 @@ class AbstractRelation(TempEntityClass):
 
 
 class PersonPerson(AbstractRelation):
-    @classmethod
-    def get_listview_url(self):
-        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
-
-    @classmethod
-    def get_icon(self):
-        return "bi bi-people apis-person"
 
     @classmethod
     def get_second_icon(self):
@@ -352,11 +345,39 @@ class PersonPerson(AbstractRelation):
     def get_color(self):
         return "#720e07"
 
-
-class PersonPlace(AbstractRelation):
     @classmethod
     def get_listview_url(self):
         return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+
+class PersonPlace(AbstractRelation):
 
     @classmethod
     def get_icon(self):
@@ -371,13 +392,17 @@ class PersonPlace(AbstractRelation):
         return "#720e07"
 
     @classmethod
+    def get_listview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
     def get_createview_url(self):
         return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
 
     def get_object_list_view(self):
         list_url = self.get_listview_url()
         main_id = self.get_related_entity_instancea().id
-        return f"{list_url}?{self.get_related_entity_field_namea()}={main_id}&sort=-updated"
+        return f"{list_url}?source={main_id}&sort=-updated"
 
     def get_edit_url(self):
         return reverse_lazy(
@@ -391,23 +416,104 @@ class PersonPlace(AbstractRelation):
             kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
         )
 
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 class PersonInstitution(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_color(self):
+        return "#720e07"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class PersonEvent(AbstractRelation):
     @classmethod
-    def get_listview_url(self):
-        return None
+    def get_icon(self):
+        return "bi bi-people apis-person"
 
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-calendar3 apis-event"
 
-class PersonWork(AbstractRelation):
+    @classmethod
+    def get_color(self):
+        return "#720e07"
+
     @classmethod
     def get_listview_url(self):
         return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+
+class PersonWork(AbstractRelation):
 
     @classmethod
     def get_icon(self):
@@ -421,6 +527,37 @@ class PersonWork(AbstractRelation):
     def get_color(self):
         return "#720e07"
 
+    @classmethod
+    def get_listview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
 
 #######################################################################
 #
@@ -431,26 +568,182 @@ class PersonWork(AbstractRelation):
 
 class InstitutionInstitution(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class InstitutionPlace(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi map apis-place"
+
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class InstitutionEvent(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-calendar3 apis-event"
+
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class InstitutionWork(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-building-gear apis-institution"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#1d3461"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 #######################################################################
@@ -462,20 +755,133 @@ class InstitutionWork(AbstractRelation):
 
 class PlacePlace(AbstractRelation):
     @classmethod
+    def get_second_icon(self):
+        return "bi bi-map apis-place"
+
+    @classmethod
+    def get_color(self):
+        return "#5bc0eb"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class PlaceEvent(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-map apis-place"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-calendar3 apis-event"
+
+    @classmethod
+    def get_color(self):
+        return "#5bc0eb"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class PlaceWork(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-map apis-place"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#5bc0eb"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 #######################################################################
@@ -487,14 +893,92 @@ class PlaceWork(AbstractRelation):
 
 class EventEvent(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-calendar3 apis-event"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-calendar3 apis-event"
+
+    @classmethod
+    def get_color(self):
+        return "#9bc53d"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 class EventWork(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-calendar3 apis-event"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#9bc53d"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
 
 
 #######################################################################
@@ -506,5 +990,44 @@ class EventWork(AbstractRelation):
 
 class WorkWork(AbstractRelation):
     @classmethod
+    def get_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_second_icon(self):
+        return "bi bi-book apis-work"
+
+    @classmethod
+    def get_color(self):
+        return "#ff8600"
+
+    @classmethod
     def get_listview_url(self):
-        return None
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}")
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse_lazy(f"apis:apis_relations:{self.__name__.lower()}_create")
+
+    def get_object_list_view(self):
+        list_url = self.get_listview_url()
+        main_id = self.get_related_entity_instancea().id
+        return f"{list_url}?source={main_id}&sort=-updated"
+
+    def get_edit_url(self):
+        return reverse_lazy(
+            f"apis:apis_relations:{self.__class__.__name__.lower()}_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_copy_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:copy_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
+
+    def get_delete_url(self):
+        return reverse_lazy(
+            "apis:apis_relations:generic_delete_relation",
+            kwargs={"pk": self.id, "relation_class": self.__class__.__name__.lower()},
+        )
