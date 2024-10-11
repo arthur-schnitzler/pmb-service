@@ -14,20 +14,3 @@ FIELDS_TO_EXCLUDE = [
     "img_url",
     "img_last_checked",
 ]
-
-
-CRUD_COLUMN = tables.TemplateColumn(
-    """
-        <a href="{{ record.get_edit_url }}">
-            <i class="bi bi-pencil-square p-1 fs-5" title="Verbindung bearbeiten" aria-hidden="true">
-                <span class="visually-hidden">Verbindung bearbeiten</span>
-            </i>
-        </a>
-        <a href="{{ record.get_copy_url }}">
-            <i class="bi bi-clipboard p-1 fs-5"></i>
-        </a>
-        <i class="bi bi-trash p-1 fs-5"></i>
-    """,
-    verbose_name="Ändern, Kopieren oder Löschen",
-    orderable=False,
-)

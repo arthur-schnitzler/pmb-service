@@ -77,6 +77,13 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:personperson' %}">
+                                    <i class="bi bi-people apis-person"></i>
+                                    Personen und Personen
+                                    <i class="bi bi-people apis-person"></i>
+                                </a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="{% url 'apis:apis_relations:personplace' %}">
                                     <i class="bi bi-people apis-person"></i>
                                     Personen und Orte
@@ -91,10 +98,18 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'apis:apis_relations:personperson' %}">
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:personevent' %}">
                                     <i class="bi bi-people apis-person"></i>
-                                    Personen und Personen
+                                    Personen und Events
+                                    <i class="bi bi-calendar3 apis-event"></i>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="{% url 'apis:apis_relations:personinstitution' %}">
                                     <i class="bi bi-people apis-person"></i>
+                                    Personen und Institutionen
+                                    <i class="bi bi-building-gear apis-institution"></i>
                                 </a>
                             </li>
                         </ul>

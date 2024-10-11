@@ -3,8 +3,8 @@ from django.utils.decorators import method_decorator
 
 from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 
-from apis_core.apis_vocabularies.models import PersonWorkRelation
-from apis_core.apis_relations.models import PersonWork
+from apis_core.apis_vocabularies.models import PersonInstitutionRelation
+from apis_core.apis_relations.models import PersonInstitution
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
 from apis_core.apis_relations.utils import (
     generate_relation_form,
@@ -14,37 +14,39 @@ from apis_core.apis_relations.utils import (
 )
 
 
-class PersonWorkCreate(BaseCreateView):
+class PersonInstitutionCreate(BaseCreateView):
 
-    model = PersonWork
-    form_class = generate_relation_form(PersonWork)
-
-    def get_success_url(self):
-        return self.object.get_object_list_view()
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PersonWorkCreate, self).dispatch(*args, **kwargs)
-
-
-class PersonWorkUpdate(BaseUpdateView):
-
-    model = PersonWork
-    form_class = generate_relation_form(PersonWork)
+    model = PersonInstitution
+    form_class = generate_relation_form(PersonInstitution)
 
     def get_success_url(self):
         return self.object.get_object_list_view()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PersonWorkUpdate, self).dispatch(*args, **kwargs)
+        return super(PersonInstitutionCreate, self).dispatch(*args, **kwargs)
 
 
-class PersonWorkListView(GenericListView):
-    model = PersonWork
-    filter_class = generate_relation_filter(PersonWork, PersonWorkRelation)
+class PersonInstitutionUpdate(BaseUpdateView):
+
+    model = PersonInstitution
+    form_class = generate_relation_form(PersonInstitution)
+
+    def get_success_url(self):
+        return self.object.get_object_list_view()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PersonInstitutionUpdate, self).dispatch(*args, **kwargs)
+
+
+class PersonInstitutionListView(GenericListView):
+    model = PersonInstitution
+    filter_class = generate_relation_filter(
+        PersonInstitution, PersonInstitutionRelation
+    )
     formhelper_class = generate_relation_filter_formhelper()
-    table_class = generate_relation_table(PersonWork)
+    table_class = generate_relation_table(PersonInstitution)
     init_columns = [
         "start_date_written",
         "end_date_written",
