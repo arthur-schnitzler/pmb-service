@@ -4,6 +4,8 @@ from . import views
 from . import person_place_relation_views
 from . import person_work_relation_views
 from . import person_person_relation_views
+from . import person_institution_relation_views
+from . import person_event_relation_views
 from .views import copy_relation
 
 
@@ -14,6 +16,36 @@ urlpatterns = [
         "copy/<relation_class>/<int:pk>",
         copy_relation,
         name="copy_relation",
+    ),
+    path(
+        "person-event/",
+        person_event_relation_views.PersonEventListView.as_view(),
+        name="personevent",
+    ),
+    path(
+        "person-event/create/",
+        person_event_relation_views.PersonEventCreate.as_view(),
+        name="personevent_create",
+    ),
+    path(
+        "person-event/edit/<int:pk>",
+        person_event_relation_views.PersonEventUpdate.as_view(),
+        name="personevent_edit",
+    ),
+    path(
+        "person-institution/",
+        person_institution_relation_views.PersonInstitutionListView.as_view(),
+        name="personinstitution",
+    ),
+    path(
+        "person-institution/create/",
+        person_institution_relation_views.PersonInstitutionCreate.as_view(),
+        name="personinstitution_create",
+    ),
+    path(
+        "person-institution/edit/<int:pk>",
+        person_institution_relation_views.PersonInstitutionUpdate.as_view(),
+        name="personinstitution_edit",
     ),
     path(
         "person-place/",
