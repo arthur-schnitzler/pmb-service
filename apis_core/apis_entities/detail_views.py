@@ -37,6 +37,13 @@ class GenericEntitiesDetailView(View):
             table = get_generic_relations_table(
                 relation_class=rel, entity_instance=instance, detail=True
             )
+            print(match, entity)
+            if match[0] == entity:
+                link_to_relations = f"{rel.get_listview_url()}?source={pk}"
+                rel_type = match[1]
+            else:
+                link_to_relations = f"{rel.get_listview_url()}?target={pk}"
+                rel_type = match[0]
             if match[0] == match[1]:
                 title_card = entity.title()
                 dict_1 = {"related_" + entity.lower() + "a": instance}
@@ -69,6 +76,8 @@ class GenericEntitiesDetailView(View):
                     tb_object,
                     "".join([x.title() for x in match]),
                     tb_object_open,
+                    link_to_relations,
+                    rel_type
                 )
             )
         object_lod = Uri.objects.filter(entity=instance)
