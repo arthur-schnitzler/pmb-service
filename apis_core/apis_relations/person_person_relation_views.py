@@ -53,7 +53,7 @@ class PersonPersonListView(GenericListView):
         "target",
         "crud",
     ]
-    verbose_name = "Personen und Orte"
+    verbose_name = "Personen und Personen"
     exclude_columns = FIELDS_TO_EXCLUDE
     enable_merge = False
     template_name = "apis_relations/list_view.html"

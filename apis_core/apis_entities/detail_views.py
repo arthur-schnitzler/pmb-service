@@ -37,7 +37,6 @@ class GenericEntitiesDetailView(View):
             table = get_generic_relations_table(
                 relation_class=rel, entity_instance=instance, detail=True
             )
-            print(match, entity)
             if match[0] == entity:
                 link_to_relations = f"{rel.get_listview_url()}?source={pk}"
                 rel_type = match[1]

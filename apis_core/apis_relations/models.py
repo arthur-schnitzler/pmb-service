@@ -338,6 +338,10 @@ class AbstractRelation(TempEntityClass):
 class PersonPerson(AbstractRelation):
 
     @classmethod
+    def get_icon(self):
+        return "bi bi-people apis-person"
+
+    @classmethod
     def get_second_icon(self):
         return "bi bi-people apis-person"
 
