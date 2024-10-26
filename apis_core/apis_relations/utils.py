@@ -73,6 +73,7 @@ def generate_relation_table(MyModelClass):
 
         class Meta:
             model = MyModelClass
+            order_by = "-updated"
             sequence = (
                 "id",
                 "source",
