@@ -14,5 +14,6 @@ class NormDataImportForm(forms.Form):
             ("person", "Person"),
             ("place", "Ort"),
             ("institution", "Institution"),
+            ("work", "Werk"),
         ),
     )

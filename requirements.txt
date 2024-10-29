@@ -14,7 +14,7 @@ django-tables2
 django-vite>=3.0.3,<4
 djangorestframework
 pandas
-pylobid
+pylobid>=2.3.0,<3
 psycopg2-binary==2.9.9
 pyocclient==0.6
 networkx>=3.2.1,<4
