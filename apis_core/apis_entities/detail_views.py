@@ -76,7 +76,7 @@ class GenericEntitiesDetailView(View):
                     "".join([x.title() for x in match]),
                     tb_object_open,
                     link_to_relations,
-                    rel_type
+                    rel_type,
                 )
             )
         object_lod = Uri.objects.filter(entity=instance)

@@ -108,11 +108,15 @@ class GenericRelationForm(forms.ModelForm):
         if form_match.group(1) == form_match.group(2):
             dic_a = {"related_" + entity_type.lower() + "a": site_instance}
             dic_b = {"related_" + entity_type.lower() + "b": site_instance}
-            objects = self.relation_form.objects.filter(Q(**dic_a) | Q(**dic_b)).order_by("-updated")[:10]
+            objects = self.relation_form.objects.filter(
+                Q(**dic_a) | Q(**dic_b)
+            ).order_by("-updated")[:10]
             table_html = table(data=objects, prefix=prefix)
         else:
             tab_query = {"related_" + entity_type.lower(): site_instance}
-            ttab = self.relation_form.objects.filter(**tab_query).order_by("-updated")[:10]
+            ttab = self.relation_form.objects.filter(**tab_query).order_by("-updated")[
+                :10
+            ]
             table_html = table(data=ttab, prefix=prefix)
         return table_html
 

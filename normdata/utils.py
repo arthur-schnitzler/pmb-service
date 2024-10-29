@@ -1,25 +1,32 @@
 from acdh_geonames_utils.gn_client import gn_as_object
 from acdh_id_reconciler import geonames_to_wikidata, gnd_to_wikidata
-from acdh_wikidata_pyutils import WikiDataPerson, WikiDataPlace, WikiDataOrg
+from acdh_wikidata_pyutils import (
+    WikiDataPerson,
+    WikiDataPlace,
+    WikiDataOrg,
+    WikiDataEntity,
+)
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from icecream import ic
-from pylobid.pylobid import PyLobidPerson, PyLobidPlace, PyLobidOrg
+from pylobid.pylobid import PyLobidPerson, PyLobidPlace, PyLobidOrg, PyLobidWork
 
-from apis_core.apis_entities.models import Person, Place, Institution
+from apis_core.apis_entities.models import Person, Place, Institution, Work
 from apis_core.apis_metainfo.models import Uri
-from apis_core.apis_relations.models import PersonPlace, InstitutionPlace
+from apis_core.apis_relations.models import PersonPlace, InstitutionPlace, PersonWork
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     InstitutionPlaceRelation,
+    PersonWorkRelation,
 )
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 BIRTH_REL = getattr(settings, "BIRTH_REL")
 DEATH_REL = getattr(settings, "DEATH_REL")
 LOCATED_REL = getattr(settings, "ORG_LOCATED_IN")
+CREATED_REL = getattr(settings, "AUTHOR_RELS")
 
 
 def get_uri_domain(uri):
@@ -133,6 +140,7 @@ def get_or_create_place_from_wikidata(uri):
 
 
 def get_or_create_person_from_gnd(uri):
+    uri = get_normalized_uri(uri)
     try:
         entity = Uri.objects.get(uri=uri).entity
         entity = Person.objects.get(id=entity.id)
@@ -162,6 +170,7 @@ def get_or_create_person_from_gnd(uri):
 
 
 def get_or_create_org_from_gnd(uri):
+    uri = get_normalized_uri(uri.strip())
     try:
         entity = Uri.objects.get(uri=uri).entity
         entity = Institution.objects.get(id=entity.id)
@@ -182,6 +191,7 @@ def get_or_create_org_from_gnd(uri):
 
 
 def get_or_create_person_from_wikidata(uri):
+    uri = get_normalized_uri(uri)
     try:
         entity = Uri.objects.get(uri=uri).entity
         entity = Person.objects.get(id=entity.id)
@@ -238,6 +248,93 @@ def get_or_create_person_from_wikidata(uri):
                     start_date_written=apis_entity["end_date_written"],
                 )
         return entity
+
+
+def get_or_create_work_from_gnd(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Work.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        fetched_item = PyLobidWork(uri)
+        try:
+            start_date_written, end_date_written = fetched_item.date_of_creation.split(
+                "-"
+            )
+        except ValueError:
+            start_date_written, end_date_written = fetched_item.date_of_creation, ""
+        apis_entity = {
+            "name": fetched_item.pref_name,
+            "start_date_written": start_date_written,
+            "end_date_written": end_date_written,
+        }
+        entity = Work.objects.create(**apis_entity)
+        Uri.objects.create(
+            uri=uri,
+            domain="gnd",
+            entity=entity,
+        )
+        try:
+            start_date_written, end_date_written = (
+                fetched_item.date_of_production.split("-")
+            )
+        except ValueError:
+            pass
+        for x in fetched_item.creators:
+            if x["role"] in ["firstAuthor", "author", "firstComposer"]:
+                print(x)
+                try:
+                    wikidata_url = gnd_to_wikidata(x["id"])["wikidata"]
+                    print(wikidata_url)
+                    creator = get_or_create_person_from_wikidata(wikidata_url)
+                except IndexError:
+                    creator = get_or_create_person_from_gnd(x["id"])
+                try:
+                    relation_type = PersonWorkRelation.objects.get(id=CREATED_REL[0])
+                except ObjectDoesNotExist:
+                    relation_type, _ = PersonWorkRelation.objects.get_or_create(
+                        name="hat geschaffen"
+                    )
+                rel, _ = PersonWork.objects.get_or_create(
+                    related_person=creator,
+                    related_work=entity,
+                    relation_type=relation_type,
+                    start_date_written=start_date_written,
+                    end_date_written=end_date_written,
+                )
+                print(rel)
+        return entity
+
+
+def get_or_create_work_from_wikidata(uri):
+    try:
+        entity = Uri.objects.get(uri=uri).entity
+        entity = Work.objects.get(id=entity.id)
+        return entity
+    except ObjectDoesNotExist:
+        wd_entity = WikiDataEntity(uri)
+        if wd_entity.gnd_uri:
+            try:
+                entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
+                entity = Work.objects.get(id=entity.id)
+                return entity
+            except ObjectDoesNotExist:
+                entity = get_or_create_work_from_gnd(wd_entity.gnd_uri)
+                Uri.objects.create(
+                    uri=get_normalized_uri(uri),
+                    domain="wikidata",
+                    entity=entity,
+                )
+                return entity
+        else:
+            apis_entity = wd_entity.get_apis_entity()
+            entity = Work.objects.create(**apis_entity)
+            Uri.objects.create(
+                uri=get_normalized_uri(uri),
+                domain="wikidata",
+                entity=entity,
+            )
+            return entity
 
 
 def get_or_create_org_from_wikidata(uri):
@@ -299,6 +396,13 @@ def import_from_normdata(raw_url, entity_type):
         try:
             wikidata_url = gnd_to_wikidata(normalized_url)["wikidata"]
         except (IndexError, KeyError):
+            if entity_type == "work":
+                try:
+                    entity = get_or_create_work_from_gnd(normalized_url)
+                    return entity
+                except Exception as e:
+                    ic(e)
+                    wikidata_url = False
             if entity_type == "place":
                 try:
                     entity = get_or_create_place_from_gnd(normalized_url)
@@ -344,6 +448,8 @@ def import_from_normdata(raw_url, entity_type):
                 entity = get_or_create_place_from_wikidata(wikidata_url)
             elif entity_type == "person":
                 entity = get_or_create_person_from_wikidata(wikidata_url)
+            elif entity_type == "work":
+                entity = get_or_create_work_from_wikidata(wikidata_url)
             else:
                 entity = get_or_create_org_from_wikidata(wikidata_url)
     else:
