@@ -19,7 +19,7 @@ from apis_core.apis_relations.models import PersonPlace, InstitutionPlace, Perso
 from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     InstitutionPlaceRelation,
-    PersonWorkRelation
+    PersonWorkRelation,
 )
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
@@ -274,6 +274,12 @@ def get_or_create_work_from_gnd(uri):
             domain="gnd",
             entity=entity,
         )
+        try:
+            start_date_written, end_date_written = (
+                fetched_item.date_of_production.split("-")
+            )
+        except ValueError:
+            pass
         for x in fetched_item.creators:
             if x["role"] in ["firstAuthor", "author", "firstComposer"]:
                 print(x)

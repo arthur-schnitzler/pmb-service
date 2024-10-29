@@ -14,6 +14,7 @@ from normdata.forms import NormDataImportForm
 from normdata.utils import (
     get_or_create_person_from_wikidata,
     get_or_create_place_from_wikidata,
+    get_or_create_work_from_wikidata,
     import_from_normdata,
 )
 
@@ -252,6 +253,27 @@ class EntitiesTestCase(TestCase):
         )
         response = client.post(url, payload, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_013a_import_normdata_for_work(self):
+        client.login(**USER)
+        payload = {
+            "normdata_url": "https://www.wikidata.org/wiki/Q105745657",
+            "entity_type": "work",
+        }
+        url = reverse(
+            "normdata:import_from_normdata",
+        )
+        response = client.post(url, payload, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_013b_wikidata_work_exist(self):
+        entity = get_or_create_work_from_wikidata(
+            "https://www.wikidata.org/wiki/Q105745657"
+        )
+        ic(entity)
+        for x in entity.uri_set.all():
+            entity = get_or_create_work_from_wikidata(x.uri)
+            self.assertTrue(entity)
 
     def test_014_wikidata_place_exist(self):
         entity = get_or_create_place_from_wikidata(
