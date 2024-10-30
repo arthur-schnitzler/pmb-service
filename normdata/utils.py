@@ -282,10 +282,8 @@ def get_or_create_work_from_gnd(uri):
             pass
         for x in fetched_item.creators:
             if x["role"] in ["firstAuthor", "author", "firstComposer"]:
-                print(x)
                 try:
                     wikidata_url = gnd_to_wikidata(x["id"])["wikidata"]
-                    print(wikidata_url)
                     creator = get_or_create_person_from_wikidata(wikidata_url)
                 except IndexError:
                     creator = get_or_create_person_from_gnd(x["id"])
@@ -295,14 +293,13 @@ def get_or_create_work_from_gnd(uri):
                     relation_type, _ = PersonWorkRelation.objects.get_or_create(
                         name="hat geschaffen"
                     )
-                rel, _ = PersonWork.objects.get_or_create(
+                PersonWork.objects.get_or_create(
                     related_person=creator,
                     related_work=entity,
                     relation_type=relation_type,
                     start_date_written=start_date_written,
                     end_date_written=end_date_written,
                 )
-                print(rel)
         return entity
 
 
