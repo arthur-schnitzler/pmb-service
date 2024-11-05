@@ -459,6 +459,11 @@
             href="{% url 'apis_core:wikidata_beacon' %}">BEACON Datei<a /> bezogen werden.</p>
     <p>Wikipedia-Einträge werden nicht direkt verlinkt. Auf der linken Seite im Menü eines Wikipedia-Eintrags
         steht ein Link auf das entsprechende Wikidata-Objekt.</p>
+    <p>Konkordanz-Listen zwischen Projekt-URIS und PMB-URIs können nach diesem Schema heruntergeladen werden: <code>https://pmb.acdh.oeaw.ac.at/apis/domain-uris/{projekt-uri-domain}</code>, also z.B:
+    <ul>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick</a> generiert eine CSV Datei aller PMB Entitiäten die mit einer URI aus dem Hanslick-Online Projekt verbunden sind</li></li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json</a> generiert eine JSON Datei aller PMB Entitiäten die mit einer URI aus dem Brahms Projekt verbunden sind</li>
+    </ul></p>
 
     <h3>Zur Personensuche</h3>
     <h4>Wien</h4>
