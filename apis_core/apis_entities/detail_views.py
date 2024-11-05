@@ -34,9 +34,6 @@ class GenericEntitiesDetailView(View):
                 rel.get_related_entity_classb().__name__.lower(),
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
-            table = get_generic_relations_table(
-                relation_class=rel, entity_instance=instance, detail=True
-            )
             if match[0] == entity:
                 link_to_relations = f"{rel.get_listview_url()}?source={pk}"
                 rel_type = match[1]
@@ -66,6 +63,13 @@ class GenericEntitiesDetailView(View):
                     objects = rel.objects.filter(**dict_1)
                     if callable(getattr(objects, "filter_for_user", None)):
                         objects = objects.filter_for_user()
+            disable_sort = False
+            if objects.count() > 50:
+                objects = objects[:50]
+                disable_sort = True
+            table = get_generic_relations_table(
+                relation_class=rel, entity_instance=instance, detail=True, disable_sort=disable_sort
+            )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
             RequestConfig(request, paginate={"per_page": 10}).configure(tb_object)
