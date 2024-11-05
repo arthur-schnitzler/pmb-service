@@ -207,7 +207,7 @@
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}
-                        <h4>{{ obj.0 }} {% if obj.5 %}<a class="apis-{{ obj.5 }}" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ object }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">aus technischen Gründen werden hier nur 50 von {{ obj.7 }} Relationen angezeigt </span> {% endif %}{% endif %}</h4>
+                        <h4>{{ obj.0 }} {% if obj.5 %}<a class="apis-{{ obj.5 }}" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ object }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">An dieser Stelle werden nur 50 von {{ obj.7 }} Beziehungen angezeigt. Alle Beziehungen <a title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><strong>hier</strong></a></span> {% endif %}{% endif %}</h4>
                    
                         <div id="tab_{{ obj.2 }}" class="mb-5">
                             {% render_table obj.1 %}
