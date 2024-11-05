@@ -68,7 +68,10 @@ class GenericEntitiesDetailView(View):
                 objects = objects[:50]
                 disable_sort = True
             table = get_generic_relations_table(
-                relation_class=rel, entity_instance=instance, detail=True, disable_sort=disable_sort
+                relation_class=rel,
+                entity_instance=instance,
+                detail=True,
+                disable_sort=disable_sort,
             )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
