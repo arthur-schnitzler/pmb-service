@@ -108,7 +108,7 @@ class EventListFilter(MyBaseFilter):
             [
                 value.lookup_expr,
             ],
-            EventWorkRelation,
+            PersonEventRelation,
         )
         qs = qs.filter(
             personevent_set__related_person__name__icontains=value.value,

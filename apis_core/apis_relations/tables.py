@@ -10,82 +10,8 @@ from apis_core.apis_metainfo.tables import (
     generic_render_end_date_written,
     generic_render_start_date_written,
 )
-from apis_core.apis_relations.models import AbstractRelation
 
 empty_text_default = "There are currently no relations"
-
-
-def get_generic_relation_listview_table(relation_name):
-    """
-    Creates a table class according to the relation class given by the relation_name parameter.
-    Instantiates corresponding columns which also provide linking to the respectively related entities.
-
-    :param relation_name: str : The name of the relation class to be loaded
-    :return: a django-tables2 Table Class tailored for the respective relation class
-    """
-
-    # create all variables which save the foreign key fields which are different for each relation class
-    relation_class = AbstractRelation.get_relation_class_of_name(relation_name)
-    related_entity_class_name_a = (
-        relation_class.get_related_entity_classa().__name__.lower()
-    )
-    related_entity_class_name_b = (
-        relation_class.get_related_entity_classb().__name__.lower()
-    )
-    related_entity_field_name_a = relation_class.get_related_entity_field_namea()
-    related_entity_field_name_b = relation_class.get_related_entity_field_nameb()
-
-    class GenericRelationListViewTable(tables.Table):
-        # reuse the logic for ordering and rendering *_date_written
-        # Important: The names of these class variables must correspond to the column field name,
-        # e.g. for start_date_written, the methods must be named order_start_date_written and render_start_date_written
-        order_start_date_written = generic_order_start_date_written
-        order_end_date_written = generic_order_end_date_written
-        render_start_date_written = generic_render_start_date_written
-        render_end_date_written = generic_render_end_date_written
-
-        class Meta:
-            model = relation_class
-
-            # the fields list also serves as the defining order of them, as to avoid duplicated definitions
-            fields = [
-                related_entity_field_name_a,
-                related_entity_field_name_b,
-                "relation_type",
-                "start_date_written",
-                "end_date_written",
-            ]
-            # reuse the list for ordering
-            sequence = tuple(fields)
-
-            # This attrs dictionary I took over from the tables implementation before. No idea if and where it would be needed.
-            attrs = {"class": "table table-hover table-striped table-condensed"}
-
-        def __init__(self, *args, **kwargs):
-            # LinkColumn objects provied hyperlinking to the related entities
-            self.base_columns[related_entity_field_name_a] = tables.LinkColumn(
-                # which url to use:
-                "apis:apis_entities:generic_entities_detail_view",
-                args=[
-                    # which entity sub-url to load from:
-                    related_entity_class_name_a,
-                    # which instance identifier to use:
-                    A(related_entity_field_name_a + ".pk"),
-                ],
-            )
-
-            # same as above
-            self.base_columns[related_entity_field_name_b] = tables.LinkColumn(
-                "apis:apis_entities:generic_entities_detail_view",
-                args=[
-                    related_entity_class_name_b,
-                    A(related_entity_field_name_b + ".pk"),
-                ],
-            )
-
-            super().__init__(*args, **kwargs)
-
-    return GenericRelationListViewTable
 
 
 def get_generic_relations_table(
@@ -136,12 +62,6 @@ def get_generic_relations_table(
 
         # reuse the logic for ordering and rendering *_date_written
         # Important: The names of these class variables must correspond to the column field name,
-        # e.g. for start_date_written, the methods must be named order_start_date_written and render_start_date_written
-        order_start_date_written = generic_order_start_date_written
-        order_end_date_written = generic_order_end_date_written
-        render_start_date_written = generic_render_start_date_written
-        render_end_date_written = generic_render_end_date_written
-
         if disable_sort:
             orderable = disable_sort
 
