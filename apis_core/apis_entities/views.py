@@ -38,22 +38,30 @@ class GenericEntitiesEditView(View):
                 rel.get_related_entity_classb().__name__.lower(),
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
-            table = get_generic_relations_table(
-                relation_class=rel, entity_instance=instance, detail=False
-            )
             title_card = ""
             if match[0] == match[1]:
                 title_card = entity.title()
                 dict_1 = {"related_" + entity.lower() + "a": instance}
                 dict_2 = {"related_" + entity.lower() + "b": instance}
                 objects = rel.objects.filter(Q(**dict_1) | Q(**dict_2))
+                link_to_relations = f"{rel.get_listview_url()}?target={pk}"
             else:
+                link_to_relations = f"{rel.get_listview_url()}?source={pk}"
                 if match[0].lower() == entity.lower():
                     title_card = match[1].title()
                 else:
                     title_card = match[0].title()
                 dict_1 = {"related_" + entity.lower(): instance}
                 objects = rel.objects.filter(**dict_1)
+            object_count = objects.count()
+            disable_sort = False
+            if object_count > 20:
+                if object_count > 20:
+                    objects = objects[:20]
+                    disable_sort = True
+            table = get_generic_relations_table(
+                relation_class=rel, entity_instance=instance, detail=False, disable_sort=disable_sort
+            )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
             RequestConfig(request, paginate={"per_page": 10}).configure(tb_object)
@@ -63,6 +71,9 @@ class GenericEntitiesEditView(View):
                     tb_object,
                     "".join([x.title() for x in match]),
                     tb_object_open,
+                    link_to_relations,
+                    disable_sort,
+                    object_count
                 )
             )
         form = get_entities_form(entity.title())
