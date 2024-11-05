@@ -60,7 +60,10 @@ class GenericEntitiesEditView(View):
                     objects = objects[:20]
                     disable_sort = True
             table = get_generic_relations_table(
-                relation_class=rel, entity_instance=instance, detail=False, disable_sort=disable_sort
+                relation_class=rel,
+                entity_instance=instance,
+                detail=False,
+                disable_sort=disable_sort,
             )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
@@ -73,7 +76,7 @@ class GenericEntitiesEditView(View):
                     tb_object_open,
                     link_to_relations,
                     disable_sort,
-                    object_count
+                    object_count,
                 )
             )
         form = get_entities_form(entity.title())

@@ -1,11 +1,14 @@
+import json
+import pandas as pd
 from typing import Any
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
+
 
 from browsing.browsing_utils import BaseCreateView, BaseUpdateView
 
@@ -37,6 +40,35 @@ def wikidata_beacon(request):
     for x in uris:
         result = result + f"{x[0]}|" f"{x[1]}|" f"{domain}entity/{x[2]}/\n"
     return HttpResponse(result, content_type="text/plain")
+
+
+def domain_uris(request, domain):
+    df = pd.DataFrame(
+        list(
+            Uri.objects.filter(domain__icontains=domain).values(
+                "uri", "entity_id", "entity__name"
+            )
+        )
+    )
+    if df.empty:
+        raise Http404
+    df["entity_id"] = df.apply(
+        lambda x: f"https://pmb.acdh.oeaw.ac.at/entity/{x['entity_id']}", axis=1
+    )
+    format = request.GET.get("format", "csv")
+    if format not in ["csv", "json"]:
+        format = "csv"
+    if format == "csv":
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": f'attachment; filename="{domain}.csv"'},
+        )
+        df.to_csv(response, index=False)
+    else:
+        df = df.set_index("uri")
+        out = df.to_json(orient="index")
+        response = JsonResponse(json.loads(out))
+    return response
 
 
 class UriDetailView(DetailView):
