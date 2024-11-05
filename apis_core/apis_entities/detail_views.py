@@ -64,9 +64,12 @@ class GenericEntitiesDetailView(View):
                     if callable(getattr(objects, "filter_for_user", None)):
                         objects = objects.filter_for_user()
             disable_sort = False
-            if objects.count() > 50:
+            show_more = False
+            object_count = objects.count()
+            if object_count > 50:
                 objects = objects[:50]
                 disable_sort = True
+                show_more = True
             table = get_generic_relations_table(
                 relation_class=rel,
                 entity_instance=instance,
@@ -84,6 +87,8 @@ class GenericEntitiesDetailView(View):
                     tb_object_open,
                     link_to_relations,
                     rel_type,
+                    show_more,
+                    object_count,
                 )
             )
         object_lod = Uri.objects.filter(entity=instance)
