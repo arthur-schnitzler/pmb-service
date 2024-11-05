@@ -44,8 +44,10 @@ def get_generic_relation_listview_table(relation_name):
         render_start_date_written = generic_render_start_date_written
         render_end_date_written = generic_render_end_date_written
 
+
         class Meta:
             model = relation_class
+
 
             # the fields list also serves as the defining order of them, as to avoid duplicated definitions
             fields = [
@@ -88,7 +90,7 @@ def get_generic_relation_listview_table(relation_name):
     return GenericRelationListViewTable
 
 
-def get_generic_relations_table(relation_class, entity_instance, detail=None):
+def get_generic_relations_table(relation_class, entity_instance, detail=None, disable_sort=False):
     """
     Creates a table class according to the relation and entity class given by the parameters.
 
@@ -139,6 +141,9 @@ def get_generic_relations_table(relation_class, entity_instance, detail=None):
         order_end_date_written = generic_order_end_date_written
         render_start_date_written = generic_render_start_date_written
         render_end_date_written = generic_render_end_date_written
+
+        if disable_sort:
+            orderable = disable_sort
 
         class Meta:
             """
