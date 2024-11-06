@@ -143,6 +143,7 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
                 "relation_type",
                 "start_date__year",
                 "end_date__year",
+                "collection",
             ]
 
     return MyRelationsListFilter
@@ -163,6 +164,7 @@ def generate_relation_filter_formhelper():
                 "relation_type",
                 "start_date__year",
                 "end_date__year",
+                "collection",
             )
 
     return MyRelationsFilterFormHelper
