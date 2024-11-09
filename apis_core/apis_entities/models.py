@@ -103,13 +103,16 @@ class AbstractEntity(TempEntityClass):
         or
         person.get_related_person_instances()
 
-        Note that with these methods it is not necessary to differentiate between A and B entities when self-relations exist.
+        Note that with these methods it is not necessary to differentiate between
+        A and B entities when self-relations exist.
 
         The result of any such method call is the queryset of the related entities.
-        (And not a ManyToManyManager as is the case when calling <entity>.<entity>_set where in the case of self-relation
+        (And not a ManyToManyManager as is the case when calling <entity>.<entity>_set where
+        in the case of self-relation
         it must be differentiated between A and B entities, e.g. person.personA_set )
 
-        It was not possible to my understanding to change managers in such a way that two (the A and the B) could be combined
+        It was not possible to my understanding to change managers in such a way that two
+        (the A and the B) could be combined
         into one manager. Hence these additional shortcut methods.
 
         :return: None
@@ -121,7 +124,8 @@ class AbstractEntity(TempEntityClass):
             """
             creates the individual method from a ManyToMany field by calling the manager's objects.all()
 
-            This method creation has to be done here in a separate method, so that it can be called once before assignment
+            This method creation has to be done here in a separate method, so that it can be called once
+            before assignment
             as otherwise the variable 'entity_name' in the loop below changes with each iteration and with that also the
             method references (due to python's "late binding").
             A method call in between thus forces the content of 'entity_name' to be assigned for good to the
@@ -220,7 +224,7 @@ class AbstractEntity(TempEntityClass):
         :return: list of all python classes of the entities defined within this models' module
         """
 
-        if cls._all_entity_classes == None:
+        if cls._all_entity_classes is None:
             entity_classes = []
             entity_names = []
 
@@ -515,7 +519,7 @@ class Person(AbstractEntity):
         verbose_name = "Person"
         verbose_name_plural = "Personen"
         ordering = [
-            "id",
+            "-id",
         ]
 
     def get_tei_url(self):
@@ -550,7 +554,7 @@ class Place(AbstractEntity):
         verbose_name = "Ort"
         verbose_name_plural = "Orte"
         ordering = [
-            "id",
+            "-id",
         ]
 
     def get_tei_url(self):
@@ -577,7 +581,7 @@ class Institution(AbstractEntity):
         verbose_name = "Institution"
         verbose_name_plural = "Institutionen"
         ordering = [
-            "id",
+            "-id",
         ]
 
     def get_tei_url(self):
@@ -604,7 +608,7 @@ class Event(AbstractEntity):
         verbose_name = "Ereignis"
         verbose_name_plural = "Ereignisse"
         ordering = [
-            "id",
+            "-id",
         ]
 
     def get_tei_url(self):
@@ -629,7 +633,7 @@ class Work(AbstractEntity):
         verbose_name = "Werk"
         verbose_name_plural = "Werke"
         ordering = [
-            "id",
+            "-id",
         ]
 
     def get_tei_url(self):
