@@ -35,6 +35,16 @@
         <li>Hermann Bahr: Tagebücher, Skizzenbücher, Notizhefte. Hg. Moritz Csáky, Mitarbeit von Lottelis Moser, Helene
             Zand, Lukas Mayerhofer und Kurt Ifkovits. Wien, Köln, Weimar: Böhlau 1994-2003, <a
                 href="https://bahr.univie.ac.at/node/49702" target="_blank">Link</a> (Januar 2024)</li>
+        <li>Alexander Wilfing, Christoph Landerer: Hanslick-Online, <a href="https://hanslick.acdh.oeaw.ac.at/" target="_blank">https://hanslick.acdh.oeaw.ac.at/</a>. <br />
+            <i>2.385 Entitäten</i> (Oktober 2024) </li>
+        <li>Vasiliki Papadopoulou und Monika Jaroš: Brahms online, <a href="https://brahms-online.oeaw.ac.at/" target="_blank">https://brahms-online.oeaw.ac.at/</a>. <br />
+                <i>687 Entitäten</i> (Oktober 2024) </li>
+        <li>Schubert digital, <a href="https://schubert-digital.at/" target="_blank">https://schubert-digital.at/</a>. <br />
+                    <i>358 Entitäten</i> (Oktober 2024) </li>
+        <li>Stephan Kurz und Daniel Schopper: Kinobesuche von Clara Katharina Pollaczek und Arthur Schnitzler<br />
+            <i>820 Entitäten</i> (November 2024) </li>
+
+        
     </ul>
     <p>Die Entitäten werden kontinuierlich erweitert, durchgesehen und auch miteinander in Beziehung
         gesetzt. </p>
@@ -456,13 +466,11 @@
     <p>Eine Konkordanz zwischen <strong>PMB-URIs</strong> und <strong>GND-URIs</strong> kann über folgende <a
             href="{% url 'apis_core:beacon' %}">BEACON Datei<a /> bezogen werden.</p>
     <p>Eine Konkordanz zwischen <strong>PMB-URIs</strong> und <strong>Wikidata-URIs</strong> kann über folgende <a
-            href="{% url 'apis_core:wikidata_beacon' %}">BEACON Datei<a /> bezogen werden.</p>
-    <p>Wikipedia-Einträge werden nicht direkt verlinkt. Auf der linken Seite im Menü eines Wikipedia-Eintrags
-        steht ein Link auf das entsprechende Wikidata-Objekt.</p>
+            href="{% url 'apis_core:wikidata_beacon' %}">BEACON Datei<a /> bezogen werden. (Über Wikidata ist auch die Verlinkung zur Wikipedia sichergestellt.)</p>
     <p>Konkordanz-Listen zwischen Projekt-URIS und PMB-URIs können nach diesem Schema heruntergeladen werden: <code>https://pmb.acdh.oeaw.ac.at/apis/domain-uris/{projekt-uri-domain}</code>, also z.B:
     <ul>
-        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick</a> generiert eine CSV Datei aller PMB Entitiäten die mit einer URI aus dem Hanslick-Online Projekt verbunden sind</li></li>
-        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json</a> generiert eine JSON Datei aller PMB Entitiäten die mit einer URI aus dem Brahms Projekt verbunden sind</li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/hanslick</a> generiert eine CSV Datei aller PMB-Entitäten, die mit einer URI aus dem Hanslick-Online Projekt verbunden sind</li></li>
+        <li><a href="https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json">https://pmb.acdh.oeaw.ac.at/apis/domain-uris/brahms?format=json</a> generiert eine JSON Datei aller PMB-Entitäten, die mit einer URI aus dem Brahms Projekt verbunden sind</li>
     </ul></p>
 
     <h3>Zur Personensuche</h3>
@@ -487,8 +495,10 @@
         <li>
             <a href="https://digital.zlb.de/viewer/cms/155/">Adressbuch Berlin</a>
         </li>
+        <li><a href="https://www.deutsche-digitale-bibliothek.de/newspaper">Deutsche Digitale Bibliothek</a></li>
         <li><a href="http://www.theeuropeanlibrary.org/tel4/">The European Library</a>
-            (Internationale Zeitungen, auch Berlin.)</li>
+            (Internationale Zeitungen)</li>
+
     </ul>
 </div>
 {% endblock %}
