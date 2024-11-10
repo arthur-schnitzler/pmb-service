@@ -113,7 +113,7 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
                 Q(**{x + search_type: q})
                 for x in settings.APIS_ENTITIES[ac_type.title()]["search"]
             ]
-            res = ent_model.objects.filter(reduce(operator.or_, arg_list)).distinct()
+            res = ent_model.objects.filter(reduce(operator.or_, arg_list)).order_by('id').distinct()
             if q3:
                 f_dict2 = {}
                 for fd in q3:
