@@ -1,14 +1,18 @@
+import requests
 from typing import Any
+
+
 from django.apps import apps
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
 from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
-from django.conf import settings
 from apis_core.apis_metainfo.models import Uri
-import requests
+
+from network.models import Edge
 
 
 from .forms import form_user_login
@@ -80,6 +84,7 @@ class HomePageView(TemplateView):
         context["work_count"] = Work.objects.all().count()
         context["institution_count"] = Institution.objects.all().count()
         context["uri_count"] = Uri.objects.all().count()
+        context["edges_count"] = Edge.objects.all().count()
         return context
 
 
