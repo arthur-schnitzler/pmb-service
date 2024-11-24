@@ -1,5 +1,5 @@
 :root {
-    --pmb: #9B5F98;
+    --pmb: #874A84;
     --pmb-hover: #9b5f98c2;
     --person: #720e07;
     --place: #5bc0eb;
@@ -11,6 +11,11 @@
 
 .select2-container .select2-selection--single {
     min-height: 2.2rem;
+}
+
+footer a {
+    color: var(--pmb);
+    text-decoration: underline;
 }
 
 a {
