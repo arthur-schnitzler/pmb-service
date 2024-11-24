@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 EDGE_TYPES = (
     ("personperson", "Personen und Personen"),
@@ -42,6 +43,7 @@ class Edge(models.Model):
     )
     source_kind = models.CharField(
         max_length=250,
+        choices=NODE_TYPES,
         verbose_name="Art der Quelle",
         help_text="Art der Quelle (Person, Ort, Werk, Institution, Ereignis)",
     )
@@ -60,6 +62,7 @@ class Edge(models.Model):
     )
     target_kind = models.CharField(
         max_length=250,
+        choices=NODE_TYPES,
         verbose_name="Art des Ziels",
         help_text="Art des Ziels (Person, Ort, Werk, Institution, Ereignis)",
     )
@@ -80,9 +83,13 @@ class Edge(models.Model):
     )
 
     class Meta:
-        verbose_name = ("Kante",)
+        verbose_name = "Kante"
         verbose_name_plural = "Kanten"
         ordering = ["-id"]
 
     def __str__(self):
         return f"{self.source_label}, {self.edge_label}, {self.target_label}"
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse("network:edges_browse")
