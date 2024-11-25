@@ -41,8 +41,6 @@ class EdgeListFilter(django_filters.FilterSet):
 
     def nodes_id_filter(self, queryset, name, value):
         sane_values = [safe_int_conversion(x) for x in value]
-        print(value)
-        print(sane_values)
         return queryset.filter(
             Q(source_id__in=sane_values) | Q(target_id__in=sane_values)
         )
@@ -56,7 +54,6 @@ class EdgeListFilter(django_filters.FilterSet):
                 self.filters[field_name].help_text = model_field.help_text
             except FieldDoesNotExist:
                 continue
-            print(field_name, type(model_field))
             if isinstance(model_field, CharField) and not field_name == "edge_label":
                 if (
                     model_field.choices
