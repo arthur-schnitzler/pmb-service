@@ -21,6 +21,7 @@
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_entities:person_list_view' %}">
                     <i class="bi bi-people apis-person big-icons"></i>
+                    <span class="visually-hidden">Personen</span>
                 </a>
             </p>
             <h2>{{ person_count|intcomma }} Personen</h2>
@@ -35,6 +36,7 @@
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_entities:place_list_view' %}">
                     <i class="bi bi-map apis-place big-icons"></i>
+                    <span class="visually-hidden">Orte</span>
                 </a>
             </p>
             <h2>{{ place_count|intcomma }} Orte</h2>
@@ -46,6 +48,7 @@
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_entities:work_list_view' %}">
                     <i class="bi bi-book apis-work big-icons"></i>
+                    <span class="visually-hidden">Werke</span>
                 </a>
             </p>
             <h2>{{ work_count|intcomma }} Werke</h2>
@@ -55,12 +58,27 @@
             </p>
         </div>
     </div>
-
+    <div class="row text-center pb-4">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <p class="text-center">
+                <a class="icon-link" href="{% url 'network:edges_browse' %}">
+                    <i class="bi bi-share big-icons"></i>
+                    <span class="visually-hidden">Relationen</span>
+                </a>
+            </p>
+            <h2>{{ edges_count|intcomma }} Relationen</h2>
+            <p>Relationen zwischen Personen, Werken, Ereignissen, Institutionen und Orten.
+            </p>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
     <div class="row">
         <div class="col-lg-4">
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_entities:event_list_view' %}">
                     <i class="bi bi-calendar3 apis-event big-icons"></i>
+                    <span class="visually-hidden">Ereignisse</span>
                 </a>
             </p>
             <h2>{{ event_count|intcomma }} Ereignisse</h2>
@@ -72,6 +90,7 @@
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_entities:institution_list_view' %}">
                     <i class="bi bi-building-gear apis-institution big-icons"></i>
+                    <span class="visually-hidden">Institutionen</span>
                 </a>
             </p>
             <h2>{{ institution_count|intcomma }} Institutionen</h2>
@@ -83,6 +102,7 @@
             <p class="text-center">
                 <a class="icon-link" href="{% url 'apis:apis_metainfo:uri_browse' %}">
                     <i class="bi bi-link-45deg apis-uri big-icons"></i>
+                    <span class="visually-hidden">Uris</span>
                 </a>
             </p>
             <h2>{{ uri_count|intcomma }} URIs</h2>

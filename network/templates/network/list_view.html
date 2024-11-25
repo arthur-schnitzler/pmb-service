@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_tables2 %}
+{% load crispy_forms_field %}
+{% load crispy_forms_tags %}
+{% block title %} Alle Beziehungen {% endblock %}
+{% block content %}
+{% include "partials/entity_styles.html" %}
+
+<div class="container pt-4">
+    <h1 class="display-1 text-center">
+        <i class="bi bi-share"> Beziehungen</i>
+    </h1>
+   
+    <div class="row pt-4">
+        <div class="col-md-4" id="searchpane">
+            <h2 class="text-center">Suchen & Filtern</h2>
+            {% block customView %}{% endblock %}
+            {% block create_button %}{% endblock %}
+            <!--Search mask-->
+            {% load django_tables2 crispy_forms_tags %}
+            <form action="." class="uniForm" method="get">
+                {% crispy filter.form filter.form.helper %}
+                {% include 'browsing/partials/column_selector.html' %}
+                <a class="btn btn-primary" href=".">Zurücksetzen</a>
+                <button type="submit" class="btn btn-primary">Suchen & Filtern</button>
+            </form>
+            {% include 'browsing/partials/chart_form.html' %}
+
+        </div>
+        <div class="col-md-8" id="results">
+
+            {% with table.paginator.count as total %}
+            <h2 class="text-center">{{ total }} Result(s)</h2>
+            {% endwith %}
+            <div>
+                {% block table %}
+                {% include 'browsing/partials/table.html' %}
+                {% endblock table %}
+                {% block pagination.allpages %}
+                {% load django_tables2 %}
+{% load i18n %}
+
+<div>
+    {% with table.page.object_list|length as count %}
+        <p class="float-center">Page total: {{ count }}</p>
+    {% endwith %}
+</div>
+
+<nav aria-label="Pagination of the results table">
+    <ul class="pagination">
+    {% if table.page.has_previous %}
+        {% block pagination.previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endblock pagination.previous %}
+    {% endif %}
+    
+    {% if table.page.has_next %}
+        {% block pagination.next %}
+        <li class="page-item">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.next_page_number %}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        {% endblock pagination.next %}
+    {% endif %}
+    </ul>
+</nav>
+
+                {% endblock pagination.allpages %}
+                {% if download %}
+                <div class="float-end">
+                    {% include "browsing/partials/download_menu.html" %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block scripts2 %}
+<script src="{% static 'browsing/js/set-form-attributes.js' %}"></script>
+<script src="{% static 'browsing/js/filter-for-blank-fields.js' %}"></script>
+{% endblock scripts2 %}

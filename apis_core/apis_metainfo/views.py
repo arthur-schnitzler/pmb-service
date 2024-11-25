@@ -33,7 +33,7 @@ def beacon(request, domain="d-nb.info/gnd"):
     df["entity_id"] = df.apply(
         lambda row: f'https://pmb.acdh.oeaw.ac.at/entity/{row["entity_id"]}/', axis=1
     )
-    beacon_lines = df[['uri', 'entity__name', 'entity_id']].agg('|'.join, axis=1)
+    beacon_lines = df[["uri", "entity__name", "entity_id"]].agg("|".join, axis=1)
     beacon_str = result + "\n".join(beacon_lines)
     return HttpResponse(beacon_str, content_type="text/plain; charset=utf-8")
 
