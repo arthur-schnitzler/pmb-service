@@ -13,6 +13,8 @@ class EdgeFilterFormHelper(FormHelper):
         self.form_method = "GET"
         self.form_tag = False
         self.layout = Layout(
+            "node",
+            "node_id",
             BS5Accordion(
                 AccordionGroup(
                     "Quellknoten",
