@@ -76,6 +76,13 @@
                             Relationen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li class="text-center">
+                                <a class="dropdown-item" href="{% url 'network:edges_browse' %}">
+                                    <i class="bi bi-share"></i>
+                                    Alle Relationen <i class="bi bi-share"></i>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'apis:apis_relations:personperson' %}">
                                     <i class="bi bi-people apis-person"></i>
