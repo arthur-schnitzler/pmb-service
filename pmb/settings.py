@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "normdata",
     "dumper",
     "archemd",
+    "network",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

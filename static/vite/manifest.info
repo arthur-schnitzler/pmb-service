@@ -1,17 +1,19 @@
 {
-  "_browser-DJJKDSYy.js": {
-    "file": "browser-DJJKDSYy.js",
+  "_browser-lg2ZDdSy.js": {
+    "file": "browser-lg2ZDdSy.js",
+    "name": "browser",
     "isDynamicEntry": true,
     "imports": [
       "js/main.js"
     ]
   },
   "js/main.js": {
-    "file": "main-CbaY_M2F.js",
+    "file": "main-Dnusw_Zv.js",
+    "name": "main",
     "src": "js/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "_browser-DJJKDSYy.js"
+      "_browser-lg2ZDdSy.js"
     ]
   }
 }
