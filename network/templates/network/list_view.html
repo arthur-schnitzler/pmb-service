@@ -16,7 +16,7 @@
             <h2>Download</h2>
             <div class="btn-group" role="group" class="text-end">
                 <a type="button" class="btn btn-outline-primary" href="{% url 'network:data' %}{% querystring %}&format=csv">CSV</a>
-                <a type="button" class="btn btn-outline-primary" href="{% url 'network:data' %}{% querystring %}&format=json">JSON</a>
+                <a type="button" class="btn btn-outline-primary" href="{% url 'network:data' %}{% querystring %}&format=cosmograph">JSON</a>
             </div>
         </div>
         <div class="col-md-6 text-center">
@@ -84,11 +84,7 @@
 </nav>
 
                 {% endblock pagination.allpages %}
-                {% if download %}
-                <div class="float-end">
-                    {% include "browsing/partials/download_menu.html" %}
-                </div>
-                {% endif %}
+               
             </div>
         </div>
     </div>
