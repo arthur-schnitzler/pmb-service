@@ -54,6 +54,7 @@ def network_data(request):
         df["end_date"] = df["end_date"].dt.strftime("%Y-%m-%d").fillna("")
         out = df.to_json(orient="index", force_ascii=False)
         response = JsonResponse(json.loads(out))
+        return response
     elif format == "cosmograph":
         data = {}
         edge_data = df.apply(
