@@ -1,6 +1,8 @@
-import pandas as pd
 import json
+import pandas as pd
+from django.apps import apps
 from django.http import HttpResponse, JsonResponse
+from django.views.generic import TemplateView
 
 
 from browsing.browsing_utils import (
@@ -11,6 +13,27 @@ from network.filters import EdgeListFilter
 from network.forms import EdgeFilterFormHelper
 from network.models import Edge
 from network.tables import EdgeTable
+
+
+class NetworkView(TemplateView):
+    template_name = "network/network.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        MODELS = list(apps.all_models["apis_entities"].values())
+        model_list = []
+        for x in MODELS:
+            try:
+                item = {
+                    "color": x.get_color(),
+                    "icon": x.get_icon(),
+                    "name": x._meta.verbose_name,
+                }
+            except AttributeError:
+                continue
+            model_list.append(item)
+        context["model_list"] = model_list
+        return context
 
 
 class EdgeListViews(GenericListView):
