@@ -8,7 +8,6 @@ async function init() {
 
   const queryString = window.location.search;
   const url = `/network/csv/${queryString}`;
-  console.log(url);
 
   try {
     const res = await fetch(url);
@@ -56,6 +55,9 @@ async function init() {
       linkWidth: 1,
       linkArrows: false,
       onClick: (data) => alert(data.label),
+      simulationRepulsion: 1,
+      linkDistance: 5,
+      gravity: 0.5
     };
 
     const cosmograph = new Cosmograph(canvas, config);
