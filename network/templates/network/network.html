@@ -2,11 +2,8 @@
 {% load static %}
 {% load django_vite %}
 
-{% block title %}Vite{% endblock %}
-{% block scripts %}
-{% vite_hmr_client %}
-{% vite_asset 'js/main.js' %}
-{% endblock scripts %}
+{% block title %}Netzwerk{% endblock %}
+
 
 {% block content %}
 <div class="container-fluid p3-4">
@@ -31,4 +28,11 @@
   </div>
   <div id="app" class="pt-2 pe-2 ps-2 pb-2" style="height: 750px;"></div>
 </div>
+
 {% endblock %}
+
+{% block scripts2 %}
+{% vite_hmr_client %}
+{% vite_asset 'js/main.js' %}
+{% endblock scripts2 %}
+

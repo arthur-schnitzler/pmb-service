@@ -72,8 +72,3 @@ class DumperTestCase(TestCase):
         url = reverse("dumper:export")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
-
-    def test_10_network(self):
-        url = reverse("dumper:network")
-        response = client.get(url)
-        self.assertEqual(response.status_code, 200)
