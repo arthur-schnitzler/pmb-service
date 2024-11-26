@@ -33,17 +33,27 @@ async function init() {
       color: colors[d["k"]],
     }));
 
-          // Calculate the degree of each node
-  const nodeDegrees = {};
-  links.forEach(link => {
-    nodeDegrees[link.source] = (nodeDegrees[link.source] || 0) + 1;
-    nodeDegrees[link.target] = (nodeDegrees[link.target] || 0) + 1;
-  });
+    function getSpaceSize(nodeCount) {
+      if (nodeCount < 100) {
+        return 4096 / 2;
+      } else if (nodeCount > 99 && nodeCount < 10000) {
+        return 4096;
+      } else {
+        return 4096 * 2;
+      }
+    }
 
-  // Assign the degree to each node
-  nodes.forEach(node => {
-    node.degree = nodeDegrees[node.id] || 0;
-  });
+    // Calculate node size
+    const nodeDegrees = {};
+    links.forEach((link) => {
+      nodeDegrees[link.source] = (nodeDegrees[link.source] || 0) + 1;
+      nodeDegrees[link.target] = (nodeDegrees[link.target] || 0) + 1;
+    });
+
+    // Assign the degree to each node
+    nodes.forEach((node) => {
+      node.degree = nodeDegrees[node.id] || 0;
+    });
 
     const appNode = document.getElementById("app");
 
@@ -57,6 +67,7 @@ async function init() {
     appNode.appendChild(searchContainer);
 
     const config = {
+      spaceSize: getSpaceSize(nodes.length),
       nodeColor: (d) => d.color,
       nodeSize: (node) => {
         const degree = node.degree || 1; // Default to 1 if degree is not defined
@@ -73,7 +84,7 @@ async function init() {
       onClick: (data) => alert(data.label),
       simulationRepulsion: 1,
       linkDistance: 5,
-      gravity: 0.5
+      gravity: 0.5,
     };
 
     const cosmograph = new Cosmograph(canvas, config);
