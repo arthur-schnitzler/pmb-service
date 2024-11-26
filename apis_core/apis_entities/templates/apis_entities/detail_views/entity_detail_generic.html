@@ -203,7 +203,11 @@
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-7">
-            <h3 class="text-center mt-5">Beziehungen</h3>
+            <h3 class="text-center mt-5">
+                Beziehungen
+                <a href="{% url 'network:edges_browse' %}?node_id={{ object.id }}" title="Alle Relationen von {{ object }}"><i class="ps-2 bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }}</span></i></a>
+                <a href="{% url 'dumper:network' %}?node_id={{ object.id }}&format=cosmograph" title="Alle Relationen von {{ object }} als Netzwerk"><i class="ps-2 bi bi-share" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }} als Netzwerk</span></i></a>
+            </h3>
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}
