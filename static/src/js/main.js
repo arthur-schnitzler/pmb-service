@@ -33,6 +33,18 @@ async function init() {
       color: colors[d["k"]],
     }));
 
+          // Calculate the degree of each node
+  const nodeDegrees = {};
+  links.forEach(link => {
+    nodeDegrees[link.source] = (nodeDegrees[link.source] || 0) + 1;
+    nodeDegrees[link.target] = (nodeDegrees[link.target] || 0) + 1;
+  });
+
+  // Assign the degree to each node
+  nodes.forEach(node => {
+    node.degree = nodeDegrees[node.id] || 0;
+  });
+
     const appNode = document.getElementById("app");
 
     // Remove spinner
@@ -46,6 +58,10 @@ async function init() {
 
     const config = {
       nodeColor: (d) => d.color,
+      nodeSize: (node) => {
+        const degree = node.degree || 1; // Default to 1 if degree is not defined
+        return Math.max(1, Math.log(degree * 10)); // Adjust the multiplier and minimum size as needed
+      },
       nodeLabelAccessor: (d) => d.label,
       showTopLabels: true,
       showDynamicLabels: false,
