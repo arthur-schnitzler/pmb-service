@@ -1,4 +1,5 @@
 import { Cosmograph, CosmographTimeline } from "@cosmograph/cosmograph";
+import { getSpaceSize } from './lib.js'
 
 async function init() {
   const alertNode = document.getElementById("alert");
@@ -33,15 +34,7 @@ async function init() {
       color: colors[d["k"]],
     }));
 
-    function getSpaceSize(nodeCount) {
-      if (nodeCount < 100) {
-        return 4096 / 2;
-      } else if (nodeCount > 99 && nodeCount < 10000) {
-        return 4096;
-      } else {
-        return 4096 * 2;
-      }
-    }
+    
 
     // Calculate node size
     const nodeDegrees = {};
@@ -74,7 +67,7 @@ async function init() {
         return Math.max(1, Math.log(degree * 10)); // Adjust the multiplier and minimum size as needed
       },
       nodeLabelAccessor: (d) => d.label,
-      showTopLabels: true,
+      showTopLabels: false,
       showDynamicLabels: false,
       linkGreyoutOpacity: 0,
       nodeLabelColor: "white",
