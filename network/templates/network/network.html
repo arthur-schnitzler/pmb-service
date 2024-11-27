@@ -6,15 +6,9 @@
 
 
 {% block content %}
-<div class="container-fluid p3-4">
+<div class="container-fluid pt-3">
   <h1 class="display-3 text-center">Netzwerk aller Verbindungen</h1>
-  <div class="d-flex justify-content-center">
-    <div id="alert" class="alert alert-warning d-flex align-items-center">
-      <div>
-        Hierbei handelt es sich nur um ein Proof of Concept
-      </div>
-    </div>
-  </div>
+  <div class="alert alert-danger visually-hidden" id="alertNode" role="alert"/>  
 
   <div class="d-flex justify-content-center" id="spinner">
     <div class="spinner-border" role="status">
@@ -26,7 +20,20 @@
     <span class="p2"><i class="{{ x.icon }}"></i> {{ x.name }}</span>
     {% endfor %}
   </div>
-  <div id="app" class="pt-2 pe-2 ps-2 pb-2" style="height: 750px;"></div>
+  <div class="row">
+    <div class="col-md-1">
+      <h2 class="text-center">Config</h2>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-primary" type="button" id="pause">Pause</button>
+        <button class="btn btn-primary" type="button" id="fit-view">Fit View</button>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div id="canvas" class="pt-2 pe-2 ps-2 pb-2" style="height: 600px;"></div>
+    </div>
+  </div>
+  
+  <div id="timeline"></div>
 </div>
 
 {% endblock %}
