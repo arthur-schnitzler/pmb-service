@@ -1,9 +1,9 @@
-import { Graph } from "@cosmograph/cosmos";
+import { Cosmograph, CosmographTimeline } from "@cosmograph/cosmograph";
 import { getSpaceSize, COLORS } from "./lib.js";
 
 async function init() {
   const spinnerNode = document.getElementById("spinner");
-  const alertNode = document.getElementById("alertNode");
+  const canvas = document.getElementById("canvas");
   const queryString = window.location.search;
   const url = `/network/csv/${queryString}`;
 
@@ -36,37 +36,72 @@ async function init() {
     });
     // Remove spinner
     spinnerNode.classList.add("visually-hidden");
-    let graph;
-    let config = {
-      backgroundColor: "#151515",
+
+    // configure graph
+    const config = {
+      backgroundColor: "white",
+      spaceSize: getSpaceSize(nodes.length)["spaceSize"],
+      nodeColor: (d) => d.color,
+      linkColor: "#ebeded",
       nodeSize: (node) => {
         const degree = node.degree || 1; // Default to 1 if degree is not defined
-        return Math.max(1, Math.log(degree * 10)); // Adjust the multiplier and minimum size as needed
+        return Math.max(1, Math.log(degree * 100)); // Adjust the multiplier and minimum size as needed
       },
-      nodeColor: (d) => d.color,
       nodeGreyoutOpacity: 0.1,
-      linkWidth: 0.1,
-      linkColor: "#5F74C2",
-      linkArrows: false,
+      nodeLabelAccessor: (d) => d.label,
+      showTopLabels: false,
+      showDynamicLabels: false,
       linkGreyoutOpacity: 0,
-      curvedLinks: true,
-      renderHoveredNodeRing: true,
-      hoveredNodeRingColor: "#4B5BBF",
-      simulation: {
-        linkDistance: 10,
-        linkSpring: 2,
-        repulsion: 0.2,
-        gravity: 0.1,
-        decay: 100000,
-      },
+      nodeLabelColor: "white",
+      hoveredNodeLabelColor: "white",
+      linkWidth: 1,
+      linkArrows: false,
+      onClick: (data) => alert(data.label),
+      simulationRepulsion: getSpaceSize(nodes.length)["simulationRepulsion"],
+      simulationDecay: getSpaceSize(nodes.length)["simulationDecay"],
+      simulationlinkDistance: 2,
+      gravity: 0.5,
     };
-    graph = new Graph(canvas, config);
+
+    const graph = new Cosmograph(canvas, config);
+    const timelineContainer = document.getElementById("timeline");
+    new CosmographTimeline(graph, timelineContainer);
     graph.setData(nodes, links);
-    graph.zoom(0.9);
+
+    // PAUSE BUTTON
+    let isPaused = false;
+    const pauseButton = document.getElementById("pause");
+
+    function pause() {
+      isPaused = true;
+      pauseButton.textContent = "Start";
+      graph.pause();
+    }
+
+    function start() {
+      isPaused = false;
+      pauseButton.textContent = "Pause";
+      graph.start();
+    }
+
+    function togglePause() {
+      if (isPaused) start();
+      else pause();
+    }
+
+    pauseButton.addEventListener("click", togglePause);
+
+    // FIT VIEW
+    function fitView() {
+      graph.fitView();
+    }
+    document.getElementById("fit-view")?.addEventListener("click", fitView);
+
+    
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    alertNode.textContent = "Daten konnten leider nicht geladen werden";
-    alertNode.classList.remove("visually-hidden");
+    alertNode.textContent = "Failed to load data. Please try again later.";
+    alertNode.style.visibility = "visible";
   }
 }
 

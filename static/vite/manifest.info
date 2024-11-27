@@ -1,6 +1,6 @@
 {
-  "_browser-D2nYWOFs.js": {
-    "file": "browser-D2nYWOFs.js",
+  "_browser-BZ3PU18-.js": {
+    "file": "browser-BZ3PU18-.js",
     "name": "browser",
     "isDynamicEntry": true,
     "imports": [
@@ -8,12 +8,12 @@
     ]
   },
   "js/main.js": {
-    "file": "main-qV0b5BYT.js",
+    "file": "main-BNPWSvXn.js",
     "name": "main",
     "src": "js/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "_browser-D2nYWOFs.js"
+      "_browser-BZ3PU18-.js"
     ]
   }
 }

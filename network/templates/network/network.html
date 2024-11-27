@@ -7,32 +7,34 @@
 
 {% block content %}
 <div class="container-fluid pt-3">
-  <h1 class="display-3 text-center">Netzwerk aller Verbindungen</h1>
-  <div class="alert alert-danger visually-hidden" id="alertNode" role="alert"/>  
+  <h1 class="display-3 text-center">Netzwerk</h1>
 
   <div class="d-flex justify-content-center" id="spinner">
     <div class="spinner-border" role="status">
       <span class="visually-hidden">Lade die Netzwerkdaten...</span>
     </div>
   </div>
-  <div class="p2 text-center" style="visibility: hidden;" id="legend">
-    {% for x in model_list %}
-    <span class="p2"><i class="{{ x.icon }}"></i> {{ x.name }}</span>
-    {% endfor %}
-  </div>
+
   <div class="row">
-    <div class="col-md-1">
-      <h2 class="text-center">Config</h2>
-      <div class="d-grid gap-2 col-6 mx-auto">
+    <div class="col-md-2 pt-5">
+      <h2 class="text-center">Legende</h2>
+      <div class="d-grid gap-2 col-8 mx-auto pt-3">
+        <ul class="list-unstyled text-center">
+          {% for x in model_list %}
+          <li class="fs-5"><i class="{{ x.icon }}"></i> {{ x.name }}</span>
+            {% endfor %}
+        </ul>
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto pt-3">
         <button class="btn btn-primary" type="button" id="pause">Pause</button>
         <button class="btn btn-primary" type="button" id="fit-view">Fit View</button>
       </div>
     </div>
-    <div class="col-md-11">
-      <div id="canvas" class="pt-2 pe-2 ps-2 pb-2" style="height: 600px;"></div>
+    <div class="col-md-10">
+      <div id="canvas" class="pt-2 pe-2 ps-2 pb-2" style="height: 800px;"></div>
     </div>
   </div>
-  
+
   <div id="timeline"></div>
 </div>
 
@@ -42,4 +44,3 @@
 {% vite_hmr_client %}
 {% vite_asset 'js/main.js' %}
 {% endblock scripts2 %}
-
