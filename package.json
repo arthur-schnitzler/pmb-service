@@ -11,6 +11,6 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
-    "@cosmograph/cosmos": "^1.6.1"
+    "@cosmograph/cosmos": "1.6.0"
   }
 }

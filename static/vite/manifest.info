@@ -1,6 +1,6 @@
 {
-  "_browser-lg2ZDdSy.js": {
-    "file": "browser-lg2ZDdSy.js",
+  "_browser-BZ3PU18-.js": {
+    "file": "browser-BZ3PU18-.js",
     "name": "browser",
     "isDynamicEntry": true,
     "imports": [
@@ -8,12 +8,12 @@
     ]
   },
   "js/main.js": {
-    "file": "main-Dnusw_Zv.js",
+    "file": "main-BNPWSvXn.js",
     "name": "main",
     "src": "js/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "_browser-lg2ZDdSy.js"
+      "_browser-BZ3PU18-.js"
     ]
   }
 }
