@@ -16,6 +16,8 @@
                 <a type="button" class="btn btn-outline-primary" href="{% url 'network:data' %}{% querystring %}&format=csv">CSV</a>
                 <a type="button" class="btn btn-outline-primary" href="{% url 'network:data' %}{% querystring %}&format=cosmograph">JSON</a>
                 <a type="button" class="btn btn-outline-primary" href="{% url 'network:network' %}{% querystring %}&format=cosmograph">Als Netzwerk</a>
+                <a type="button" class="btn btn-outline-primary" href="{% url 'network:network' %}{% querystring %}">GeoJson</a>
+                <a type="button" class="btn btn-outline-primary" href="{% url 'network:map' %}{% querystring %}">Karte</a>
             </div>
         </div>
    

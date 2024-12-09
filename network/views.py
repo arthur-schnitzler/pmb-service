@@ -37,6 +37,10 @@ class NetworkView(TemplateView):
         return context
 
 
+class MapView(TemplateView):
+    template_name = "network/map.html"
+
+
 class EdgeListViews(GenericListView):
     model = Edge
     filter_class = EdgeListFilter
@@ -52,7 +56,7 @@ class EdgeListViews(GenericListView):
     template_name = "network/list_view.html"
 
 
-def edegs_as_geojson(request):
+def edges_as_geojson(request):
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = (
         Edge.objects.filter(edge_kind__icontains="place")
@@ -71,6 +75,7 @@ def edegs_as_geojson(request):
         lambda row: pd.Series(get_coords(row)), axis=1
     )
     data = df_to_geojson_vect(df, ["label", "edge_id"])
+    data["metadata"] = {"number of objects": len(df)}
     return JsonResponse(data=data)
 
 

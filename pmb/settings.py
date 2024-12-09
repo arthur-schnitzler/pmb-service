@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "browsing",
+    "leaflet",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_tables2",
@@ -336,3 +337,27 @@ DOMAIN_MAPPING = [
     ("schnitzler-zeitungen.", "schnitzler-zeitungen", "#8E8575"),
     ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
 ]
+
+
+LEAFLET_CONFIG = {
+    "DEFAULT_CENTER": (47, 16),
+    "DEFAULT_ZOOM": 6,
+    "MIN_ZOOM": 3,
+    "OVERLAYS": [
+        (
+            "dinamlex",
+            "https://maps.acdh.oeaw.ac.at/mapserv?map=/data/test.map&mode=tile&layers=test&tilemode=gmap&tile={x}+{y}+{z}",
+            {"maxZoom": 18, "opacity": 0.7},
+        ),
+        (
+            "czoernig",
+            "https://maps.acdh.oeaw.ac.at/mapserv?map=/data/czoernig.map&mode=tile&layers=czoernig&tilemode=gmap&tile={x}+{y}+{z}",
+            {"maxZoom": 18, "opacity": 0.7},
+        ),
+        (
+            "tirol",
+            "https://maps.acdh.oeaw.ac.at/mapserv?map=/data/tirol.map&mode=tile&layers=tirol&tilemode=gmap&tile={x}+{y}+{z}",
+            {"maxZoom": 18, "opacity": 0.7},
+        ),
+    ],
+}
