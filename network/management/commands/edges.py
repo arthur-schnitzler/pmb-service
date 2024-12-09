@@ -41,6 +41,12 @@ class Command(BaseCommand):
                     "start_date": x.start_date,
                     "end_date": x.end_date,
                 }
+                if source_kind == "place":
+                    item["source_lat"] = source_obj.lat
+                    item["source_lng"] = source_obj.lng
+                if target_kind == "place":
+                    item["target_lat"] = target_obj.lat
+                    item["target_lng"] = target_obj.lng
                 try:
                     Edge.objects.create(**item)
                 except Exception as e:
