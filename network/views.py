@@ -61,9 +61,12 @@ def edegs_as_geojson(request):
     )
     items = EdgeListFilter(request.GET, queryset=qs).qs.values_list(*values_list)
     df = pd.DataFrame(list(items), columns=values_list)
-    df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
-        " ".join, axis=1
-    )
+    try:
+        df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
+            " ".join, axis=1
+        )
+    except ValueError:
+        return JsonResponse(data={})
     df[["latitude", "longitude"]] = df.apply(
         lambda row: pd.Series(get_coords(row)), axis=1
     )
