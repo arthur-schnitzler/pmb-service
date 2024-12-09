@@ -47,8 +47,12 @@ class Edge(models.Model):
         verbose_name="Art der Quelle",
         help_text="Art der Quelle (Person, Ort, Werk, Institution, Ereignis)",
     )
-    source_lat = models.FloatField(blank=True, null=True, verbose_name="Breitengrad (Start)")
-    source_lng = models.FloatField(blank=True, null=True, verbose_name="Längengrad (Start)")
+    source_lat = models.FloatField(
+        blank=True, null=True, verbose_name="Breitengrad (Start)"
+    )
+    source_lng = models.FloatField(
+        blank=True, null=True, verbose_name="Längengrad (Start)"
+    )
     source_id = models.IntegerField(
         verbose_name="ID der Quelle", help_text="ID der Quelle"
     )
@@ -68,8 +72,12 @@ class Edge(models.Model):
         verbose_name="Art des Ziels",
         help_text="Art des Ziels (Person, Ort, Werk, Institution, Ereignis)",
     )
-    target_lat = models.FloatField(blank=True, null=True, verbose_name="Breitengrad (Ziel)")
-    target_lng = models.FloatField(blank=True, null=True, verbose_name="Längengrad (Ziel)")
+    target_lat = models.FloatField(
+        blank=True, null=True, verbose_name="Breitengrad (Ziel)"
+    )
+    target_lng = models.FloatField(
+        blank=True, null=True, verbose_name="Längengrad (Ziel)"
+    )
     target_id = models.IntegerField(
         verbose_name="ID des Ziels", help_text="ID des Ziels"
     )
