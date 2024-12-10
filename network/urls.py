@@ -7,6 +7,6 @@ urlpatterns = [
     path("edges/", EdgeListViews.as_view(), name="edges_browse"),
     path("network-data/", network_data, name="data"),
     path("network/", NetworkView.as_view(), name="network"),
-    path("geojson-data/", edges_as_geojson, name="network-as-geojson"),
+    path("geojson-data/", edges_as_geojson, name="geojson"),
     path("map/", MapView.as_view(), name="map"),
 ]
