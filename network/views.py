@@ -13,6 +13,7 @@ from network.filters import EdgeListFilter
 from network.forms import EdgeFilterFormHelper
 from network.models import Edge
 from network.tables import EdgeTable
+from network.utils import get_coords, df_to_geojson_vect
 
 
 class NetworkView(TemplateView):
@@ -36,6 +37,10 @@ class NetworkView(TemplateView):
         return context
 
 
+class MapView(TemplateView):
+    template_name = "network/map.html"
+
+
 class EdgeListViews(GenericListView):
     model = Edge
     filter_class = EdgeListFilter
@@ -49,6 +54,29 @@ class EdgeListViews(GenericListView):
     ]
     enable_merge = False
     template_name = "network/list_view.html"
+
+
+def edges_as_geojson(request):
+    values_list = [x.name for x in Edge._meta.get_fields()]
+    qs = (
+        Edge.objects.filter(edge_kind__icontains="place")
+        .exclude(source_lat__isnull=True, target_lat__isnull=True)
+        .exclude(edge_kind="placeplace")
+    )
+    items = EdgeListFilter(request.GET, queryset=qs).qs.values_list(*values_list)
+    df = pd.DataFrame(list(items), columns=values_list)
+    try:
+        df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
+            " ".join, axis=1
+        )
+    except ValueError:
+        return JsonResponse(data={})
+    df[["latitude", "longitude"]] = df.apply(
+        lambda row: pd.Series(get_coords(row)), axis=1
+    )
+    data = df_to_geojson_vect(df, ["label", "edge_id"])
+    data["metadata"] = {"number of objects": len(df)}
+    return JsonResponse(data=data)
 
 
 def network_data(request):
