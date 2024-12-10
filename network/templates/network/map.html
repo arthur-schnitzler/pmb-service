@@ -14,8 +14,10 @@
 <div class="container-fluid pt-3">
     <h1 class="display-3 text-center">Beziehungen zu Orten</h1>
     <div id="mapcontainer" class="p-4">
-        <div id="legend"></div>
         <div id="map"></div>
+        <div id="legend" class="text-center pt-3">
+            <h2>gewählte Filterparameter</h2>
+        </div>
     </div>
 </div>
 <span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:geojson' %}{% querystring %}</span>
@@ -32,7 +34,22 @@
         })
         .then(data => {
             var map = L.map('map')
-            console.log(data["metadata"])
+            const legendDiv = document.getElementById('legend');
+            const dl = document.createElement('dl'); // Create the <dl> element
+
+            data.metadata.query_params.forEach(param => {
+                for (const [key, value] of Object.entries(param)) {
+                    const dt = document.createElement('dt'); // Create the <dt> element
+                    dt.textContent = key;
+                    const dd = document.createElement('dd'); // Create the <dd> element
+                    dd.textContent = value;
+
+                    dl.appendChild(dt); // Append <dt> to <dl>
+                    dl.appendChild(dd); // Append <dd> to <dl>
+                }
+            });
+
+            legendDiv.appendChild(dl);
             var OSMBaseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -79,7 +96,7 @@
                 blur: 10,
                 maxZoom: 17,
                 max: 0.7,
-                gradient: {0: 'white', 0.5: 'lime', 1: 'red'},
+                gradient: { 0: 'white', 0.5: 'lime', 1: 'red' },
 
             });
 

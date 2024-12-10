@@ -57,6 +57,7 @@ class EdgeListViews(GenericListView):
 
 
 def edges_as_geojson(request):
+    query_params = request.GET
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = (
         Edge.objects.filter(edge_kind__icontains="place")
@@ -76,10 +77,14 @@ def edges_as_geojson(request):
     )
     data = df_to_geojson_vect(df, ["label", "edge_id"])
     data["metadata"] = {"number of objects": len(df)}
+    data["metadata"]["query_params"] = [
+        {key: value} for key, value in query_params.items()
+    ]
     return JsonResponse(data=data)
 
 
 def network_data(request):
+    query_params = request.GET
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = EdgeListFilter(request.GET, queryset=Edge.objects.all()).qs
     items = list(qs.values_list(*values_list))
@@ -146,5 +151,8 @@ def network_data(request):
             },
             axis=1,
         ).tolist()
+        data["metadata"] = {
+            "query_params": [{key: value} for key, value in query_params.items()]
+        }
         response = JsonResponse(data)
         return response
