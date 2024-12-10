@@ -25,7 +25,7 @@ class Command(BaseCommand):
             edge_kind = y.__name__.lower()
             source_kind = y.get_related_entity_classa().__name__.lower()
             target_kind = y.get_related_entity_classb().__name__.lower()
-            for x in tqdm(y.objects.all(), total=y.objects.all().count()):
+            for x in tqdm(y.objects.all()[:5], total=y.objects.all().count()):
                 source_obj = x.get_related_entity_instancea()
                 target_obj = x.get_related_entity_instanceb()
                 item = {

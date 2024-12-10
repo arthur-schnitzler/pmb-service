@@ -17,13 +17,15 @@
 
   <div class="row">
     <div class="col-md-2 pt-5">
-      <h2 class="text-center">Legende</h2>
+      <h2 class="text-center" >Legende</h2>
       <div class="d-grid gap-2 col-8 mx-auto pt-3">
         <ul class="list-unstyled text-center">
           {% for x in model_list %}
           <li class="fs-5"><i class="{{ x.icon }}"></i> {{ x.name }}</span>
             {% endfor %}
         </ul>
+        <h3>Filterparameter</h3>
+        <div id="legend" class="text-center"></div>
       </div>
       <div class="d-grid gap-2 col-6 mx-auto pt-3">
         <button class="btn btn-primary" type="button" id="pause">Pause</button>
@@ -36,6 +38,7 @@
   </div>
 
   <div id="timeline"></div>
+  <span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:data' %}{% querystring %}</span>
 </div>
 
 {% endblock %}

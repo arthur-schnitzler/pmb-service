@@ -28,3 +28,13 @@ class DumperTestCase(TestCase):
         url = reverse("network:edges_browse")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_03_map_view(self):
+        url = reverse("network:map")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_04_geojson_view(self):
+        url = reverse("network:map")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)

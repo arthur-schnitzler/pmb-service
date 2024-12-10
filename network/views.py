@@ -84,6 +84,7 @@ def edges_as_geojson(request):
 
 
 def network_data(request):
+    query_params = request.GET
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = EdgeListFilter(request.GET, queryset=Edge.objects.all()).qs
     items = list(qs.values_list(*values_list))
@@ -150,5 +151,8 @@ def network_data(request):
             },
             axis=1,
         ).tolist()
+        data["metadata"] = {
+            "query_params": [{key: value} for key, value in query_params.items()]
+        }
         response = JsonResponse(data)
         return response

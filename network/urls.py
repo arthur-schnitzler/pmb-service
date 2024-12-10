@@ -1,5 +1,11 @@
 from django.urls import path
-from network.views import EdgeListViews, network_data, NetworkView, edges_as_geojson, MapView
+from network.views import (
+    EdgeListViews,
+    network_data,
+    NetworkView,
+    edges_as_geojson,
+    MapView,
+)
 
 
 app_name = "network"

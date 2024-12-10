@@ -4,12 +4,27 @@ import { getSpaceSize, COLORS } from "./lib.js";
 async function init() {
   const spinnerNode = document.getElementById("spinner");
   const canvas = document.getElementById("canvas");
-  const queryString = window.location.search;
-  const url = `/network/csv/${queryString}`;
+  const url = document.getElementById("url").textContent;
 
   try {
     const res = await fetch(url);
     const data = await res.json();
+    const legendDiv = document.getElementById("legend");
+    const dl = document.createElement("dl"); // Create the <dl> element
+
+    data.metadata.query_params.forEach((param) => {
+      for (const [key, value] of Object.entries(param)) {
+        if (key === "format") continue; 
+        const dt = document.createElement("dt"); // Create the <dt> element
+        dt.textContent = key;
+        const dd = document.createElement("dd"); // Create the <dd> element
+        dd.textContent = value;
+
+        dl.appendChild(dt); // Append <dt> to <dl>
+        dl.appendChild(dd); // Append <dd> to <dl>
+      }
+    });
+    legendDiv.appendChild(dl);
 
     const links = data["edges"].map((d) => ({
       source: parseInt(d.s),
@@ -96,8 +111,6 @@ async function init() {
       graph.fitView();
     }
     document.getElementById("fit-view")?.addEventListener("click", fitView);
-
-    
   } catch (error) {
     console.error("Failed to fetch data:", error);
     alertNode.textContent = "Failed to load data. Please try again later.";
