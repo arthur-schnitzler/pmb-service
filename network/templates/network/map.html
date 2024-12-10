@@ -10,11 +10,13 @@
         height: 700px;
     }
 </style>
-
-<div class="container-fluid">
-        <h1>Map</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<div class="container-fluid pt-3">
+    <h1 class="display-3 text-center">Beziehungen von und mit Orten</h1>
+    <div id="mapcontainer" class="p-4">
+        <div id="legend"></div>
         <div id="map"></div>
-    
+    </div>
 </div>
 <span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:geojson' %}{% querystring %}</span>
 
@@ -24,27 +26,75 @@
     fetch(url)
         .then(response => {
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Geojson response was not ok");
             }
             return response.json();
         })
         .then(data => {
-            var map = L.map('map').setView([48.20 , 16.37], 6);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            var map = L.map('map')
+            console.log(data["metadata"])
+            var OSMBaseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
+
+            var CartoDB_PositronNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            });
+
+            var CartoDB_DarkMatterNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            });
+
             const markers = L.markerClusterGroup();
             const geojsonLayer = L.geoJSON(data, {
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup(feature.properties.label);
                 },
                 pointToLayer: function (feature, latlng) {
-                    return L.marker(latlng); // Convert GeoJSON points to Leaflet markers
+                    return L.marker(latlng);
                 }
-                });
+            });
+            markers.addTo(map);
             geojsonLayer.eachLayer(layer => markers.addLayer(layer));
-            map.addLayer(markers);
+
+            var heatData = [];
+            L.geoJSON(data, {
+                onEachFeature: function (feature, layer) {
+                    if (feature.geometry.type === "Point") {
+                        var lat = feature.geometry.coordinates[1];
+                        var lng = feature.geometry.coordinates[0];
+                        heatData.push([lat, lng]);
+                    }
+                }
+            });
+
+            // Create the heatmap layer
+            var heatmapLayer = L.heatLayer(heatData, {
+                radius: 25,
+                blur: 10,
+                maxZoom: 17,
+                max: 0.7,
+                gradient: {0: 'white', 0.5: 'lime', 1: 'red'},
+
+            });
+
+            var baseMaps = {
+                "Base Layer": OSMBaseLayer,
+                "CartoDB hell": CartoDB_PositronNoLabels,
+                "CartoDB dunkel": CartoDB_DarkMatterNoLabels
+            };
+
+            const overlayMaps = {
+                "Marker Cluster": markers,
+                "Heatmap": heatmapLayer
+            };
+
+            L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
             map.fitBounds(geojsonLayer.getBounds());
         })
         .catch(error => {
