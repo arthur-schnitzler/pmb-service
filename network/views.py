@@ -1,3 +1,4 @@
+import csv
 import json
 import pandas as pd
 from django.apps import apps
@@ -100,7 +101,7 @@ def network_data(request):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="relations.csv"'},
         )
-        df.to_csv(response, index=False)
+        df.to_csv(response, index=False, quoting=csv.QUOTE_ALL, quotechar='"')
         return response
     elif format == "json":
         df = df.set_index("edge_id")
