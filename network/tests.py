@@ -35,6 +35,6 @@ class DumperTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_04_geojson_view(self):
-        url = reverse("network:map")
+        url = reverse("network:geojson")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
