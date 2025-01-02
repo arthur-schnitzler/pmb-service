@@ -42,6 +42,10 @@ class MapView(TemplateView):
     template_name = "network/map.html"
 
 
+class CalenderView(TemplateView):
+    template_name = "network/calender.html"
+
+
 class EdgeListViews(GenericListView):
     model = Edge
     filter_class = EdgeListFilter
@@ -55,6 +59,54 @@ class EdgeListViews(GenericListView):
     ]
     enable_merge = False
     template_name = "network/list_view.html"
+
+
+def edges_as_calender(request):
+    query_params = request.GET
+    queryset = Edge.objects.filter().exclude(start_date__isnull=True)
+    values_list = [x.name for x in Edge._meta.get_fields()]
+    qs = EdgeListFilter(request.GET, queryset=queryset).qs
+    items = list(qs.values_list(*values_list))
+    df = pd.DataFrame(list(items), columns=values_list)
+
+    def map_date_to_lat_lng(date_str):
+        try:
+            date = pd.to_datetime(date_str)
+            year = date.year
+            day_of_year = date.dayofyear
+            # Map year to latitude (-90 to 90)
+            latitude = (year % 180) - 90
+            # Map day of year to longitude (-180 to 180)
+            longitude = (day_of_year % 360) - 180
+            return latitude, longitude
+        except Exception as e: # noqa
+            return None, None
+
+    df["latitude"], df["longitude"] = zip(*df["start_date"].map(map_date_to_lat_lng))
+    df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
+        " ".join, axis=1
+    )
+    items = df.apply(
+        lambda row: {
+            "date": str(row["start_date"]),
+            # "label": row["label"],
+            "edge_label": row["edge_label"],
+            "kind": row["edge_kind"],
+            "latitude": row["latitude"],
+            "longitude": row["longitude"],
+            "id": row["edge_id"],
+        },
+        axis=1,
+    ).tolist()
+    data = {}
+    data = {"metadata": {}, "events": items}
+    data["metadata"] = {"number of objects": len(items)}
+    data["metadata"]["query_params"] = [
+        {key: value} for key, value in query_params.items()
+    ]
+    data["metadata"]["start_date"] = str(df["start_date"].min())
+    data["metadata"]["end_date"] = str(df["start_date"].max())
+    return JsonResponse(data=data)
 
 
 def edges_as_geojson(request):
