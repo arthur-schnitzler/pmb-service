@@ -43,9 +43,9 @@ fetch(url)
         bearing: 127.511,
       },
       controller: true,
-      onViewStateChange: ({ viewState }) => {
-        console.log("Current view state:", viewState);
-      },
+      // onViewStateChange: ({ viewState }) => {
+      //   console.log("Current view state:", viewState);
+      // },
       layers: [
         new deck.HexagonLayer({
           data: validEvents,
@@ -59,13 +59,15 @@ fetch(url)
             const tooltip = document.getElementById("tooltip");
             if (object) {
               const eventLabels = object.points.map((p) => p.source.label);
+              const curDate = object.points[0].source.date;
               const listItems = eventLabels
                 .map((label) => `<li>${label}</li>`)
                 .join("");
               tooltip.style.display = "block";
               tooltip.style.left = `${x}px`;
               tooltip.style.top = `${y}px`;
-              tooltip.innerHTML = `<div><ul>${listItems}</ul></div>`;
+              // tooltip.innerHTML = `<div><ul>${listItems}</ul></div>`;
+              tooltip.innerHTML = `<strong>${curDate}</strong><ul>${listItems}</ul>`;
             } else {
               tooltip.style.display = "none";
             }
