@@ -66,7 +66,7 @@ def edges_as_calender(request):
     queryset = (
         Edge.objects.filter()
         .exclude(start_date__isnull=True)
-        .exclude(start_date__lte="1500-12-31")
+        .exclude(start_date__lte="0001-01-01")
     )
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = EdgeListFilter(request.GET, queryset=queryset).qs

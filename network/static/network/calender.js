@@ -53,7 +53,7 @@ fetch(url)
           getPosition: (d) => [d.longitude, d.latitude],
           radius: 50000,
           elevationScale: 4000,
-          elevationRange: [0, 100],
+          elevationRange: [0, 50],
           extruded: true,
           pickable: true,
           onHover: ({ object, x, y }) => {
