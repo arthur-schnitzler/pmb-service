@@ -63,33 +63,33 @@ class EdgeListViews(GenericListView):
 
 def edges_as_calender(request):
     query_params = request.GET
-    queryset = Edge.objects.filter().exclude(start_date__isnull=True)
+    queryset = Edge.objects.filter().exclude(start_date__isnull=True).exclude(start_date__lte="1677-12-31")
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = EdgeListFilter(request.GET, queryset=queryset).qs
     items = list(qs.values_list(*values_list))
     df = pd.DataFrame(list(items), columns=values_list)
 
     def map_date_to_lat_lng(date_str):
-        try:
-            date = pd.to_datetime(date_str)
-            year = date.year
-            day_of_year = date.dayofyear
-            # Map year to latitude (-90 to 90)
-            latitude = (year % 180) - 90
-            # Map day of year to longitude (-180 to 180)
-            longitude = (day_of_year % 360) - 180
-            return latitude, longitude
-        except Exception as e: # noqa
+        date = pd.to_datetime(date_str, errors="coerce")
+        if pd.isnull(date):
             return None, None
+        year = date.year
+        day_of_year = date.dayofyear
+        # Map year to latitude (-90 to 90)
+        latitude = ((year + 90) % 180) - 90
+        # Map day of year to longitude (-180 to 180)
+        longitude = (day_of_year % 360) - 180
+        return latitude, longitude
 
     df["latitude"], df["longitude"] = zip(*df["start_date"].map(map_date_to_lat_lng))
     df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
         " ".join, axis=1
     )
+    df = df.sort_values(by="start_date")
     items = df.apply(
         lambda row: {
             "date": str(row["start_date"]),
-            # "label": row["label"],
+            "label": row["label"],
             "edge_label": row["edge_label"],
             "kind": row["edge_kind"],
             "latitude": row["latitude"],
@@ -106,7 +106,7 @@ def edges_as_calender(request):
     ]
     data["metadata"]["start_date"] = str(df["start_date"].min())
     data["metadata"]["end_date"] = str(df["start_date"].max())
-    return JsonResponse(data=data)
+    return JsonResponse(data=data, json_dumps_params={"ensure_ascii": False})
 
 
 def edges_as_geojson(request):

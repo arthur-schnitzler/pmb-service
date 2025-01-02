@@ -23,32 +23,55 @@ fetch(url)
       }
     });
 
-    const validEvents = data.events.filter(event => event.latitude && event.longitude);
+    // Ensure each event has a label property
+    const validEvents = data.events
+      .filter((event) => event.latitude && event.longitude)
+      .map((event) => ({
+        ...event,
+        label: event.label || "Unknown Event", // Default to 'Unknown Event' if label is missing
+      }));
+
     console.log(validEvents);
     const deckgl = new deck.DeckGL({
-      container: 'map',
-      mapStyle: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      container: "map",
       initialViewState: {
-      longitude: -122.4,
-      latitude: 37.74,
-      zoom: 11,
-      pitch: 40.5,
-      bearing: -27
+        altitude: 1.5,
+        longitude: -27,
+        latitude: 0,
+        zoom: 1,
+        pitch: 60,
+        bearing: 127.511,
       },
       controller: true,
+      onViewStateChange: ({ viewState }) => {
+        console.log("Current view state:", viewState);
+      },
       layers: [
-      new deck.HexagonLayer({
-        data: validEvents,
-        data: validEvents,
-        getPosition: d => [d.longitude, d.latitude],
-        radius: 100000,
-        elevationScale: 4,
-        elevationRange: [0, 1000],
-        extruded: true,
-        pickable: true,
-        coverage: 1
-      })
-      ]
+        new deck.HexagonLayer({
+          data: validEvents,
+          getPosition: (d) => [d.longitude, d.latitude],
+          radius: 100000,
+          elevationScale: 400,
+          elevationRange: [0, 10000],
+          extruded: true,
+          pickable: true,
+          onHover: ({ object, x, y }) => {
+            const tooltip = document.getElementById("tooltip");
+            if (object) {
+              const eventLabels = object.points.map((p) => p.source.label);
+              const listItems = eventLabels
+                .map((label) => `<li>${label}</li>`)
+                .join("");
+              tooltip.style.display = "block";
+              tooltip.style.left = `${x}px`;
+              tooltip.style.top = `${y}px`;
+              tooltip.innerHTML = `<div><ul>${listItems}</ul></div>`;
+            } else {
+              tooltip.style.display = "none";
+            }
+          },
+        }),
+      ],
     });
 
     legendDiv.appendChild(dl);
@@ -56,3 +79,22 @@ fetch(url)
   .catch((error) => {
     console.error("Something went wrong:", error);
   });
+
+// Add this CSS for the tooltip
+const style = document.createElement("style");
+style.innerHTML = `
+  #tooltip {
+    position: absolute;
+    background: white;
+    padding: 5px;
+    border: 1px solid black;
+    display: none;
+    pointer-events: none;
+  }
+`;
+document.head.appendChild(style);
+
+// Add this HTML for the tooltip
+const tooltip = document.createElement("div");
+tooltip.id = "tooltip";
+document.body.appendChild(tooltip);
