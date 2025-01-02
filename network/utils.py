@@ -76,8 +76,13 @@ def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31"):
 
         # Longitude: Inverted position of the day within the year (0–180)
         day_of_year = date_obj.timetuple().tm_yday
-        days_in_year = (date(datetime(date_obj.year, 12, 31).year, 12, 31) - date(datetime(date_obj.year, 1, 1).year, 1, 1)).days + 1
-        day_position = (day_of_year - 1) / days_in_year  # Normalize day position in the year
+        days_in_year = (
+            date(datetime(date_obj.year, 12, 31).year, 12, 31)
+            - date(datetime(date_obj.year, 1, 1).year, 1, 1)
+        ).days + 1
+        day_position = (
+            day_of_year - 1
+        ) / days_in_year  # Normalize day position in the year
         lon = 180 * day_position
 
         return lat, lon
