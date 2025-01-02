@@ -14,7 +14,7 @@ from network.filters import EdgeListFilter
 from network.forms import EdgeFilterFormHelper
 from network.models import Edge
 from network.tables import EdgeTable
-from network.utils import get_coords, df_to_geojson_vect
+from network.utils import get_coords, df_to_geojson_vect, iso_to_lat_long
 
 
 class NetworkView(TemplateView):
@@ -63,25 +63,22 @@ class EdgeListViews(GenericListView):
 
 def edges_as_calender(request):
     query_params = request.GET
-    queryset = Edge.objects.filter().exclude(start_date__isnull=True).exclude(start_date__lte="1677-12-31")
+    queryset = (
+        Edge.objects.filter()
+        .exclude(start_date__isnull=True)
+        .exclude(start_date__lte="1500-12-31")
+    )
     values_list = [x.name for x in Edge._meta.get_fields()]
     qs = EdgeListFilter(request.GET, queryset=queryset).qs
     items = list(qs.values_list(*values_list))
     df = pd.DataFrame(list(items), columns=values_list)
-
-    def map_date_to_lat_lng(date_str):
-        date = pd.to_datetime(date_str, errors="coerce")
-        if pd.isnull(date):
-            return None, None
-        year = date.year
-        day_of_year = date.dayofyear
-        # Map year to latitude (-90 to 90)
-        latitude = ((year + 90) % 180) - 90
-        # Map day of year to longitude (-180 to 180)
-        longitude = (day_of_year % 360) - 180
-        return latitude, longitude
-
-    df["latitude"], df["longitude"] = zip(*df["start_date"].map(map_date_to_lat_lng))
+    start_date = str(df["start_date"].min())
+    end_date = str(df["start_date"].max())
+    df["latitude"], df["longitude"] = zip(
+        *df["start_date"].map(
+            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date)
+        )
+    )
     df["label"] = df[["source_label", "edge_label", "target_label"]].agg(
         " ".join, axis=1
     )

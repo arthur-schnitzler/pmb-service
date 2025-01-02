@@ -36,11 +36,12 @@ fetch(url)
       container: "map",
       initialViewState: {
         altitude: 1.5,
-        longitude: -27,
-        latitude: 0,
-        zoom: 1,
+        height: 700,
+        longitude: 80,
+        latitude: 35,
+        zoom: 2,
         pitch: 60,
-        bearing: 127.511,
+        // bearing: -1.7
       },
       controller: true,
       // onViewStateChange: ({ viewState }) => {
@@ -50,9 +51,9 @@ fetch(url)
         new deck.HexagonLayer({
           data: validEvents,
           getPosition: (d) => [d.longitude, d.latitude],
-          radius: 100000,
-          elevationScale: 400,
-          elevationRange: [0, 10000],
+          radius: 50000,
+          elevationScale: 4000,
+          elevationRange: [0, 100],
           extruded: true,
           pickable: true,
           onHover: ({ object, x, y }) => {
@@ -66,7 +67,6 @@ fetch(url)
               tooltip.style.display = "block";
               tooltip.style.left = `${x}px`;
               tooltip.style.top = `${y}px`;
-              // tooltip.innerHTML = `<div><ul>${listItems}</ul></div>`;
               tooltip.innerHTML = `<strong>${curDate}</strong><ul>${listItems}</ul>`;
             } else {
               tooltip.style.display = "none";
