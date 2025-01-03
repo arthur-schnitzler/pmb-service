@@ -1,5 +1,21 @@
 const url = document.getElementById("url").textContent;
+
+function showModal(object) {
+  const options = {focus: true, keyboard: true, backdrop: true, dismiss: true};
+  const eventLabels = object.points.map((p) => p.source.label);
+  const curDate = object.points[0].source.date;
+  const listItems = eventLabels.map((label) => `<li>${label}</li>`).join("");
+  const urlParams = new URLSearchParams(window.location.search);
+  urlParams.set("start_date", curDate);
+  const newUrl = `/network/edges/?${urlParams.toString()}`;
+  document.getElementById("staticBackdropLabel").innerHTML = `<a href="${newUrl}">${curDate}</a>`;
+  document.getElementById("modal-body").innerHTML = `<ul>${listItems}</ul>`;
+  const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), options);
+  myModal.toggle();
+}
+
 console.log("fetching data");
+document.getElementById("loading-spinner").style.display = "block"; 
 fetch(url)
   .then((response) => {
     if (!response.ok) {
@@ -8,6 +24,7 @@ fetch(url)
     return response.json();
   })
   .then((data) => {
+    document.getElementById("loading-spinner").style.display = "none"; // Hide spinner
     const legendDiv = document.getElementById("legend");
     const dl = document.createElement("dl"); // Create the <dl> element
 
@@ -56,18 +73,16 @@ fetch(url)
           elevationRange: [0, 50],
           extruded: true,
           pickable: true,
+          onClick: (object) => showModal(object.object),
           onHover: ({ object, x, y }) => {
             const tooltip = document.getElementById("tooltip");
             if (object) {
-              const eventLabels = object.points.map((p) => p.source.label);
               const curDate = object.points[0].source.date;
-              const listItems = eventLabels
-                .map((label) => `<li>${label}</li>`)
-                .join("");
+              
               tooltip.style.display = "block";
               tooltip.style.left = `${x}px`;
               tooltip.style.top = `${y}px`;
-              tooltip.innerHTML = `<strong>${curDate}</strong><ul>${listItems}</ul>`;
+              tooltip.innerHTML = `<strong>${curDate}</strong><p>Klicke um mehr zu sehen</p>`;
             } else {
               tooltip.style.display = "none";
             }
@@ -79,6 +94,7 @@ fetch(url)
     legendDiv.appendChild(dl);
   })
   .catch((error) => {
+    document.getElementById("loading-spinner").style.display = "none"; // Hide spinner on error
     console.error("Something went wrong:", error);
   });
 
