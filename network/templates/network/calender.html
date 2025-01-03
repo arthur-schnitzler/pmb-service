@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Map{% endblock %}
+{% block title %}Kalender{% endblock %}
 {% block scriptHeader %}
 {% endblock %}
 {% block content %}
@@ -20,7 +20,24 @@
         </div>
     </div>
 </div>
-<span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:calender_data' %}{% querystring %}</span>
 
-<script src="{% static 'network/calender.js' %}"></script>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <div class="modal-body" id="modal-body" />
+        </div>
+    </div>
+</div>
+
+
+<span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:calender_data' %}{% querystring %}</span>
 {% endblock %}
+
+{% block scripts2 %}
+<script src="{% static 'network/calender.js' %}"></script>
+{% endblock scripts2 %}
