@@ -15,6 +15,7 @@ function showModal(object) {
 }
 
 console.log("fetching data");
+document.getElementById("loading-spinner").style.display = "block"; 
 fetch(url)
   .then((response) => {
     if (!response.ok) {
@@ -23,6 +24,7 @@ fetch(url)
     return response.json();
   })
   .then((data) => {
+    document.getElementById("loading-spinner").style.display = "none"; // Hide spinner
     const legendDiv = document.getElementById("legend");
     const dl = document.createElement("dl"); // Create the <dl> element
 
@@ -92,6 +94,7 @@ fetch(url)
     legendDiv.appendChild(dl);
   })
   .catch((error) => {
+    document.getElementById("loading-spinner").style.display = "none"; // Hide spinner on error
     console.error("Something went wrong:", error);
   });
 

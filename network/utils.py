@@ -86,5 +86,5 @@ def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31"):
         lon = 180 * day_position
 
         return lat, lon
-    except Exception as e:
-        raise ValueError(f"Invalid input: {iso_date}") from e
+    except Exception:
+        return 1, 1

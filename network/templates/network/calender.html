@@ -9,6 +9,14 @@
         width: 100%;
         height: 700px;
     }
+    #loading-spinner {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+    }
 </style>
 <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
 <div class="container-fluid pt-3">
@@ -19,6 +27,13 @@
             <h2>gewählte Filterparameter</h2>
         </div>
     </div>
+</div>
+
+<div id="loading-spinner" class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div>Daten werden geladen</div>
 </div>
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -33,7 +48,6 @@
         </div>
     </div>
 </div>
-
 
 <span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:calender_data' %}{% querystring %}</span>
 {% endblock %}
