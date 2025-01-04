@@ -7,10 +7,16 @@ from .list_view_institution import InstitutionListView
 from .list_view_person import PersonListView
 from .list_view_place import PlaceListView
 from .list_view_work import WorkListView
+from .arc_views import get_arcs_data
 
 app_name = "apis_entities"
 
 urlpatterns = [
+    path(
+        "arcs-data",
+        get_arcs_data,
+        name="arcs_data",
+    ),
     path(
         "entity/<entity>/<int:pk>/edit",
         views.GenericEntitiesEditView.as_view(),

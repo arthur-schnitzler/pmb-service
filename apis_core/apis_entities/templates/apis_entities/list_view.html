@@ -18,6 +18,15 @@
         </a>
     </h2>
     {% endif %}{% endif %}
+    {% if entity == "person" %}   
+    <div class="row">
+        <div class="btn-group" role="group" class="text-end">
+            <a type="button" class="btn btn-outline-primary" href="{% url 'apis_core:apis_entities:arcs_data' %}{% querystring %}">Timespan-Data</a>
+            <a type="button" class="btn btn-outline-primary" href="{% url 'apis_core:apis_entities:arcs_data' %}{% querystring %}">Timespan-Visualisation</a>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row pt-4">
         <div class="col-md-4" id="searchpane">
             <h2 class="text-center">Suchen & Filtern</h2>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Zeitspannen{% endblock %}
+{% block scriptHeader %}
+{% endblock %}
+{% block content %}
+<style>
+    #map {
+        width: 100%;
+        height: 700px;
+    }
+    #loading-spinner {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+    }
+</style>
+<script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+<div class="container-fluid pt-3">
+    <h1 class="display-3 text-center">Zeitspannen</h1>
+    <div id="mapcontainer" class="p-4">
+        <div id="map"></div>
+        <div id="legend" class="text-center pt-3">
+            <h2>gewählte Filterparameter</h2>
+        </div>
+    </div>
+</div>
+
+<div id="loading-spinner" class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div>Daten werden geladen</div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <div class="modal-body" id="modal-body" />
+        </div>
+    </div>
+</div>
+
+<span id="url" class="visually-hidden" aria-hidden="true">{% url 'apis_core:apis_entities:arcs_data' %}{% querystring %}</span>
+{% endblock %}
+
+{% block scripts2 %}
+<script src="{% static 'network/arcs.js' %}"></script>
+{% endblock scripts2 %}
