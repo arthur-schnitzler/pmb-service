@@ -37,17 +37,17 @@ fetch(url)
     const legendDiv = document.getElementById("legend");
     const dl = document.createElement("dl"); // Create the <dl> element
 
-    // data.metadata.query_params.forEach((param) => {
-    //   for (const [key, value] of Object.entries(param)) {
-    //     const dt = document.createElement("dt"); // Create the <dt> element
-    //     dt.textContent = key;
-    //     const dd = document.createElement("dd"); // Create the <dd> element
-    //     dd.textContent = value;
+    data.metadata.query_params.forEach((param) => {
+      for (const [key, value] of Object.entries(param)) {
+        const dt = document.createElement("dt"); // Create the <dt> element
+        dt.textContent = key;
+        const dd = document.createElement("dd"); // Create the <dd> element
+        dd.textContent = value;
 
-    //     dl.appendChild(dt);
-    //     dl.appendChild(dd);
-    //   }
-    // });
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+      }
+    });
 
     const items = data.items;
 
@@ -76,7 +76,7 @@ fetch(url)
           getTargetPosition: (d) => d.to,
           getSourceColor: [0, 0, 0],
           getTargetColor: [255, 0, 0],
-          getWidth: 2,
+          getWidth: 4,
           pickable: true,
           onClick: (info) => showModal(info.object),
         }),

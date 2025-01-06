@@ -38,7 +38,7 @@ def get_coords(row):
         return row["source_lat"], row["source_lng"]
 
 
-def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31"):
+def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31", max_width=180):
     """
     Maps an ISO date string or datetime.date to latitude and longitude, ensuring
     earlier dates are more south (latitude) and earlier days within a year are more west (longitude).
@@ -48,10 +48,17 @@ def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31"):
                                         or a datetime.date object.
         start_date (str): Start of the date range in ISO format (default: "1900-01-01").
         end_date (str): End of the date range in ISO format (default: "2100-12-31").
+        max_width (int): Max width of longitute.
 
     Returns:
         tuple: A tuple containing latitude and longitude (both as floats).
     """
+    if max_width > 180:
+        max_width = 180
+    elif max_width < 0:
+        max_width = 1
+    else:
+        max_width = max_width
     try:
         # Ensure iso_date is a datetime.date object
         if isinstance(iso_date, str):
@@ -84,7 +91,7 @@ def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31"):
             day_of_year - 1
         ) / days_in_year  # Normalize day position in the year
         lon = 180 * day_position
-
+        lon = lon % max_width
         return lat, lon
     except Exception:
         return 1, 1

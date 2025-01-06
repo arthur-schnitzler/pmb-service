@@ -26,12 +26,12 @@ def get_arcs_data(request):
     end_date = str(df["end_date"].max())
     df["latitude_start"], df["longitude_start"] = zip(
         *df["start_date"].map(
-            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date)
+            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date, max_width=3)
         )
     )
     df["latitude_end"], df["longitude_end"] = zip(
         *df["end_date"].map(
-            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date)
+            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date, max_width=3)
         )
     )
     df = df.sort_values(by="start_date")
