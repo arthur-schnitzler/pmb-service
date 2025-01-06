@@ -1,9 +1,14 @@
 import pandas as pd
+from django.views.generic import TemplateView
 from django.http import JsonResponse
 from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.list_view_person import PersonListFilter
 
 from network.utils import iso_to_lat_long
+
+
+class ArcsView(TemplateView):
+    template_name = "apis_entities/arcs.html"
 
 
 def get_arcs_data(request):
