@@ -1,9 +1,14 @@
 import pandas as pd
+from django.views.generic import TemplateView
 from django.http import JsonResponse
 from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.list_view_person import PersonListFilter
 
 from network.utils import iso_to_lat_long
+
+
+class ArcsView(TemplateView):
+    template_name = "apis_entities/arcs.html"
 
 
 def get_arcs_data(request):
@@ -21,12 +26,12 @@ def get_arcs_data(request):
     end_date = str(df["end_date"].max())
     df["latitude_start"], df["longitude_start"] = zip(
         *df["start_date"].map(
-            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date)
+            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date, max_width=3)
         )
     )
     df["latitude_end"], df["longitude_end"] = zip(
         *df["end_date"].map(
-            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date)
+            lambda date: iso_to_lat_long(date, start_date=start_date, end_date=end_date, max_width=3)
         )
     )
     df = df.sort_values(by="start_date")
