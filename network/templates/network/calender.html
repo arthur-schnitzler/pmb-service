@@ -21,6 +21,11 @@
 <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
 <div class="container-fluid pt-3">
     <h1 class="display-3 text-center">Kalender</h1>
+    <div class="text-center pt-3 container">
+        <label for="radiusSlider" class="form-label">Hexagon Radius:</label>
+        <input type="range" id="radiusSlider" class="form-range" min="1000" max="50000" step="1000" value="20000">
+        <span id="radiusValue">20000</span>
+    </div>
     <div id="mapcontainer" class="p-4">
         <div id="map"></div>
         <div id="legend" class="text-center pt-3">
