@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Kalender{% endblock %}
+{% block title %}Zeitspannen{% endblock %}
 {% block scriptHeader %}
 {% endblock %}
 {% block content %}
@@ -20,12 +20,7 @@
 </style>
 <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
 <div class="container-fluid pt-3">
-    <h1 class="display-3 text-center">Kalender</h1>
-    <div class="text-center pt-3 container">
-        <label for="radiusSlider" class="form-label">Hexagon Radius:</label>
-        <input type="range" id="radiusSlider" class="form-range" min="1000" max="50000" step="1000" value="20000">
-        <span id="radiusValue">20000</span>
-    </div>
+    <h1 class="display-3 text-center">Zeitspannen</h1>
     <div id="mapcontainer" class="p-4">
         <div id="map"></div>
         <div id="legend" class="text-center pt-3">
@@ -54,9 +49,9 @@
     </div>
 </div>
 
-<span id="url" class="visually-hidden" aria-hidden="true">{% url 'network:calender_data' %}{% querystring %}</span>
+<span id="url" class="visually-hidden" aria-hidden="true">{% url 'apis_core:apis_entities:arcs_data' %}{% querystring %}</span>
 {% endblock %}
 
 {% block scripts2 %}
-<script src="{% static 'network/calender.js' %}"></script>
+<script src="{% static 'network/arcs.js' %}"></script>
 {% endblock scripts2 %}
