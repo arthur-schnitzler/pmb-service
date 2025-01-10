@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "csvexport",
     "browsing",
     "crispy_forms",
     "crispy_bootstrap5",
@@ -331,3 +332,12 @@ DOMAIN_MAPPING = [
     ("schnitzler-zeitungen.", "schnitzler-zeitungen", "#8E8575"),
     ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
 ]
+
+
+CSV_EXPORT_REFERENCE_DEPTH = 1
+CSV_EXPORT_DELIMITER = ','
+CSV_EXPORT_ESCAPECHAR = '|'
+CSV_EXPORT_QUOTECHAR = '"'
+CSV_EXPORT_DOUBLEQUOTE = True
+CSV_EXPORT_LINETERMINATOR = r'\n'
+CSV_EXPORT_QUOTING = 'QUOTE_ALL'
