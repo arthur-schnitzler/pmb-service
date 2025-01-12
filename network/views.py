@@ -64,6 +64,16 @@ def get_person_person_tei(request):
 
 
 class NetworkView(TemplateView):
+    """
+    A Django view that renders the network template and provides context data for the template.
+    Attributes:
+        template_name (str): The path to the template used by this view.
+    Methods:
+        get_context_data(**kwargs):
+            Retrieves context data for the template, including a list of models with their associated
+            color, icon, and verbose name. Models that do not have these attributes are skipped.
+    """
+
     template_name = "network/network.html"
 
     def get_context_data(self, **kwargs):
