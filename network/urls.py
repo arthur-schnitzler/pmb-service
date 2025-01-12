@@ -7,6 +7,7 @@ from network.views import (
     edges_as_geojson,
     edges_as_calender,
     MapView,
+    get_person_person_tei,
 )
 
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("calender-data/", edges_as_calender, name="calender_data"),
     path("calender/", CalenderView.as_view(), name="calender"),
     path("map/", MapView.as_view(), name="map"),
+    path("tei/", get_person_person_tei, name="tei"),
 ]
