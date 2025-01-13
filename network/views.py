@@ -43,22 +43,22 @@ tei_template = """
 """
 
 
-def get_person_person_tei(request):
+def get_realtions_as_tei(request):
     doc = TeiReader(tei_template)
     root = doc.any_xpath(".//tei:listRelation")[0]
     query_params = request.GET
     qs = EdgeListFilter(query_params, queryset=Edge.objects.all()).qs
     for x in qs:
         relation = ET.SubElement(root, "{http://www.tei-c.org/ns/1.0}relation")
-        print(x.edge_label)
         relation.attrib["name"] = slugify(x.edge_label)
-        relation.attrib["active"] = f"#pmb{x.source_id}"
-        relation.attrib["passive"] = f"#pmb{x.target_id}"
+        relation.attrib["active"] = f"#{x.source_id}"
+        relation.attrib["passive"] = f"#{x.target_id}"
         if x.start_date:
             relation.attrib["from-iso"] = f"{x.start_date}"
         if x.end_date:
             relation.attrib["to-iso"] = f"{x.end_date}"
         relation.attrib["n"] = f"{x.target_label} — {x.edge_label} — {x.source_label}"
+        relation.attrib["type"] = x.edge_kind
     xml_str = doc.return_string()
     return HttpResponse(xml_str, content_type="application/xml")
 
