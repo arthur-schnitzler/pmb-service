@@ -44,10 +44,14 @@ tei_template = """
 
 
 def get_realtions_as_tei(request):
+    query_limit = 15000
     doc = TeiReader(tei_template)
     root = doc.any_xpath(".//tei:listRelation")[0]
     query_params = request.GET
     qs = EdgeListFilter(query_params, queryset=Edge.objects.all()).qs
+    object_count = qs.count()
+    if object_count > query_limit:
+        return HttpResponse(f"{object_count} Treffer. Angezeigt werden können maximal {query_limit} Verbindungen. Bitte grenzen sie die Ergebnisse weiter ein.", status=400)  # noqa: E501
     for x in qs:
         relation = ET.SubElement(root, "{http://www.tei-c.org/ns/1.0}relation")
         relation.attrib["name"] = slugify(x.edge_label)
