@@ -63,3 +63,8 @@ class DumperTestCase(TestCase):
         url = reverse("network:calender_data")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_06_tei_relation(self):
+        url = reverse("network:tei")
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
