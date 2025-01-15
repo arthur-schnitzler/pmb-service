@@ -82,7 +82,7 @@ class EventListFilter(MyBaseFilter):
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=EventType.objects.all(),
-        help_text="Art/Typ des Ereignisses, z.B. 'Premiere'",
+        help_text="Art des Ereignisses, z.B. 'Premiere'",
         label="Art des Ereignisses",
         widget=autocomplete.Select2Multiple(
             url="/apis/vocabularies/autocomplete/eventtype/normal/",

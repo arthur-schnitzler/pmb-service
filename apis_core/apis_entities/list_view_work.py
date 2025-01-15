@@ -75,7 +75,7 @@ class WorkListFilter(MyBaseFilter):
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=WorkType.objects.all(),
-        help_text="Art/Typ des Werkes, z.B. 'Roman'",
+        help_text="Art des Werkes, z.B. 'Roman'",
         label="Werktype",
         widget=autocomplete.Select2Multiple(
             url="/apis/vocabularies/autocomplete/worktype/normal/",
