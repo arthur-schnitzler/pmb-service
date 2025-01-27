@@ -1,5 +1,29 @@
 import pandas as pd
+from django.utils.text import slugify
+import lxml.etree as ET
 from datetime import datetime, date
+
+
+def relation_row_to_tei(row: pd.core.series.Series) -> str:
+    """converts a pandas.DataFrame Row object into a TEI:relation string
+
+    Args:
+        row (pd.core.series.Series): A pandas DataFrame Row
+
+    Returns:
+        str: a tei:relation string
+    """
+    relation = ET.Element("{http://www.tei-c.org/ns/1.0}relation")
+    relation.attrib["name"] = slugify(row.edge_label)
+    relation.attrib["active"] = f"#{row.source_id}"
+    relation.attrib["passive"] = f"#{row.target_id}"
+    if row.start_date:
+        relation.attrib["from-iso"] = f"{row.start_date}"
+    if row.end_date:
+        relation.attrib["to-iso"] = f"{row.end_date}"
+    relation.attrib["n"] = f"{row.target_label} — {row.edge_label} — {row.source_label}"
+    relation.attrib["type"] = row.edge_kind
+    return relation
 
 
 def df_to_geojson_vect(
@@ -38,7 +62,9 @@ def get_coords(row):
         return row["source_lat"], row["source_lng"]
 
 
-def iso_to_lat_long(iso_date, start_date="1700-01-01", end_date="1990-12-31", max_width=180):
+def iso_to_lat_long(
+    iso_date, start_date="1700-01-01", end_date="1990-12-31", max_width=180
+):
     """
     Maps an ISO date string or datetime.date to latitude and longitude, ensuring
     earlier dates are more south (latitude) and earlier days within a year are more west (longitude).

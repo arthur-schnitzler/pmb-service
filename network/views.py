@@ -1,10 +1,8 @@
 import csv
 import json
 import pandas as pd
-import lxml.etree as ET
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse
-from django.utils.text import slugify
 from django.views.generic import TemplateView
 from acdh_tei_pyutils.tei import TeiReader
 
@@ -16,7 +14,12 @@ from network.filters import EdgeListFilter
 from network.forms import EdgeFilterFormHelper
 from network.models import Edge
 from network.tables import EdgeTable
-from network.utils import get_coords, df_to_geojson_vect, iso_to_lat_long
+from network.utils import (
+    get_coords,
+    df_to_geojson_vect,
+    iso_to_lat_long,
+    relation_row_to_tei,
+)
 
 
 tei_template = """
@@ -44,25 +47,15 @@ tei_template = """
 
 
 def get_realtions_as_tei(request):
-    query_limit = 15000
-    doc = TeiReader(tei_template)
-    root = doc.any_xpath(".//tei:listRelation")[0]
+    values_list = [x.name for x in Edge._meta.get_fields()]
     query_params = request.GET
     qs = EdgeListFilter(query_params, queryset=Edge.objects.all()).qs
-    object_count = qs.count()
-    if object_count > query_limit:
-        return HttpResponse(f"{object_count} Treffer. Angezeigt werden können maximal {query_limit} Verbindungen. Bitte grenzen sie die Ergebnisse weiter ein.", status=400)  # noqa: E501
-    for x in qs:
-        relation = ET.SubElement(root, "{http://www.tei-c.org/ns/1.0}relation")
-        relation.attrib["name"] = slugify(x.edge_label)
-        relation.attrib["active"] = f"#{x.source_id}"
-        relation.attrib["passive"] = f"#{x.target_id}"
-        if x.start_date:
-            relation.attrib["from-iso"] = f"{x.start_date}"
-        if x.end_date:
-            relation.attrib["to-iso"] = f"{x.end_date}"
-        relation.attrib["n"] = f"{x.target_label} — {x.edge_label} — {x.source_label}"
-        relation.attrib["type"] = x.edge_kind
+    items = qs.values_list(*values_list)
+    df = pd.DataFrame(list(items), columns=values_list)
+    relations = df.apply(relation_row_to_tei, axis=1).tolist()
+    doc = TeiReader(tei_template)
+    root = doc.any_xpath(".//tei:listRelation")[0]
+    root.extend(relations)
     xml_str = doc.return_string()
     return HttpResponse(xml_str, content_type="application/xml")
 
