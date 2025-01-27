@@ -89,7 +89,7 @@ class InstitutionListFilter(MyBaseFilter):
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=InstitutionType.objects.all(),
-        help_text="Art/Typ der Institution, z.B. 'Roman'",
+        help_text="Art der Institution, z.B. 'Redaktion'",
         label="Institutionstyp",
         widget=autocomplete.Select2Multiple(
             url="/apis/vocabularies/autocomplete/institutiontype/normal/",

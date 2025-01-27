@@ -60,7 +60,7 @@ class PlaceListFilter(MyBaseFilter):
     )
     kind = django_filters.ModelMultipleChoiceFilter(
         queryset=PlaceType.objects.all(),
-        help_text="Art/Typ des Ortes, z.B. 'Roman'",
+        help_text="Art des Ortes, z.B. 'Theater'",
         label="Ortstyp",
         widget=autocomplete.Select2Multiple(
             url="/apis/vocabularies/autocomplete/placetype/normal/",
