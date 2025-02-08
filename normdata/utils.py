@@ -20,7 +20,7 @@ from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     InstitutionPlaceRelation,
     PersonWorkRelation,
-    PlaceType
+    PlaceType,
 )
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
@@ -92,7 +92,9 @@ def get_or_create_place_from_geonames(uri):
             domain="geonames",
             entity=entity,
         )
-        place_type, _ = PlaceType.objects.get_or_create(name=fetched_item["feature code"])
+        place_type, _ = PlaceType.objects.get_or_create(
+            name=fetched_item["feature code"]
+        )
         entity.kind = place_type
         entity.save()
         return entity
@@ -386,6 +388,7 @@ def get_or_create_org_from_wikidata(uri):
 
 
 def import_from_normdata(raw_url, entity_type):
+    place_type = False
     normalized_url = get_normalized_uri(raw_url.strip())
     try:
         entity = Uri.objects.get(uri=normalized_url).entity
@@ -428,6 +431,13 @@ def import_from_normdata(raw_url, entity_type):
             wikidata_url = False
     elif domain == "geonames":
         try:
+            fetched_item = gn_as_object(normalized_url)
+            place_type, _ = PlaceType.objects.get_or_create(
+                name=fetched_item["feature code"]
+            )
+        except:  # noqa
+            pass
+        try:
             wikidata_url = geonames_to_wikidata(normalized_url)["wikidata"]
         except (IndexError, KeyError):
             try:
@@ -447,6 +457,9 @@ def import_from_normdata(raw_url, entity_type):
         except ObjectDoesNotExist:
             if entity_type == "place":
                 entity = get_or_create_place_from_wikidata(wikidata_url)
+                if place_type:
+                    entity.kind = place_type
+                    entity.save()
             elif entity_type == "person":
                 entity = get_or_create_person_from_wikidata(wikidata_url)
             elif entity_type == "work":
