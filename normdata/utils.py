@@ -20,6 +20,7 @@ from apis_core.apis_vocabularies.models import (
     PersonPlaceRelation,
     InstitutionPlaceRelation,
     PersonWorkRelation,
+    PlaceType
 )
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
@@ -91,6 +92,9 @@ def get_or_create_place_from_geonames(uri):
             domain="geonames",
             entity=entity,
         )
+        place_type, _ = PlaceType.objects.get_or_create(name=fetched_item["feature code"])
+        entity.kind = place_type
+        entity.save()
         return entity
 
 
