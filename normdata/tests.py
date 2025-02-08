@@ -6,6 +6,7 @@ from normdata.utils import (
     get_or_create_place_from_geonames,
     get_or_create_place_from_gnd,
     get_or_create_org_from_wikidata,
+    import_from_normdata,
 )
 
 GEONAMES_URL = "https://www.geonames.org/2461464/graret-oum-sedra.html"
@@ -28,7 +29,7 @@ class NormdataTestCase(TestCase):
         entity = get_or_create_place_from_gnd(GND_URL)
         entity.delete()
 
-    def test_002_get_or_create_place_from_gnd_no_coords(self):
+    def test_002a_get_or_create_place_from_gnd_no_coords(self):
         entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
         self.assertEqual(entity.name, "Horco Molle")
         entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
@@ -58,3 +59,9 @@ class NormdataTestCase(TestCase):
         entity = get_or_create_org_from_wikidata("https://www.wikidata.org/wiki/Q7191")
         entity = get_or_create_org_from_wikidata("https://www.wikidata.org/wiki/Q7191")
         self.assertEqual(entity.name, "Nobel Prize")
+
+    def test_006_import_from_normdata(self):
+        entity = import_from_normdata(
+            "https://www.geonames.org/2516696/marisma-de-hinojos.html", "place"
+        )
+        self.assertTrue(entity.kind)
