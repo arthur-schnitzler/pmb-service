@@ -45,3 +45,49 @@ class ArcheMedTestCase(TestCase):
         url = reverse("archemd:arche", kwargs={"pk": 99999})
         response = client.get(url)
         self.assertTrue(response.status_code, 404)
+
+    def test_04_place_save(self):
+        data = {
+            "name": "foo",
+            "lat": 1,
+        }
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lat)
+        self.assertFalse(item.lng)
+
+        data = {
+            "name": "foo",
+            "lng": 1,
+        }
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+        data = {"name": "foo", "lng": 1, "lat": 91}
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+
+        data = {"name": "foo", "lng": 1, "lat": -91}
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+
+        data = {"name": "foo", "lng": 181, "lat": -4}
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+
+        data = {"name": "foo", "lng": 181}
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+
+        data = {"name": "foo", "lng": -181, "lat": -1}
+        item = Place.objects.create(**data)
+        self.assertFalse(item.lng)
+        self.assertFalse(item.lat)
+
+        data = {"name": "foo", "lng": 1, "lat": 1}
+        item = Place.objects.create(**data)
+        self.assertTrue(item.lng)
+        self.assertTrue(item.lat)

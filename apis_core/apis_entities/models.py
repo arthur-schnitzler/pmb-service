@@ -545,8 +545,22 @@ class Place(AbstractEntity):
     lng = models.FloatField(blank=True, null=True, verbose_name="longitude")
 
     def save(self, *args, **kwargs):
-        if isinstance(self.lat, float) and isinstance(self.lng, float):
-            self.status = "distinct"
+        # see archemd/tests.py for the test
+        if not self.lat or not self.lng:
+            self.lat = None
+            self.lng = None
+        try:
+            if self.lat < -90 or self.lat > 90:
+                self.lat = None
+                self.lng = None
+            elif self.lng < -180 or self.lng > 180:
+                self.lat = None
+                self.lng = None
+            else:
+                pass
+        except TypeError:
+            self.lat = None
+            self.lng = None
         super(Place, self).save(*args, **kwargs)
         return self
 
