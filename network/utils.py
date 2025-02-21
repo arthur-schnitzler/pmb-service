@@ -21,7 +21,7 @@ def relation_row_to_tei(row: pd.core.series.Series) -> str:
         relation.attrib["from-iso"] = f"{row.start_date}"
     if row.end_date:
         relation.attrib["to-iso"] = f"{row.end_date}"
-    relation.attrib["n"] = f"{row.target_label} — {row.edge_label} — {row.source_label}"
+    relation.attrib["n"] = f"{row.source_label} — {row.edge_label} — {row.target_label}"
     relation.attrib["type"] = row.edge_kind
     return relation
 
