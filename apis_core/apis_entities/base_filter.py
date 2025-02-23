@@ -1,4 +1,5 @@
 import django_filters
+from django.db.models import Q
 
 
 class MyBaseFilter(django_filters.FilterSet):
