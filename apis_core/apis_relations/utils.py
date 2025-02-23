@@ -1,5 +1,6 @@
 from django import forms
-from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter
+from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter, NumberFilter
+from django.db.models import Q
 from django.urls import reverse_lazy
 
 from crispy_forms.helper import FormHelper
@@ -101,7 +102,7 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
             field_name=source_field,
             queryset=ClassA.objects.all(),
             help_text=f"Wähle eine oder mehrere {class_a_verbose_name}",
-            label=class_a_verbose_name,
+            label=f"{class_a_verbose_name} (Startknoten)",
             widget=autocomplete.Select2Multiple(
                 url=reverse_lazy(
                     "apis:apis_entities:generic_entities_autocomplete",
@@ -114,7 +115,7 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
             field_name=target_field,
             queryset=ClassB.objects.all(),
             help_text=f"Wähle einen oder mehrere {class_b_verbose_name}",
-            label=class_b_verbose_name,
+            label=f"{class_b_verbose_name} (Zielknoten)",
             widget=autocomplete.Select2Multiple(
                 url=reverse_lazy(
                     "apis:apis_entities:generic_entities_autocomplete",
@@ -134,6 +135,19 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
         end_date__year = RangeFilter(
             label="Ende (Jahr)",
         )
+        source_target = NumberFilter(
+            label="ID Quell- oder Ziel",
+            help_text="ID eines Quell- oder Zielknotens; alle Relationen von bzw. zu der gewählten Entität",
+            method="source_target_filter"
+        )
+
+        def source_target_filter(self, queryset, name, value):
+            model = queryset.model
+            queryset = queryset.filter(
+                Q(**{f"{model.get_related_entity_field_namea()}__id": value}) |
+                Q(**{f"{model.get_related_entity_field_nameb()}__id": value})
+            )
+            return queryset
 
         class Meta:
             model = MyModelClass
@@ -165,6 +179,7 @@ def generate_relation_filter_formhelper():
                 "start_date__year",
                 "end_date__year",
                 "collection",
+                "source_target"
             )
 
     return MyRelationsFilterFormHelper

@@ -35,10 +35,10 @@ class GenericEntitiesDetailView(View):
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
             if match[0] == entity:
-                link_to_relations = f"{rel.get_listview_url()}?source={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 rel_type = match[1]
             else:
-                link_to_relations = f"{rel.get_listview_url()}?target={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 rel_type = match[0]
             if match[0] == match[1]:
                 title_card = entity.title()
