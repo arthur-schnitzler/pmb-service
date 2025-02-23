@@ -35,10 +35,10 @@ class GenericEntitiesDetailView(View):
             ]
             prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
             if match[0] == entity:
-                link_to_relations = f"{rel.get_listview_url()}?source={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 rel_type = match[1]
             else:
-                link_to_relations = f"{rel.get_listview_url()}?target={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 rel_type = match[0]
             if match[0] == match[1]:
                 title_card = entity.title()
@@ -63,13 +63,10 @@ class GenericEntitiesDetailView(View):
                     objects = rel.objects.filter(**dict_1)
                     if callable(getattr(objects, "filter_for_user", None)):
                         objects = objects.filter_for_user()
-            disable_sort = False
-            show_more = False
             object_count = objects.count()
-            if object_count > 50:
-                objects = objects[:50]
-                disable_sort = True
-                show_more = True
+            objects = objects[:10]
+            disable_sort = True
+            show_more = True
             table = get_generic_relations_table(
                 relation_class=rel,
                 entity_instance=instance,
