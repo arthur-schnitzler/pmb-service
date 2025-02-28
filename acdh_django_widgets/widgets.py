@@ -43,3 +43,8 @@ class MartinAntonMuellerWidget(django_filters.widgets.RangeWidget):
     """renders two input fields separated with a 'Halbgeviertstrich' ('–')
     """
     template_name = "acdh_django_widgets/range_one_line.html"
+
+    def render(self, name, value, attrs=None, renderer=None):
+        context = {"name": name, "value": value, "attrs": self.attrs}
+        rendered = render_to_string(self.template_name, context)
+        return mark_safe(rendered)
