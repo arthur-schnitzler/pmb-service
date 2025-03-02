@@ -8,6 +8,8 @@ from crispy_forms.layout import Layout, Submit
 from crispy_bootstrap5.bootstrap5 import BS5Accordion
 from crispy_forms.bootstrap import AccordionGroup
 
+from acdh_django_widgets.widgets import MartinAntonMuellerWidget
+
 from dal import autocomplete
 
 import django_tables2 as tables
@@ -130,11 +132,12 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
             help_text="Mehrfachauswahl möglich",
         )
         start_date__year = RangeFilter(
-            label="Anfang (Jahr)",
+            label=" Zeitraum: Anfang – Ende (z. B. 1862–1931)",
+            widget=MartinAntonMuellerWidget
         )
-        end_date__year = RangeFilter(
-            label="Ende (Jahr)",
-        )
+        # end_date__year = RangeFilter(
+        #     label="Ende (Jahr)",
+        # )
         source_target = NumberFilter(
             label="ID Quell- oder Ziel",
             help_text="ID eines Quell- oder Zielknotens; alle Relationen von bzw. zu der gewählten Entität",
@@ -156,7 +159,7 @@ def generate_relation_filter(MyModelClass, RelationTypeClass):
                 target_field,
                 "relation_type",
                 "start_date__year",
-                "end_date__year",
+                # "end_date__year",
                 "collection",
             ]
 
@@ -177,7 +180,6 @@ def generate_relation_filter_formhelper():
                 "target",
                 "relation_type",
                 "start_date__year",
-                "end_date__year",
                 "collection",
                 "source_target"
             )

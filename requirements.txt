@@ -1,4 +1,5 @@
 acdh-django-browsing>=2.0,<3
+acdh-django-widgets
 acdh_geonames_utils
 acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=1.1,<2
