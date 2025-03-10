@@ -180,13 +180,20 @@ BIRTH_REL = [
 DEATH_REL = [
     89,
 ]
-PL_A_PART_OF = [1106, 1136]
+PL_A_PART_OF = [
+    1106,
+]
 PL_B_LOCATED_IN = [
     971,
 ]
-ORG_LOCATED_IN = [1141, 970, 1160]
+ORG_LOCATED_IN = [
+    970,
+]
 AUTHOR_RELS = [
     1049,
+]
+PL_EVENT = [
+    1202,
 ]
 
 OWNCLOUD_USER = os.environ.get("OWNCLOUD_USER")
