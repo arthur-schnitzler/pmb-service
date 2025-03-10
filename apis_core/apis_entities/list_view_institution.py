@@ -5,6 +5,7 @@ from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from dal import autocomplete
+from django.conf import settings
 
 from apis_core.apis_entities.models import Institution
 from apis_core.apis_metainfo.models import Collection
@@ -188,7 +189,7 @@ class InstitutionTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [970, 1141, 1160],
+                settings.ORG_LOCATED_IN,
                 InstitutionPlaceRelation,
             )
         ),  # ToDo: don't hardcode the realtion type id here

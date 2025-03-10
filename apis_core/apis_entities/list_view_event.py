@@ -5,6 +5,7 @@ from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from dal import autocomplete
+from django.conf import settings
 
 from apis_core.apis_entities.models import Event
 from apis_core.apis_entities.base_filter import MyBaseFilter
@@ -167,10 +168,10 @@ class EventTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [1202, 1369],
+                settings.PL_EVENT,
                 PlaceEventRelation,
             )
-        ),  # ToDo: don't hardcode the realtion type id here
+        ),
     )
 
     class Meta:
