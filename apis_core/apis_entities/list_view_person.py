@@ -5,6 +5,7 @@ from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from dal import autocomplete
+from django.conf import settings
 
 from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.base_filter import MyBaseFilter
@@ -200,10 +201,10 @@ class PersonTable(tables.Table):
         transform=lambda x: x.related_place,
         filter=lambda qs: qs.filter(
             relation_type__in=get_child_classes(
-                [88, 1510, 1398],
+                settings.BIRTH_REL,
                 PersonPlaceRelation,
             )
-        ),  # ToDo: don't hardcode the realtion type id here
+        ),
     )
 
     class Meta:
@@ -225,6 +226,7 @@ class PersonListView(GenericListView):
         "start_date_written",
         "end_date_written",
         "personplace_set",
+        "death_place"
     ]
     exclude_columns = excluded_cols
     enable_merge = False
