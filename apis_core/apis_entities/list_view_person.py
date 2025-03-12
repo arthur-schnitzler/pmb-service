@@ -226,7 +226,6 @@ class PersonListView(GenericListView):
         "start_date_written",
         "end_date_written",
         "personplace_set",
-        "death_place"
     ]
     exclude_columns = excluded_cols
     enable_merge = False
