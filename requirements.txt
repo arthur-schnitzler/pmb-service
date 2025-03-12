@@ -5,6 +5,7 @@ acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=1.1,<2
 acdh-wikidata-pyutils>=1.2,<2
 apis-override-select2js==0.1
+csae-pyutils
 Django>=5.1,<6
 django-admin-csvexport
 django-autocomplete-light
