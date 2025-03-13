@@ -13,7 +13,7 @@ from django.views.generic.edit import DeleteView
 from browsing.browsing_utils import BaseCreateView, BaseUpdateView
 
 from .forms import UriForm
-from .models import Uri
+from .models import Uri, Collection, TempEntityClass
 
 PROJECT_NAME = settings.PROJECT_NAME
 BEACON_NAME = f"#FORMAT: BEACON\n#NAME: {PROJECT_NAME}\n"
@@ -74,8 +74,20 @@ class UriDetailView(DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["entity_type"] = "uri"
-        print(context["object"].get_icon())
         context["icon"] = context["object"].get_icon()
+        return context
+
+
+class CollectionDetailView(DetailView):
+    model = Collection
+    template_name = "apis_metainfo/collection_detail.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+        context["entity_type"] = "collection"
+        context["icon"] = context["object"].get_icon()
+        context["related_entities"] = obj.tempentityclass_set.all().count()
         return context
 
 

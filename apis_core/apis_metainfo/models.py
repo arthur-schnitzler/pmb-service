@@ -429,13 +429,12 @@ class Collection(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if hasattr(self, "_loaded_values"):
-            if self.published != self._loaded_values["published"]:
-                for ent in self.tempentityclass_set.all():
-                    ent.published = self.published
-                    ent.save()
-        super().save(*args, **kwargs)
+    def get_absolute_url(self):
+        return reverse("apis_core:apis_metainfo:uri_detail", kwargs={"pk": self.id})
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-collection apis-collection"
 
 
 class Text(models.Model):
