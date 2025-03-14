@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Projekte {% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="display-1 text-center">Projekte</h1>
+    <h2 class="text-center">Übersicht über größere Datenquellen der PMB</h2>
+    {% for x in objects %}
+    <h3>
+        {{ x.name }}
+    </h3>
+    <p>{{ x.description|safe }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

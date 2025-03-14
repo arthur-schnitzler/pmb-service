@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 
@@ -13,7 +14,7 @@ from django.views.generic.edit import DeleteView
 from browsing.browsing_utils import BaseCreateView, BaseUpdateView
 
 from .forms import UriForm
-from .models import Uri
+from .models import Uri, Collection
 
 PROJECT_NAME = settings.PROJECT_NAME
 BEACON_NAME = f"#FORMAT: BEACON\n#NAME: {PROJECT_NAME}\n"
@@ -74,8 +75,29 @@ class UriDetailView(DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["entity_type"] = "uri"
-        print(context["object"].get_icon())
         context["icon"] = context["object"].get_icon()
+        return context
+
+
+class CollectionListView(TemplateView):
+    template_name = "apis_metainfo/collection_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["objects"] = Collection.objects.filter(collection_type__name="Projekt")
+        return context
+
+
+class CollectionDetailView(DetailView):
+    model = Collection
+    template_name = "apis_metainfo/collection_detail.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+        context["entity_type"] = "collection"
+        context["icon"] = context["object"].get_icon()
+        context["related_entities"] = obj.tempentityclass_set.all().count()
         return context
 
 

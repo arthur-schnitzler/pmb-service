@@ -9,9 +9,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from next_prev import next_in_order, prev_in_order
 from model_utils.managers import InheritanceManager
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from acdh_wikidata_pyutils import fetch_image
+from tinymce.models import HTMLField
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
@@ -251,34 +253,34 @@ class TempEntityClass(models.Model):
 
     def get_prev_url(self):
         entity = self.__class__.__name__.lower()
-        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
+        prev = prev_in_order(self)
         if prev:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
                     "apis_core:apis_entities:generic_entities_detail_view",
-                    kwargs={"entity": entity, "pk": prev.first().id},
+                    kwargs={"entity": entity, "pk": prev.id},
                 )
             else:
                 return reverse(
                     "apis_core:apis_relations:generic_relations_detail_view",
-                    kwargs={"entity": entity, "pk": prev.first().id},
+                    kwargs={"entity": entity, "pk": prev.id},
                 )
         else:
             return False
 
     def get_next_url(self):
         entity = self.__class__.__name__.lower()
-        next = self.__class__.objects.filter(id__gt=self.id)
+        next = next_in_order(self)
         if next:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
                     "apis_core:apis_entities:generic_entities_detail_view",
-                    kwargs={"entity": entity, "pk": next.first().id},
+                    kwargs={"entity": entity, "pk": next.id},
                 )
             else:
                 return reverse(
                     "apis_core:apis_relations:generic_relations_detail_view",
-                    kwargs={"entity": entity, "pk": next.first().id},
+                    kwargs={"entity": entity, "pk": next.id},
                 )
         else:
             return False
@@ -409,33 +411,51 @@ class Source(models.Model):
 class Collection(models.Model):
     """Allows to group entities and relation."""
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="Name des Projektes, der Sammlung",
+        max_length=255,
+    )
+    description = HTMLField(
+        blank=True,
+        verbose_name="Beschreibung",
+        help_text="Kurze Beschreibung des Projektes, der Sammlung",
+    )
     collection_type = models.ForeignKey(
-        CollectionType, blank=True, null=True, on_delete=models.SET_NULL
+        CollectionType,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Typ des Projektes",
+        help_text="Setze 'Projekt' damit das Projekt unter '/projects' aufscheint",
     )
-    groups_allowed = models.ManyToManyField(Group)
+    groups_allowed = models.ManyToManyField(
+        Group, blank=True, verbose_name="bitte ignorieren"
+    )
     parent_class = models.ForeignKey(
-        "self", blank=True, null=True, on_delete=models.CASCADE
+        "self",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="bitte ignorieren",
     )
-    published = models.BooleanField(default=False)
-
-    @classmethod
-    def from_db(cls, db, field_names, values):
-        instance = super().from_db(db, field_names, values)
-        instance._loaded_values = dict(zip(field_names, values))
-        return instance
+    published = models.BooleanField(
+        default=False,
+        verbose_name="veröffentlicht",
+        help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
+    )
 
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if hasattr(self, "_loaded_values"):
-            if self.published != self._loaded_values["published"]:
-                for ent in self.tempentityclass_set.all():
-                    ent.published = self.published
-                    ent.save()
-        super().save(*args, **kwargs)
+    def get_absolute_url(self):
+        return reverse(
+            "apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id}
+        )
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-collection apis-collection"
 
 
 class Text(models.Model):
