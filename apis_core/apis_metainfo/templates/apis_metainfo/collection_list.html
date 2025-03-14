@@ -7,9 +7,9 @@
     <h2 class="text-center">Übersicht über größere Datenquellen der PMB</h2>
     {% for x in objects %}
     <h3>
-        <a href="{{ x.get_absolute_url }}">{{ x.name }}</a>
+        {{ x.name }}
     </h3>
-    <p>{{ x.description }}</p>
+    <p>{{ x.description|safe }}</p>
     {% endfor %}
 </div>
 {% endblock %}

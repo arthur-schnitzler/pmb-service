@@ -13,6 +13,7 @@ from next_prev import next_in_order, prev_in_order
 from model_utils.managers import InheritanceManager
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from acdh_wikidata_pyutils import fetch_image
+from tinymce.models import HTMLField
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
@@ -410,28 +411,47 @@ class Source(models.Model):
 class Collection(models.Model):
     """Allows to group entities and relation."""
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="Name des Projektes, der Sammlung",
+        max_length=255,
+    )
+    description = HTMLField(
+        blank=True,
+        verbose_name="Beschreibung",
+        help_text="Kurze Beschreibung des Projektes, der Sammlung",
+    )
     collection_type = models.ForeignKey(
-        CollectionType, blank=True, null=True, on_delete=models.SET_NULL
+        CollectionType,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Typ des Projektes",
+        help_text="Setze 'Projekt' damit das Projekt unter '/projects' aufscheint",
     )
-    groups_allowed = models.ManyToManyField(Group, blank=True)
+    groups_allowed = models.ManyToManyField(
+        Group, blank=True, verbose_name="bitte ignorieren"
+    )
     parent_class = models.ForeignKey(
-        "self", blank=True, null=True, on_delete=models.CASCADE
+        "self",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="bitte ignorieren",
     )
-    published = models.BooleanField(default=False)
-
-    @classmethod
-    def from_db(cls, db, field_names, values):
-        instance = super().from_db(db, field_names, values)
-        instance._loaded_values = dict(zip(field_names, values))
-        return instance
+    published = models.BooleanField(
+        default=False,
+        verbose_name="veröffentlicht",
+        help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
+    )
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id})
+        return reverse(
+            "apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id}
+        )
 
     @classmethod
     def get_icon(self):
