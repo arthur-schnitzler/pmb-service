@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from next_prev import next_in_order, prev_in_order
 from model_utils.managers import InheritanceManager
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from acdh_wikidata_pyutils import fetch_image
@@ -251,34 +252,34 @@ class TempEntityClass(models.Model):
 
     def get_prev_url(self):
         entity = self.__class__.__name__.lower()
-        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
+        prev = prev_in_order(self)
         if prev:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
                     "apis_core:apis_entities:generic_entities_detail_view",
-                    kwargs={"entity": entity, "pk": prev.first().id},
+                    kwargs={"entity": entity, "pk": prev.id},
                 )
             else:
                 return reverse(
                     "apis_core:apis_relations:generic_relations_detail_view",
-                    kwargs={"entity": entity, "pk": prev.first().id},
+                    kwargs={"entity": entity, "pk": prev.id},
                 )
         else:
             return False
 
     def get_next_url(self):
         entity = self.__class__.__name__.lower()
-        next = self.__class__.objects.filter(id__gt=self.id)
+        next = next_in_order(self)
         if next:
             if entity == "institution" or len(entity) < 10:
                 return reverse(
                     "apis_core:apis_entities:generic_entities_detail_view",
-                    kwargs={"entity": entity, "pk": next.first().id},
+                    kwargs={"entity": entity, "pk": next.id},
                 )
             else:
                 return reverse(
                     "apis_core:apis_relations:generic_relations_detail_view",
-                    kwargs={"entity": entity, "pk": next.first().id},
+                    kwargs={"entity": entity, "pk": next.id},
                 )
         else:
             return False
@@ -414,7 +415,7 @@ class Collection(models.Model):
     collection_type = models.ForeignKey(
         CollectionType, blank=True, null=True, on_delete=models.SET_NULL
     )
-    groups_allowed = models.ManyToManyField(Group)
+    groups_allowed = models.ManyToManyField(Group, blank=True)
     parent_class = models.ForeignKey(
         "self", blank=True, null=True, on_delete=models.CASCADE
     )
@@ -430,7 +431,7 @@ class Collection(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("apis_core:apis_metainfo:uri_detail", kwargs={"pk": self.id})
+        return reverse("apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id})
 
     @classmethod
     def get_icon(self):

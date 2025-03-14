@@ -12,6 +12,7 @@ django-autocomplete-light
 django-crispy-forms
 django-extensions
 django-model-utils
+django-next-prev
 django-tables2
 django-vite>=3.0.3,<4
 djangorestframework

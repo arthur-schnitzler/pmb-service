@@ -11,5 +11,6 @@ urlpatterns = [
     path("uri/create/", views.UriCreate.as_view(), name="uri_create"),
     path("uri/edit/<int:pk>", views.UriUpdate.as_view(), name="uri_edit"),
     path("uri/delete/<int:pk>", views.UriDelete.as_view(), name="uri_delete"),
-    path("collection/<int:pk>", views.CollectionDetailView.as_view(), name="collection_detail"),
+    path("projects/<int:pk>", views.CollectionDetailView.as_view(), name="collection_detail"),
+    path("projects/", views.CollectionListView.as_view(), name="collection_browse"),
 ]
