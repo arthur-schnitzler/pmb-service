@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %}Map{% endblock %}
 {% block scriptHeader %}
+{% include "partials/leaflet.html" %}
+{% include "partials/leaflet_markercluster.html" %}
+{% include "partials/leaflet_heatmap.html" %}
 {% endblock %}
 {% block content %}
 <style>
@@ -10,7 +13,6 @@
         height: 700px;
     }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 <div class="container-fluid pt-3">
     <h1 class="display-3 text-center">Beziehungen zu Orten</h1>
     <div id="mapcontainer" class="p-4">
