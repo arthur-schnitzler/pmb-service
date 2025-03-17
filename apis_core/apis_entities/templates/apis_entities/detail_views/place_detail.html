@@ -2,11 +2,11 @@
 
     {% block info-table %}
     {% if object.lat %}
+    {% include "partials/leaflet.html" %}
         <div id="map" style="height: 300px;"></div>
         <script>
             var lat = "{{ object.lat }}".replace(",", "."); 
             var lng = "{{ object.lng }}".replace(",", "."); 
-            console.log(lat, lng)
             var map = L.map('map').setView([lat, lng], 13);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
