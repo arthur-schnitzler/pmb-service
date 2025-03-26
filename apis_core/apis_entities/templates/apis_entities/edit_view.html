@@ -60,7 +60,7 @@
             <h3 class="text-center">Bearbeiten der Verbindungen</h3>
             {% for obj in right_card %}
                 <div class="pt-2">
-                    <h4>{{ obj.0 }} {% if obj.5 %} <span class="fs-6 fw-light">zeigt nur 20 von {{ obj.6 }} Beziehungen, klicke <a href="{{ obj.4 }}">hier</a> für alle Relationen</span> {% endif %}</h4>
+                    <h4>{{ obj.0 }} <a class="apis-{{ obj.5 }}" title="Gehe zu {{ entity_type }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ entity_type }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">An dieser Stelle werden nur maximal 10 Beziehungen angezeigt. Alle Beziehungen <a title="Gehe zu {{ entity_type }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><strong>hier</strong></a></span> {% endif %}</h4>
                     <div id="tableDiv__{{ obj.2 }}">
                         {% render_table obj.1 %}
                     </div>
