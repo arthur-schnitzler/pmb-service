@@ -44,9 +44,9 @@ class GenericEntitiesEditView(View):
                 dict_1 = {"related_" + entity.lower() + "a": instance}
                 dict_2 = {"related_" + entity.lower() + "b": instance}
                 objects = rel.objects.filter(Q(**dict_1) | Q(**dict_2))
-                link_to_relations = f"{rel.get_listview_url()}?target={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
             else:
-                link_to_relations = f"{rel.get_listview_url()}?source={pk}"
+                link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 if match[0].lower() == entity.lower():
                     title_card = match[1].title()
                 else:

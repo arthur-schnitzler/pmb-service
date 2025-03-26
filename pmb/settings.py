@@ -68,7 +68,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 CSRF_USE_SESSIONS = True
-
+LOGIN_URL = "/login"
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
