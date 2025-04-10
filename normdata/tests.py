@@ -31,7 +31,7 @@ class NormdataTestCase(TestCase):
 
     def test_002a_get_or_create_place_from_gnd_no_coords(self):
         entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
-        self.assertEqual(entity.name, "Horco Molle")
+        self.assertEqual(entity.name, "!!!GESPERRT!!!Horco Molle")
         entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
         entity.delete()
 
