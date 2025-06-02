@@ -447,8 +447,10 @@ class EntitiesTestCase(TestCase):
     def test_026_fetch_image(self):
         grillparzer = "https://d-nb.info/gnd/118542192"
         entity = import_from_normdata(grillparzer, "person")
+        entity.fetch_image(override=True)
         entity.fetch_image()
         self.assertTrue(entity.img_url)
+
         self.assertTrue("Wikimedia Commons" in entity.img_credit_label())
         self.assertTrue("File:" in entity.img_credit())
 
