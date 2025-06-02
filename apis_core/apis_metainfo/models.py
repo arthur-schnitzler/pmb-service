@@ -150,8 +150,16 @@ class TempEntityClass(models.Model):
                     pass
         return None
 
-    def fetch_image(self):
+    def fetch_image(self, override=False):
         wikidata_uri = self.uri_set.filter(domain__icontains="wikidata").first()
+        if override and wikidata_uri:
+            img_url = fetch_image(wikidata_uri.uri)
+            self.img_last_checked = datetime.now()
+            if img_url:
+                if len(img_url) < 301:
+                    self.img_url = img_url
+                    print(self.id, img_url)
+            self.save()
         if wikidata_uri and self.img_url is None and not self.img_last_checked:
             self.img_last_checked = datetime.now()
             img_url = fetch_image(wikidata_uri.uri)
@@ -164,8 +172,8 @@ class TempEntityClass(models.Model):
     def img_credit(self):
         credit = None
         if self.img_url is not None:
-            if "commons.wikimedia.org/w/index" in self.img_url:
-                img_name = self.img_url.split("/")[-1]
+            if "wikimedia" in self.img_url:
+                img_name = self.img_url.split("/")[-1].split("px-")[-1]
                 credit = f"https://commons.wikimedia.org/wiki/File:{img_name}"
             elif "AKON" in self.img_url:
                 credit = self.img_url
@@ -176,8 +184,12 @@ class TempEntityClass(models.Model):
         if self.img_url is not None:
             if "commons.wikimedia.org/w/index" in self.img_url:
                 return "Wikimedia Commons"
+            elif "thumb" in self.img_url:
+                return "Wikimedia Commons"
             elif "AKON" in self.img_url:
                 credit = "AKON"
+            else:
+                credit = None
         return credit
 
     def clean_start_date_written(self):

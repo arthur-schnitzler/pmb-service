@@ -3,7 +3,7 @@ acdh-django-widgets
 acdh_geonames_utils
 acdh-id-reconciler>=0.2,<1
 acdh-tei-pyutils>=1.1,<2
-acdh-wikidata-pyutils>=1.2,<2
+acdh-wikidata-pyutils>=2,<3
 apis-override-select2js==0.1
 csae-pyutils
 Django>=5.1,<6
