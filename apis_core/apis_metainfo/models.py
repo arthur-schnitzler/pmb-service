@@ -150,8 +150,16 @@ class TempEntityClass(models.Model):
                     pass
         return None
 
-    def fetch_image(self):
+    def fetch_image(self, override=False):
         wikidata_uri = self.uri_set.filter(domain__icontains="wikidata").first()
+        if override and wikidata_uri:
+            img_url = fetch_image(wikidata_uri.uri)
+            self.img_last_checked = datetime.now()
+            if img_url:
+                if len(img_url) < 301:
+                    self.img_url = img_url
+                    print(self.id, img_url)
+            self.save()
         if wikidata_uri and self.img_url is None and not self.img_last_checked:
             self.img_last_checked = datetime.now()
             img_url = fetch_image(wikidata_uri.uri)
