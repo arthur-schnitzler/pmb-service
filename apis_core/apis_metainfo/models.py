@@ -320,7 +320,7 @@ class TempEntityClass(models.Model):
             entities = [
                 (
                     self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
-                )  
+                )
                 for ent in entities
             ]
         rels = ContentType.objects.filter(
