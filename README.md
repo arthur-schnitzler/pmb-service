@@ -56,3 +56,17 @@ BEGIN;
 SELECT setval(pg_get_serial_sequence('"django_migrations"','id'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "django_migrations";
 COMMIT;
 ```
+
+
+## Docker
+
+### building the image
+
+* `docker build -t pmb:latest .`
+* `docker build -t pmb:latest --no-cache .`
+
+### running the image
+
+To run the image you should provide an `.env` file to pass in needed environment variables; see `pmb/settings.py` for possible varibles:
+
+`docker run -it --network="host" --rm --env-file .env pmb:latest`

@@ -1,11 +1,12 @@
-FROM python:3.11-buster
+FROM python:3.12-slim
 
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install postgresql-common libpq-dev nginx g++ gcc vim cron tzdata -y
+RUN apt-get install postgresql-common libpq-dev nginx g++ gcc vim cron tzdata wget -y
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 ENV TZ="Europe/Vienna"
 COPY nginx.default /etc/nginx/sites-available/default
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # copy source and install dependencies
 RUN mkdir -p /opt/app
