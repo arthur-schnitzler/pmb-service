@@ -11,6 +11,7 @@ media/uploads/*.ttl
 .env
 .docker
 .coverage
+.git
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
