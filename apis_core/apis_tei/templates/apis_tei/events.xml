@@ -1,6 +1,6 @@
 <listEvent>
     {% for x in object.personevent_set.all %}
-    <event  key="{{ x.related_event.id }}"
+    <event {% if x.related_event.kind %} n="{{ x.related_event.kind}}" {% endif %}  key="{{ x.related_event.id }}"
     {% if x.start_start_date %}
             notBefore-iso="{{ x.start_start_date|date:'Y-m-d' }}"
         {% endif %}

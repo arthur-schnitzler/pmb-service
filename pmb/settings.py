@@ -339,6 +339,8 @@ DOMAIN_MAPPING = [
     ("amp.acdh.oeaw.ac.at", "auden-musulin-papers", "#b59890"),
     ("schnitzler-zeitungen.", "schnitzler-zeitungen", "#8E8575"),
     ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
+    ("wienerschnitzler.", "wienerschnitzler", "#ECDA98"),
+    ("schnitzler-kultur.", "schnitzler-kultur", "#AC7790")
 ]
 
 
