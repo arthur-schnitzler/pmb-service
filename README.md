@@ -40,7 +40,8 @@ maybe in future also with PMB CRUD included
 ### update schnitzler-briefe uris
 
 ```shell
-nohup python manage.py update_schnitzler_uris > log.log 2>&1  &
+python manage.py update_schnitzler_uris
+python manage.py update_schnitzler_uris --url "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-kultur/refs/heads/main/csv/uris-in-use.csv"
 ```
 
 ## set up new instance
