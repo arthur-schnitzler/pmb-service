@@ -1,6 +1,6 @@
 
     <event xml:id="event__{{ object.id }}" when-iso="{{ object.start_date|date:'Y-m-d' }}">
-        <eventName>{{ object.name }}</eventName>{% if object.institutionevent_set.all %}
+        <eventName {% if object.kind %} n="{{ object.kind }}" {% endif %}>{{ object.name }}</eventName>{% if object.institutionevent_set.all %}
         <note type="listorg">
             <listOrg>{% for x in object.institutionevent_set.all %}
                 <org role="{{ x.relation_type.name_reverse }}">

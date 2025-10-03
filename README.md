@@ -37,6 +37,12 @@ maybe in future also with PMB CRUD included
 
 `python manage.py process_beacon --beacon=https://raw.githubusercontent.com/Hanslick-Online/hsl-entities/main/out/beacon.txt --domain=Hanslick`
 
+### update schnitzler-briefe uris
+
+```shell
+python manage.py update_schnitzler_uris
+python manage.py update_schnitzler_uris --url "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-kultur/refs/heads/main/csv/uris-in-use.csv"
+```
 
 ## set up new instance
 
