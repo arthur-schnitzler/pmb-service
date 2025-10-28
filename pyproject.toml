@@ -1,0 +1,36 @@
+[project]
+name = "pmb-service"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "acdh-django-browsing>=3.2",
+    "acdh-django-widgets>=0.1.0",
+    "acdh-geonames-utils>=0.5.0",
+    "acdh-id-reconciler>=0.7.1",
+    "acdh-tei-pyutils>=1.6",
+    "acdh-wikidata-pyutils>=3.0",
+    "apis-override-select2js>=0.2.1",
+    "coverage>=7.11.0",
+    "csae-pyutils>=0.2",
+    "django>=5.2.7",
+    "django-admin-csvexport>=2.3",
+    "django-autocomplete-light>=3.12.1",
+    "django-crispy-forms>=2.4",
+    "django-extensions>=4.1",
+    "django-model-utils>=5.0.0",
+    "django-next-prev>=1.1.0",
+    "django-tables2>=2.7.5",
+    "django-tinymce>=5.0.0",
+    "django-vite>=3.1.0",
+    "djangorestframework>=3.16.1",
+    "gunicorn>=23.0.0",
+    "icecream>=2.1.8",
+    "networkx>=3.5",
+    "pandas>=2.3.3",
+    "psycopg2-binary>=2.9.11",
+    "pylobid>=3.0.0",
+    "pyocclient>=0.6",
+    "recordlinkage>=0.16",
+]
