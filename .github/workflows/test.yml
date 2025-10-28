@@ -30,7 +30,7 @@ jobs:
         uv run manage.py migrate
         unset NEW_PMB
     - name: Run tests
-      run: uv runcoverage run manage.py test -v 3
+      run: uv run coverage run manage.py test -v 3
     - name: Create Coverage Report
       run: uv run coverage xml
     - name: "Upload coverage to Codecov"
