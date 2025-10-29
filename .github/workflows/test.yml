@@ -20,26 +20,19 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
-    - uses: actions/cache@v4
-      with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
-    - name: Install dependencies
-      run: |
-        pip install --upgrade --upgrade-strategy eager -r requirements_dev.txt
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v6
+    - name: install dependencies
+      run: uv sync --locked
     - name: Run migrations
       run: |
         export NEW_PMB=TRUE
-        python manage.py migrate
+        uv run manage.py migrate
         unset NEW_PMB
     - name: Run tests
-      run: coverage run manage.py test -v 3
+      run: uv run coverage run manage.py test -v 3
     - name: Create Coverage Report
-      run: coverage xml
+      run: uv run coverage xml
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v4
       with:
