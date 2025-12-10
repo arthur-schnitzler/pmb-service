@@ -4,12 +4,11 @@ from datetime import datetime
 import lxml.etree as ET
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from icecream import ic
 from tqdm import tqdm
 
-from apis_core.apis_entities.models import Institution, Person, Place, Work, Event
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_tei.tei_utils import get_node_from_template, tei_header
-from dumper.utils import upload_files_to_owncloud, write_report
+from dumper.utils import write_report
 
 ENTITY_MAP = {
     "person": {"model": Person, "template": "person"},
@@ -90,11 +89,6 @@ class Command(BaseCommand):
             )
             files = list()
             files.append(save_path)
-            if not kwargs["limit"]:
-                try:
-                    upload_files_to_owncloud(files)
-                except Exception as e:
-                    ic(e)
             end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
             report = [f"{os.path.basename(__file__)}: {key}", start_time, end_time]
             write_report(report)
