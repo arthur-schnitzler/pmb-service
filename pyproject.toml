@@ -34,3 +34,9 @@ dependencies = [
     "pyocclient>=0.6",
     "recordlinkage>=0.16",
 ]
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.5.5",
+    "notebook>=7.5.4",
+]
