@@ -8,8 +8,8 @@ from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
-from apis_core.helper_functions.DateParser import parse_date
 from apis_core.apis_metainfo.models import Uri
+from apis_core.helper_functions.DateParser import parse_date
 from normdata.forms import NormDataImportForm
 from normdata.utils import (
     get_or_create_person_from_wikidata,
@@ -502,3 +502,10 @@ class EntitiesTestCase(TestCase):
             uri="https://whatdoicare/123.at", domain="somethingveryrandom", entity=item
         )
         self.assertEqual(uri.get_color(), DEFAULT_COLOR)
+
+    def test_032_to_iso_like(self):
+        item = Person.objects.create(start_date_written="1.2.2000")
+        self.assertEqual(item.start_date_written, "2000-02-01")
+
+        item = Person.objects.create(start_date_written="2.2000")
+        self.assertEqual(item.start_date_written, "2000-02")
