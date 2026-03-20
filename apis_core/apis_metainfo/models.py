@@ -28,7 +28,10 @@ def to_iso_like(value: str) -> str:
     ISO_RE = re.compile(r"^\d{4}(?:-\d{2}(?:-\d{2})?)?$")
     DMY_RE = re.compile(r"^(\d{1,2})\.(\d{1,2})\.(\d{4})$")
     MY_RE = re.compile(r"^(\d{1,2})\.(\d{4})$")
-    s = value.strip()
+    try:
+        s = value.strip()
+    except ValueError:
+        return value
 
     # Keep valid ISO-like strings as-is: yyyy, yyyy-mm, yyyy-mm-dd
     if ISO_RE.fullmatch(s):
