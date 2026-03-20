@@ -1,11 +1,12 @@
 from django.test import TestCase
 from pylobid.pylobid import PyLobidPerson
+
 from normdata.utils import (
     get_gender_from_pylobid,
+    get_or_create_org_from_wikidata,
     get_or_create_person_from_gnd,
     get_or_create_place_from_geonames,
     get_or_create_place_from_gnd,
-    get_or_create_org_from_wikidata,
     import_from_normdata,
 )
 
@@ -30,9 +31,9 @@ class NormdataTestCase(TestCase):
         entity.delete()
 
     def test_002a_get_or_create_place_from_gnd_no_coords(self):
-        entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
-        self.assertEqual(entity.name, "Horco Molle", msg=f"should be {entity.name}")
-        entity = get_or_create_place_from_gnd("http://lobid.org/gnd/10053010-2")
+        entity = get_or_create_place_from_gnd("http://lobid.org/gnd/1121703259")
+        self.assertEqual(entity.name, "Dobrova", msg=f"should be {entity.name}")
+        entity = get_or_create_place_from_gnd("http://lobid.org/gnd/1121703259")
         entity.delete()
 
     def test_003_get_gender_from_pylobid(self):
