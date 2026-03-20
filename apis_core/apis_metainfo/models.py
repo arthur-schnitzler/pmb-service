@@ -1,6 +1,9 @@
+import re
 import unicodedata
+from datetime import date, datetime
 
-from datetime import datetime
+from acdh_wikidata_pyutils import fetch_image
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import Group
@@ -9,19 +12,48 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from next_prev import next_in_order, prev_in_order
 from model_utils.managers import InheritanceManager
-from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
-from acdh_wikidata_pyutils import fetch_image
+from next_prev import next_in_order, prev_in_order
 from tinymce.models import HTMLField
 
 from apis_core.apis_labels.models import Label
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
 from apis_core.helper_functions import DateParser
 
-
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 DEFAULT_COLOR = settings.DEFAULT_COLOR
+
+
+def to_iso_like(value: str) -> str:
+    ISO_RE = re.compile(r"^\d{4}(?:-\d{2}(?:-\d{2})?)?$")
+    DMY_RE = re.compile(r"^(\d{1,2})\.(\d{1,2})\.(\d{4})$")
+    MY_RE = re.compile(r"^(\d{1,2})\.(\d{4})$")
+    s = value.strip()
+
+    # Keep valid ISO-like strings as-is: yyyy, yyyy-mm, yyyy-mm-dd
+    if ISO_RE.fullmatch(s):
+        return s
+
+    # d.m.yyyy or dd.mm.yyyy -> yyyy-mm-dd
+    m = DMY_RE.fullmatch(s)
+    if m:
+        day, month, year = map(int, m.groups())
+        try:
+            date(year, month, day)  # validates real calendar date
+            return f"{year:04d}-{month:02d}-{day:02d}"
+        except ValueError:
+            return value  # invalid date -> keep original
+
+    # m.yyyy or mm.yyyy -> yyyy-mm
+    m = MY_RE.fullmatch(s)
+    if m:
+        month, year = map(int, m.groups())
+        if 1 <= month <= 12:
+            return f"{year:04d}-{month:02d}"
+        return value
+
+    # all other formats stay unchanged
+    return value
 
 
 class TempEntityClass(models.Model):
@@ -108,14 +140,14 @@ class TempEntityClass(models.Model):
 
             if self.start_date_written:
                 # If some textual user input of a start date is there, then parse it
-
+                self.start_date_written = to_iso_like(self.start_date_written)
                 start_date, start_start_date, start_end_date = DateParser.parse_date(
                     self.start_date_written
                 )
 
             if self.end_date_written:
                 # If some textual user input of an end date is there, then parse it
-
+                self.end_date_written = to_iso_like(self.end_date_written)
                 end_date, end_start_date, end_end_date = DateParser.parse_date(
                     self.end_date_written
                 )
