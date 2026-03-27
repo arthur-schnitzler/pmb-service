@@ -342,7 +342,7 @@ DOMAIN_MAPPING = [
     ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
     ("wienerschnitzler.", "wienerschnitzler", "#6F5106"),
     ("schnitzler-kultur.", "schnitzler-kultur", "#AC7790"),
-    ("briefedition.wedekind.", "wedekind-korrespondenz", "#d4a346"), 
+    ("briefedition.wedekind.", "wedekind-korrespondenz", "#d4a346"),
     ("https://biblio.ub.uni-freiburg.de/sf/#", "schnitzler-fischer", "#3D4F9F")
 ]
 
