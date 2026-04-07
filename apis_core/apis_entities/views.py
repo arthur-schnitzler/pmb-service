@@ -207,19 +207,26 @@ class MergeEntitiesView(View):
         form = MergeForm(entity, request.POST, ent_merge_pk=ent_merge_pk)
         if form.is_valid():
             target_id = form.data["entity"]
-            if ent_merge_pk:
+            if ent_merge_pk and int(target_id) < int(ent_merge_pk):
                 target = TempEntityClass.objects.get(id=target_id)
                 entity_model_class = ContentType.objects.get(
                     app_label="apis_entities", model__iexact=entity
                 ).model_class()
                 target_obj = entity_model_class.objects.get(id=target.id)
                 target_obj.merge_with(int(ent_merge_pk))
-            return redirect(
-                reverse(
-                    "apis:apis_entities:generic_entities_detail_view",
-                    kwargs={"pk": target.pk, "entity": entity},
+                return redirect(
+                    reverse(
+                        "apis:apis_entities:generic_entities_detail_view",
+                        kwargs={"pk": target.pk, "entity": entity},
+                    )
                 )
-            )
+            else:
+                return redirect(
+                    reverse(
+                        "apis:apis_entities:generic_entities_edit_view",
+                        kwargs={"pk": ent_merge_pk, "entity": entity},
+                    )
+                )
         else:
             return redirect(
                 reverse(

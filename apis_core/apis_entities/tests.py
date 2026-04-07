@@ -154,6 +154,11 @@ class EntitiesTestCase(TestCase):
         self.assertTrue(before > after)
 
     def test_009a_merge_notesandreferences_andgedner(self):
+        target = Person.objects.create(
+            name="Person which will be kept",
+            notes="target_notes",
+            references="target_references",
+        )
         source_one = Person.objects.create(
             name="Person which will be merged",
             notes="notes_one",
@@ -163,11 +168,7 @@ class EntitiesTestCase(TestCase):
         source_two = Person.objects.create(
             name="Person two which will be merged", gender="male"
         )
-        target = Person.objects.create(
-            name="Person which will be kept",
-            notes="target_notes",
-            references="target_references",
-        )
+
         target.merge_with(source_one.id)
         self.assertEqual("female", target.gender)
         self.assertTrue("notes_one" in target.notes)

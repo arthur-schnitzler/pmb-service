@@ -358,6 +358,7 @@ class TempEntityClass(models.Model):
                 )
                 for ent in entities
             ]
+        entities = [x for x in entities if x.id > self.pk]
         rels = ContentType.objects.filter(
             app_label="apis_relations", model__icontains=e_a
         )
