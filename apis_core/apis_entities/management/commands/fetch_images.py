@@ -1,13 +1,13 @@
 import os
 import time
 import warnings
-
 from datetime import datetime
-from tqdm import tqdm
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
-from apis_core.apis_entities.models import Person
+from apis_core.apis_metainfo.models import TempEntityClass
 from dumper.utils import write_report
 
 warnings.filterwarnings("ignore")
@@ -18,10 +18,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
-        items = Person.objects.filter(uri__domain__icontains="wikidata").filter(
-            img_last_checked__isnull=True
+        items = TempEntityClass.objects.filter(
+            uri__domain__icontains="wikidata"
+        ).filter(img_last_checked__isnull=True)
+        print(
+            f"start fetching images for {items.count()} TempEntityClasss without images"
         )
-        print(f"start fetching images for {items.count()} persons without images")
         for x in tqdm(items[:200]):
             try:
                 x.fetch_image()
