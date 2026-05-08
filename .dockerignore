@@ -1,10 +1,13 @@
 myenv
 env
 venv
+.venv/
 staticfiles
 db.sqlite3
 cover
 htmlcov
+pmb_dump.sql
+notebooks/
 media/uploads/*.rdf
 media/uploads/*.ttl
 .secret
