@@ -58,7 +58,7 @@
                    <div class="text-center p-2">
                         <img src="{{ object.img_url }}" class="img-fluid mx-auto d-block" alt="Bild von {{ object }}">
                         {% if object.img_credit and object.img_credit != 'None' %}
-                        <figcaption class="figure-caption p-3"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit }}</a></figcaption>
+                        <figcaption class="figure-caption p-3"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit|truncatechars:50 }}</a></figcaption>
                         {% endif %}
                     </div>
                 {% endif %}
