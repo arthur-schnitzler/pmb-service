@@ -19,13 +19,11 @@ maybe in future also with PMB CRUD included
 * run `python manage.py runserver`
 * (create a superuser) `python manage.py creatsuperuser`
 
-
-
 ## jupyter notebook
+
 * `pip install notebook` (1 time)
 * set env varibles `./set_env_variables`
 * `python manage.py shell_plus --lab`
-
 
 ## cheat-sheet
 
@@ -48,21 +46,19 @@ python manage.py update_schnitzler_uris --url "https://raw.githubusercontent.com
 
 in order to avoid errors on a new instance you'll need to set an environment variable `PMB_NEW=whatever`. After you run the inital `python manage.py migrate` you should `unset PMB_NEW`
 
-
 ## vite
 
 * bundling js-code (used for network-vis) is not part of the docker-setup
 * for development make sure the vite-dev-server is running `pnpm run vite`
 * for building new bundle, run `pn run build`
 
+## reset sequence
 
-## reset sequence 
 ```SQL
 BEGIN; 
 SELECT setval(pg_get_serial_sequence('"django_migrations"','id'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "django_migrations";
 COMMIT;
 ```
-
 
 ## Docker
 
@@ -75,4 +71,6 @@ COMMIT;
 
 To run the image you should provide an `.env` file to pass in needed environment variables; see `pmb/settings.py` for possible varibles:
 
-`docker run -it --network="host" --rm --env-file .env pmb:latest`
+```bash
+docker run -it --network="host" --rm --env-file .env pmb:latest
+```
