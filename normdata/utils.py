@@ -1,24 +1,24 @@
 from acdh_geonames_utils.gn_client import gn_as_object
 from acdh_id_reconciler import geonames_to_wikidata, gnd_to_wikidata
 from acdh_wikidata_pyutils import (
+    WikiDataEntity,
+    WikiDataOrg,
     WikiDataPerson,
     WikiDataPlace,
-    WikiDataOrg,
-    WikiDataEntity,
 )
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from icecream import ic
-from pylobid.pylobid import PyLobidPerson, PyLobidPlace, PyLobidOrg, PyLobidWork
+from pylobid.pylobid import PyLobidOrg, PyLobidPerson, PyLobidPlace, PyLobidWork
 
-from apis_core.apis_entities.models import Person, Place, Institution, Work
+from apis_core.apis_entities.models import Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
-from apis_core.apis_relations.models import PersonPlace, InstitutionPlace, PersonWork
+from apis_core.apis_relations.models import InstitutionPlace, PersonPlace, PersonWork
 from apis_core.apis_vocabularies.models import (
-    PersonPlaceRelation,
     InstitutionPlaceRelation,
+    PersonPlaceRelation,
     PersonWorkRelation,
     PlaceType,
 )
@@ -40,7 +40,10 @@ def get_gender_from_pylobid(fetched_item):
     ent_dict = fetched_item.get_entity_json()
     try:
         gender = ent_dict["gender"][0]["id"]
-    except (KeyError, IndexError):
+    except (
+        KeyError,
+        IndexError,
+    ):
         return None
     if "female" in gender:
         return "female"
@@ -399,7 +402,7 @@ def import_from_normdata(raw_url, entity_type):
     if domain == "gnd":
         try:
             wikidata_url = gnd_to_wikidata(normalized_url)["wikidata"]
-        except (IndexError, KeyError):
+        except:  # noqa
             if entity_type == "work":
                 try:
                     entity = get_or_create_work_from_gnd(normalized_url)
@@ -439,7 +442,7 @@ def import_from_normdata(raw_url, entity_type):
             pass
         try:
             wikidata_url = geonames_to_wikidata(normalized_url)["wikidata"]
-        except (IndexError, KeyError):
+        except:  # noqa
             try:
                 entity = get_or_create_place_from_geonames(normalized_url)
                 return entity
