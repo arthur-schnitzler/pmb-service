@@ -40,7 +40,10 @@ def get_gender_from_pylobid(fetched_item):
     ent_dict = fetched_item.get_entity_json()
     try:
         gender = ent_dict["gender"][0]["id"]
-    except KeyError, IndexError:
+    except (
+        KeyError,
+        IndexError,
+    ):
         return None
     if "female" in gender:
         return "female"
