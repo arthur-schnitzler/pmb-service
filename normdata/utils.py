@@ -399,7 +399,7 @@ def import_from_normdata(raw_url, entity_type):
     if domain == "gnd":
         try:
             wikidata_url = gnd_to_wikidata(normalized_url)["wikidata"]
-        except IndexError, KeyError:
+        except:  # noqa
             if entity_type == "work":
                 try:
                     entity = get_or_create_work_from_gnd(normalized_url)
