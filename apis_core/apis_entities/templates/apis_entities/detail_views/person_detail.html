@@ -1,6 +1,19 @@
 {% extends "apis_entities/detail_views/entity_detail_generic.html" %}
 
     {% block info-table %}
+    {% if object.img_url and object.img_credit_label != 'AKON' %}
+        <tr>
+            <th class="w-25"></th>
+            <td>
+                <div class="text">
+                    <img src="{{ object.img_url }}" class="img-fluid d-block" alt="Bild von {{ object }}">
+                    {% if object.img_credit and object.img_credit != 'None' %}
+                    <figcaption class="figure-caption text-start pt-2"><a href="{{ object.img_credit }}" style="color: dimgrey;">Bildnachweis</a></figcaption>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endif %}
         <tr>
             <th class="w-25">
                 Name
