@@ -3,7 +3,11 @@
     {% block info-table %}
     {% if object.lat %}
     {% include "partials/leaflet.html" %}
-        <div id="map" style="height: 300px;"></div>
+    <tr>
+        <th class="w-25"></th>
+        <th>
+            <div id="map" style="height: 250px;"></div>
+        </th>
         <script>
             var lat = "{{ object.lat }}".replace(",", "."); 
             var lng = "{{ object.lng }}".replace(",", "."); 
@@ -13,8 +17,18 @@
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup("{{ object.name }}").openPopup();
         </script>
+    {% endif %}
+    {% if object.img_url and object.img_credit_label != 'AKON' %}
+        <tr>
+            <th class="w-25"></th>
+            <td>
+                <img src="{{ object.img_url }}" class="img-fluid d-block" alt="Bild von {{ object }}">
+                {% if object.img_credit and object.img_credit != 'None' %}
+                <figcaption class="figure-caption text-start pt-2"><a href="{{ object.img_credit }}" style="color: dimgrey;">Bildnachweis</a></figcaption>
+    {% endif %}
+            </td>
+        </tr>
     {% endif %}
 
         {% if no_merge_labels %}

@@ -53,15 +53,6 @@
    
     <div class="row p-5">
         <div class="col-md-4">
-           
-                {% if object.img_url and object.img_credit_label != 'AKON' %}
-                   <div class="text-center p-2">
-                        <img src="{{ object.img_url }}" class="img-fluid mx-auto d-block" alt="Bild von {{ object }}">
-                        {% if object.img_credit and object.img_credit != 'None' %}
-                        <figcaption class="figure-caption p-3"><a href="{{ object.img_credit }}" style="color: dimgrey;">{{ object.img_credit|truncatechars:50 }}</a></figcaption>
-                        {% endif %}
-                    </div>
-                {% endif %}
             <table class="table table-borderless table-hover ps-3 ">
             {% block info-table %}
                 <tr>
