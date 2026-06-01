@@ -4,14 +4,14 @@ requires-python = ">=3.14"
 
 [[package]]
 name = "acdh-arche-assets"
-version = "3.25.0"
+version = "3.29.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-resources" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f6/6f/e0427cebf1e554dc79e90576d247d1b640562504e38eb205dcf33cc4a094/acdh_arche_assets-3.25.0.tar.gz", hash = "sha256:cc45d236ea326e3a47d35166c2e7dffd37da22065ef566f8c88090c575167e8c", size = 10976, upload-time = "2025-07-29T08:07:27.1Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/07/84/7ca10e529789ea85797a98dcb32215c5b1ffce6ea3febcf4cd89c166e1c2/acdh_arche_assets-3.29.0.tar.gz", hash = "sha256:70cffbef359be7ffe9fd98fffd007b4beeb6744e352fb84aba031322b89b961a", size = 11175, upload-time = "2026-05-27T14:20:10.569Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/21/df/5f62635fb2ea886d6468966510dfdf818fabdd5e0b9796bebeb32f96118c/acdh_arche_assets-3.25.0-py3-none-any.whl", hash = "sha256:b74f2951d55c3de64cb70e2a3141c97f0dc266c84de67f81d2e6542eb540f022", size = 12541, upload-time = "2025-07-29T08:07:25.889Z" },
+    { url = "https://files.pythonhosted.org/packages/81/58/571054602d8ca5fd091500f594d288f1959b53950acf97b6127b15f6f681/acdh_arche_assets-3.29.0-py3-none-any.whl", hash = "sha256:2078a6082f6722d74b01133b82de645472bf4673b537a8378b7d4a9a049b7ebb", size = 12658, upload-time = "2026-05-27T14:20:09.45Z" },
 ]
 
 [[package]]
@@ -61,16 +61,16 @@ wheels = [
 
 [[package]]
 name = "acdh-id-reconciler"
-version = "0.7.1"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "acdh-arche-assets" },
     { name = "requests" },
     { name = "sparqlwrapper" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/b1/1262be5738bcacfbb1659e2f53c9df1ad9f46fe154a163a55646062837c6/acdh_id_reconciler-0.7.1.tar.gz", hash = "sha256:fd75d64d4cfbf442f6e5b1566350020bd3a9d320869134704804a1777002aad7", size = 4640, upload-time = "2023-12-13T09:22:36.631Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3f/f4/6b19779d577a9dc845105c11a24079ae4338d155f79e7a058f526adfd77e/acdh_id_reconciler-0.8.0.tar.gz", hash = "sha256:da088f2b19f6cd1e1b09c5cd119ac136e534ec55b7a12e1746c4e9e4eb701e7f", size = 3126, upload-time = "2026-06-01T10:24:56.333Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/02/5813a8c51ce5d1f565f0137a9081aab8d7d82666dfd6cd5e90a7ff719f52/acdh_id_reconciler-0.7.1-py3-none-any.whl", hash = "sha256:2f98bbeda6c6fc6d2e1d1b515c0b8150336a5bbd9a06c3a6abfd2462edde2b7e", size = 4194, upload-time = "2023-12-13T09:22:35.186Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/18/0d2d3fd59819d2eaad3f0b8539277283386572d0ada1883db7c2aca56415/acdh_id_reconciler-0.8.0-py3-none-any.whl", hash = "sha256:d155ca21d8959272a96fd802eede78b837b4f7b68b530dbd49c815c066abe038", size = 4071, upload-time = "2026-06-01T10:24:56.955Z" },
 ]
 
 [[package]]
@@ -1462,7 +1462,7 @@ requires-dist = [
     { name = "acdh-django-browsing", specifier = ">=3.2" },
     { name = "acdh-django-widgets", specifier = ">=0.1.0" },
     { name = "acdh-geonames-utils", specifier = ">=0.5.0" },
-    { name = "acdh-id-reconciler", specifier = ">=0.7.1" },
+    { name = "acdh-id-reconciler", specifier = ">0.7.1" },
     { name = "acdh-tei-pyutils", specifier = ">=2.3.0" },
     { name = "acdh-wikidata-pyutils", specifier = ">=3.0" },
     { name = "apis-override-select2js", specifier = ">=0.2.1" },
@@ -1780,7 +1780,7 @@ wheels = [
 
 [[package]]
 name = "requests"
-version = "2.32.5"
+version = "2.34.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
@@ -1788,9 +1788,9 @@ dependencies = [
     { name = "idna" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz", hash = "sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf", size = 134517, upload-time = "2025-08-18T20:46:02.573Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ac/c3/e2a2b89f2d3e2179abd6d00ebd70bff6273f37fb3e0cc209f48b39d00cbf/requests-2.34.2.tar.gz", hash = "sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed", size = 142856, upload-time = "2026-05-14T19:25:27.735Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl", hash = "sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0", size = 73075, upload-time = "2026-05-14T19:25:26.443Z" },
 ]
 
 [[package]]
