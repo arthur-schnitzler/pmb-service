@@ -222,8 +222,8 @@ APIS_ENTITIES = {
         "merge": True,
         "search": ["name", "first_name"],
         "form_order": [
-            "first_name",
             "name",
+            "first_name",
             "start_date_written",
             "end_date_written",
             "profession",
