@@ -80,4 +80,16 @@
             </td>
         </tr>
         {% endif %}
+        {% if object.title.all %}
+        <tr>
+            <th class="w-25">
+                Titel
+            </th>
+            <td>
+              {% for t in object.title.all %}
+                {{ t.name }}{% if forloop.last %}{% else %},{% endif %}
+              {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
     {% endblock info-table %}
