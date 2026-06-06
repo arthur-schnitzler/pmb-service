@@ -205,7 +205,7 @@ APIS_ENTITIES = {
     "Place": {
         "merge": True,
         "search": ["name"],
-        "form_order": ["name", "kind", "lat", "lng", "status", "collection"],
+        "form_order": ["name", "kind", "lat", "lng", "img_url", "collection", "status", "img_last_checked"],
         "table_fields": ["name"],
         "additional_cols": ["id", "lat", "lng", "part_of"],
         "list_filters": [
@@ -227,8 +227,12 @@ APIS_ENTITIES = {
             "start_date_written",
             "end_date_written",
             "profession",
-            "status",
+            "title",
+            "gender",
+            "img_url",
             "collection",
+            "status",
+            "img_last_checked",
         ],
         "table_fields": [
             "name",
@@ -257,8 +261,10 @@ APIS_ENTITIES = {
             "start_date_written",
             "end_date_written",
             "kind",
-            "status",
+            "img_url",
             "collection",
+            "status",
+            "img_last_checked",
         ],
         "additional_cols": [
             "id",
@@ -277,6 +283,16 @@ APIS_ENTITIES = {
     "Work": {
         "merge": True,
         "search": ["name"],
+        "form_order": [
+            "name",
+            "start_date_written",
+            "end_date_written",
+            "kind",
+            "img_url",
+            "collection",
+            "status",
+            "img_last_checked",
+        ],
         "additional_cols": [
             "id",
             "kind",
@@ -293,6 +309,16 @@ APIS_ENTITIES = {
     "Event": {
         "merge": True,
         "search": ["name"],
+        "form_order": [
+            "name",
+            "start_date_written",
+            "end_date_written",
+            "kind",
+            "img_url",
+            "collection",
+            "status",
+            "img_last_checked",
+        ],
         "additional_cols": [
             "id",
         ],
