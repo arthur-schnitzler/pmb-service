@@ -205,7 +205,7 @@ APIS_ENTITIES = {
     "Place": {
         "merge": True,
         "search": ["name"],
-        "form_order": ["name", "kind", "lat", "lng", "img_url", "collection", "status", "img_last_checked"],
+        "form_order": ["name", "kind", "lat", "lng", "img_url", "img_last_checked", "collection", "status"],
         "table_fields": ["name"],
         "additional_cols": ["id", "lat", "lng", "part_of"],
         "list_filters": [
@@ -230,9 +230,9 @@ APIS_ENTITIES = {
             "title",
             "gender",
             "img_url",
+            "img_last_checked",
             "collection",
             "status",
-            "img_last_checked",
         ],
         "table_fields": [
             "name",
@@ -262,9 +262,9 @@ APIS_ENTITIES = {
             "end_date_written",
             "kind",
             "img_url",
+            "img_last_checked",
             "collection",
             "status",
-            "img_last_checked",
         ],
         "additional_cols": [
             "id",
@@ -289,9 +289,9 @@ APIS_ENTITIES = {
             "end_date_written",
             "kind",
             "img_url",
+            "img_last_checked",
             "collection",
             "status",
-            "img_last_checked",
         ],
         "additional_cols": [
             "id",
@@ -315,9 +315,9 @@ APIS_ENTITIES = {
             "end_date_written",
             "kind",
             "img_url",
+            "img_last_checked",
             "collection",
             "status",
-            "img_last_checked",
         ],
         "additional_cols": [
             "id",

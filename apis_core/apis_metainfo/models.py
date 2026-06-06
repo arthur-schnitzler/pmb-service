@@ -115,7 +115,7 @@ class TempEntityClass(models.Model):
     img_last_checked = models.DateTimeField(
         blank=True,
         null=True,
-        verbose_name="geprüft am",
+        verbose_name="Bild geprüft am",
         help_text="Datum an dem die Bild-URL eingetragen wurde.",
     )
 
