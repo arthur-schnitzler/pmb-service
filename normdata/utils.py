@@ -136,6 +136,15 @@ def get_or_create_place_from_wikidata(uri):
                         )
                 except IntegrityError:
                     pass
+                if wd_entity.wien_geschichte_wiki:
+                    try:
+                        Uri.objects.create(
+                            uri=get_normalized_uri(wd_entity.wien_geschichte_wiki),
+                            domain="wiengeschichtewiki",
+                            entity=entity,
+                        )
+                    except IntegrityError:
+                        pass
                 try:
                     if wd_entity.geonames_uri:
                         Uri.objects.create(
@@ -224,6 +233,15 @@ def get_or_create_person_from_wikidata(uri):
                     Uri.objects.create(
                         uri=get_normalized_uri(wd_entity.gnd_uri),
                         domain="gnd",
+                        entity=entity,
+                    )
+                except IntegrityError:
+                    pass
+            if wd_entity.wien_geschichte_wiki:
+                try:
+                    Uri.objects.create(
+                        uri=get_normalized_uri(wd_entity.wien_geschichte_wiki),
+                        domain="wiengeschichtewiki",
                         entity=entity,
                     )
                 except IntegrityError:
@@ -367,6 +385,15 @@ def get_or_create_org_from_wikidata(uri):
                     Uri.objects.create(
                         uri=get_normalized_uri(wd_entity.gnd_uri),
                         domain="gnd",
+                        entity=entity,
+                    )
+                except IntegrityError:
+                    pass
+            if wd_entity.wien_geschichte_wiki:
+                try:
+                    Uri.objects.create(
+                        uri=get_normalized_uri(wd_entity.wien_geschichte_wiki),
+                        domain="wiengeschichtewiki",
                         entity=entity,
                     )
                 except IntegrityError:
