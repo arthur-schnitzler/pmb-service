@@ -1,6 +1,7 @@
 from django.test import TestCase
 from pylobid.pylobid import PyLobidPerson
 
+from apis_core.apis_metainfo.models import Uri
 from normdata.utils import (
     get_gender_from_pylobid,
     get_or_create_org_from_wikidata,
@@ -66,3 +67,12 @@ class NormdataTestCase(TestCase):
             "https://www.geonames.org/2516696/marisma-de-hinojos.html", "place"
         )
         self.assertTrue(entity.kind)
+
+    def test_007_check_for_wiengeschichte(self):
+        wiengeschichte_uri = (
+            "https://www.geschichtewiki.wien.gv.at/Special:URIResolver/?curid=36065"
+        )
+        test_uri = "https://d-nb.info/gnd/129325074"
+        self.assertFalse(Uri.objects.filter(uri=wiengeschichte_uri))
+        import_from_normdata(test_uri, "person")
+        self.assertTrue(Uri.objects.get(uri=wiengeschichte_uri))
