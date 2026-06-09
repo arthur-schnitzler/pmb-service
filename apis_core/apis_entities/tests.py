@@ -511,3 +511,37 @@ class EntitiesTestCase(TestCase):
 
         item = Person.objects.create(start_date_written="2.2000")
         self.assertEqual(item.start_date_written, "2000-02")
+
+    def test_033_date_order_validation(self):
+        form_class = get_entities_form("Person")
+
+        # end date before start date is rejected
+        form = form_class(
+            data={
+                "name": "hansi_dates",
+                "start_date_written": "1900",
+                "end_date_written": "1800",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("end_date_written", form.errors)
+
+        # end date after start date is accepted
+        form = form_class(
+            data={
+                "name": "hansi_dates",
+                "start_date_written": "1800",
+                "end_date_written": "1900",
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+        # equal start and end date is accepted
+        form = form_class(
+            data={
+                "name": "hansi_dates",
+                "start_date_written": "1900",
+                "end_date_written": "1900",
+            }
+        )
+        self.assertTrue(form.is_valid())
