@@ -1,49 +1,76 @@
 {% load django_tables2 %}
 {% load i18n %}
+{% load pagination_tags %}
 
 <div>
     {% with table.page.object_list|length as count %}
         <p class="float-center">Page total: {{ count }}</p>
     {% endwith %}
 </div>
-{% if table.paginator.page_range|length > 25 %}
-<div class="form-group mb-3">
-    <label for="goto">Go to page</label>
-    <select class="form-control" id="goto" onchange="javascript:location.href = this.value;">
+
+<nav aria-label="Pagination of the results table">
+    <ul class="pagination flex-wrap">
+
+        {% comment %}First page{% endcomment %}
+        <li class="page-item {% if not table.page.has_previous %}disabled{% endif %}">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=1 %}" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+
+        {% comment %}Previous page{% endcomment %}
+        <li class="page-item {% if not table.page.has_previous %}disabled{% endif %}">
+            <a class="page-link"
+               href="{% if table.page.has_previous %}{% querystring table.prefixed_page_field=table.page.previous_page_number %}{% else %}#{% endif %}"
+               aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        {% comment %}Smart page window with ellipsis{% endcomment %}
+        {% smart_page_range table.page.number table.paginator.num_pages as page_range %}
+        {% for p in page_range %}
+            {% if p is None %}
+                <li class="page-item disabled">
+                    <span class="page-link">&hellip;</span>
+                </li>
+            {% elif p == table.page.number %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ p }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{% querystring table.prefixed_page_field=p %}">{{ p }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% comment %}Next page{% endcomment %}
+        <li class="page-item {% if not table.page.has_next %}disabled{% endif %}">
+            <a class="page-link"
+               href="{% if table.page.has_next %}{% querystring table.prefixed_page_field=table.page.next_page_number %}{% else %}#{% endif %}"
+               aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+
+        {% comment %}Last page{% endcomment %}
+        <li class="page-item {% if not table.page.has_next %}disabled{% endif %}">
+            <a class="page-link" href="{% querystring table.prefixed_page_field=table.paginator.num_pages %}" aria-label="Last">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+        </li>
+
+    </ul>
+</nav>
+
+{% if table.paginator.num_pages > 10 %}
+<div class="d-flex align-items-center gap-2 mb-3">
+    <label for="goto" class="mb-0 text-nowrap">Seite {{ table.page.number }} von {{ table.paginator.num_pages }} &mdash; Gehe zu:</label>
+    <select class="form-control form-control-sm w-auto" id="goto" onchange="javascript:location.href = this.value;">
         {% for p in table.paginator.page_range %}
-            <option value="{% querystring table.prefixed_page_field=p %}">{{ p }}</option>
+            <option value="{% querystring table.prefixed_page_field=p %}"{% if p == table.page.number %} selected{% endif %}>{{ p }}</option>
         {% endfor %}
     </select>
 </div>
-{% else %}
-<nav aria-label="Pagination of the results table">
-    <ul class="pagination">
-    {% if table.page.has_previous %}
-        {% block pagination.previous %}
-        <li class="page-item">
-            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        {% endblock pagination.previous %}
-    {% endif %}
-    {% for p in table.paginator.page_range %}
-        {% if p == table.page.number %}
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">{{ p }}</a>
-            </li>
-        {% else %}
-            <li class="page-item">
-                <a class="page-link" href="{% querystring table.prefixed_page_field=p %}"> {{ p }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-    {% if table.page.has_next %}
-        {% block pagination.next %}
-        <li class="page-item">
-            <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.next_page_number %}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        {% endblock pagination.next %}
-    {% endif %}
-    </ul>
-</nav>
 {% endif %}

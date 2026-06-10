@@ -1,6 +1,9 @@
+from acdh_wikidata_pyutils import WikiDataPlace
+from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.test import TestCase
 from pylobid.pylobid import PyLobidPerson
 
+from apis_core.apis_entities.models import Place
 from apis_core.apis_metainfo.models import Uri
 from normdata.utils import (
     get_gender_from_pylobid,
@@ -8,6 +11,7 @@ from normdata.utils import (
     get_or_create_person_from_gnd,
     get_or_create_place_from_geonames,
     get_or_create_place_from_gnd,
+    get_or_create_place_from_wikidata,
     import_from_normdata,
 )
 
@@ -67,6 +71,26 @@ class NormdataTestCase(TestCase):
             "https://www.geonames.org/2516696/marisma-de-hinojos.html", "place"
         )
         self.assertTrue(entity.kind)
+
+    def test_008_wikidata_uri_added_when_matched_via_geonames(self):
+        # https://github.com/arthur-schnitzler/pmb-service/issues/231
+        # Importing the "Schlossberg" (Q264176) via wikidata matches an existing
+        # place by its geonames URI; the wikidata URI must still be added.
+        wikidata_url = "https://www.wikidata.org/wiki/Q264176"
+        wd_entity = WikiDataPlace(wikidata_url)
+        place = Place.objects.create(name="Schlossberg")
+        Uri.objects.create(
+            uri=get_normalized_uri(wd_entity.geonames_uri),
+            domain="geonames",
+            entity=place,
+        )
+        normalized_wd = get_normalized_uri(wikidata_url)
+        self.assertFalse(Uri.objects.filter(uri=normalized_wd).exists())
+        entity = get_or_create_place_from_wikidata(wikidata_url)
+        self.assertEqual(entity.id, place.id)
+        self.assertTrue(
+            Uri.objects.filter(uri=normalized_wd, entity=place).exists()
+        )
 
     def test_007_check_for_wiengeschichte(self):
         wiengeschichte_uri = (

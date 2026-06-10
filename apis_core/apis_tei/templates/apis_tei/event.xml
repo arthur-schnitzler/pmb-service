@@ -1,5 +1,5 @@
 
-    <event xml:id="event__{{ object.id }}" when-iso="{{ object.start_date|date:'Y-m-d' }}">
+    <event xml:id="event__{{ object.id }}"{% if object.start_date and object.end_date and object.start_date != object.end_date %} from-iso="{{ object.start_date|date:'Y-m-d' }}" to-iso="{{ object.end_date|date:'Y-m-d' }}"{% elif object.start_date %} when-iso="{{ object.start_date|date:'Y-m-d' }}"{% elif object.end_date %} to-iso="{{ object.end_date|date:'Y-m-d' }}"{% endif %}>
         <eventName {% if object.kind %} n="{{ object.kind }}" {% endif %}>{{ object.name }}</eventName>{% if object.institutionevent_set.all %}
         <note type="listorg">
             <listOrg>{% for x in object.institutionevent_set.all %}

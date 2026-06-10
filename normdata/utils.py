@@ -36,6 +36,24 @@ def get_uri_domain(uri):
             return x[1]
 
 
+def add_uri_to_entity(entity, uri, domain):
+    """Adds a (normalized) URI to an existing entity, unless it is already stored.
+
+    Used when an entity is matched via one normdata URI (e.g. geonames or gnd)
+    while being imported via another (e.g. wikidata), so that the URI used for
+    the import does not get lost.
+    """
+    if not uri:
+        return
+    normalized = get_normalized_uri(uri)
+    if Uri.objects.filter(uri=normalized).exists():
+        return
+    try:
+        Uri.objects.create(uri=normalized, domain=domain, entity=entity)
+    except IntegrityError:
+        pass
+
+
 def get_gender_from_pylobid(fetched_item):
     ent_dict = fetched_item.get_entity_json()
     try:
@@ -113,11 +131,13 @@ def get_or_create_place_from_wikidata(uri):
         try:
             entity = Uri.objects.get(uri=wd_entity.geonames_uri).entity
             entity = Place.objects.get(id=entity.id)
+            add_uri_to_entity(entity, uri, "wikidata")
             return entity
         except ObjectDoesNotExist:
             try:
                 entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
                 entity = Place.objects.get(id=entity.id)
+                add_uri_to_entity(entity, uri, "wikidata")
                 return entity
             except ObjectDoesNotExist:
                 apis_entity = wd_entity.get_apis_entity()
@@ -219,6 +239,7 @@ def get_or_create_person_from_wikidata(uri):
         try:
             entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
             entity = Person.objects.get(id=entity.id)
+            add_uri_to_entity(entity, uri, "wikidata")
             return entity
         except ObjectDoesNotExist:
             apis_entity = wd_entity.get_apis_entity()
@@ -341,6 +362,7 @@ def get_or_create_work_from_wikidata(uri):
             try:
                 entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
                 entity = Work.objects.get(id=entity.id)
+                add_uri_to_entity(entity, uri, "wikidata")
                 return entity
             except ObjectDoesNotExist:
                 entity = get_or_create_work_from_gnd(wd_entity.gnd_uri)
@@ -371,6 +393,7 @@ def get_or_create_org_from_wikidata(uri):
         try:
             entity = Uri.objects.get(uri=wd_entity.gnd_uri).entity
             entity = Institution.objects.get(id=entity.id)
+            add_uri_to_entity(entity, uri, "wikidata")
             return entity
         except ObjectDoesNotExist:
             apis_entity = wd_entity.get_apis_entity()
