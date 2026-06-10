@@ -9,7 +9,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.forms import ModelChoiceField, ModelMultipleChoiceField
 from django.urls import reverse
 
-from apis_core.apis_metainfo.models import Collection, to_iso_like
+from apis_core.apis_metainfo.models import (
+    DATE_ORDER_VALIDATION_MESSAGE,
+    Collection,
+    to_iso_like,
+)
 from apis_core.helper_functions import DateParser
 
 from .fields import ListSelect2, Select2Multiple
@@ -227,32 +231,32 @@ def get_entities_form(entity):
             instance = getattr(self, "instance", None)
             if instance != None:
                 if instance.start_date_written:
-                    self.fields["start_date_written"].help_text = (
-                        DateParser.get_date_help_text_from_dates(
-                            single_date=instance.start_date,
-                            single_start_date=instance.start_start_date,
-                            single_end_date=instance.start_end_date,
-                            single_date_written=instance.start_date_written,
-                        )
+                    self.fields[
+                        "start_date_written"
+                    ].help_text = DateParser.get_date_help_text_from_dates(
+                        single_date=instance.start_date,
+                        single_start_date=instance.start_start_date,
+                        single_end_date=instance.start_end_date,
+                        single_date_written=instance.start_date_written,
                     )
                 else:
-                    self.fields["start_date_written"].help_text = (
-                        DateParser.get_date_help_text_default()
-                    )
+                    self.fields[
+                        "start_date_written"
+                    ].help_text = DateParser.get_date_help_text_default()
 
                 if instance.end_date_written:
-                    self.fields["end_date_written"].help_text = (
-                        DateParser.get_date_help_text_from_dates(
-                            single_date=instance.end_date,
-                            single_start_date=instance.end_start_date,
-                            single_end_date=instance.end_end_date,
-                            single_date_written=instance.end_date_written,
-                        )
+                    self.fields[
+                        "end_date_written"
+                    ].help_text = DateParser.get_date_help_text_from_dates(
+                        single_date=instance.end_date,
+                        single_start_date=instance.end_start_date,
+                        single_end_date=instance.end_end_date,
+                        single_date_written=instance.end_date_written,
                     )
                 else:
-                    self.fields["end_date_written"].help_text = (
-                        DateParser.get_date_help_text_default()
-                    )
+                    self.fields[
+                        "end_date_written"
+                    ].help_text = DateParser.get_date_help_text_default()
 
         def clean(self):
             cleaned_data = super().clean()
@@ -268,8 +272,7 @@ def get_entities_form(entity):
                 if start_date and end_date and end_date < start_date:
                     self.add_error(
                         "end_date_written",
-                        "Das End-Datum muss gleich oder später als das "
-                        "Start-Datum sein.",
+                        DATE_ORDER_VALIDATION_MESSAGE,
                     )
             return cleaned_data
 

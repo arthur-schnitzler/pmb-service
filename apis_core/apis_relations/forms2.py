@@ -6,7 +6,6 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from dal import autocomplete
 from django import forms
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.urls import reverse
@@ -14,8 +13,12 @@ from django.utils.translation import gettext_lazy as _
 
 from apis_core.apis_entities.fields import ListSelect2
 from apis_core.apis_entities.models import AbstractEntity
-
-from apis_core.apis_metainfo.models import TempEntityClass, Uri
+from apis_core.apis_metainfo.models import (
+    DATE_ORDER_VALIDATION_MESSAGE,
+    TempEntityClass,
+    Uri,
+    to_iso_like,
+)
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.helper_functions import DateParser
 
@@ -45,6 +48,17 @@ class GenericRelationForm(forms.ModelForm):
             "end_date_written": _("End"),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date_written = cleaned_data.get("start_date_written")
+        end_date_written = cleaned_data.get("end_date_written")
+        if start_date_written and end_date_written:
+            start_date, _, _ = DateParser.parse_date(to_iso_like(start_date_written))
+            end_date, _, _ = DateParser.parse_date(to_iso_like(end_date_written))
+            if start_date and end_date and end_date < start_date:
+                self.add_error("end_date_written", DATE_ORDER_VALIDATION_MESSAGE)
+        return cleaned_data
+
     def save(self, site_instance, instance=None, commit=True):
         """
         Save function of the GenericRelationForm.
@@ -62,7 +76,7 @@ class GenericRelationForm(forms.ModelForm):
             x = self.relation_form.objects.get(pk=instance)
         else:
             x = self.relation_form()
-        if f"{site_instance.id}" == f'{cd["target"]}':
+        if f"{site_instance.id}" == f"{cd['target']}":
             return x
         x.relation_type_id = cd["relation_type"]
         x.start_date_written = cd["start_date_written"]
@@ -355,29 +369,29 @@ class GenericRelationForm(forms.ModelForm):
 
         if instance != None:
             if instance.start_date_written:
-                self.fields["start_date_written"].help_text = (
-                    DateParser.get_date_help_text_from_dates(
-                        single_date=instance.start_date,
-                        single_start_date=instance.start_start_date,
-                        single_end_date=instance.start_end_date,
-                        single_date_written=instance.start_date_written,
-                    )
+                self.fields[
+                    "start_date_written"
+                ].help_text = DateParser.get_date_help_text_from_dates(
+                    single_date=instance.start_date,
+                    single_start_date=instance.start_start_date,
+                    single_end_date=instance.start_end_date,
+                    single_date_written=instance.start_date_written,
                 )
             else:
-                self.fields["start_date_written"].help_text = (
-                    DateParser.get_date_help_text_default()
-                )
+                self.fields[
+                    "start_date_written"
+                ].help_text = DateParser.get_date_help_text_default()
 
             if instance.end_date_written:
-                self.fields["end_date_written"].help_text = (
-                    DateParser.get_date_help_text_from_dates(
-                        single_date=instance.end_date,
-                        single_start_date=instance.end_start_date,
-                        single_end_date=instance.end_end_date,
-                        single_date_written=instance.end_date_written,
-                    )
+                self.fields[
+                    "end_date_written"
+                ].help_text = DateParser.get_date_help_text_from_dates(
+                    single_date=instance.end_date,
+                    single_start_date=instance.end_start_date,
+                    single_end_date=instance.end_end_date,
+                    single_date_written=instance.end_date_written,
                 )
             else:
-                self.fields["end_date_written"].help_text = (
-                    DateParser.get_date_help_text_default()
-                )
+                self.fields[
+                    "end_date_written"
+                ].help_text = DateParser.get_date_help_text_default()
