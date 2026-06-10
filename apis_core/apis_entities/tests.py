@@ -8,6 +8,7 @@ from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
+from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_metainfo.models import Uri
 from apis_core.helper_functions.DateParser import parse_date
 from normdata.forms import NormDataImportForm
@@ -545,3 +546,25 @@ class EntitiesTestCase(TestCase):
             }
         )
         self.assertTrue(form.is_valid())
+
+    def test_034_model_save_rejects_invalid_entity_date_order(self):
+        with self.assertRaises(StartDateAfterEndDateError):
+            Person.objects.create(
+                name="hansi_invalid_dates",
+                start_date_written="1900",
+                end_date_written="1800",
+            )
+
+    def test_035_model_save_rejects_invalid_relation_date_order(self):
+        relation_instance = None
+        for relation_model in RELATION_MODELS:
+            relation_instance = relation_model.objects.first()
+            if relation_instance:
+                break
+
+        self.assertIsNotNone(relation_instance)
+        relation_instance.start_date_written = "1900"
+        relation_instance.end_date_written = "1800"
+
+        with self.assertRaises(StartDateAfterEndDateError):
+            relation_instance.save()

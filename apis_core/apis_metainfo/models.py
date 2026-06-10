@@ -17,11 +17,15 @@ from next_prev import next_in_order, prev_in_order
 from tinymce.models import HTMLField
 
 from apis_core.apis_labels.models import Label
+from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_vocabularies.models import CollectionType, LabelType, TextType
 from apis_core.helper_functions import DateParser
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 DEFAULT_COLOR = settings.DEFAULT_COLOR
+DATE_ORDER_VALIDATION_MESSAGE = (
+    "Das End-Datum muss gleich oder später als das Start-Datum sein."
+)
 
 
 def to_iso_like(value: str) -> str:
@@ -161,6 +165,9 @@ class TempEntityClass(models.Model):
             self.end_date = end_date
             self.end_start_date = end_start_date
             self.end_end_date = end_end_date
+
+        if self.start_date and self.end_date and self.end_date < self.start_date:
+            raise StartDateAfterEndDateError(DATE_ORDER_VALIDATION_MESSAGE)
 
         if self.name:
             self.name = unicodedata.normalize("NFC", self.name)
