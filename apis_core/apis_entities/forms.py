@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.forms import ModelChoiceField, ModelMultipleChoiceField
 from django.urls import reverse
 
-from apis_core.apis_metainfo.models import Collection
+from apis_core.apis_metainfo.models import Collection, to_iso_like
 from apis_core.helper_functions import DateParser
 
 from .fields import ListSelect2, Select2Multiple
@@ -253,6 +253,25 @@ def get_entities_form(entity):
                     self.fields["end_date_written"].help_text = (
                         DateParser.get_date_help_text_default()
                     )
+
+        def clean(self):
+            cleaned_data = super().clean()
+            start_date_written = cleaned_data.get("start_date_written")
+            end_date_written = cleaned_data.get("end_date_written")
+            # If both dates are given and parseable, the end date must not lie
+            # before the start date. Parsing mirrors the model's save() method.
+            if start_date_written and end_date_written:
+                start_date, _, _ = DateParser.parse_date(
+                    to_iso_like(start_date_written)
+                )
+                end_date, _, _ = DateParser.parse_date(to_iso_like(end_date_written))
+                if start_date and end_date and end_date < start_date:
+                    self.add_error(
+                        "end_date_written",
+                        "Das End-Datum muss gleich oder später als das "
+                        "Start-Datum sein.",
+                    )
+            return cleaned_data
 
         def save(self, *args, **kwargs):
             obj = super(GenericEntitiesForm, self).save(*args, **kwargs)
