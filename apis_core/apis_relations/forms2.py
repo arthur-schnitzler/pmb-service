@@ -395,3 +395,8 @@ class GenericRelationForm(forms.ModelForm):
                 self.fields[
                     "end_date_written"
                 ].help_text = DateParser.get_date_help_text_default()
+
+        # Prevent browsers (notably Safari on macOS) from offering
+        # contact/email autofill suggestions on these fields.
+        for field in self.fields.values():
+            field.widget.attrs["autocomplete"] = "off"
