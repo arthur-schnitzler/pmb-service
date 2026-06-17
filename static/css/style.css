@@ -14,6 +14,16 @@
     min-height: 2.2rem;
 }
 
+/*
+ * Prevent the raw HTML option label (provided via data-html) from
+ * briefly flashing in the native <select> before Select2 initializes
+ * and wraps it (FOUC). Select2 adds the class "select2-hidden-accessible"
+ * to the original <select> once it is ready; until then we hide it.
+ */
+select[data-autocomplete-light-function]:not(.select2-hidden-accessible) {
+    visibility: hidden;
+}
+
 footer a {
     color: var(--pmb);
     text-decoration: underline;
