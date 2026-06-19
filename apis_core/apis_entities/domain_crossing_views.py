@@ -1,8 +1,6 @@
 import django_tables2 as tables
 from django.conf import settings
 from django.db.models import Count
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
 
@@ -38,6 +36,14 @@ DOMAIN_LABELS = [entry[1] for entry in settings.DOMAIN_MAPPING]
 DOMAIN_COLORS = {entry[1]: entry[2] for entry in settings.DOMAIN_MAPPING}
 
 
+# Gender-Filter: Wert -> Anzeigename (nur für Personen)
+GENDER_OPTIONS = [
+    ("female", "weiblich"),
+    ("male", "männlich"),
+    ("other", "anderes oder nicht ausgezeichnet"),
+]
+
+
 class DomainCrossingTable(tables.Table):
     """Generische Tabelle, die für jeden Entitätstyp funktioniert."""
 
@@ -53,27 +59,25 @@ class DomainCrossingTable(tables.Table):
     )
     start_date_written = tables.Column(verbose_name="von", orderable=True)
     end_date_written = tables.Column(verbose_name="bis", orderable=True)
-    domains = tables.Column(
-        empty_values=(), verbose_name="Domains", orderable=False
-    )
 
     class Meta:
         attrs = {"class": "table table-responsive table-hover"}
-        sequence = ("id", "name", "start_date_written", "end_date_written", "domains")
+        sequence = ("id", "name", "start_date_written", "end_date_written")
 
-    def render_domains(self, record):
-        seen = []
-        for uri in record.uri_set.all():
-            if uri.domain and uri.domain not in seen:
-                seen.append(uri.domain)
-        badges = []
-        for domain in seen:
-            color = DOMAIN_COLORS.get(domain, settings.DEFAULT_COLOR)
-            badges.append(
-                f'<span class="badge" style="background-color:{color}">'
-                f"{escape(domain)}</span>"
-            )
-        return mark_safe(" ".join(badges))
+
+class PersonCrossingTable(DomainCrossingTable):
+    """Tabelle für Personen – zeigt zusätzlich den Vornamen."""
+
+    first_name = tables.Column(verbose_name="Vorname", orderable=True)
+
+    class Meta(DomainCrossingTable.Meta):
+        sequence = (
+            "id",
+            "name",
+            "first_name",
+            "start_date_written",
+            "end_date_written",
+        )
 
 
 class DomainCrossingView(TemplateView):
@@ -131,6 +135,9 @@ class DomainCrossingView(TemplateView):
         base = request.GET.get("base")
         if base not in DOMAIN_LABELS:
             base = None
+        gender = request.GET.get("gender")
+        if gender not in dict(GENDER_OPTIONS):
+            gender = None
 
         model, verbose_name, _icon = ENTITY_TYPES[etype]
 
@@ -200,12 +207,31 @@ class DomainCrossingView(TemplateView):
                 }
             )
 
-        queryset = self._build_queryset(model, mode, selected, base).prefetch_related(
-            "uri_set"
-        )
+        # Gender-Buttons und -Filter (nur für Personen)
+        gender_buttons = []
+        if etype == "person":
+            for value, label in GENDER_OPTIONS:
+                gender_buttons.append(
+                    {
+                        "value": value,
+                        "label": label,
+                        "active": value == gender,
+                        "href": self._querystring(
+                            gender=None if value == gender else value
+                        ),
+                    }
+                )
+
+        queryset = self._build_queryset(model, mode, selected, base)
+        if etype == "person" and gender:
+            if gender == "other":
+                queryset = queryset.exclude(gender__in=["female", "male"])
+            else:
+                queryset = queryset.filter(gender=gender)
         queryset = queryset.order_by("name")
 
-        table = DomainCrossingTable(queryset)
+        table_class = PersonCrossingTable if etype == "person" else DomainCrossingTable
+        table = table_class(queryset)
         RequestConfig(request, paginate={"per_page": 25}).configure(table)
 
         context.update(
@@ -217,10 +243,12 @@ class DomainCrossingView(TemplateView):
                 "mode_label": MODES[mode],
                 "selected": selected,
                 "base": base,
+                "gender": gender,
                 "entity_buttons": entity_buttons,
                 "mode_buttons": mode_buttons,
                 "domain_buttons": domain_buttons,
                 "base_buttons": base_buttons,
+                "gender_buttons": gender_buttons,
                 "total": table.paginator.count,
                 "enable_merge": False,
                 "app_name": "apis_entities",

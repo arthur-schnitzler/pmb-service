@@ -576,9 +576,11 @@ class DomainCrossingTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Jede angelegte Entität erhält automatisch eine "pmb"-URI.
-        cls.p_both = Person.objects.create(name="Both")
-        cls.p_gnd = Person.objects.create(name="GndOnly")
-        cls.p_wiki = Person.objects.create(name="WikiOnly")
+        cls.p_both = Person.objects.create(
+            name="Both", first_name="Anna", gender="female"
+        )
+        cls.p_gnd = Person.objects.create(name="GndOnly", gender="male")
+        cls.p_wiki = Person.objects.create(name="WikiOnly", gender="third gender")
         cls.place_gnd = Place.objects.create(name="PlaceGnd")
 
         Uri.objects.create(
@@ -643,3 +645,38 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["entity"], "person")
         self.assertEqual(self._names(response), {"Both", "GndOnly"})
+
+    def test_gender_female(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=female"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"Both"})
+
+    def test_gender_male(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=male"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"GndOnly"})
+
+    def test_gender_other(self):
+        # "anderes oder nicht ausgezeichnet" umfasst u.a. "third gender"
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=other"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"WikiOnly"})
+
+    def test_gender_ignored_for_non_person(self):
+        response = client.get(
+            f"{self.url}?type=place&mode=intersection&d=gnd&gender=female"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"PlaceGnd"})
+        self.assertEqual(response.context["gender_buttons"], [])
+
+    def test_first_name_column_for_person(self):
+        response = client.get(f"{self.url}?type=person&mode=union&d=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("first_name", response.context["table"].columns.names())

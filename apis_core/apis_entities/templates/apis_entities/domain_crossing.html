@@ -38,6 +38,20 @@
             </div>
         </div>
 
+        {% if gender_buttons %}
+        <div class="col-12 text-center mb-3">
+            <h2 class="h5">Gender</h2>
+            <div class="btn-group flex-wrap" role="group" aria-label="Gender">
+                {% for b in gender_buttons %}
+                <a href="{{ b.href }}"
+                   class="btn {% if b.active %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                    {{ b.label }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <div class="col-12 text-center mb-3">
             {% if mode == "difference" %}
             <h2 class="h5">Basis-Domain <small class="text-muted">(enthalten in)</small></h2>
