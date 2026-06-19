@@ -680,3 +680,33 @@ class DomainCrossingTestCase(TestCase):
         response = client.get(f"{self.url}?type=person&mode=union&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertIn("first_name", response.context["table"].columns.names())
+
+    def test_union_without_domains_is_empty(self):
+        response = client.get(f"{self.url}?type=person&mode=union")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total"], 0)
+
+    def test_difference_without_base_is_empty(self):
+        response = client.get(f"{self.url}?type=person&mode=difference&d=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total"], 0)
+
+    def test_difference_base_only_without_exclusion(self):
+        response = client.get(f"{self.url}?type=person&mode=difference&base=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"Both", "GndOnly"})
+
+    def test_invalid_gender_is_ignored(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&gender=nonsense"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context["gender"])
+        self.assertEqual(self._names(response), {"Both", "GndOnly"})
+
+    def test_default_page_without_params(self):
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["entity"], "person")
+        self.assertEqual(response.context["mode"], "intersection")
+        self.assertEqual(response.context["total"], 0)

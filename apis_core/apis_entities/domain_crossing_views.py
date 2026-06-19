@@ -98,8 +98,7 @@ class DomainCrossingView(TemplateView):
                 params.setlist(key, value)
             else:
                 params[key] = value
-        encoded = params.urlencode()
-        return f"?{encoded}" if encoded else "?"
+        return f"?{params.urlencode()}"
 
     def _build_queryset(self, model, mode, selected, base):
         qs = model.objects.all()
