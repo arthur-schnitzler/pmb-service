@@ -710,3 +710,9 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(response.context["entity"], "person")
         self.assertEqual(response.context["mode"], "intersection")
         self.assertEqual(response.context["total"], 0)
+
+    def test_invalid_mode_falls_back_to_intersection(self):
+        response = client.get(f"{self.url}?type=person&mode=nonsense&d=gnd&d=wikidata")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["mode"], "intersection")
+        self.assertEqual(self._names(response), {"Both"})
