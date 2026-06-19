@@ -568,3 +568,78 @@ class EntitiesTestCase(TestCase):
 
         with self.assertRaises(StartDateAfterEndDateError):
             relation_instance.save()
+
+
+class DomainCrossingTestCase(TestCase):
+    """Tests für die Schnittmengen-Ansicht (Domains kreuzen)."""
+
+    @classmethod
+    def setUpTestData(cls):
+        # Jede angelegte Entität erhält automatisch eine "pmb"-URI.
+        cls.p_both = Person.objects.create(name="Both")
+        cls.p_gnd = Person.objects.create(name="GndOnly")
+        cls.p_wiki = Person.objects.create(name="WikiOnly")
+        cls.place_gnd = Place.objects.create(name="PlaceGnd")
+
+        Uri.objects.create(
+            uri="https://d-nb.info/gnd/both", domain="gnd", entity=cls.p_both
+        )
+        Uri.objects.create(
+            uri="https://www.wikidata.org/entity/both",
+            domain="wikidata",
+            entity=cls.p_both,
+        )
+        Uri.objects.create(
+            uri="https://d-nb.info/gnd/gndonly", domain="gnd", entity=cls.p_gnd
+        )
+        Uri.objects.create(
+            uri="https://www.wikidata.org/entity/wikionly",
+            domain="wikidata",
+            entity=cls.p_wiki,
+        )
+        Uri.objects.create(
+            uri="https://d-nb.info/gnd/place", domain="gnd", entity=cls.place_gnd
+        )
+
+    def setUp(self):
+        self.url = reverse("apis:apis_entities:domain_crossing")
+
+    def _names(self, response):
+        return {row.record.name for row in response.context["table"].rows}
+
+    def test_intersection(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=intersection&d=gnd&d=wikidata"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"Both"})
+
+    def test_union(self):
+        response = client.get(f"{self.url}?type=person&mode=union&d=gnd&d=wikidata")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self._names(response), {"Both", "GndOnly", "WikiOnly"}
+        )
+
+    def test_difference(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=difference&base=gnd&d=wikidata"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"GndOnly"})
+
+    def test_entity_type_switch(self):
+        response = client.get(f"{self.url}?type=place&mode=intersection&d=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._names(response), {"PlaceGnd"})
+
+    def test_no_domain_selected_returns_empty(self):
+        response = client.get(f"{self.url}?type=person&mode=intersection")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total"], 0)
+
+    def test_invalid_type_falls_back_to_person(self):
+        response = client.get(f"{self.url}?type=nonsense&mode=union&d=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["entity"], "person")
+        self.assertEqual(self._names(response), {"Both", "GndOnly"})

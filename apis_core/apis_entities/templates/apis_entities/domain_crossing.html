@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_tables2 %}
+{% block title %}Schnittmengen{% endblock %}
+{% block content %}
+{% include "partials/entity_styles.html" %}
+
+<div class="container pt-4">
+    <h1 class="display-1 text-center apis-{{ entity }}">
+        <i class="bi bi-intersect"></i> Schnittmengen
+    </h1>
+    <p class="text-center text-muted">
+        Überschneidungen zwischen Daten-Domains für einen Entitätstyp finden.
+    </p>
+
+    <div class="row pt-2">
+        <div class="col-12 text-center mb-3">
+            <h2 class="h5">Entitätstyp</h2>
+            <div class="btn-group flex-wrap" role="group" aria-label="Entitätstyp">
+                {% for b in entity_buttons %}
+                <a href="{{ b.href }}"
+                   class="btn {% if b.active %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    <i class="{{ b.icon }}"></i> {{ b.label }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-12 text-center mb-3">
+            <h2 class="h5">Modus</h2>
+            <div class="btn-group flex-wrap" role="group" aria-label="Modus">
+                {% for b in mode_buttons %}
+                <a href="{{ b.href }}"
+                   class="btn {% if b.active %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                    {{ b.label }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-12 text-center mb-3">
+            {% if mode == "difference" %}
+            <h2 class="h5">Basis-Domain <small class="text-muted">(enthalten in)</small></h2>
+            <div class="mb-3">
+                {% for b in base_buttons %}
+                <a href="{{ b.href }}"
+                   class="btn btn-sm m-1 {% if b.selected %}text-white{% else %}btn-outline-dark{% endif %}"
+                   {% if b.selected %}style="background-color:{{ b.color }};border-color:{{ b.color }}"{% endif %}>
+                    {{ b.label }} <span class="badge bg-light text-dark">{{ b.count }}</span>
+                </a>
+                {% endfor %}
+            </div>
+            <h2 class="h5">Ausgeschlossene Domains <small class="text-muted">(nicht enthalten in)</small></h2>
+            {% else %}
+            <h2 class="h5">Domains</h2>
+            {% endif %}
+            <div>
+                {% for b in domain_buttons %}
+                <a href="{{ b.href }}"
+                   class="btn btn-sm m-1 {% if b.selected %}text-white{% else %}btn-outline-dark{% endif %}"
+                   {% if b.selected %}style="background-color:{{ b.color }};border-color:{{ b.color }}"{% endif %}>
+                    {{ b.label }} <span class="badge bg-light text-dark">{{ b.count }}</span>
+                </a>
+                {% empty %}
+                <p class="text-muted">Keine Domains für diesen Entitätstyp vorhanden.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-12" id="results">
+            <h2 class="text-center">{{ total }} {{ verbose_name }}</h2>
+            {% if selected or base %}
+            <div>
+                {% include 'browsing/partials/table.html' %}
+                {% include 'browsing/partials/pagination.html' %}
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+                Bitte mindestens eine Domain auswählen.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
