@@ -183,6 +183,52 @@ class EntitiesTestCase(TestCase):
         place_source = Place.objects.create(name="Dumsi")
         place_target.merge_with(place_source.id)
 
+    def test_009b_merge_dates(self):
+        # target without lifespan inherits the dates of the merged source
+        target = Person.objects.create(name="Person without dates")
+        source = Person.objects.create(
+            name="Person with dates",
+            start_date_written="1845",
+            end_date_written="1913",
+        )
+        target.merge_with(source.id)
+        self.assertEqual("1845", target.start_date_written)
+        self.assertEqual("1913", target.end_date_written)
+        # the written dates are re-parsed into the structured date fields
+        self.assertIsNotNone(target.start_date)
+        self.assertIsNotNone(target.end_date)
+
+        # target with its own dates keeps them, ignoring the source's dates
+        target_with_dates = Person.objects.create(
+            name="Person which keeps its dates",
+            start_date_written="1800",
+            end_date_written="1880",
+        )
+        source_other_dates = Person.objects.create(
+            name="Person whose dates are dropped",
+            start_date_written="1845",
+            end_date_written="1913",
+        )
+        target_with_dates.merge_with(source_other_dates.id)
+        self.assertEqual("1800", target_with_dates.start_date_written)
+        self.assertEqual("1880", target_with_dates.end_date_written)
+
+        # a target that already has any date keeps its lifespan untouched, so
+        # mixing the target's and the source's dates can never create an
+        # invalid (start-after-end) range
+        target_partial = Person.objects.create(
+            name="Person with only a start date",
+            start_date_written="1820",
+        )
+        source_partial = Person.objects.create(
+            name="Person whose dates are dropped",
+            start_date_written="1845",
+            end_date_written="1913",
+        )
+        target_partial.merge_with(source_partial.id)
+        self.assertEqual("1820", target_partial.start_date_written)
+        self.assertFalse(target_partial.end_date_written)
+
     def test_010_delete_views(self):
         client.login(**USER)
         for x in MODELS:
