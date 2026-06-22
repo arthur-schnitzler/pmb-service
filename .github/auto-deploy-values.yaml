@@ -14,35 +14,36 @@ service:
     name: "web"
     url: "$public_url"
     type: ClusterIP
-    externalPort: # the port your app runs on
-    internalPort: # the port your app runs on
+    externalPort: 8020 # the port your app runs on
+    internalPort: 8020 # the port your app runs on
 ingress:
-    enabled: true
+    enabled: false
     path: "/"
     className: "nginx"
-    annotations:
-        #nginx.ingress.kubernetes.io/app-root: # the root route if it is not /
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
 startupProbe:
-    httpGet:
-        path: "/export/"
-        port: 8020
-    failureThreshold: 60
-    periodSeconds: 10
-    timeoutSeconds: 10
-    initialDelaySeconds: 15
+  enabled: true
+  probeType: "httpGet"
+  path: /export/
+  failureThreshold: 60
+  periodSeconds: 10
+  timeoutSeconds: 10
+  initialDelaySeconds: 15
 
 livenessProbe:
-    httpGet:
-        path: "/export/" # lightweight — just "is eXist running?"
-        port: 8020
-    periodSeconds: 15
-    timeoutSeconds: 10
-    failureThreshold: 5
+  enabled: true
+  probeType: "httpGet"
+  path: /export/ # lightweight — just "is eXist running?"
+  periodSeconds: 15
+  timeoutSeconds: 10
+  failureThreshold: 5
 
 readinessProbe:
-    httpGet:
-        path: "/"" # actual API check
-        port: 8020
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 3
+  enabled: true
+  probeType: "httpGet"
+  path: / # actual API check
+  port: 8020
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
