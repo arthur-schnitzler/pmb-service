@@ -435,10 +435,13 @@ class TempEntityClass(models.Model):
             else:
                 pass
             save_target = False
-            if not self.start_date_written and ent.start_date_written:
+            # Only inherit the lifespan when the target has none at all, and
+            # copy both dates together: the merged entity is internally
+            # consistent, so this can never produce an invalid date range.
+            if not self.start_date_written and not self.end_date_written and (
+                ent.start_date_written or ent.end_date_written
+            ):
                 self.start_date_written = ent.start_date_written
-                save_target = True
-            if not self.end_date_written and ent.end_date_written:
                 self.end_date_written = ent.end_date_written
                 save_target = True
             if len(notes) > 0:

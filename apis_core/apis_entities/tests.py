@@ -213,19 +213,21 @@ class EntitiesTestCase(TestCase):
         self.assertEqual("1800", target_with_dates.start_date_written)
         self.assertEqual("1880", target_with_dates.end_date_written)
 
-        # start and end are handled independently
+        # a target that already has any date keeps its lifespan untouched, so
+        # mixing the target's and the source's dates can never create an
+        # invalid (start-after-end) range
         target_partial = Person.objects.create(
             name="Person with only a start date",
             start_date_written="1820",
         )
         source_partial = Person.objects.create(
-            name="Person providing the end date",
+            name="Person whose dates are dropped",
             start_date_written="1845",
             end_date_written="1913",
         )
         target_partial.merge_with(source_partial.id)
         self.assertEqual("1820", target_partial.start_date_written)
-        self.assertEqual("1913", target_partial.end_date_written)
+        self.assertFalse(target_partial.end_date_written)
 
     def test_010_delete_views(self):
         client.login(**USER)
