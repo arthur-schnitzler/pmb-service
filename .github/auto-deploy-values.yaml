@@ -17,10 +17,11 @@ service:
     externalPort: 8020 # the port your app runs on
     internalPort: 8020 # the port your app runs on
 ingress:
-    enabled: true
+    enabled: false
     path: "/"
     className: "nginx"
-    annotations: {}
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
 startupProbe:
   enabled: true
   probeType: "httpGet"
