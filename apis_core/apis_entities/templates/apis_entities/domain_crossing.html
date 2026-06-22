@@ -92,6 +92,9 @@
             <div>
                 {% include 'browsing/partials/table.html' %}
                 {% include 'browsing/partials/pagination.html' %}
+                <div class="float-end">
+                    {% include "browsing/partials/download_menu.html" %}
+                </div>
             </div>
             {% else %}
             <p class="text-center text-muted">

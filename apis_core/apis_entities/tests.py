@@ -722,3 +722,29 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'data-bs-toggle="tooltip"')
         self.assertContains(response, "in allen gewählten Domains vorkommen")
+
+    def test_export_csv(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&_export=csv"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("text/csv", response["Content-Type"])
+        self.assertIn("schnittmengen.csv", response["Content-Disposition"])
+        content = response.getvalue().decode("utf-8")
+        self.assertIn("Both", content)
+        self.assertNotIn("<a", content)
+
+    def test_export_json(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&_export=json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("schnittmengen.json", response["Content-Disposition"])
+        self.assertIn("Both", response.getvalue().decode("utf-8"))
+
+    def test_invalid_export_format_renders_page(self):
+        response = client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&_export=nonsense"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "apis_entities/domain_crossing.html")

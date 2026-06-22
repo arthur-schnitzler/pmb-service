@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db.models import Count
 from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
+from django_tables2.export import TableExport
 
 from apis_core.apis_entities.models import (
     Event,
@@ -66,15 +67,9 @@ GENDER_OPTIONS = [
 class DomainCrossingTable(tables.Table):
     """Generische Tabelle, die für jeden Entitätstyp funktioniert."""
 
-    id = tables.TemplateColumn(
-        "<a href='{{ record.get_absolute_url }}'>{{ record.id }}</a>",
-        verbose_name="ID",
-        orderable=True,
-    )
-    name = tables.TemplateColumn(
-        "<a href='{{ record.get_absolute_url }}'>{% if record.name %} {{ record.name }} {% else %} ohne Name {% endif %}</a>",
-        verbose_name="Name",
-        orderable=True,
+    id = tables.Column(verbose_name="ID", orderable=True, linkify=True)
+    name = tables.Column(
+        verbose_name="Name", orderable=True, linkify=True, default="ohne Name"
     )
     start_date_written = tables.Column(verbose_name="von", orderable=True)
     end_date_written = tables.Column(verbose_name="bis", orderable=True)
@@ -104,6 +99,15 @@ class DomainCrossingView(TemplateView):
     Vereinigung, Differenz) für einen wählbaren Entitätstyp."""
 
     template_name = "apis_entities/domain_crossing.html"
+    export_name = "schnittmengen"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        export_format = request.GET.get("_export", None)
+        if TableExport.is_valid_format(export_format):
+            exporter = TableExport(export_format, context["table"])
+            return exporter.response(f"{self.export_name}.{export_format}")
+        return self.render_to_response(context)
 
     def _querystring(self, **changes):
         """Aktuellen Querystring übernehmen, einzelne Parameter ändern und
