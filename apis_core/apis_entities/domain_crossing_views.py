@@ -53,7 +53,7 @@ class DomainCrossingTable(tables.Table):
         orderable=True,
     )
     name = tables.TemplateColumn(
-        "<a href='{{ record.get_absolute_url }}'>{{ record.name }}</a>",
+        "<a href='{{ record.get_absolute_url }}'>{% if record.name %} {{ record.name }} {% else %} ohne Name {% endif %}</a>",
         verbose_name="Name",
         orderable=True,
     )
@@ -200,9 +200,7 @@ class DomainCrossingView(TemplateView):
                     "color": color,
                     "count": count,
                     "selected": domain == base,
-                    "href": self._querystring(
-                        base=None if domain == base else domain
-                    ),
+                    "href": self._querystring(base=None if domain == base else domain),
                 }
             )
 
