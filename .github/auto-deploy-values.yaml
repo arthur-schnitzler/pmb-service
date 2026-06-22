@@ -1,0 +1,48 @@
+replicaCount: 1
+image:
+    repository: $repository
+    tag: "$tag"
+    pullPolicy: Always
+    secrets: []
+extraLabels:
+    "ID": "$service_id"
+gitlab:
+    app: "$app_name"
+    envURL: "$repo_url"
+service:
+    enabled: true
+    name: "web"
+    url: "$public_url"
+    type: ClusterIP
+    externalPort: # the port your app runs on
+    internalPort: # the port your app runs on
+ingress:
+    enabled: true
+    path: "/"
+    className: "nginx"
+    annotations:
+        #nginx.ingress.kubernetes.io/app-root: # the root route if it is not /
+startupProbe:
+    httpGet:
+        path: /export/
+        port: 8020
+    failureThreshold: 60
+    periodSeconds: 10
+    timeoutSeconds: 10
+    initialDelaySeconds: 15
+
+livenessProbe:
+    httpGet:
+        path: /export/ # lightweight — just "is eXist running?"
+        port: 8020
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 5
+
+readinessProbe:
+    httpGet:
+        path: / # actual API check
+        port: 8020
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
