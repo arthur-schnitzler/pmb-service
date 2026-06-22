@@ -8,10 +8,16 @@ from .list_view_person import PersonListView
 from .list_view_place import PlaceListView
 from .list_view_work import WorkListView
 from .arc_views import get_arcs_data, ArcsView
+from .domain_crossing_views import DomainCrossingView
 
 app_name = "apis_entities"
 
 urlpatterns = [
+    path(
+        "domain-crossing",
+        DomainCrossingView.as_view(),
+        name="domain_crossing",
+    ),
     path(
         "arcs-data",
         get_arcs_data,
