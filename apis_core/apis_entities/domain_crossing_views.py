@@ -28,6 +28,25 @@ MODES = {
     "difference": "Differenz",
 }
 
+# Modus -> Erklärtext (als Tooltip angezeigt)
+MODE_DESCRIPTIONS = {
+    "intersection": (
+        "Entitäten, die in allen gewählten Domains vorkommen. "
+        "Beispiel: Personen, die sowohl in »schnitzler-briefe« als auch "
+        "in »gnd« vorhanden sind."
+    ),
+    "union": (
+        "Entitäten, die in mindestens einer der gewählten Domains vorkommen. "
+        "Beispiel: alle Personen, die in »schnitzler-briefe« oder »gnd« "
+        "(oder in beiden) vorkommen."
+    ),
+    "difference": (
+        "Entitäten, die in der Basis-Domain vorkommen, aber in keiner der "
+        "ausgeschlossenen Domains. Beispiel: Personen in »schnitzler-briefe«, "
+        "die keinen »gnd«-Eintrag haben."
+    ),
+}
+
 DEFAULT_TYPE = "person"
 DEFAULT_MODE = "intersection"
 
@@ -165,6 +184,7 @@ class DomainCrossingView(TemplateView):
             {
                 "key": key,
                 "label": label,
+                "description": MODE_DESCRIPTIONS[key],
                 "active": key == mode,
                 "href": self._querystring(mode=key),
             }

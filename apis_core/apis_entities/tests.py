@@ -716,3 +716,9 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["mode"], "intersection")
         self.assertEqual(self._names(response), {"Both"})
+
+    def test_mode_tooltips_rendered(self):
+        response = client.get(f"{self.url}?type=person&mode=intersection&d=gnd")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-bs-toggle="tooltip"')
+        self.assertContains(response, "in allen gewählten Domains vorkommen")

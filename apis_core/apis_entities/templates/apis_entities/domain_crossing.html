@@ -31,7 +31,8 @@
             <div class="btn-group flex-wrap" role="group" aria-label="Modus">
                 {% for b in mode_buttons %}
                 <a href="{{ b.href }}"
-                   class="btn {% if b.active %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                   class="btn {% if b.active %}btn-secondary{% else %}btn-outline-secondary{% endif %}"
+                   data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ b.description }}">
                     {{ b.label }}
                 </a>
                 {% endfor %}
@@ -100,4 +101,11 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        new bootstrap.Tooltip(el);
+    });
+</script>
 {% endblock %}
