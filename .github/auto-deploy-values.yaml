@@ -20,8 +20,7 @@ ingress:
     enabled: true
     path: "/"
     className: "nginx"
-    annotations:
-        #nginx.ingress.kubernetes.io/app-root: # the root route if it is not /
+    annotations: {}
 startupProbe:
   enabled: true
   probeType: "httpGet"
