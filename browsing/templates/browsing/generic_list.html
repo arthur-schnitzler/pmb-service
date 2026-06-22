@@ -35,6 +35,19 @@
                         {% load django_tables2 crispy_forms_tags %}
                         <form action="." class="uniForm" method="get">
                             {% crispy filter.form filter.form.helper %}
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox"
+                                       name="accent_sensitive" value="true"
+                                       id="accent_sensitive_toggle"
+                                       {% if request.GET.accent_sensitive %}checked{% endif %}>
+                                <label class="form-check-label" for="accent_sensitive_toggle">
+                                    Accent-sensitive search
+                                    <small class="text-muted d-block">
+                                        Off by default: &ldquo;Goth&rdquo; also finds &ldquo;G&oacute;th&rdquo;.
+                                        Switch on to distinguish accented characters.
+                                    </small>
+                                </label>
+                            </div>
                             {% include 'browsing/partials/column_selector.html' %}
                             <a class="btn btn-primary"  href=".">Reset</a>
                             <button type="submit" class="btn btn-primary">Search</button>
