@@ -435,6 +435,12 @@ class TempEntityClass(models.Model):
             else:
                 pass
             save_target = False
+            if not self.start_date_written and ent.start_date_written:
+                self.start_date_written = ent.start_date_written
+                save_target = True
+            if not self.end_date_written and ent.end_date_written:
+                self.end_date_written = ent.end_date_written
+                save_target = True
             if len(notes) > 0:
                 additional_notes = " ".join(notes)
                 self.notes = f"{self.notes} {additional_notes}"
