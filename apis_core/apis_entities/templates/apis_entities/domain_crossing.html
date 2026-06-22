@@ -92,9 +92,11 @@
             <div>
                 {% include 'browsing/partials/table.html' %}
                 {% include 'browsing/partials/pagination.html' %}
+                {% if total < 5001 %}
                 <div class="float-end">
                     {% include "browsing/partials/download_menu.html" %}
                 </div>
+                {% endif %}
             </div>
             {% else %}
             <p class="text-center text-muted">
