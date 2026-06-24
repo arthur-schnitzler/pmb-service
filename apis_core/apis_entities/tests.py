@@ -229,6 +229,27 @@ class EntitiesTestCase(TestCase):
         self.assertEqual("1820", target_partial.start_date_written)
         self.assertFalse(target_partial.end_date_written)
 
+    def test_009c_merge_coordinates(self):
+        # target without coordinates inherits them from the merged source
+        target = Place.objects.create(name="Place without coordinates")
+        source = Place.objects.create(
+            name="Place with coordinates", lat=48.2, lng=16.37
+        )
+        target.merge_with(source.id)
+        self.assertEqual(48.2, target.lat)
+        self.assertEqual(16.37, target.lng)
+
+        # target with its own coordinates keeps them, ignoring the source's
+        target_with_coords = Place.objects.create(
+            name="Place which keeps its coordinates", lat=47.07, lng=15.44
+        )
+        source_other_coords = Place.objects.create(
+            name="Place whose coordinates are dropped", lat=48.2, lng=16.37
+        )
+        target_with_coords.merge_with(source_other_coords.id)
+        self.assertEqual(47.07, target_with_coords.lat)
+        self.assertEqual(15.44, target_with_coords.lng)
+
     def test_010_delete_views(self):
         client.login(**USER)
         for x in MODELS:
