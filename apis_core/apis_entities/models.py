@@ -56,7 +56,7 @@ class AbstractEntity(TempEntityClass):
             if valid(self.first_name) and valid(self.name):
                 return "{}, {}".format(self.name, self.first_name)
             elif valid(self.first_name) and not valid(self.name):
-                return "{}, {}".format("no surename provided", self.first_name)
+                return "{}, {}".format("[ohne Nachname]", self.first_name)
             elif not valid(self.first_name) and valid(self.name):
                 return self.name
             elif not valid(self.first_name) and not valid(self.name):
