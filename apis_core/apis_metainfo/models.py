@@ -444,6 +444,18 @@ class TempEntityClass(models.Model):
                 self.start_date_written = ent.start_date_written
                 self.end_date_written = ent.end_date_written
                 save_target = True
+            # Inherit coordinates (Place) when the target has none. lat and lng
+            # always go together (see Place.save), so copy both as a pair.
+            if (
+                hasattr(self, "lat")
+                and self.lat is None
+                and self.lng is None
+                and (getattr(ent, "lat", None) is not None
+                     or getattr(ent, "lng", None) is not None)
+            ):
+                self.lat = ent.lat
+                self.lng = ent.lng
+                save_target = True
             if len(notes) > 0:
                 additional_notes = " ".join(notes)
                 self.notes = f"{self.notes} {additional_notes}"
