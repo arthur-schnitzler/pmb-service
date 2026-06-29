@@ -59,11 +59,13 @@
                 Zeit
             </th>
             <td>
-                {% if object.start_date %}
+                {% if object.start_date and object.end_date %}
                     <abbr title="{{ object.start_date }}">{{ object.start_date_written }}</abbr>
-                {% endif %}
-                {% if object.end_date %}
                     - <abbr title="{{ object.end_date }}">{{ object.end_date_written }}</abbr>
+                {% elif object.start_date %}
+                    geb. <abbr title="{{ object.start_date }}">{{ object.start_date_written }}</abbr>
+                {% elif object.end_date %}
+                    gest. <abbr title="{{ object.end_date }}">{{ object.end_date_written }}</abbr>
                 {% endif %}
             </td>
         </tr>
