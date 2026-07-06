@@ -113,6 +113,9 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
                 Q(**{x + search_type: q})
                 for x in settings.APIS_ENTITIES[ac_type.title()]["search"]
             ]
+            if q.isdigit() and int(q) < 2**63:
+                # additionally allow looking up an entry by its db-ID
+                arg_list.append(Q(pk=int(q)))
             res = (
                 ent_model.objects.filter(reduce(operator.or_, arg_list))
                 .order_by("id")

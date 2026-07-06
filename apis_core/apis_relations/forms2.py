@@ -24,19 +24,34 @@ from apis_core.helper_functions import DateParser
 
 from .tables import get_generic_relations_table
 
+DB_ID_VALUE_RE = re.compile(r"db-ID:\s*(\d+)")
+
+
+def normalize_target_autocomplete_value(value):
+    try:
+        numeric_value = int(value)
+        if numeric_value < 2**63:
+            return str(numeric_value)
+    except TypeError, ValueError:
+        pass
+
+    if isinstance(value, str):
+        value = value.strip()
+        db_match = DB_ID_VALUE_RE.search(value)
+        if db_match and int(db_match.group(1)) < 2**63:
+            return db_match.group(1)
+        if value.startswith("http"):
+            return value
+
+    raise ValidationError(
+        _("Invalid value: %(value)s, use either URLs or select a value"),
+        code="invalid",
+        params={"value": value},
+    )
+
 
 def validate_target_autocomplete(value):
-    try:
-        value = int(value)
-    except ValueError:
-        if value.startswith("http"):
-            pass
-        else:
-            raise ValidationError(
-                _("Invalid value: %(value)s, use either URLs or select a value"),
-                code="invalid",
-                params={"value": value},
-            )
+    normalize_target_autocomplete_value(value)
 
 
 class GenericRelationForm(forms.ModelForm):
@@ -47,6 +62,10 @@ class GenericRelationForm(forms.ModelForm):
             "start_date_written": _("Start"),
             "end_date_written": _("End"),
         }
+
+    def clean_target(self):
+        value = self.cleaned_data.get("target")
+        return normalize_target_autocomplete_value(value)
 
     def clean(self):
         cleaned_data = super().clean()
