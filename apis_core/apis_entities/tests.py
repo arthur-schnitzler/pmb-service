@@ -489,6 +489,28 @@ class EntitiesTestCase(TestCase):
             r = client.get(f"{url}?q=a")
             self.assertEqual(r.status_code, 200)
 
+    def test_024a_autocomplete_by_id(self):
+        person = Person.objects.create(name="Nachnametest", first_name="Vornametest")
+        url = reverse(
+            "apis:apis_entities:generic_entities_autocomplete",
+            kwargs={"entity": "person"},
+        )
+        r = client.get(f"{url}?q={person.pk}")
+        self.assertEqual(r.status_code, 200)
+        ids = [c["id"] for c in r.json()["results"] if "id" in c]
+        self.assertIn(person.pk, ids)
+
+    def test_024b_uri_autocomplete_by_id_shows_first_name(self):
+        person = Person.objects.create(name="Nachnametest", first_name="Vornametest")
+        url = reverse("apis:apis_metainfo-ac:apis_tempentity-autocomplete")
+        r = client.get(f"{url}?q={person.pk}")
+        self.assertEqual(r.status_code, 200)
+        results = r.json()["results"]
+        ids = [int(c["id"]) for c in results]
+        self.assertIn(person.pk, ids)
+        labels = " ".join(c["text"] for c in results)
+        self.assertIn("Vornametest", labels)
+
     def test_024_vocabs_dl(self):
         models = ["placetype", "worktype"]
         client.login(**USER)
