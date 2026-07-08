@@ -11,5 +11,7 @@
 30 7 * * * root cd /opt/app && /usr/local/bin/uv run manage.py find_duplicted_persons >> /var/log/cron.log 2>&1
 50 7 * * * root cd /opt/app && /usr/local/bin/uv run manage.py find_duplicted_places >> /var/log/cron.log 2>&1
 5 23 * * * root cd /opt/app && /usr/local/bin/uv run manage.py edges >> /var/log/cron.log 2>&1
-34 21 * * * root cd /opt/app && /usr/local/bin/uv run manage.py update_schnitzler_uris >> /var/log/cron.log 2>&1
+5 1 * * * root cd /opt/app && /usr/local/bin/uv run manage.py tei_relations.py >> /var/log/cron.log 2>&1
+
+5 4 * * 6 root cd /opt/app && /usr/local/bin/uv run manage.py update_schnitzler_uris >> /var/log/cron.log 2>&1
 #
