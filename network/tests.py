@@ -1,8 +1,8 @@
 from django.apps import apps
 from django.conf import settings
+from django.core.management import call_command
 from django.test import Client, TestCase
 from django.urls import reverse
-
 
 client = Client()
 USER = {"username": "testuser", "password": "password", "is_active": True}
@@ -30,17 +30,17 @@ class DumperTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_01b_network_data(self):
-        url = f'{reverse("network:data")}?format=hansi'
+        url = f"{reverse('network:data')}?format=hansi"
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_01c_network_data(self):
-        url = f'{reverse("network:data")}?format=json'
+        url = f"{reverse('network:data')}?format=json"
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_01d_network_data(self):
-        url = f'{reverse("network:data")}?format=cosmograph'
+        url = f"{reverse('network:data')}?format=cosmograph"
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -68,3 +68,6 @@ class DumperTestCase(TestCase):
         url = reverse("network:tei")
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_07_tei_relations_command(self):
+        call_command("tei_relations")
