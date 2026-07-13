@@ -346,7 +346,7 @@ DOMAIN_MAPPING = [
     ("wikipedia", "wikipedia", "#0645AD"),
     ("fackel.oeaw.ac.at", "fackel", "#CE0F0B"),
     ("schnitzler-tagebuch", "schnitzler-tagebuch", "#037a33"),
-    ("schnitzler-bahr", "schnitzler-bahr", "#F9BD63"),
+    ("schnitzler-bahr", "schnitzler-bahr", "#0369A1"),
     ("schnitzler-briefe", "schnitzler-briefe", "#A63437"),
     ("schnitzler-lektueren", "schnitzler-lektueren", "#022954"),
     ("schnitzler-interviews", "schnitzler-interviews", "#3D5A80"),
