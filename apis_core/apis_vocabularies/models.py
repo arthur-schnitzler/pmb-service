@@ -3,6 +3,7 @@ import re
 import sys
 import unicodedata
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 
@@ -139,7 +140,19 @@ class Title(VocabsBaseClass):
 class ProfessionType(VocabsBaseClass):
     """Holds controlled vocabularies about profession-types"""
 
-    pass
+    def save(self, *args, **kwargs):
+        # Keep duplicate check aligned with base-class unicode normalization.
+        normalized_name = unicodedata.normalize("NFC", self.name)
+        duplicates = ProfessionType.objects.filter(name=normalized_name)
+        if self.pk is not None:
+            duplicates = duplicates.exclude(pk=self.pk)
+
+        if duplicates.exists():
+            raise ValidationError(
+                {"name": "A profession type with this exact name already exists."}
+            )
+
+        return super(ProfessionType, self).save(*args, **kwargs)
 
 
 class PlaceType(VocabsBaseClass):
