@@ -2,6 +2,18 @@
 {% load static %}
 {% load django_tables2 %}
 {% block title %} {{ object }} {% endblock %}
+{% block metaData %}
+<link rel="canonical" href="https://pmb.acdh.oeaw.ac.at/entity/{{ object.id }}/">
+<meta property="og:title" content="{{ object }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pmb.acdh.oeaw.ac.at/entity/{{ object.id }}/">
+<meta property="og:site_name" content="PMB – Personen der Moderne Basis">
+{% if object.img_url %}<meta property="og:image" content="{{ object.img_url }}">{% endif %}
+<meta name="DC.title" content="{{ object }}">
+<meta name="DC.identifier" content="https://pmb.acdh.oeaw.ac.at/entity/{{ object.id }}/">
+<meta name="DC.language" content="de">
+<meta name="DC.publisher" content="PMB – Personen der Moderne Basis">
+{% endblock %}
 {% block content %}
 {% include "partials/entity_styles.html" %}
 
