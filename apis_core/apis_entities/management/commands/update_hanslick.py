@@ -16,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         limit = False
         iteration_limit = 25
-        col, _ = Collection.objects.get_or_create(name="Hanslick-Online")
+        col, _ = Collection.objects.get_or_create(name="Hanslick Online")
         domain = "hanslick-online"
         failed = []
         orig_data = requests.get(
