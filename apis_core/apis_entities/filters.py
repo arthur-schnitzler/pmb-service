@@ -1,4 +1,5 @@
 import importlib
+import unicodedata
 from functools import reduce
 
 import django_filters
@@ -26,6 +27,24 @@ from apis_core.apis_vocabularies.models import RelationBaseClass
 
 # TODO __sresch__ : Turn the logic of returing a filter object into a singleton pattern to avoid redundant instantiations
 # TODO __sresch__ : use the order of list of filter fields in settings
+
+# Name of the GET parameter used to switch to accent-/diacritic-sensitive search.
+# When it is absent (the default), searches are accent-insensitive, so e.g.
+# "Goth" also matches "Góth". When it is truthy, the original strict matching is used.
+ACCENT_SENSITIVE_PARAM = "accent_sensitive"
+
+
+def remove_accents(value):
+    """
+    Strips diacritics from the given string so that it can be compared against the
+    PostgreSQL ``unaccent()`` of a column (which only transforms the database side).
+    E.g. 'Góth' -> 'Goth'.
+    """
+    return "".join(
+        char
+        for char in unicodedata.normalize("NFKD", value)
+        if not unicodedata.combining(char)
+    )
 
 
 #######################################################################
@@ -145,6 +164,19 @@ class GenericListFilter(django_filters.FilterSet):
 
         self.filters = eliminate_unused_filters(self.filters)
 
+    def is_accent_sensitive(self):
+        """
+        Whether the user requested a strict, accent-/diacritic-sensitive search via
+        the toggle in the search form. Defaults to False (accent-insensitive search).
+        """
+        data = self.data or {}
+        return str(data.get(ACCENT_SENSITIVE_PARAM, "")).lower() in (
+            "1",
+            "true",
+            "on",
+            "yes",
+        )
+
     def construct_lookup(self, value):
         """
         Parses user input for wildcards and returns a tuple containing the interpreted django lookup string and the trimmed value
@@ -154,27 +186,37 @@ class GenericListFilter(django_filters.FilterSet):
             'example*' -> ('__istartswith', 'example')
             '"example"' -> ('__iexact', 'example')
 
+        Unless the user enabled accent-sensitive search, the lookup is prefixed with
+        ``__unaccent`` and the value gets its diacritics stripped, so that e.g.
+        searching for "Goth" also matches "Góth".
+
         :param value : str : text to be parsed for *
         :return: (lookup : str, value : str)
         """
 
         if value.startswith("*") and not value.endswith("*"):
             value = value[1:]
-            return "__iendswith", value
+            lookup = "__iendswith"
 
         elif not value.startswith("*") and value.endswith("*"):
             value = value[:-1]
-            return "__istartswith", value
+            lookup = "__istartswith"
 
         elif value.startswith('"') and value.endswith('"'):
             value = value[1:-1]
-            return "__iexact", value
+            lookup = "__iexact"
 
         else:
             if value.startswith("*") and value.endswith("*"):
                 value = value[1:-1]
 
-            return "__icontains", value
+            lookup = "__icontains"
+
+        if not self.is_accent_sensitive():
+            value = remove_accents(value)
+            lookup = "__unaccent" + lookup
+
+        return lookup, value
 
     def string_wildcard_filter(self, queryset, name, value):
         lookup, value = self.construct_lookup(value)
