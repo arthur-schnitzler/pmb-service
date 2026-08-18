@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 from acdh_tei_pyutils.tei import TeiReader
@@ -16,8 +17,8 @@ class Command(BaseCommand):
     help = "Dumps relations as TEI/XML"
 
     def handle(self, *args, **kwargs):
-
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         save_path = os.path.join(settings.MEDIA_ROOT, "relations.xml")
 
         values_list = [x.name for x in Edge._meta.get_fields()]
@@ -29,7 +30,7 @@ class Command(BaseCommand):
         root = doc.any_xpath(".//tei:listRelation")[0]
         root.extend(relations)
         doc.tree_to_file(save_path)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [f"{os.path.basename(__file__)}: {save_path}", start_time, end_time]
         write_report(report)
 

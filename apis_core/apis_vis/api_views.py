@@ -25,6 +25,6 @@ class GetVisJson(ListAPIView):
     def get_queryset(self, **kwargs):
         relation = self.kwargs["relation"].lower()
         relation_model = AbstractRelation.get_relation_class_of_name(relation)
-        print("from get_queryset {}".format(relation))
+        print(f"from get_queryset {relation}")
         queryset = relation_model.objects.all()
         return queryset

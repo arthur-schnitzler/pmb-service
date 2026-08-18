@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
@@ -14,7 +15,8 @@ class Command(BaseCommand):
     help = "Normalizes Wikidata Uris"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         uris_to_fix = Uri.objects.filter(uri__icontains="wikidata.org/wiki/")
         print(f"found {uris_to_fix.count()} to fix Wikidata Uris")
         for x in tqdm(uris_to_fix, total=uris_to_fix.count()):
@@ -24,6 +26,6 @@ class Command(BaseCommand):
         uris_to_fix = Uri.objects.filter(uri__icontains="wikidata.org/wiki/")
         print(f"now I found {uris_to_fix.count()} to fix Wikidata Uris")
         print(uris_to_fix)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

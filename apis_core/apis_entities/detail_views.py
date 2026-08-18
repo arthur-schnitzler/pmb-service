@@ -33,7 +33,7 @@ class GenericEntitiesDetailView(View):
                 rel.get_related_entity_classa().__name__.lower(),
                 rel.get_related_entity_classb().__name__.lower(),
             ]
-            prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
+            prefix = f"{match[0].title()[:2]}{match[1].title()[:2]}-"
             if match[0] == entity:
                 link_to_relations = f"{rel.get_listview_url()}?source_target={pk}"
                 rel_type = match[1]
@@ -96,7 +96,7 @@ class GenericEntitiesDetailView(View):
         RequestConfig(request, paginate={"per_page": 10}).configure(tb_label)
         template = select_template(
             [
-                "apis_entities/detail_views/{}_detail.html".format(entity),
+                f"apis_entities/detail_views/{entity}_detail.html",
                 "apis_entities/detail_views/entity_detail_generic.html",
             ]
         )

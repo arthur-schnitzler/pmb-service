@@ -7,8 +7,8 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 from django.conf import settings
 
-from apis_core.apis_entities.models import Event
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_entities.models import Event
 from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     EventEventRelation,
@@ -133,7 +133,7 @@ class EventListFilter(MyBaseFilter):
 
 class EventFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(EventFilterFormHelper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"

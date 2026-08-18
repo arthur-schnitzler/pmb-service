@@ -1,18 +1,19 @@
-from django import forms
-from django_filters import FilterSet, ModelMultipleChoiceFilter, RangeFilter, NumberFilter
-from django.db.models import Q
-from django.urls import reverse_lazy
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit
+import django_tables2 as tables
+from acdh_django_widgets.widgets import MartinAntonMuellerWidget
 from crispy_bootstrap5.bootstrap5 import BS5Accordion
 from crispy_forms.bootstrap import AccordionGroup
-
-from acdh_django_widgets.widgets import MartinAntonMuellerWidget
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
 from dal import autocomplete
-
-import django_tables2 as tables
+from django import forms
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django_filters import (
+    FilterSet,
+    ModelMultipleChoiceFilter,
+    NumberFilter,
+    RangeFilter,
+)
 
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
 
@@ -170,7 +171,7 @@ def generate_relation_filter_formhelper():
 
     class MyRelationsFilterFormHelper(FormHelper):
         def __init__(self, *args, **kwargs):
-            super(MyRelationsFilterFormHelper, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.helper = FormHelper()
             self.form_class = "genericFilterForm"
             self.form_method = "GET"
@@ -218,7 +219,7 @@ def generate_relation_form(MyModelClass):
             }
 
         def __init__(self, *args, **kwargs):
-            super(MyForm, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.helper = FormHelper()
             self.helper.form_tag = True
             self.current_model = self._meta.model

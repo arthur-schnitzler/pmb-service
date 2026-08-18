@@ -1,13 +1,12 @@
-from crispy_forms.helper import FormHelper
-
-from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import AccordionGroup
 from crispy_bootstrap5.bootstrap5 import BS5Accordion
+from crispy_forms.bootstrap import AccordionGroup
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout
 
 
 class EdgeFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(EdgeFilterFormHelper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"

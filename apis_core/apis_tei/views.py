@@ -2,9 +2,9 @@ import lxml.etree as ET
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 
-from apis_core.utils import get_object_from_pk_or_uri
-from apis_core.apis_entities.models import Institution, Person, Place, Work, Event
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
+from apis_core.utils import get_object_from_pk_or_uri
 
 from .tei_utils import get_node_from_template
 

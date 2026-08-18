@@ -170,9 +170,9 @@ def get_generic_relations_table(
                     getattr(an, f"{related_entity_field_name_a}_id")
                     == entity_instance.pk
                 ):
-                    an.other_relation_type = getattr(an.relation_type, "label")
+                    an.other_relation_type = an.relation_type.label
                 else:
-                    an.other_relation_type = getattr(an.relation_type, "label_reverse")
+                    an.other_relation_type = an.relation_type.label_reverse
 
             super().__init__(data, *args, **kwargs)
 
@@ -192,7 +192,7 @@ def get_generic_relations_table(
                     verbose_name="Related " + other_related_entity_class_name.title(),
                 )
 
-                super().__init__(data=data, *args, **kwargs)
+                super().__init__(data=data, *args, **kwargs)  # noqa: B026
 
         return RelationTableDetail
 

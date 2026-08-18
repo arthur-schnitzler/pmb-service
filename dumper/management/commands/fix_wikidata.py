@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
@@ -15,7 +16,8 @@ class Command(BaseCommand):
     help = "http for wikidata uris"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         print("start fixing http for wikidata")
         to_fix = Uri.objects.filter(uri__startswith="https://www.wikidata")
         print(f"found {to_fix.count()} Uris with https")
@@ -32,6 +34,6 @@ class Command(BaseCommand):
         for x in failed:
             print(x)
         print(f"found {len(failed)} potential http/https duplicates")
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

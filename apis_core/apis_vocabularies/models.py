@@ -45,13 +45,13 @@ class VocabsBaseClass(models.Model):
         return self.label
 
     def save(self, *args, **kwargs):
-        d, created = VocabNames.objects.get_or_create(name=type(self).__name__)
+        d, _ = VocabNames.objects.get_or_create(name=type(self).__name__)
         self.vocab_name = d
         if self.name != unicodedata.normalize(
             "NFC", self.name
         ):  # secure correct unicode encoding
             self.name = unicodedata.normalize("NFC", self.name)
-        super(VocabsBaseClass, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         return self
 
     @cached_property
@@ -94,7 +94,7 @@ class RelationBaseClass(VocabsBaseClass):
         if self.name_reverse == "" or self.name_reverse == None:
             self.name_reverse = self.name + " [REVERSE]"
 
-        super(RelationBaseClass, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         return self
 
 
@@ -128,8 +128,6 @@ class VocabsUri(models.Model):
 class WorkType(VocabsBaseClass):
     """Holds controlled vocabularies about work-types"""
 
-    pass
-
 
 class Title(VocabsBaseClass):
     """A person´s (academic) title"""
@@ -152,37 +150,27 @@ class ProfessionType(VocabsBaseClass):
                 {"name": "A profession type with this exact name already exists."}
             )
 
-        return super(ProfessionType, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 class PlaceType(VocabsBaseClass):
     """Holds controlled vocabularies about place-types"""
 
-    pass
-
 
 class InstitutionType(VocabsBaseClass):
     """Holds controlled vocabularies about institution-types"""
-
-    pass
 
 
 class EventType(VocabsBaseClass):
     """Holds controlled vocabularies about event-types"""
 
-    pass
-
 
 class LabelType(VocabsBaseClass):
     """Holds controlled vocabularies about label-types"""
 
-    pass
-
 
 class CollectionType(VocabsBaseClass):
     """e.g. reseachCollection, importCollection"""
-
-    pass
 
 
 class TextType(VocabsBaseClass):
@@ -318,31 +306,21 @@ class AbstractRelationType(RelationBaseClass):
 class PersonPersonRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Persons"""
 
-    pass
-
 
 class PersonPlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Places"""
-
-    pass
 
 
 class PersonInstitutionRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Persons"""
 
-    pass
-
 
 class PersonEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Events"""
 
-    pass
-
 
 class PersonWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Works"""
-
-    pass
 
 
 #######################################################################
@@ -353,25 +331,17 @@ class PersonWorkRelation(AbstractRelationType):
 class InstitutionEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Events."""
 
-    pass
-
 
 class InstitutionPlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Places."""
-
-    pass
 
 
 class InstitutionInstitutionRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Institutions."""
 
-    pass
-
 
 class InstitutionWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Works."""
-
-    pass
 
 
 #######################################################################
@@ -382,19 +352,13 @@ class InstitutionWorkRelation(AbstractRelationType):
 class PlacePlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Places"""
 
-    pass
-
 
 class PlaceEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Events"""
 
-    pass
-
 
 class PlaceWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Works"""
-
-    pass
 
 
 #######################################################################
@@ -405,13 +369,9 @@ class PlaceWorkRelation(AbstractRelationType):
 class EventEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Events and Events"""
 
-    pass
-
 
 class EventWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Events and Works"""
-
-    pass
 
 
 #######################################################################
@@ -421,5 +381,3 @@ class EventWorkRelation(AbstractRelationType):
 
 class WorkWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
-
-    pass

@@ -7,8 +7,8 @@ from crispy_forms.layout import Layout
 from dal import autocomplete
 from django.conf import settings
 
-from apis_core.apis_entities.models import Person
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     PersonInstitutionRelation,
@@ -18,7 +18,6 @@ from apis_core.apis_vocabularies.models import (
     ProfessionType,
 )
 from apis_core.helper_functions.utils import get_child_classes
-
 from browsing.browsing_utils import GenericListView
 
 excluded_cols = [
@@ -155,7 +154,7 @@ class PersonListFilter(MyBaseFilter):
 
 class PersonFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(PersonFilterFormHelper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"

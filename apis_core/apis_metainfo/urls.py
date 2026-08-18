@@ -1,6 +1,7 @@
 from django.urls import path
 
 from apis_core.apis_entities.list_view_uris import UriListView
+
 from . import views
 
 app_name = "apis_metainfo"

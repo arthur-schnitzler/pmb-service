@@ -112,7 +112,7 @@ class GenericListFilter(django_filters.FilterSet):
                 elif type(enabled_filter) == dict:
                     # if a dictionary, then look further into if there is a method or label which overrides the defaults
 
-                    enabled_filter_key = list(enabled_filter.keys())[0]
+                    enabled_filter_key = list(enabled_filter.keys())[0]  # noqa: RUF015
 
                     if enabled_filter_key in default_filter_dict:
                         # get the dictionary which contains potential method or label overrides
@@ -121,14 +121,14 @@ class GenericListFilter(django_filters.FilterSet):
                         ]
 
                         if "method" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].method = (
-                                enabled_filter_settings_dict["method"]
-                            )
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].method = enabled_filter_settings_dict["method"]
 
                         if "label" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].label = (
-                                enabled_filter_settings_dict["label"]
-                            )
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].label = enabled_filter_settings_dict["label"]
 
                         filter_dict_tmp[enabled_filter_key] = default_filter_dict[
                             enabled_filter_key
@@ -319,7 +319,7 @@ class GenericListFilter(django_filters.FilterSet):
                 # Only difference to method 'related_entity_name_filter' is that the lookup is done on 'relation_type_id'
                 related_relations_to_hit_list.append(
                     relation_class.objects.filter(
-                        **{"relation_type_id__in": relationbaseclass_hit}
+                        relation_type_id__in=relationbaseclass_hit
                     ).values_list(related_entity_field_nameA + "_id", flat=True)
                 )
 
@@ -327,7 +327,7 @@ class GenericListFilter(django_filters.FilterSet):
                 # Only difference to method 'related_entity_name_filter' is that the lookup is done on 'relation_type_id'
                 related_relations_to_hit_list.append(
                     relation_class.objects.filter(
-                        **{"relation_type_id__in": relationbaseclass_hit}
+                        relation_type_id__in=relationbaseclass_hit
                     ).values_list(related_entity_field_nameB + "_id", flat=True)
                 )
 
@@ -449,12 +449,12 @@ if a_ents:
         ents = yaml.load(ents_file, Loader=yaml.CLoader)
         for ent in ents["entities"]:
             ent_class = getattr(
-                importlib.import_module(f"apis_core.apis_entities.models"), ent["name"]
+                importlib.import_module("apis_core.apis_entities.models"), ent["name"]
             )
             vocabs = []
             for v in ent.get("vocabs", []):
                 ent_class_type = getattr(
-                    importlib.import_module(f"apis_core.apis_vocabularies.models"), v
+                    importlib.import_module("apis_core.apis_vocabularies.models"), v
                 )
                 vocabs.append((v, ent_class_type))
 

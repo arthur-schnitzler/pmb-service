@@ -30,7 +30,7 @@ class UriTable(tables.Table):
 
 class UriFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(UriFilterFormHelper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"

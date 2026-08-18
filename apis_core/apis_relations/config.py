@@ -1,4 +1,3 @@
-import django_tables2 as tables
 
 FIELDS_TO_EXCLUDE = [
     "start_start_date",

@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from acdh_id_reconciler import wikidata_to_wikipedia
 from django.conf import settings
@@ -15,7 +16,8 @@ class Command(BaseCommand):
     help = "mint WikiData IDs for GND-URIs"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         LIMIT = 250
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(name="No german Wikipedia-Site found")
@@ -50,6 +52,6 @@ class Command(BaseCommand):
         uris_to_process = Uri.objects.filter(entity__in=ents).filter(domain="wikidata")
         mgs = f"{uris_to_process.count()} left"
         print(mgs)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

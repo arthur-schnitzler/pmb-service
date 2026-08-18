@@ -38,9 +38,7 @@ class Command(BaseCommand):
                 if entity:
                     entity.collection.add(col)
                     try:
-                        uri, _ = Uri.objects.get_or_create(
-                            uri=url, domain=domain, entity=entity
-                        )
+                        Uri.objects.get_or_create(uri=url, domain=domain, entity=entity)
                     except Exception as e:
                         failed.append([gnd, url, e])
 
@@ -67,9 +65,7 @@ class Command(BaseCommand):
                 if entity:
                     entity.collection.add(col)
                     try:
-                        uri, _ = Uri.objects.get_or_create(
-                            uri=url, domain=domain, entity=entity
-                        )
+                        Uri.objects.get_or_create(uri=url, domain=domain, entity=entity)
                     except Exception as e:
                         failed.append([gnd, url, e])
 

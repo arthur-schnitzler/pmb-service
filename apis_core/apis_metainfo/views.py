@@ -1,20 +1,20 @@
 import json
-import pandas as pd
 from typing import Any
+
+import pandas as pd
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 
-
 from browsing.browsing_utils import BaseCreateView, BaseUpdateView
 
 from .forms import UriForm
-from .models import Uri, Collection
+from .models import Collection, Uri
 
 PROJECT_NAME = settings.PROJECT_NAME
 BEACON_NAME = f"#FORMAT: BEACON\n#NAME: {PROJECT_NAME}\n"
@@ -107,7 +107,7 @@ class UriCreate(BaseCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(UriCreate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class UriUpdate(BaseUpdateView):
@@ -116,7 +116,7 @@ class UriUpdate(BaseUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(UriUpdate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class UriDelete(DeleteView):
@@ -126,4 +126,4 @@ class UriDelete(DeleteView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(UriDelete, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)

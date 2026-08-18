@@ -1,5 +1,4 @@
 import pandas as pd
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
@@ -12,10 +11,7 @@ def get_id(row, col):
 
 
 def is_greater(row, col_a, col_b):
-    if row[col_a] > row[col_b]:
-        return True
-    else:
-        return False
+    return row[col_a] > row[col_b]
 
 
 class Command(BaseCommand):
