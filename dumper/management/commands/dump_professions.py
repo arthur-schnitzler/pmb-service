@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 from django.conf import settings
@@ -15,7 +16,8 @@ class Command(BaseCommand):
     help = "Dump Profession Types as csv"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         items = ProfessionType.objects.all()
         data = []
         for x in items:
@@ -31,6 +33,6 @@ class Command(BaseCommand):
             data.append(item)
         df = pd.DataFrame(data)
         df.to_csv(SAVE_PATH, index=False)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

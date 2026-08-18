@@ -45,7 +45,7 @@ class VocabsBaseClass(models.Model):
         return self.label
 
     def save(self, *args, **kwargs):
-        d, created = VocabNames.objects.get_or_create(name=type(self).__name__)
+        d, _ = VocabNames.objects.get_or_create(name=type(self).__name__)
         self.vocab_name = d
         if self.name != unicodedata.normalize(
             "NFC", self.name
@@ -129,7 +129,6 @@ class WorkType(VocabsBaseClass):
     """Holds controlled vocabularies about work-types"""
 
 
-
 class Title(VocabsBaseClass):
     """A person´s (academic) title"""
 
@@ -158,25 +157,20 @@ class PlaceType(VocabsBaseClass):
     """Holds controlled vocabularies about place-types"""
 
 
-
 class InstitutionType(VocabsBaseClass):
     """Holds controlled vocabularies about institution-types"""
-
 
 
 class EventType(VocabsBaseClass):
     """Holds controlled vocabularies about event-types"""
 
 
-
 class LabelType(VocabsBaseClass):
     """Holds controlled vocabularies about label-types"""
 
 
-
 class CollectionType(VocabsBaseClass):
     """e.g. reseachCollection, importCollection"""
-
 
 
 class TextType(VocabsBaseClass):
@@ -313,25 +307,20 @@ class PersonPersonRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Persons"""
 
 
-
 class PersonPlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Places"""
-
 
 
 class PersonInstitutionRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Persons"""
 
 
-
 class PersonEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Events"""
 
 
-
 class PersonWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Persons and Works"""
-
 
 
 #######################################################################
@@ -343,20 +332,16 @@ class InstitutionEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Events."""
 
 
-
 class InstitutionPlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Places."""
-
 
 
 class InstitutionInstitutionRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Institutions."""
 
 
-
 class InstitutionWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Institutions and Works."""
-
 
 
 #######################################################################
@@ -368,15 +353,12 @@ class PlacePlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Places"""
 
 
-
 class PlaceEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Events"""
 
 
-
 class PlaceWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Places and Works"""
-
 
 
 #######################################################################
@@ -388,10 +370,8 @@ class EventEventRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Events and Events"""
 
 
-
 class EventWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Events and Works"""
-
 
 
 #######################################################################
@@ -401,4 +381,3 @@ class EventWorkRelation(AbstractRelationType):
 
 class WorkWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
-

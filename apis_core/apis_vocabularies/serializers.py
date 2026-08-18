@@ -53,7 +53,8 @@ class GenericVocabsSerializer(serializers.Serializer):
                 return f"{u.last_name}, {u.first_name}"
             else:
                 return str(u)
-        except:
+        except Exception as e:
+            print(e)
             return ""
 
     def add_vocabname(self, obj):

@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -14,7 +15,9 @@ class Command(BaseCommand):
     help = "Updates Edges"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         edges = Edge.objects.all()
         print(f"found {edges.count()} edges, going to delete those")
         edges._raw_delete(edges.db)
@@ -51,6 +54,6 @@ class Command(BaseCommand):
                 except Exception as e:
                     print(x, x.id, edge_kind, e)
         print(f"created {Edge.objects.all().count()} Edges")
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

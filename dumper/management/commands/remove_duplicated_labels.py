@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 from django.conf import settings
@@ -13,7 +14,8 @@ class Command(BaseCommand):
     help = "Removes duplicated labels"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         print("start removing duplicated labels")
         cols = [
             "temp_entity_id",
@@ -39,6 +41,6 @@ class Command(BaseCommand):
         end_count = Label.objects.all().count()
         print(f"{end_count} labels left")
         print(f"{start_count - end_count} labels deleted")
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

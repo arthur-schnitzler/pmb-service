@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -14,7 +15,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         DOMAIN_MAPPING = settings.DOMAIN_MAPPING
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         print("start fixing domains")
         domains = [x[1] for x in DOMAIN_MAPPING]
         wrong_domain = Uri.objects.exclude(domain__in=domains)
@@ -30,6 +32,6 @@ class Command(BaseCommand):
 
         wrong_domain = Uri.objects.exclude(domain__in=domains)
         print(f"now I found {wrong_domain.count()} with wrong or without domains")
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

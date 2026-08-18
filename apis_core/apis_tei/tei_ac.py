@@ -14,14 +14,13 @@ class TeiEntAc(autocomplete.Select2ListView):
         if ac_type == "org":
             ac_type = "institution"
         choices = []
-        headers = {"Content-Type": "application/json"}
         ent_model = AbstractEntity.get_entity_class_of_name(ac_type)
         q = self.q.strip()
 
         res = ent_model.objects.filter(name__startswith=q)
         for r in res[offset : offset + page_size]:
             dates = f"time: {r.start_date} - {r.end_date}"
-            f = dict()
+            f = {}
             f["id"] = f"{request.build_absolute_uri('/entity/')}{r.pk}"
             if ac_type == "institution":
                 f["type"] = "org"
@@ -44,14 +43,13 @@ class TeiCompleterAc(autocomplete.Select2ListView):
         if ac_type == "org":
             ac_type = "institution"
         choices = []
-        headers = {"Content-Type": "application/json"}
         ent_model = AbstractEntity.get_entity_class_of_name(ac_type)
         q = self.q.strip()
 
         res = ent_model.objects.filter(name__startswith=q)
         for r in res[offset : offset + page_size]:
             dates = f"time: {r.start_date} - {r.end_date}"
-            f = dict()
+            f = {}
             f["tc:value"] = f"{r.uri_set.all()[0]}"
             if ac_type == "institution":
                 ent_type = "org"

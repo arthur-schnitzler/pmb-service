@@ -23,8 +23,8 @@ def upload_files_to_owncloud(
 
     try:
         oc.mkdir(collection)
-    except:  # noqa: E722
-        pass
+    except Exception as e:
+        print(e)
 
     files = file_list
     for x in files:
@@ -36,7 +36,7 @@ def upload_files_to_owncloud(
 
 def write_report(report, report_file=settings.PMB_LOG_FILE):  # pragma: no cover
     with open(report_file, "a") as f:
-        f.write(f'{",".join(report)}\n')
+        f.write(f"{','.join(report)}\n")
         return "done"
 
 

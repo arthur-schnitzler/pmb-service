@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import lxml.etree as ET
 from django.conf import settings
@@ -41,8 +42,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
+        tz = ZoneInfo("Europe/Vienna")
         for key, value in ENTITY_MAP.items():
-            start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+            start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
             save_path = os.path.join(settings.MEDIA_ROOT, f"list{key}.xml")
             tei_doc = tei_header(
                 title=f"List{key.capitalize()}",
@@ -87,9 +89,9 @@ class Command(BaseCommand):
             print(
                 f"done serializing {items.count()} {key.capitalize()}s to {save_path}"
             )
-            files = list()
+            files = []
             files.append(save_path)
-            end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+            end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
             report = [f"{os.path.basename(__file__)}: {key}", start_time, end_time]
             write_report(report)
 

@@ -91,12 +91,11 @@ def get_context(res):
                 )
             except AttributeError:
                 pass
-    if isinstance(res, Place):
-        if pl_a_part_of and pl_b_located_in:
-            try:
-                context["pl_located_in"] = get_part_of_relation(res)
-            except ValueError:
-                pass
+    if isinstance(res, Place) and pl_a_part_of and pl_b_located_in:
+        try:
+            context["pl_located_in"] = get_part_of_relation(res)
+        except ValueError:
+            pass
     return context
 
 

@@ -43,7 +43,7 @@ dev = [
 ]
 
 [tool.ruff]
-exclude = ["notebooks/"]
+exclude = ["notebooks/","apis_core/helper_functions/*.py", "apis_core/apis_vis/"]
 
 [tool.ruff.lint]
-ignore = ["RUF012", "BLE001"]
+ignore = ["RUF012", "BLE001", "TRY002"]

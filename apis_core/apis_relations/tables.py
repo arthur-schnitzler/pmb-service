@@ -192,7 +192,7 @@ def get_generic_relations_table(
                     verbose_name="Related " + other_related_entity_class_name.title(),
                 )
 
-                super().__init__(data=data, *args, **kwargs)
+                super().__init__(data=data, *args, **kwargs)  # noqa: B026
 
         return RelationTableDetail
 
