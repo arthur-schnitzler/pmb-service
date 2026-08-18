@@ -112,7 +112,7 @@ class GenericListFilter(django_filters.FilterSet):
                 elif type(enabled_filter) == dict:
                     # if a dictionary, then look further into if there is a method or label which overrides the defaults
 
-                    enabled_filter_key = list(enabled_filter.keys())[0]
+                    enabled_filter_key = list(enabled_filter.keys())[0]  # noqa: RUF015
 
                     if enabled_filter_key in default_filter_dict:
                         # get the dictionary which contains potential method or label overrides
@@ -121,14 +121,14 @@ class GenericListFilter(django_filters.FilterSet):
                         ]
 
                         if "method" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].method = (
-                                enabled_filter_settings_dict["method"]
-                            )
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].method = enabled_filter_settings_dict["method"]
 
                         if "label" in enabled_filter_settings_dict:
-                            default_filter_dict[enabled_filter_key].label = (
-                                enabled_filter_settings_dict["label"]
-                            )
+                            default_filter_dict[
+                                enabled_filter_key
+                            ].label = enabled_filter_settings_dict["label"]
 
                         filter_dict_tmp[enabled_filter_key] = default_filter_dict[
                             enabled_filter_key

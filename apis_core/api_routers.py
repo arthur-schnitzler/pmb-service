@@ -334,8 +334,8 @@ def generic_serializer_creation_factory():
             else:
                 filter_fields[field.name] = ["exact"]
         additional_filters = getattr(settings, "APIS_API_ADDITIONAL_FILTERS", False)
-        if additional_filters:
-            if entity_str in additional_filters.keys():
+        if additional_filters:  # noqa: SIM102
+            if entity_str in additional_filters:
                 for f1 in additional_filters[entity_str]:
                     if f1[0] not in filter_fields:
                         filter_fields[f1[0]] = f1[1]
@@ -396,6 +396,6 @@ def generic_serializer_creation_factory():
         views[f"{entity_str.lower().replace(' ', '')}"] = TemplateViewSet
 
 
-serializers_dict = dict()
-views = dict()
+serializers_dict = {}
+views = {}
 generic_serializer_creation_factory()

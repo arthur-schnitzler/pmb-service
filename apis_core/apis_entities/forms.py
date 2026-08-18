@@ -99,7 +99,7 @@ def get_entities_form(entity):
             # list to catch all fields that will not be inserted into accordion group acc_grp2
             fields_list_unsorted = []
 
-            for f in self.fields.keys():
+            for f in self.fields:
                 if isinstance(
                     self.fields[f], (ModelMultipleChoiceField, ModelChoiceField)
                 ):
@@ -281,7 +281,7 @@ def get_entities_form(entity):
                 col_name = getattr(
                     settings, "APIS_DEFAULT_COLLECTION", "manually created entity"
                 )
-                col, created = Collection.objects.get_or_create(name=col_name)
+                col, _ = Collection.objects.get_or_create(name=col_name)
                 obj.collection.add(col)
             return obj
 

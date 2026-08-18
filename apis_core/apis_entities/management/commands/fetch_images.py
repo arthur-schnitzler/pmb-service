@@ -2,6 +2,7 @@ import os
 import time
 import warnings
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -17,7 +18,8 @@ class Command(BaseCommand):
     help = "fetches images for persons"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         items = TempEntityClass.objects.filter(
             uri__domain__icontains="wikidata"
         ).filter(img_last_checked__isnull=True)
@@ -31,6 +33,6 @@ class Command(BaseCommand):
                 print(x.id, e)
                 continue
             time.sleep(0.5)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

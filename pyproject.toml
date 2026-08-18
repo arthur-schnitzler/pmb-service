@@ -36,14 +36,15 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    "jupyterlab>=4.5.5",
-    "notebook>=7.5.4",
-    "ruff>=0.16.3",
-]
+dev = ["jupyterlab>=4.5.5", "notebook>=7.5.4", "ruff>=0.16.3"]
 
 [tool.ruff]
-exclude = ["notebooks/","apis_core/helper_functions/*.py", "apis_core/apis_vis/"]
+exclude = [
+    "notebooks/",
+    "apis_core/helper_functions/*.py",
+    "apis_core/apis_vis/",
+    "apis_core/apis_entities/managers.py",
+]
 
 [tool.ruff.lint]
 ignore = ["RUF012", "BLE001", "TRY002", "EXE001"]

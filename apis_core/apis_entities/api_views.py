@@ -7,6 +7,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
+from apis_core.api_routers import EntitySerializer
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 
 from .api_renderers import (
@@ -18,11 +19,11 @@ class GetEntityGeneric(GenericAPIView):
     queryset = TempEntityClass.objects.all()
     renderer_classes = tuple(api_settings.DEFAULT_RENDERER_CLASSES) + (EntityToTEI,)
     if getattr(settings, "APIS_RENDERERS", None) is not None:
-        rend_add = tuple()
+        rend_add = ()
         for rd in settings.APIS_RENDERERS:
             rend_mod = __import__(rd)
-            for name, cls in rend_mod.__dict__.items():
-                rend_add + (cls,)
+            for cur_class in rend_mod.__dict__.values():
+                rend_add + (cur_class,)
         renderer_classes += rend_add
 
     def get_object(self, pk, request):
@@ -42,7 +43,7 @@ class GetEntityGeneric(GenericAPIView):
         data_view = request.GET.get("data-view", False)
         format_param = request.GET.get("format", False)
         requested_format = request.META.get("HTTP_ACCEPT")
-        if requested_format is not None:
+        if requested_format is not None:  # noqa: SIM102
             if (
                 requested_format.startswith("text/html")
                 and not data_view
@@ -69,7 +70,10 @@ def uri_resolver(request):
                 kwargs={"pk": uri.entity_id, "entity": c_name.lower()},
             )
         else:
-            url = reverse(
-                "apis_core:apis_api2:GetEntityGeneric", kwargs={"pk": uri.entity_id}
-            ) + f"?format={f}"
+            url = (
+                reverse(
+                    "apis_core:apis_api2:GetEntityGeneric", kwargs={"pk": uri.entity_id}
+                )
+                + f"?format={f}"
+            )
         return redirect(url)

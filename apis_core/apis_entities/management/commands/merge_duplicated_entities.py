@@ -11,10 +11,7 @@ def get_id(row, col):
 
 
 def is_greater(row, col_a, col_b):
-    if row[col_a] > row[col_b]:
-        return True
-    else:
-        return False
+    return row[col_a] > row[col_b]
 
 
 class Command(BaseCommand):

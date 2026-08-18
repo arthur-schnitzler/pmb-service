@@ -17,7 +17,7 @@ class NetJsonRenderer(renderers.JSONRenderer):
             )
         if test:
             rel = test.group(1)
-            for r in data["results"][0].keys():
+            for r in data["results"][0]:
                 if r.startswith("related_"):
                     r2 = r.split("_")[1]
                     rel2 = re.match(f"^{r2}[a-z]*", rel)
@@ -35,7 +35,9 @@ class NetJsonRenderer(renderers.JSONRenderer):
                         (
                             ("target", v)
                             if k == target
-                            else ("source", v) if k == source else (k, v)
+                            else ("source", v)
+                            if k == source
+                            else (k, v)
                         )
                         for k, v in d.items()
                     ]

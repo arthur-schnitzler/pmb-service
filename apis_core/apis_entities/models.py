@@ -508,7 +508,7 @@ class Person(AbstractEntity):
     )
 
     def save(self, *args, **kwargs):
-        if self.first_name:
+        if self.first_name:  # noqa: SIM102
             # secure correct unicode encoding
             if self.first_name != unicodedata.normalize("NFC", self.first_name):
                 self.first_name = unicodedata.normalize("NFC", self.first_name)

@@ -39,7 +39,7 @@ class CustomEntityAutocompletes:
             self.results = None
             return
         res = []
-        more = dict()
+        more = {}
         more_gen = False
         for x in func_list[entity]:
             res2 = x().query(query, page_size, offset)
@@ -139,11 +139,11 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
                 if int(r.pk) == int(ent_merge_pk):
                     continue
 
-                f = dict()
+                f = {}
                 dataclass = ""
                 try:
                     f["id"] = r.id
-                except:
+                except AttributeError:
                     continue
                 f["text"] = (
                     f"<span {dataclass}><small>db</small> <b>{r!s}</b> <small>db-ID: {r.id!s}</small> </span> "
