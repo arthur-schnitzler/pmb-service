@@ -42,7 +42,6 @@ dev = ["jupyterlab>=4.5.5", "notebook>=7.5.4", "ruff>=0.16.3"]
 exclude = [
     "notebooks/",
     "apis_core/helper_functions/*.py",
-    "apis_core/apis_vis/",
     "apis_core/apis_entities/managers.py",
 ]
 
