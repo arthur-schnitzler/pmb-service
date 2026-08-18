@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import networkx as nx
 import pandas as pd
@@ -18,7 +19,8 @@ class Command(BaseCommand):
     help = "Dumps all relations into a csv"
 
     def handle(self, *args: Any, **options: Any) -> str | None:
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         print("dumping all relations into a csv")
 
         data = []
@@ -69,7 +71,7 @@ class Command(BaseCommand):
         relations_csv = os.path.join(settings.MEDIA_ROOT, "relations.csv")
         df.to_csv(relations_csv, index=False)
         print(f"serialized {len(df)} relations")
-        files = list()
+        files = []
         files.append(relations_csv)
 
         print("and now serialize relations as network graph")
@@ -135,7 +137,7 @@ class Command(BaseCommand):
         files.append(edges_file)
 
         data = []
-        for key, value in nodes.items():
+        for value in nodes.values():
             data.append(value)
 
         df = pd.DataFrame(data)
@@ -151,7 +153,7 @@ class Command(BaseCommand):
         except Exception as e:
             ic(e)
 
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)
         return "done"

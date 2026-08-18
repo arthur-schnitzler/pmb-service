@@ -666,7 +666,7 @@ a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
 
 
 def prepare_fields_dict(fields_list, vocabs, vocabs_m2m):
-    res = dict()
+    res = {}
     for f in fields_list:
         res[f["name"]] = getattr(models, f["field_type"])(**f["attributes"])
     for v in vocabs:

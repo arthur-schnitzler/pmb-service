@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 from acdh_wikidata_pyutils import fetch_image
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
@@ -26,6 +27,8 @@ DEFAULT_COLOR = settings.DEFAULT_COLOR
 DATE_ORDER_VALIDATION_MESSAGE = (
     "Das End-Datum muss gleich oder später als das Start-Datum sein."
 )
+
+tz = ZoneInfo("Europe/Vienna")
 
 
 def to_iso_like(value: str) -> str:
@@ -173,7 +176,7 @@ class TempEntityClass(models.Model):
             self.name = unicodedata.normalize("NFC", self.name)
 
         if self.img_url and not self.img_last_checked:
-            self.img_last_checked = datetime.now()
+            self.img_last_checked = datetime.now(tz=tz)
         if self.img_url is None:
             self.img_last_checked = None
 
@@ -196,16 +199,16 @@ class TempEntityClass(models.Model):
         wikidata_uri = self.uri_set.filter(domain__icontains="wikidata").first()
         if override and wikidata_uri:
             img_url = fetch_image(wikidata_uri.uri)
-            self.img_last_checked = datetime.now()
-            if img_url:
+            self.img_last_checked = datetime.now(tz=tz)
+            if img_url:  # noqa: SIM102
                 if len(img_url) < 301:
                     self.img_url = img_url
                     print(self.id, img_url)
             self.save()
         if wikidata_uri and self.img_url is None and not self.img_last_checked:
-            self.img_last_checked = datetime.now()
+            self.img_last_checked = datetime.now(tz=tz)
             img_url = fetch_image(wikidata_uri.uri)
-            if img_url:
+            if img_url:  # noqa: SIM102
                 if len(img_url) < 301:
                     self.img_url = img_url
             self.save()
@@ -224,7 +227,10 @@ class TempEntityClass(models.Model):
     def img_credit_label(self):
         credit = None
         if self.img_url is not None:
-            if "commons.wikimedia.org/w/index" in self.img_url or "thumb" in self.img_url:
+            if (
+                "commons.wikimedia.org/w/index" in self.img_url
+                or "thumb" in self.img_url
+            ):
                 return "Wikimedia Commons"
             elif "AKON" in self.img_url:
                 credit = "AKON"
@@ -235,9 +241,8 @@ class TempEntityClass(models.Model):
     def clean_start_date_written(self):
         if self.start_date_written:
             clean_date = self.start_date_written
-            if self.start_date_written:
-                if "<" in self.start_date_written:
-                    clean_date = self.start_date_written.split("<")[0]
+            if "<" in self.start_date_written:
+                clean_date = self.start_date_written.split("<")[0]
             return clean_date.strip()
         else:
             return ""
@@ -245,9 +250,8 @@ class TempEntityClass(models.Model):
     def clean_end_date_written(self):
         if self.end_date_written:
             clean_date = self.end_date_written
-            if self.end_date_written:
-                if "<" in self.end_date_written:
-                    clean_date = self.end_date_written.split("<")[0]
+            if "<" in self.end_date_written:
+                clean_date = self.end_date_written.split("<")[0]
             return clean_date.strip()
         else:
             return ""
@@ -358,9 +362,7 @@ class TempEntityClass(models.Model):
         if not isinstance(entities, list) and not isinstance(entities, QuerySet):
             entities = [entities]
             entities = [
-                (
-                    self_model_class.objects.get(pk=ent) if type(ent) == int else ent
-                )
+                (self_model_class.objects.get(pk=ent) if type(ent) == int else ent)
                 for ent in entities
             ]
         entities = [x for x in entities if x.id > self.pk]
@@ -388,7 +390,7 @@ class TempEntityClass(models.Model):
                 raise ValueError("You can not merge an entity with itself")
             if e_a != e_b:
                 continue
-            lt, created = LabelType.objects.get_or_create(name="Legacy name (merge)")
+            lt, _ = LabelType.objects.get_or_create(name="Legacy name (merge)")
             col_list = list(self.collection.all())
             for col2 in ent.collection.all():
                 if col2 not in col_list:
@@ -436,8 +438,10 @@ class TempEntityClass(models.Model):
             # Only inherit the lifespan when the target has none at all, and
             # copy both dates together: the merged entity is internally
             # consistent, so this can never produce an invalid date range.
-            if not self.start_date_written and not self.end_date_written and (
-                ent.start_date_written or ent.end_date_written
+            if (
+                not self.start_date_written
+                and not self.end_date_written
+                and (ent.start_date_written or ent.end_date_written)
             ):
                 self.start_date_written = ent.start_date_written
                 self.end_date_written = ent.end_date_written
@@ -448,8 +452,10 @@ class TempEntityClass(models.Model):
                 hasattr(self, "lat")
                 and self.lat is None
                 and self.lng is None
-                and (getattr(ent, "lat", None) is not None
-                     or getattr(ent, "lng", None) is not None)
+                and (
+                    getattr(ent, "lat", None) is not None
+                    or getattr(ent, "lng", None) is not None
+                )
             ):
                 self.lat = ent.lat
                 self.lng = ent.lng

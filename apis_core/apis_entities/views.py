@@ -56,9 +56,8 @@ class GenericEntitiesEditView(View):
             object_count = objects.count()
             disable_sort = False
             if object_count > 20:
-                if object_count > 20:
-                    objects = objects[:20]
-                    disable_sort = True
+                objects = objects[:20]
+                disable_sort = True
             table = get_generic_relations_table(
                 relation_class=rel,
                 entity_instance=instance,

@@ -256,7 +256,7 @@ class EntitiesTestCase(TestCase):
             entity_type = f"{x.__name__.lower()}"
             if entity_type in ENTITY_TYPES:
                 try:
-                    item, created = x.objects.get_or_create(**DUMMY_OBJECT)
+                    item, _ = x.objects.get_or_create(**DUMMY_OBJECT)
                 except Exception:
                     item = x.objects.filter(name="test").first()
                 url = reverse(
@@ -708,9 +708,7 @@ class DomainCrossingTestCase(TestCase):
     def test_union(self):
         response = client.get(f"{self.url}?type=person&mode=union&d=gnd&d=wikidata")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            self._names(response), {"Both", "GndOnly", "WikiOnly"}
-        )
+        self.assertEqual(self._names(response), {"Both", "GndOnly", "WikiOnly"})
 
     def test_difference(self):
         response = client.get(
