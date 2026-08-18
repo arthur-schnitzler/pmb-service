@@ -1,23 +1,24 @@
 from django.urls import path
 
-from . import views
-from . import person_place_relation_views
-from . import person_work_relation_views
-from . import person_person_relation_views
-from . import person_institution_relation_views
-from . import person_event_relation_views
-from . import place_place_relation_views
-from . import place_event_relation_views
-from . import place_work_relation_views
-from . import institution_institution_relation_views
-from . import institution_place_relation_views
-from . import institution_work_relation_views
-from . import institution_event_relation_views
-from . import event_event_relation_views
-from . import event_work_relation_views
-from . import work_work_relation_views
-from .views import copy_relation, GenericRelationDeleteView
-
+from . import (
+    event_event_relation_views,
+    event_work_relation_views,
+    institution_event_relation_views,
+    institution_institution_relation_views,
+    institution_place_relation_views,
+    institution_work_relation_views,
+    person_event_relation_views,
+    person_institution_relation_views,
+    person_person_relation_views,
+    person_place_relation_views,
+    person_work_relation_views,
+    place_event_relation_views,
+    place_place_relation_views,
+    place_work_relation_views,
+    views,
+    work_work_relation_views,
+)
+from .views import GenericRelationDeleteView, copy_relation
 
 app_name = "apis_relations"
 

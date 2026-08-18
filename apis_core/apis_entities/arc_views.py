@@ -1,9 +1,9 @@
 import pandas as pd
-from django.views.generic import TemplateView
 from django.http import JsonResponse
-from apis_core.apis_entities.models import Person
-from apis_core.apis_entities.list_view_person import PersonListFilter
+from django.views.generic import TemplateView
 
+from apis_core.apis_entities.list_view_person import PersonListFilter
+from apis_core.apis_entities.models import Person
 from network.utils import iso_to_lat_long
 
 

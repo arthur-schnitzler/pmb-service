@@ -2,14 +2,12 @@ import inspect
 import re
 
 from django.apps import apps
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template import loader
 from django.views.generic.edit import DeleteView
-
 
 from apis_core.apis_entities.models import (
     AbstractEntity,
@@ -156,15 +154,13 @@ def get_form_ajax(request):
     form_match2 = re.match(r"([A-Z][a-z]+)(Highlighter)?Form", FormName)
     if FormName and form_match:
         entity_type_v1 = ContentType.objects.filter(
-            model="{}{}".format(
-                form_match.group(1).lower(), form_match.group(2)
-            ).lower(),
+            model=f"{form_match.group(1).lower()}{form_match.group(2)}".lower(),
             app_label="apis_relations",
         )
         entity_type_v2 = ContentType.objects.none()
     elif FormName and form_match2:
         entity_type_v2 = ContentType.objects.filter(
-            model="{}".format(form_match.group(1).lower(), app_label="apis_entities")
+            model=f"{form_match.group(1).lower()}"
         )
         entity_type_v1 = ContentType.objects.none()
     else:
@@ -180,14 +176,12 @@ def get_form_ajax(request):
         d = entity_type_v2[0].model_class().objects.get(pk=ObjectID)
         form_dict = {"instance": d, "siteID": SiteID, "entity_type": entity_type_str}
     else:
-        if FormName not in registered_forms.keys():
+        if FormName not in registered_forms:
             raise Http404
         d = registered_forms[FormName][0].objects.get(pk=ObjectID)
         form_dict = {"instance": d, "siteID": SiteID, "entity_type": entity_type_str}
     if entity_type_v1.count() > 0:
-        form_dict["relation_form"] = "{}{}".format(
-            form_match.group(1), form_match.group(2)
-        )
+        form_dict["relation_form"] = f"{form_match.group(1)}{form_match.group(2)}"
         form = GenericRelationForm(**form_dict)
     else:
         form_class = form_class_dict[FormName]
@@ -210,7 +204,7 @@ def get_form_ajax(request):
 @login_required
 def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     """Tests validity and saves AjaxForms, returns them when validity test fails"""
-    if kind_form not in registered_forms.keys():
+    if kind_form not in registered_forms:
         raise Http404
     entity_type_str = entity_type
     entity_type = AbstractEntity.get_entity_class_of_name(entity_type)
@@ -219,7 +213,7 @@ def save_ajax_form(request, entity_type, kind_form, SiteID, ObjectID=False):
     form_dict = {"data": request.POST, "entity_type": entity_type, "request": request}
 
     test_form_relations = ContentType.objects.filter(
-        model="{}{}".format(form_match.group(1).lower(), form_match.group(2)).lower(),
+        model=f"{form_match.group(1).lower()}{form_match.group(2)}".lower(),
         app_label="apis_relations",
     )
     tab = re.match(r"(.*)Form", kind_form).group(1)

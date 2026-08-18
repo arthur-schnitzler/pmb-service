@@ -14,21 +14,20 @@ class TeiEntAc(autocomplete.Select2ListView):
         if ac_type == "org":
             ac_type = "institution"
         choices = []
-        headers = {"Content-Type": "application/json"}
         ent_model = AbstractEntity.get_entity_class_of_name(ac_type)
         q = self.q.strip()
 
         res = ent_model.objects.filter(name__startswith=q)
         for r in res[offset : offset + page_size]:
-            dates = "time: {} - {}".format(r.start_date, r.end_date)
-            f = dict()
+            dates = f"time: {r.start_date} - {r.end_date}"
+            f = {}
             f["id"] = f"{request.build_absolute_uri('/entity/')}{r.pk}"
             if ac_type == "institution":
                 f["type"] = "org"
             else:
-                f["type"] = "{}".format(ac_type)
-            f["name"] = "{}".format(str(r))
-            f["description"] = "{}".format(dates)
+                f["type"] = f"{ac_type}"
+            f["name"] = f"{r!s}"
+            f["description"] = f"{dates}"
             choices.append(f)
         return http.HttpResponse(
             json.dumps({"item": choices + [], "pagination": {"more": True}}),
@@ -44,21 +43,20 @@ class TeiCompleterAc(autocomplete.Select2ListView):
         if ac_type == "org":
             ac_type = "institution"
         choices = []
-        headers = {"Content-Type": "application/json"}
         ent_model = AbstractEntity.get_entity_class_of_name(ac_type)
         q = self.q.strip()
 
         res = ent_model.objects.filter(name__startswith=q)
         for r in res[offset : offset + page_size]:
-            dates = "time: {} - {}".format(r.start_date, r.end_date)
-            f = dict()
-            f["tc:value"] = "{}".format(r.uri_set.all()[0])
+            dates = f"time: {r.start_date} - {r.end_date}"
+            f = {}
+            f["tc:value"] = f"{r.uri_set.all()[0]}"
             if ac_type == "institution":
                 ent_type = "org"
             else:
-                ent_type = "{}".format(ac_type)
+                ent_type = f"{ac_type}"
             f["tc:description"] = (
-                f"name: {str(r)}, type: {ent_type}, dates: {dates}".format(dates)
+                f"name: {r!s}, type: {ent_type}, dates: {dates}".format(dates)
             )
             choices.append(f)
         return http.HttpResponse(

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit
@@ -32,7 +31,7 @@ class MergeForm(forms.Form):
             "style": "width: auto",
         }
         ent_merge_pk = kwargs.pop("ent_merge_pk", False)
-        super(MergeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.entity = entity
         self.helper = FormHelper()
         form_kwargs = {"entity": entity}
@@ -40,7 +39,7 @@ class MergeForm(forms.Form):
             "apis:apis_entities:generic_entities_autocomplete",
             args=[entity.title(), "remove"],
         )
-        label = "Create {} from reference resources".format(entity.title())
+        label = f"Create {entity.title()} from reference resources"
         button_label = "Create"
         if ent_merge_pk:
             form_kwargs["ent_merge_pk"] = ent_merge_pk
@@ -84,12 +83,12 @@ def get_entities_form(entity):
             exclude.extend(model.get_related_relationtype_field_names())
 
         def __init__(self, *args, **kwargs):
-            super(GenericEntitiesForm, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.helper = FormHelper()
             self.helper.form_class = entity.title() + "Form"
             self.helper.form_tag = False
             self.helper.help_text_inline = True
-            acc_grp1 = Fieldset("Metadata {}".format(entity.title()))
+            acc_grp1 = Fieldset(f"Metadata {entity.title()}")
             acc_grp2 = AccordionGroup("MetaInfo", "references", "notes", "review")
             attrs = {
                 "data-placeholder": "Tippe um Vorschläge zu bekommen",
@@ -100,7 +99,7 @@ def get_entities_form(entity):
             # list to catch all fields that will not be inserted into accordion group acc_grp2
             fields_list_unsorted = []
 
-            for f in self.fields.keys():
+            for f in self.fields:
                 if isinstance(
                     self.fields[f], (ModelMultipleChoiceField, ModelChoiceField)
                 ):
@@ -277,12 +276,12 @@ def get_entities_form(entity):
             return cleaned_data
 
         def save(self, *args, **kwargs):
-            obj = super(GenericEntitiesForm, self).save(*args, **kwargs)
+            obj = super().save(*args, **kwargs)
             if obj.collection.all().count() == 0:
                 col_name = getattr(
                     settings, "APIS_DEFAULT_COLLECTION", "manually created entity"
                 )
-                col, created = Collection.objects.get_or_create(name=col_name)
+                col, _ = Collection.objects.get_or_create(name=col_name)
                 obj.collection.add(col)
             return obj
 

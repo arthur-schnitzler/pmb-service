@@ -1,16 +1,15 @@
 import os
+from io import BytesIO
 
 import owncloud
 import pandas as pd
 import requests
-from io import BytesIO
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from tqdm import tqdm
 
 from apis_core.apis_metainfo.models import Uri
-
 
 PMB_ENTITIES = "pmb_entities"
 
@@ -24,8 +23,8 @@ def upload_files_to_owncloud(
 
     try:
         oc.mkdir(collection)
-    except:  # noqa: E722
-        pass
+    except Exception as e:
+        print(e)
 
     files = file_list
     for x in files:
@@ -37,7 +36,7 @@ def upload_files_to_owncloud(
 
 def write_report(report, report_file=settings.PMB_LOG_FILE):  # pragma: no cover
     with open(report_file, "a") as f:
-        f.write(f'{",".join(report)}\n')
+        f.write(f"{','.join(report)}\n")
         return "done"
 
 

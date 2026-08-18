@@ -1,11 +1,11 @@
 import os
-from tqdm import tqdm
-
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from acdh_geonames_utils.gn_client import gn_as_object
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
 from apis_core.apis_entities.models import Place
 from apis_core.apis_vocabularies.models import PlaceType
@@ -16,7 +16,8 @@ class Command(BaseCommand):
     help = "adds geonames feature codes to places with geoname uris"
 
     def handle(self, *args, **kwargs):
-        start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        tz = ZoneInfo("Europe/Vienna")
+        start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         print("start adding geoname feature codes")
         cols = ["id", "uri__domain", "uri__uri", "kind__description"]
         places = (
@@ -51,6 +52,6 @@ class Command(BaseCommand):
         )
         places.count()
         print(place.id)
-        end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+        end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]
         write_report(report)

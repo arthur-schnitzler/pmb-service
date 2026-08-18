@@ -187,39 +187,39 @@ class GenericRelationForm(forms.ModelForm):
                 self.relation_form
             )
         self.request = kwargs.pop("request", False)
-        super(GenericRelationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
         self.fields["relation_type"] = forms.CharField(
             label="Relation type", required=True
         )
         self.helper = FormHelper()
-        self.helper.form_class = "{}Form".format(str(self.relation_form))
+        self.helper.form_class = f"{self.relation_form!s}Form"
         self.helper.form_tag = False
         lst_src_target = re.findall("[A-Z][^A-Z]*", self.relation_form.__name__)
         if lst_src_target[0] == lst_src_target[1]:
             if instance and instance.id:
                 if getattr(
-                    instance, "related_{}a_id".format(lst_src_target[0].lower())
+                    instance, f"related_{lst_src_target[0].lower()}a_id"
                 ) == int(siteID):
                     self.rel_accessor = (
                         lst_src_target[1],
                         True,
-                        "related_{}b".format(lst_src_target[1].lower()),
-                        "related_{}a".format(lst_src_target[0].lower()),
+                        f"related_{lst_src_target[1].lower()}b",
+                        f"related_{lst_src_target[0].lower()}a",
                     )
                 else:
                     self.rel_accessor = (
                         lst_src_target[1],
                         False,
-                        "related_{}a".format(lst_src_target[1].lower()),
-                        "related_{}b".format(lst_src_target[0].lower()),
+                        f"related_{lst_src_target[1].lower()}a",
+                        f"related_{lst_src_target[0].lower()}b",
                     )
             else:
                 self.rel_accessor = (
                     lst_src_target[1],
                     True,
-                    "related_{}b".format(lst_src_target[1].lower()),
-                    "related_{}a".format(lst_src_target[0].lower()),
+                    f"related_{lst_src_target[1].lower()}b",
+                    f"related_{lst_src_target[0].lower()}a",
                 )
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
@@ -256,8 +256,8 @@ class GenericRelationForm(forms.ModelForm):
             self.rel_accessor = (
                 lst_src_target[1],
                 True,
-                "related_{}".format(lst_src_target[1].lower()),
-                "related_{}".format(lst_src_target[0].lower()),
+                f"related_{lst_src_target[1].lower()}",
+                f"related_{lst_src_target[0].lower()}",
             )
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
@@ -295,8 +295,8 @@ class GenericRelationForm(forms.ModelForm):
             self.rel_accessor = (
                 lst_src_target[0],
                 False,
-                "related_{}".format(lst_src_target[0].lower()),
-                "related_{}".format(lst_src_target[1].lower()),
+                f"related_{lst_src_target[0].lower()}",
+                f"related_{lst_src_target[1].lower()}",
             )
             self.fields["relation_type"] = autocomplete.Select2ListCreateChoiceField(
                 label="Relation type",
@@ -379,9 +379,7 @@ class GenericRelationForm(forms.ModelForm):
                     "notes",
                     "references",
                     active=False,
-                    css_id="{}_{}_notes_refs".format(
-                        self.relation_form.__name__, css_notes
-                    ),
+                    css_id=f"{self.relation_form.__name__}_{css_notes}_notes_refs",
                 )
             ),
         )

@@ -29,7 +29,7 @@ def reconcile(request):
         response = {}
         data = request.POST
         print(data)
-        if "queries" in data.keys():
+        if "queries" in data:
             data_dict = json.loads(data.get("queries"))
             response = {}
             for key, value in data_dict.items():
@@ -62,7 +62,7 @@ def reconcile(request):
                 ]
                 item = {"result": matches}
                 response[key] = item
-        elif "extend" in data.keys():
+        elif "extend" in data:
             extend = json.loads(data.get("extend"))
             props = extend["properties"]
             ids = extend["ids"]

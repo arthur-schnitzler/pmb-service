@@ -1,8 +1,8 @@
 import pandas as pd
-from tqdm import tqdm
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
-from apis_core.apis_metainfo.models import Uri, TempEntityClass
+from apis_core.apis_metainfo.models import TempEntityClass, Uri
 
 
 class Command(BaseCommand):
@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--url',
             type=str,
-            default="https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-briefe-data/refs/heads/main/csv/uris-in-use.csv",  # noqa: E501
+            default="https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-briefe-data/refs/heads/main/csv/uris-in-use.csv",
             help="CSV URL to use"
         )
 

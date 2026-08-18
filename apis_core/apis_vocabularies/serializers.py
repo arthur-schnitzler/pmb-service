@@ -53,14 +53,15 @@ class GenericVocabsSerializer(serializers.Serializer):
                 return f"{u.last_name}, {u.first_name}"
             else:
                 return str(u)
-        except:
+        except Exception as e:
+            print(e)
             return ""
 
     def add_vocabname(self, obj):
         return str(obj.__class__.__name__)
 
     def __init__(self, *args, **kwargs):
-        super(GenericVocabsSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if type(self.instance) == QuerySet:
             rt = self.instance[0]
         else:

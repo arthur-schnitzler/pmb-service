@@ -1,7 +1,11 @@
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
+
+import lxml.etree as ET
 import pandas as pd
 from django.utils.text import slugify
-import lxml.etree as ET
-from datetime import datetime, date
+
+tz = ZoneInfo("Europe/Vienna")
 
 
 def relation_row_to_tei(row: pd.core.series.Series) -> str:
@@ -83,20 +87,25 @@ def iso_to_lat_long(
         max_width = 180
     elif max_width < 0:
         max_width = 1
-    else:
-        max_width = max_width
+
     try:
         # Ensure iso_date is a datetime.date object
         if isinstance(iso_date, str):
-            date_obj = datetime.strptime(iso_date, "%Y-%m-%d").date()
+            date_obj = (
+                datetime.strptime(iso_date, "%Y-%m-%d").astimezone(datetime.UTC).date()
+            )
         elif isinstance(iso_date, date):
             date_obj = iso_date
         else:
-            raise ValueError("Invalid input type. Must be a string or datetime.date.")
+            raise TypeError("Invalid input type. Must be a string or datetime.date.")
 
         # Convert start_date and end_date to datetime.date objects
-        start_date_obj = datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
+        start_date_obj = (
+            datetime.strptime(start_date, "%Y-%m-%d").astimezone(datetime.UTC).date()
+        )
+        end_date_obj = (
+            datetime.strptime(end_date, "%Y-%m-%d").astimezone(datetime.UTC).date()
+        )
 
         # Ensure date_obj is within range
         if not (start_date_obj <= date_obj <= end_date_obj):
@@ -110,8 +119,8 @@ def iso_to_lat_long(
         # Longitude: Inverted position of the day within the year (0–180)
         day_of_year = date_obj.timetuple().tm_yday
         days_in_year = (
-            date(datetime(date_obj.year, 12, 31).year, 12, 31)
-            - date(datetime(date_obj.year, 1, 1).year, 1, 1)
+            date(datetime(date_obj.year, 12, 31, tzinfo=tz).year, 12, 31)
+            - date(datetime(date_obj.year, 1, 1, tzinfo=tz).year, 1, 1)
         ).days + 1
         day_position = (
             day_of_year - 1

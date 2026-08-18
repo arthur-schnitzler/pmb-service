@@ -1,8 +1,9 @@
 import os
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-from acdh_id_reconciler import gnd_to_wikidata, geonames_to_gnd
+from acdh_id_reconciler import geonames_to_gnd, gnd_to_wikidata
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -16,6 +17,7 @@ class Command(BaseCommand):
     help = "mint WikiData IDs for GND-URIs"
 
     def handle(self, *args, **kwargs):
+        tz = ZoneInfo("Europe/Vienna")
         LIMIT = 150
         USER_AGENT_PMB = "pmb (https://pmb.acdh.oeaw.ac.at)"
         col, _ = Collection.objects.get_or_create(name="No WikiData-ID found")
@@ -30,7 +32,7 @@ class Command(BaseCommand):
         types = ["d-nb.info", "geonames"]
         for uri_type in types:
             print(f"processing URIS with type: {uri_type}")
-            start_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+            start_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
             ents = (
                 TempEntityClass.objects.filter(uri__uri__icontains=uri_type)
                 .exclude(uri__uri__icontains="wikidata")
@@ -68,6 +70,6 @@ class Command(BaseCommand):
             )
             mgs = f"{uris_to_process.count()} left"
             print(mgs)
-            end_time = datetime.now().strftime(settings.PMB_TIME_PATTERN)
+            end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
             report = [os.path.basename(__file__), start_time, end_time]
             write_report(report)

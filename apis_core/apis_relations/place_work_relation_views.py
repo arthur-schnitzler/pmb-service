@@ -1,17 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
-
-from apis_core.apis_vocabularies.models import PlaceWorkRelation
-from apis_core.apis_relations.models import PlaceWork
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
+from apis_core.apis_relations.models import PlaceWork
 from apis_core.apis_relations.utils import (
-    generate_relation_form,
-    generate_relation_filter_formhelper,
     generate_relation_filter,
+    generate_relation_filter_formhelper,
+    generate_relation_form,
     generate_relation_table,
 )
+from apis_core.apis_vocabularies.models import PlaceWorkRelation
+from browsing.browsing_utils import BaseCreateView, BaseUpdateView, GenericListView
 
 
 class PlaceWorkCreate(BaseCreateView):
@@ -24,7 +23,7 @@ class PlaceWorkCreate(BaseCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PlaceWorkCreate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class PlaceWorkUpdate(BaseUpdateView):
@@ -37,7 +36,7 @@ class PlaceWorkUpdate(BaseUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PlaceWorkUpdate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class PlaceWorkListView(GenericListView):

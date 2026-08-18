@@ -1,17 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
-
-from apis_core.apis_vocabularies.models import EventWorkRelation
-from apis_core.apis_relations.models import EventWork
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
+from apis_core.apis_relations.models import EventWork
 from apis_core.apis_relations.utils import (
-    generate_relation_form,
-    generate_relation_filter_formhelper,
     generate_relation_filter,
+    generate_relation_filter_formhelper,
+    generate_relation_form,
     generate_relation_table,
 )
+from apis_core.apis_vocabularies.models import EventWorkRelation
+from browsing.browsing_utils import BaseCreateView, BaseUpdateView, GenericListView
 
 
 class EventWorkCreate(BaseCreateView):
@@ -24,7 +23,7 @@ class EventWorkCreate(BaseCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(EventWorkCreate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class EventWorkUpdate(BaseUpdateView):
@@ -37,7 +36,7 @@ class EventWorkUpdate(BaseUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(EventWorkUpdate, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class EventWorkListView(GenericListView):

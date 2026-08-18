@@ -1,26 +1,25 @@
 import csv
 import json
+
 import pandas as pd
+from acdh_tei_pyutils.tei import TeiReader
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
-from acdh_tei_pyutils.tei import TeiReader
 
 from browsing.browsing_utils import (
     GenericListView,
 )
-
 from network.filters import EdgeListFilter
 from network.forms import EdgeFilterFormHelper
 from network.models import Edge
 from network.tables import EdgeTable
 from network.utils import (
-    get_coords,
     df_to_geojson_vect,
+    get_coords,
     iso_to_lat_long,
     relation_row_to_tei,
 )
-
 
 tei_template = """
 <TEI xmlns="http://www.tei-c.org/ns/1.0">

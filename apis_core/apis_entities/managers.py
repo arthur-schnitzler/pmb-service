@@ -144,7 +144,7 @@ class InheritanceQuerySetMixin:
         select_related string backwards.
         """
         if not issubclass(model, self.model):
-            raise ValueError("{!r} is not a subclass of {!r}".format(model, self.model))
+            raise ValueError(f"{model!r} is not a subclass of {self.model!r}")
 
         ancestry = []
         # should be a OneToOneField or None
@@ -293,12 +293,12 @@ class SoftDeletableManagerMixin:
 
         if self.emit_deprecation_warnings:
             warning_message = (
-                "{0}.objects model manager will include soft-deleted objects in an "
-                "upcoming release; please use {0}.available_objects to continue "
+                f"{self.model.__class__.__name__}.objects model manager will include soft-deleted objects in an "
+                f"upcoming release; please use {self.model.__class__.__name__}.available_objects to continue "
                 "excluding soft-deleted objects. See "
                 "https://django-model-utils.readthedocs.io/en/stable/models.html"
                 "#softdeletablemodel for more information."
-            ).format(self.model.__class__.__name__)
+            )
             warnings.warn(warning_message, DeprecationWarning)
 
         kwargs = {"model": self.model, "using": self._db}
@@ -317,7 +317,7 @@ class JoinQueryset(models.QuerySet):
         query, params = query.sql_with_params()
 
         # Put additional quotes around string.
-        params = ["'{}'".format(p) if isinstance(p, str) else p for p in params]
+        params = [f"'{p}'" if isinstance(p, str) else p for p in params]
 
         # Cast list of parameters to tuple because I got
         # "not enough format characters" otherwise.
@@ -345,7 +345,7 @@ class JoinQueryset(models.QuerySet):
                 if getattr(fk, "related_model", None) == self.model
             ]
             fk = fk[0] if fk else None
-            model_set = "{}_set".format(self.model.__name__.lower())
+            model_set = f"{self.model.__name__.lower()}_set"
             key = fk or getattr(qs.model, model_set, None)
 
             if not key:
@@ -367,14 +367,12 @@ class JoinQueryset(models.QuerySet):
 
         TABLE_NAME = "temp_stuff"
         query = self.get_quoted_query(qs.query)
-        sql = """
-            DROP TABLE IF EXISTS {table_name};
-            DROP INDEX IF EXISTS {table_name}_id;
-            CREATE TEMPORARY TABLE {table_name} AS {query};
-            CREATE INDEX {table_name}_{fk_column} ON {table_name} ({fk_column});
-        """.format(
-            table_name=TABLE_NAME, fk_column=fk_column, query=str(query)
-        )
+        sql = f"""
+            DROP TABLE IF EXISTS {TABLE_NAME};
+            DROP INDEX IF EXISTS {TABLE_NAME}_id;
+            CREATE TEMPORARY TABLE {TABLE_NAME} AS {query!s};
+            CREATE INDEX {TABLE_NAME}_{fk_column} ON {TABLE_NAME} ({fk_column});
+        """
 
         with connection.cursor() as cursor:
             cursor.execute(sql)

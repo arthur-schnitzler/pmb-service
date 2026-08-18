@@ -2,10 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-
-from apis_core.apis_entities import resolver_views
 from django.views.generic.base import TemplateView
 
+from apis_core.apis_entities import resolver_views
 
 urlpatterns = [
     path(
@@ -19,7 +18,7 @@ urlpatterns = [
     path("arche/", include("archemd.urls", namespace="archemd")),
     path("uri/", resolver_views.uri_resolver, name="uri-resolver"),
     path("entity/<int:pk>/", resolver_views.entity_resolver, name="entity-resolver"),
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
     path("", include("dumper.urls", namespace="dumper")),
 ]
 
