@@ -39,4 +39,5 @@ dependencies = [
 dev = [
     "jupyterlab>=4.5.5",
     "notebook>=7.5.4",
+    "ruff>=0.16.3",
 ]
