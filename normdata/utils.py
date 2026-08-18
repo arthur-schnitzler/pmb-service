@@ -275,7 +275,7 @@ def get_or_create_person_from_wikidata(uri):
                         name="geboren in"
                     )
                 place = get_or_create_place_from_wikidata(wd_entity.place_of_birth)
-                rel, _ = PersonPlace.objects.get_or_create(
+                PersonPlace.objects.get_or_create(
                     related_person=entity,
                     related_place=place,
                     relation_type=relation_type,
@@ -289,7 +289,7 @@ def get_or_create_person_from_wikidata(uri):
                         name="gestorben in"
                     )
                 place = get_or_create_place_from_wikidata(wd_entity.place_of_death)
-                rel, _ = PersonPlace.objects.get_or_create(
+                PersonPlace.objects.get_or_create(
                     related_person=entity,
                     related_place=place,
                     relation_type=relation_type,
@@ -431,7 +431,7 @@ def get_or_create_org_from_wikidata(uri):
                         name="angesiedelt in"
                     )
                 place = get_or_create_place_from_wikidata(wd_entity.location)
-                rel, _ = InstitutionPlace.objects.get_or_create(
+                InstitutionPlace.objects.get_or_create(
                     related_institution=entity,
                     related_place=place,
                     relation_type=relation_type,
