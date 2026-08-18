@@ -39,11 +39,7 @@ class AbstractRelation(TempEntityClass):
     ####################################################################################################################
 
     def __str__(self):
-        return "{} ({}) {}".format(
-            self.get_related_entity_instancea(),
-            self.relation_type,
-            self.get_related_entity_instanceb(),
-        )
+        return f"{self.get_related_entity_instancea()} ({self.relation_type}) {self.get_related_entity_instanceb()}"
 
     def get_web_object(self):
         namea = self.get_related_entity_instancea()
@@ -301,7 +297,7 @@ class AbstractRelation(TempEntityClass):
         :return: the python class of the A side of the current relation class or instance
         E.g. PersonWork -> Person
         """
-        return None
+        return
 
     @classmethod
     def get_related_entity_classb(cls):
@@ -309,7 +305,7 @@ class AbstractRelation(TempEntityClass):
         :return: the python class of the B side of the current relation class or instance
         E.g. PersonWork -> Work
         """
-        return None
+        return
 
     @classmethod
     def get_related_entity_field_namea(cls):
@@ -317,7 +313,7 @@ class AbstractRelation(TempEntityClass):
         :return: the name of the field of the A side of the current relation class or instance
         E.g. PersonWork -> "related_person"
         """
-        return None
+        return
 
     @classmethod
     def get_related_entity_field_nameb(cls):
@@ -325,7 +321,7 @@ class AbstractRelation(TempEntityClass):
         :return: the name of the field of the B side of the current relation class or instance
         E.g. PersonWork -> "related_work"
         """
-        return None
+        return
 
 
 #######################################################################

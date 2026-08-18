@@ -37,7 +37,7 @@ class GenericEntitiesEditView(View):
                 rel.get_related_entity_classa().__name__.lower(),
                 rel.get_related_entity_classb().__name__.lower(),
             ]
-            prefix = "{}{}-".format(match[0].title()[:2], match[1].title()[:2])
+            prefix = f"{match[0].title()[:2]}{match[1].title()[:2]}-"
             title_card = ""
             if match[0] == match[1]:
                 title_card = entity.title()
@@ -119,7 +119,7 @@ class GenericEntitiesEditView(View):
         else:
             template = select_template(
                 [
-                    "apis_entities/{}_create_generic.html".format(entity),
+                    f"apis_entities/{entity}_create_generic.html",
                     "apis_entities/create_view.html",
                 ]
             )
@@ -141,7 +141,7 @@ class GenericEntitiesCreateView(View):
         form = form()
         template = select_template(
             [
-                "apis_entities/{}_create_generic.html".format(entity),
+                f"apis_entities/{entity}_create_generic.html",
                 "apis_entities/create_view.html",
             ]
         )
@@ -169,11 +169,11 @@ class GenericEntitiesCreateView(View):
             )
         else:
             permissions = {
-                "create": request.user.has_perm("apis_entities.add_{}".format(entity))
+                "create": request.user.has_perm(f"apis_entities.add_{entity}")
             }
             template = select_template(
                 [
-                    "apis_entities/{}_create_generic.html".format(entity),
+                    f"apis_entities/{entity}_create_generic.html",
                     "apis_entities/create_view.html",
                 ]
             )
@@ -196,7 +196,7 @@ class GenericEntitiesDeleteView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         entity = kwargs["entity"]
         self.success_url = reverse(f"apis_core:apis_entities:{entity}_list_view")
-        return super(GenericEntitiesDeleteView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 @method_decorator(login_required, name="dispatch")

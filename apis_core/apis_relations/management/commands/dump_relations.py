@@ -1,15 +1,15 @@
 import os
-import pandas as pd
-import networkx as nx
-import recordlinkage
-from tqdm import tqdm
-
 from datetime import datetime
+from typing import Any
 
+import networkx as nx
+import pandas as pd
+import recordlinkage
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from icecream import ic
-from typing import Any
+from tqdm import tqdm
+
 from apis_core.apis_relations.models import AbstractRelation
 from dumper.utils import upload_files_to_owncloud, write_report
 

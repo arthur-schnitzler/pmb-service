@@ -1,14 +1,14 @@
 from django.urls import path
 
 from . import detail_views, views
+from .arc_views import ArcsView, get_arcs_data
 from .autocomplete3 import GenericEntitiesAutocomplete
+from .domain_crossing_views import DomainCrossingView
 from .list_view_event import EventListView
 from .list_view_institution import InstitutionListView
 from .list_view_person import PersonListView
 from .list_view_place import PlaceListView
 from .list_view_work import WorkListView
-from .arc_views import get_arcs_data, ArcsView
-from .domain_crossing_views import DomainCrossingView
 
 app_name = "apis_entities"
 

@@ -1,11 +1,10 @@
 import os
-from tqdm import tqdm
-
 from datetime import datetime
 
 from acdh_geonames_utils.gn_client import gn_as_object
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
 from apis_core.apis_entities.models import Place
 from apis_core.apis_vocabularies.models import PlaceType

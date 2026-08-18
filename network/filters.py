@@ -1,7 +1,7 @@
 import django_filters
+import django_filters.widgets
 from django.core.exceptions import FieldDoesNotExist
 from django.db.models import CharField, Q
-import django_filters.widgets
 
 from network.models import Edge
 

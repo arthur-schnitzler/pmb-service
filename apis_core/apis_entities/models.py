@@ -54,7 +54,7 @@ class AbstractEntity(TempEntityClass):
                 return name != "" and name is not None
 
             if valid(self.first_name) and valid(self.name):
-                return "{}, {}".format(self.name, self.first_name)
+                return f"{self.name}, {self.first_name}"
             elif valid(self.first_name) and not valid(self.name):
                 return "{}, {}".format("[ohne Nachname]", self.first_name)
             elif not valid(self.first_name) and valid(self.name):
@@ -512,7 +512,7 @@ class Person(AbstractEntity):
             # secure correct unicode encoding
             if self.first_name != unicodedata.normalize("NFC", self.first_name):
                 self.first_name = unicodedata.normalize("NFC", self.first_name)
-        super(Person, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         return self
 
     class Meta:
@@ -550,10 +550,7 @@ class Place(AbstractEntity):
             self.lat = None
             self.lng = None
         try:
-            if self.lat < -90 or self.lat > 90:
-                self.lat = None
-                self.lng = None
-            elif self.lng < -180 or self.lng > 180:
+            if self.lat < -90 or self.lat > 90 or self.lng < -180 or self.lng > 180:
                 self.lat = None
                 self.lng = None
             else:
@@ -561,7 +558,7 @@ class Place(AbstractEntity):
         except TypeError:
             self.lat = None
             self.lng = None
-        super(Place, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         return self
 
     class Meta:

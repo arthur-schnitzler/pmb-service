@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
+
 from .api_renderers import (
     EntityToTEI,
 )
@@ -70,5 +71,5 @@ def uri_resolver(request):
         else:
             url = reverse(
                 "apis_core:apis_api2:GetEntityGeneric", kwargs={"pk": uri.entity_id}
-            ) + "?format={}".format(f)
+            ) + f"?format={f}"
         return redirect(url)

@@ -456,7 +456,7 @@ class EntitiesTestCase(TestCase):
 
     def test_022_resolver_view(self):
         target = Person.objects.last()
-        source = Person.objects.create(**{"name": "wirdgleichgemerged"})
+        source = Person.objects.create(name="wirdgleichgemerged")
         source_id = source.id
         source_uri = f"https://pmb.acdh.oeaw.ac.at/entity/{source.id}/"
         target.merge_with(source_id)

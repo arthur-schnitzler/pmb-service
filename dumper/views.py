@@ -1,5 +1,4 @@
 import requests
-
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,9 +7,7 @@ from django.views.generic.base import TemplateView
 
 from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import Uri
-
 from network.models import Edge
-
 
 from .forms import form_user_login
 
@@ -53,7 +50,7 @@ class HomePageView(TemplateView):
     template_name = "dumper/index.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super(HomePageView, self).get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context["person_count"] = Person.objects.all().count()
         context["place_count"] = Place.objects.all().count()
         context["event_count"] = Event.objects.all().count()

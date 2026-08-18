@@ -1,7 +1,6 @@
 from csvexport.actions import csvexport
 from dal import autocomplete
 from django.apps import apps
-from django.conf import settings
 from django.contrib import admin
 from django.urls import reverse
 
@@ -14,13 +13,13 @@ class BaseAdminVocabularies(admin.ModelAdmin):
     actions = [csvexport]
 
     def get_fields(self, request, obj=None):
-        lst = super(BaseAdminVocabularies, self).get_fields(request, obj=None)
+        lst = super().get_fields(request, obj=None)
         if not request.user.is_superuser:
             lst.remove("status")
         return lst
 
     def get_queryset(self, request):
-        qs = super(BaseAdminVocabularies, self).get_queryset(request)
+        qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs.all()
         return qs.filter(userAdded__groups__in=request.user.groups.all()).distinct()
@@ -37,7 +36,7 @@ class BaseAdminVocabularies(admin.ModelAdmin):
             "data-html": True,
         }
         c_name = db_field.model.__name__
-        qs = super(BaseAdminVocabularies, self).get_queryset(request)
+        qs = super().get_queryset(request)
         if c_name.endswith("Relation") and db_field.name == "parent_class":
             qs = db_field.model
         if db_field.name == "parent_class" and request.user.is_superuser:
@@ -54,7 +53,7 @@ class BaseAdminVocabularies(admin.ModelAdmin):
             attrs=attrs,
         )
 
-        return super(BaseAdminVocabularies, self).formfield_for_foreignkey(
+        return super().formfield_for_foreignkey(
             db_field, request, **kwargs
         )
 

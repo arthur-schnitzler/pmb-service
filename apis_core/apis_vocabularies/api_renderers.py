@@ -11,8 +11,7 @@ except ImportError:
 
 
 base_uri_web = getattr(settings, "APIS_BASE_URI", "http://apis.info")
-if base_uri_web.endswith("/"):
-    base_uri_web = base_uri_web[:-1]
+base_uri_web = base_uri_web.removesuffix("/")
 lang = getattr(settings, "LANGUAGE_CODE", "de")
 
 
@@ -31,10 +30,9 @@ class VocabToSkos(renderers.BaseRenderer):
     ):
         if g is None:
             g = Graph()
-        set_skos = getattr(settings, "APIS_SKOSMOS")
+        set_skos = settings.APIS_SKOSMOS
         base_uri = set_skos.get("url")
-        if base_uri.endswith("/"):
-            base_uri = base_uri[:-1]
+        base_uri = base_uri.removesuffix("/")
         title = PROJECT_METADATA.get("title", "TITLE")
         v_title = set_skos.get("vocabs-name", False)
         if not v_title:

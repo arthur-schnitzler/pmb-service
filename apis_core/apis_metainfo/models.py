@@ -127,11 +127,11 @@ class TempEntityClass(models.Model):
         if self.name != "" and hasattr(
             self, "first_name"
         ):  # relation usually don´t have names
-            return "{}, {} (ID: {})".format(self.name, self.first_name, self.id)
+            return f"{self.name}, {self.first_name} (ID: {self.id})"
         elif self.name != "":
-            return "{} (ID: {})".format(self.name, self.id)
+            return f"{self.name} (ID: {self.id})"
         else:
-            return "(ID: {})".format(self.id)
+            return f"(ID: {self.id})"
 
     def save(self, parse_dates=True, *args, **kwargs):
         """Adaption of the save() method of the class to automatically parse string-dates into date objects"""
@@ -177,7 +177,7 @@ class TempEntityClass(models.Model):
         if self.img_url is None:
             self.img_last_checked = None
 
-        super(TempEntityClass, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         return self
 
@@ -224,9 +224,7 @@ class TempEntityClass(models.Model):
     def img_credit_label(self):
         credit = None
         if self.img_url is not None:
-            if "commons.wikimedia.org/w/index" in self.img_url:
-                return "Wikimedia Commons"
-            elif "thumb" in self.img_url:
+            if "commons.wikimedia.org/w/index" in self.img_url or "thumb" in self.img_url:
                 return "Wikimedia Commons"
             elif "AKON" in self.img_url:
                 credit = "AKON"
@@ -286,9 +284,9 @@ class TempEntityClass(models.Model):
     def get_child_class(self):
         child = self.get_child_entity()
         if child:
-            return "{}".format(child.__class__.__name__)
+            return f"{child.__class__.__name__}"
         else:
-            return "{}".format(child.__class__.__name__)
+            return f"{child.__class__.__name__}"
 
     def get_absolute_url(self):
         entity = self.__class__.__name__.lower()
@@ -361,7 +359,7 @@ class TempEntityClass(models.Model):
             entities = [entities]
             entities = [
                 (
-                    self_model_class.objects.get(pk=ent) if type(ent) == int else ent  # noqa: E721
+                    self_model_class.objects.get(pk=ent) if type(ent) == int else ent
                 )
                 for ent in entities
             ]
@@ -405,27 +403,27 @@ class TempEntityClass(models.Model):
             for u in Uri.objects.filter(entity=ent):
                 u.entity = self
                 u.save()
-            for l in Label.objects.filter(temp_entity=ent):  # noqa: E741
+            for l in Label.objects.filter(temp_entity=ent):
                 l.temp_entity = self
                 l.save()
             for r in rels.filter(model__icontains=e_b):
                 lst_ents_rel = str(r).split()
                 if lst_ents_rel[-1] == lst_ents_rel[-2]:
-                    q_d = {"related_{}a".format(e_b.lower()): ent}
+                    q_d = {f"related_{e_b.lower()}a": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, "related_{}a".format(e_a.lower()), self)
+                        setattr(t, f"related_{e_a.lower()}a", self)
                         t.save()
-                    q_d = {"related_{}b".format(e_b.lower()): ent}
+                    q_d = {f"related_{e_b.lower()}b": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, "related_{}b".format(e_a.lower()), self)
+                        setattr(t, f"related_{e_a.lower()}b", self)
                         t.save()
                 else:
-                    q_d = {"related_{}".format(e_b.lower()): ent}
+                    q_d = {f"related_{e_b.lower()}": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, "related_{}".format(e_a.lower()), self)
+                        setattr(t, f"related_{e_a.lower()}", self)
                         t.save()
             ent.delete()
             if self_gender:
@@ -479,9 +477,9 @@ class Source(models.Model):
 
     def __str__(self):
         if self.author != "" and self.orig_filename != "":
-            return "{}, stored by {}".format(self.orig_filename, self.author)
+            return f"{self.orig_filename}, stored by {self.author}"
         else:
-            return "(ID: {})".format(self.id)
+            return f"(ID: {self.id})"
 
 
 class Collection(models.Model):
@@ -544,9 +542,9 @@ class Text(models.Model):
 
     def __str__(self):
         if self.text != "":
-            return "ID: {} - {}".format(self.id, self.text[:25])
+            return f"ID: {self.id} - {self.text[:25]}"
         else:
-            return "ID: {}".format(self.id)
+            return f"ID: {self.id}"
 
 
 class Uri(models.Model):

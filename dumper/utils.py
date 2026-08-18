@@ -1,16 +1,15 @@
 import os
+from io import BytesIO
 
 import owncloud
 import pandas as pd
 import requests
-from io import BytesIO
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from tqdm import tqdm
 
 from apis_core.apis_metainfo.models import Uri
-
 
 PMB_ENTITIES = "pmb_entities"
 

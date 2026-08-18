@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 from crispy_forms.helper import FormHelper
 from django import forms
@@ -33,7 +32,7 @@ class EntityLabelForm(forms.ModelForm):
             x.start_date_written = cd["start_date_written"]
             x.end_date_written = cd["end_date_written"]
         else:
-            x = super(EntityLabelForm, self).save(commit=False)
+            x = super().save(commit=False)
             x.temp_entity = site_instance
         x.save()
         return x
@@ -41,7 +40,7 @@ class EntityLabelForm(forms.ModelForm):
     def __init__(self, siteID=None, *args, **kwargs):
         entity_type = kwargs.pop("entity_type", False)
         self.request = kwargs.pop("request", False)
-        super(EntityLabelForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["label"].required = True
         self.fields["label_type"].required = True
         self.helper = FormHelper()

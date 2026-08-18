@@ -37,13 +37,13 @@ class Command(BaseCommand):
                 c = 1
                 vocab_class = eval(x)
                 while c <= col_len:
-                    row_key = "ebene_{}".format(c)
+                    row_key = f"ebene_{c}"
                     if isinstance(row[row_key], str):
                         temp_item = create_vocab_item(vocab_class, row, row_key)
                         if c > 1:
-                            parent_key = "ebene_{}".format(c - 1)
+                            parent_key = f"ebene_{c - 1}"
                             parent = create_vocab_item(vocab_class, row, parent_key)
                             temp_item.parent_class = parent
                             temp_item.save()
-                            self.stdout.write("{} crated/updated".format(temp_item))
+                            self.stdout.write(f"{temp_item} crated/updated")
                     c += 1

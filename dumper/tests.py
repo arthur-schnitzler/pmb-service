@@ -6,7 +6,6 @@ from django.urls import reverse
 from dumper.utils import gsheet_to_df, process_beacon
 from normdata.utils import import_from_normdata
 
-
 client = Client()
 USER = {"username": "testuser", "password": "password", "is_active": True}
 BAHR = {"name": "Schnitzler", "first_name": "Hermann", "start_date_written": "1900"}

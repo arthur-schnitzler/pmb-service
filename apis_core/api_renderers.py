@@ -20,14 +20,12 @@ class NetJsonRenderer(renderers.JSONRenderer):
             for r in data["results"][0].keys():
                 if r.startswith("related_"):
                     r2 = r.split("_")[1]
-                    rel2 = re.match("^{}[a-z]*".format(r2), rel)
-                    if rel2:
-                        source = r
-                    elif r.endswith("a"):
+                    rel2 = re.match(f"^{r2}[a-z]*", rel)
+                    if rel2 or r.endswith("a"):
                         source = r
                     elif r.endswith("b"):
                         target = r
-                    rel2 = re.match("^[a-z]*?{}$".format(r2), rel)
+                    rel2 = re.match(f"^[a-z]*?{r2}$", rel)
                     if rel2:
                         target = r
             results2 = []

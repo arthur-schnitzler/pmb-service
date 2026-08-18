@@ -60,7 +60,7 @@ class GenericVocabsSerializer(serializers.Serializer):
         return str(obj.__class__.__name__)
 
     def __init__(self, *args, **kwargs):
-        super(GenericVocabsSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if type(self.instance) == QuerySet:
             rt = self.instance[0]
         else:

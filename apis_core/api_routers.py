@@ -54,7 +54,7 @@ class ApisBaseSerializer(serializers.ModelSerializer):
     def add_uri(self, obj):
         return self.context["view"].request.build_absolute_uri(
             reverse(
-                "apis:apis_api:{}-detail".format(obj.__class__.__name__.lower()),
+                f"apis:apis_api:{obj.__class__.__name__.lower()}-detail",
                 kwargs={"pk": obj.pk},
             )
         )
@@ -144,7 +144,7 @@ class RelationObjectSerializer2(ApisBaseSerializer):
 
     def __init__(self, *args, **kwargs):
         self._pk_instance = kwargs.pop("pk_instance")
-        super(RelationObjectSerializer2, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 def generic_serializer_creation_factory():
@@ -166,7 +166,7 @@ def generic_serializer_creation_factory():
         app_label = cont.__module__.split(".")[1].lower()
         exclude_lst = []
         if app_label == "apis_entities":
-            exclude_lst = deep_get(test_search, "{}.api_exclude".format(entity_str), [])
+            exclude_lst = deep_get(test_search, f"{entity_str}.api_exclude", [])
             for f in entity._meta.get_fields():
                 if "_set" in str(f):
                     to_exclude = str(f).split(".")[-1]
@@ -174,7 +174,7 @@ def generic_serializer_creation_factory():
         else:
             set_prem = getattr(settings, cont.__module__.split(".")[1].upper(), {})
             exclude_lst = deep_get(set_prem, "exclude", [])
-            exclude_lst.extend(deep_get(set_prem, "{}.exclude".format(entity_str), []))
+            exclude_lst.extend(deep_get(set_prem, f"{entity_str}.exclude", []))
         entity_field_name_list = []
         for x in entity._meta.get_fields():
             entity_field_name_list.append(x.name)
@@ -327,7 +327,7 @@ def generic_serializer_creation_factory():
                             allowed_fields_filter[f2.__class__.__name__]
                         )
                 continue
-            if field.__class__.__name__ in allowed_fields_filter.keys():
+            if field.__class__.__name__ in allowed_fields_filter:
                 filter_fields[field.name] = allowed_fields_filter[
                     field.__class__.__name__
                 ]
@@ -337,10 +337,10 @@ def generic_serializer_creation_factory():
         if additional_filters:
             if entity_str in additional_filters.keys():
                 for f1 in additional_filters[entity_str]:
-                    if f1[0] not in filter_fields.keys():
+                    if f1[0] not in filter_fields:
                         filter_fields[f1[0]] = f1[1]
 
-        class MetaFilter(object):
+        class MetaFilter:
             model = entity
             fields = filter_fields
 

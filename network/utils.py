@@ -1,7 +1,8 @@
+from datetime import date, datetime
+
+import lxml.etree as ET
 import pandas as pd
 from django.utils.text import slugify
-import lxml.etree as ET
-from datetime import datetime, date
 
 
 def relation_row_to_tei(row: pd.core.series.Series) -> str:

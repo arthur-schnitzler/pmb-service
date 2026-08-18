@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_labels.models import Label
+from apis_core.apis_metainfo.models import Uri
 
 
 class Command(BaseCommand):

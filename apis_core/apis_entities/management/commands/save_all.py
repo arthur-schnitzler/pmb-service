@@ -1,10 +1,10 @@
 import os
 import warnings
-
 from datetime import datetime
-from tqdm import tqdm
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
 from apis_core.apis_metainfo.models import TempEntityClass
 from dumper.utils import write_report

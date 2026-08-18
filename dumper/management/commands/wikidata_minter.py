@@ -2,7 +2,7 @@ import os
 import time
 from datetime import datetime
 
-from acdh_id_reconciler import gnd_to_wikidata, geonames_to_gnd
+from acdh_id_reconciler import geonames_to_gnd, gnd_to_wikidata
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.management.base import BaseCommand

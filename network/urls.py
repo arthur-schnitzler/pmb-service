@@ -1,15 +1,15 @@
 from django.urls import path
-from network.views import (
-    EdgeListViews,
-    network_data,
-    NetworkView,
-    CalenderView,
-    edges_as_geojson,
-    edges_as_calender,
-    MapView,
-    get_realtions_as_tei,
-)
 
+from network.views import (
+    CalenderView,
+    EdgeListViews,
+    MapView,
+    NetworkView,
+    edges_as_calender,
+    edges_as_geojson,
+    get_realtions_as_tei,
+    network_data,
+)
 
 app_name = "network"
 urlpatterns = [

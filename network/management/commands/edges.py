@@ -7,7 +7,6 @@ from tqdm import tqdm
 
 from apis_core.apis_relations.models import AbstractRelation
 from dumper.utils import write_report
-
 from network.models import Edge
 
 

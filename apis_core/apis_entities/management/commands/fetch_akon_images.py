@@ -1,18 +1,15 @@
 import os
 import urllib.request as urllib2
 import warnings
+from datetime import datetime
+from io import BytesIO
+from zipfile import ZipFile
 
 import pandas as pd
-
-from zipfile import ZipFile
-from io import BytesIO
-
-from datetime import datetime
-from tqdm import tqdm
-
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from tqdm import tqdm
 
 from apis_core.apis_entities.models import Place
 from dumper.utils import write_report

@@ -5,10 +5,10 @@ from django.urls import path
 from rest_framework import routers
 
 from apis_core.api_routers import views
+from apis_core.apis_entities.autocomplete3 import GenericEntitiesAutocomplete
 from apis_core.apis_metainfo.views import beacon, domain_uris
 from apis_core.apis_vocabularies.api_views import UserViewSet
 from apis_core.helper_functions.ContentType import GetContentTypes
-from apis_core.apis_entities.autocomplete3 import GenericEntitiesAutocomplete
 
 app_name = "apis_core"
 
@@ -20,7 +20,7 @@ for app_label, model_str in GetContentTypes().get_names():
         route_prefix = app_label
     try:
         router.register(
-            "{}/{}".format(route_prefix, model_str.lower()),
+            f"{route_prefix}/{model_str.lower()}",
             views[model_str.lower()],
             model_str.lower(),
         )

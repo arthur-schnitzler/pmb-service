@@ -24,10 +24,10 @@ from apis_core.apis_vocabularies.models import (
 )
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
-BIRTH_REL = getattr(settings, "BIRTH_REL")
-DEATH_REL = getattr(settings, "DEATH_REL")
-LOCATED_REL = getattr(settings, "ORG_LOCATED_IN")
-CREATED_REL = getattr(settings, "AUTHOR_RELS")
+BIRTH_REL = settings.BIRTH_REL
+DEATH_REL = settings.DEATH_REL
+LOCATED_REL = settings.ORG_LOCATED_IN
+CREATED_REL = settings.AUTHOR_RELS
 
 
 def get_uri_domain(uri):

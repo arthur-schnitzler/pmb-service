@@ -41,3 +41,9 @@ dev = [
     "notebook>=7.5.4",
     "ruff>=0.16.3",
 ]
+
+[tool.ruff]
+exclude = ["notebooks/"]
+
+[tool.ruff.lint]
+ignore = ["RUF012"]

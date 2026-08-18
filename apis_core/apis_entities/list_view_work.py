@@ -6,8 +6,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from dal import autocomplete
 
-from apis_core.apis_entities.models import Work
 from apis_core.apis_entities.base_filter import MyBaseFilter
+from apis_core.apis_entities.models import Work
 from apis_core.apis_metainfo.models import Collection
 from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
@@ -111,7 +111,7 @@ class WorkListFilter(MyBaseFilter):
 
 class WorkFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(WorkFilterFormHelper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"

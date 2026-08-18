@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 import json
 import operator
 import re
@@ -16,7 +15,7 @@ from apis_core.apis_vocabularies.models import VocabsBaseClass
 from .models import AbstractEntity
 
 
-class CustomEntityAutocompletes(object):
+class CustomEntityAutocompletes:
     """A class for collecting all the custom autocomplete functions for one entity.
 
     Attributes:
@@ -36,9 +35,9 @@ class CustomEntityAutocompletes(object):
         :param entity: (string) entity type to fetch additional autocompletes for
         """
         func_list = {}
-        if entity not in func_list.keys():
+        if entity not in func_list:
             self.results = None
-            return None
+            return
         res = []
         more = dict()
         more_gen = False
@@ -86,20 +85,20 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
         if self.q.startswith("http"):
             res = ent_model.objects.filter(uri__uri=self.q.strip())
         elif len(self.q) > 0:
-            q1 = re.match("^([^\[]+)\[([^\]]+)\]$", self.q)
+            q1 = re.match(r"^([^\[]+)\[([^\]]+)\]$", self.q)
             if q1:
                 q = q1.group(1).strip()
                 q3 = q1.group(2).split(",")
                 q3 = [e.strip() for e in q3]
             else:
-                q = re.match("^[^\[]+", self.q).group(0)
+                q = re.match(r"^[^\[]+", self.q).group(0)
                 q3 = False
-            if re.match("^[^*]+\*$", q.strip()):
+            if re.match(r"^[^*]+\*$", q.strip()):
                 search_type = "__istartswith"
-                q = re.match("^([^*]+)\*$", q.strip()).group(1)
-            elif re.match("^\*[^*]+$", q.strip()):
+                q = re.match(r"^([^*]+)\*$", q.strip()).group(1)
+            elif re.match(r"^\*[^*]+$", q.strip()):
                 search_type = "__iendswith"
-                q = re.match("^\*([^*]+)$", q.strip()).group(1)
+                q = re.match(r"^\*([^*]+)$", q.strip()).group(1)
             elif re.match('^"[^"]+"$', q.strip()):
                 search_type = ""
                 q = re.match('^"([^"]+)"$', q.strip()).group(1)
@@ -147,9 +146,7 @@ class GenericEntitiesAutocomplete(autocomplete.Select2ListView):
                 except:
                     continue
                 f["text"] = (
-                    "<span {}><small>db</small> <b>{}</b> <small>db-ID: {}</small> </span> ".format(
-                        dataclass, str(r), str(r.id)
-                    )
+                    f"<span {dataclass}><small>db</small> <b>{r!s}</b> <small>db-ID: {r.id!s}</small> </span> "
                 )
                 choices.append(f)
             if len(choices) < page_size:

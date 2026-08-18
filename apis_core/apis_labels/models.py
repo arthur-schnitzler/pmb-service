@@ -95,7 +95,7 @@ class Label(models.Model):
 
         parse_dates()
 
-        super(Label, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         return self
 
     def __str__(self):
