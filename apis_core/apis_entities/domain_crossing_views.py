@@ -14,7 +14,7 @@ from apis_core.apis_entities.models import (
     Work,
 )
 
-# Entitätstyp -> (Modell, Anzeigename, Icon)
+# Entity type -> (model, display name, icon)
 ENTITY_TYPES = {
     "person": (Person, "Personen", "bi bi-people"),
     "place": (Place, "Orte", "bi bi-map"),
@@ -23,14 +23,14 @@ ENTITY_TYPES = {
     "institution": (Institution, "Institutionen", "bi bi-building-gear"),
 }
 
-# Modus -> Anzeigename
+# Mode -> display name
 MODES = {
     "intersection": "Schnittmenge",
     "union": "Vereinigung",
     "difference": "Differenz",
 }
 
-# Modus -> Erklärtext (als Tooltip angezeigt)
+# Mode -> explanatory text (shown as a tooltip)
 MODE_DESCRIPTIONS = {
     "intersection": (
         "Entitäten, die in allen gewählten Domains vorkommen. "
@@ -52,12 +52,12 @@ MODE_DESCRIPTIONS = {
 DEFAULT_TYPE = "person"
 DEFAULT_MODE = "intersection"
 
-# Reihenfolge & Farben der Domains aus den Projekt-Einstellungen
+# Order & colors of the domains from the project settings
 DOMAIN_LABELS = [entry[1] for entry in settings.DOMAIN_MAPPING]
 DOMAIN_COLORS = {entry[1]: entry[2] for entry in settings.DOMAIN_MAPPING}
 
 
-# Gender-Filter: Wert -> Anzeigename (nur für Personen)
+# Gender filter: value -> display name (persons only)
 GENDER_OPTIONS = [
     ("female", "weiblich"),
     ("male", "männlich"),
@@ -66,7 +66,7 @@ GENDER_OPTIONS = [
 
 
 class DomainCrossingTable(tables.Table):
-    """Generische Tabelle, die für jeden Entitätstyp funktioniert."""
+    """Generic table that works for any entity type."""
 
     id = tables.Column(verbose_name="ID", orderable=True, linkify=True)
     name = tables.Column(
@@ -81,7 +81,7 @@ class DomainCrossingTable(tables.Table):
 
 
 class PersonCrossingTable(DomainCrossingTable):
-    """Tabelle für Personen – zeigt zusätzlich den Vornamen."""
+    """Table for persons – also shows the first name."""
 
     first_name = tables.Column(verbose_name="Vorname", orderable=True)
 
@@ -95,14 +95,12 @@ class PersonCrossingTable(DomainCrossingTable):
         )
 
 
-class MostValuableEntityView(TemplateView):
-    """ranks entities by domains"""
-
-    template_name = "apis_entities/most_valuable_entity.html"
+class EntityCrossingViewMixin:
+    """Shared logic for views that offer a selectable entity type."""
 
     def _querystring(self, **changes):
-        """Aktuellen Querystring übernehmen, einzelne Parameter ändern und
-        die Seitennummer zurücksetzen."""
+        """Take over the current querystring, change individual parameters
+        and reset the page number."""
         params = self.request.GET.copy()
         params.pop("page", None)
         for key, value in changes.items():
@@ -114,12 +112,31 @@ class MostValuableEntityView(TemplateView):
                 params[key] = value
         return f"?{params.urlencode()}"
 
+    def _get_entity_type(self):
+        etype = self.request.GET.get("type", DEFAULT_TYPE)
+        return etype if etype in ENTITY_TYPES else DEFAULT_TYPE
+
+    def _entity_buttons(self, etype):
+        return [
+            {
+                "key": key,
+                "label": label,
+                "icon": icon,
+                "active": key == etype,
+                "href": self._querystring(type=key),
+            }
+            for key, (_m, label, icon) in ENTITY_TYPES.items()
+        ]
+
+
+class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
+    """ranks entities by domains"""
+
+    template_name = "apis_entities/most_valuable_entity.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        request = self.request
-        etype = request.GET.get("type", DEFAULT_TYPE)
-        if etype not in ENTITY_TYPES:
-            etype = DEFAULT_TYPE
+        etype = self._get_entity_type()
         if etype in ["person", "place", "work"]:
             threshold = 14
         else:
@@ -150,27 +167,16 @@ class MostValuableEntityView(TemplateView):
             .query(f"count >= {threshold}")
         )
 
-        entity_buttons = []
-        for key, (_m, label, icon) in ENTITY_TYPES.items():
-            entity_buttons.append(
-                {
-                    "key": key,
-                    "label": label,
-                    "icon": icon,
-                    "active": key == etype,
-                    "href": self._querystring(type=key),
-                }
-            )
-        context["entity_buttons"] = entity_buttons
+        context["entity_buttons"] = self._entity_buttons(etype)
         context["entity"] = etype
         context["rows"] = biggest_groups.to_dict(orient="records")
         context["uri_count"] = items.count()
         return context
 
 
-class DomainCrossingView(TemplateView):
-    """Findet Überschneidungen zwischen Daten-Domains (Schnittmenge,
-    Vereinigung, Differenz) für einen wählbaren Entitätstyp."""
+class DomainCrossingView(EntityCrossingViewMixin, TemplateView):
+    """Finds overlaps between data domains (intersection, union,
+    difference) for a selectable entity type."""
 
     template_name = "apis_entities/domain_crossing.html"
     export_name = "schnittmengen"
@@ -182,20 +188,6 @@ class DomainCrossingView(TemplateView):
             exporter = TableExport(export_format, context["table"])
             return exporter.response(f"{self.export_name}.{export_format}")
         return self.render_to_response(context)
-
-    def _querystring(self, **changes):
-        """Aktuellen Querystring übernehmen, einzelne Parameter ändern und
-        die Seitennummer zurücksetzen."""
-        params = self.request.GET.copy()
-        params.pop("page", None)
-        for key, value in changes.items():
-            if value is None or value == []:
-                params.pop(key, None)
-            elif isinstance(value, list):
-                params.setlist(key, value)
-            else:
-                params[key] = value
-        return f"?{params.urlencode()}"
 
     def _build_queryset(self, model, mode, selected, base):
         qs = model.objects.all()
@@ -221,9 +213,7 @@ class DomainCrossingView(TemplateView):
         context = super().get_context_data(**kwargs)
         request = self.request
 
-        etype = request.GET.get("type", DEFAULT_TYPE)
-        if etype not in ENTITY_TYPES:
-            etype = DEFAULT_TYPE
+        etype = self._get_entity_type()
         mode = request.GET.get("mode", DEFAULT_MODE)
         if mode not in MODES:
             mode = DEFAULT_MODE
@@ -237,27 +227,17 @@ class DomainCrossingView(TemplateView):
 
         model, verbose_name, _icon = ENTITY_TYPES[etype]
 
-        # Trefferzahl je Domain für diesen Entitätstyp
+        # Number of hits per domain for this entity type
         counts = dict(
             model.objects.filter(uri__domain__in=DOMAIN_LABELS)
             .values_list("uri__domain")
             .annotate(c=Count("pk", distinct=True))
         )
 
-        # Entitätstyp-Buttons
-        entity_buttons = []
-        for key, (_m, label, icon) in ENTITY_TYPES.items():
-            entity_buttons.append(
-                {
-                    "key": key,
-                    "label": label,
-                    "icon": icon,
-                    "active": key == etype,
-                    "href": self._querystring(type=key),
-                }
-            )
+        # Entity type buttons
+        entity_buttons = self._entity_buttons(etype)
 
-        # Modus-Buttons
+        # Mode buttons
         mode_buttons = [
             {
                 "key": key,
@@ -269,7 +249,7 @@ class DomainCrossingView(TemplateView):
             for key, label in MODES.items()
         ]
 
-        # Domain-Buttons (nur Domains, die für diesen Typ vorkommen)
+        # Domain buttons (only domains that occur for this type)
         domain_buttons = []
         base_buttons = []
         for domain in DOMAIN_LABELS:
@@ -302,7 +282,7 @@ class DomainCrossingView(TemplateView):
                 }
             )
 
-        # Gender-Buttons und -Filter (nur für Personen)
+        # Gender buttons and filter (persons only)
         gender_buttons = []
         if etype == "person":
             for value, label in GENDER_OPTIONS:
