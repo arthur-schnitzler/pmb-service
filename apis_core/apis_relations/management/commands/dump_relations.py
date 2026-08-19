@@ -12,7 +12,7 @@ from icecream import ic
 from tqdm import tqdm
 
 from apis_core.apis_relations.models import AbstractRelation
-from dumper.utils import upload_files_to_owncloud, write_report
+from dumper.utils import write_report
 
 
 class Command(BaseCommand):
@@ -145,13 +145,6 @@ class Command(BaseCommand):
         df.to_csv(nodes_file, index=False)
         files.append(nodes_file)
         ic(files)
-
-        try:
-            upload_files_to_owncloud(files)
-            for x in files:
-                print(f"uploading {x} to owncloud")
-        except Exception as e:
-            ic(e)
 
         end_time = datetime.now(tz=tz).strftime(settings.PMB_TIME_PATTERN)
         report = [os.path.basename(__file__), start_time, end_time]

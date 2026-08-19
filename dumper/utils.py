@@ -1,7 +1,5 @@
-import os
 from io import BytesIO
 
-import owncloud
 import pandas as pd
 import requests
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
@@ -12,26 +10,6 @@ from tqdm import tqdm
 from apis_core.apis_metainfo.models import Uri
 
 PMB_ENTITIES = "pmb_entities"
-
-
-def upload_files_to_owncloud(
-    file_list, user=settings.OWNCLOUD_USER, pw=settings.OWNCLOUD_PW, folder=PMB_ENTITIES
-):  # pragma: no cover
-    collection = folder
-    oc = owncloud.Client("https://oeawcloud.oeaw.ac.at")
-    oc.login(user, pw)
-
-    try:
-        oc.mkdir(collection)
-    except Exception as e:
-        print(e)
-
-    files = file_list
-    for x in files:
-        _, tail = os.path.split(x)
-        owncloud_name = f"{collection}/{tail}"
-        print(f"uploading {tail} to {owncloud_name}")
-        oc.put_file(owncloud_name, x)
 
 
 def write_report(report, report_file=settings.PMB_LOG_FILE):  # pragma: no cover
