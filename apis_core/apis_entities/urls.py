@@ -3,7 +3,7 @@ from django.urls import path
 from . import detail_views, views
 from .arc_views import ArcsView, get_arcs_data
 from .autocomplete3 import GenericEntitiesAutocomplete
-from .domain_crossing_views import DomainCrossingView
+from .domain_crossing_views import DomainCrossingView, MostValuableEntityView
 from .list_view_event import EventListView
 from .list_view_institution import InstitutionListView
 from .list_view_person import PersonListView
@@ -17,6 +17,11 @@ urlpatterns = [
         "domain-crossing",
         DomainCrossingView.as_view(),
         name="domain_crossing",
+    ),
+    path(
+        "mvp",
+        MostValuableEntityView.as_view(),
+        name="mvp",
     ),
     path(
         "arcs-data",

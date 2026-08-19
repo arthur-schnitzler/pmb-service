@@ -1,4 +1,5 @@
 import django_tables2 as tables
+import pandas as pd
 from django.conf import settings
 from django.db.models import Count
 from django.views.generic import TemplateView
@@ -12,6 +13,7 @@ from apis_core.apis_entities.models import (
     Place,
     Work,
 )
+from apis_core.apis_metainfo.models import Uri
 
 # Entitätstyp -> (Modell, Anzeigename, Icon)
 ENTITY_TYPES = {
@@ -92,6 +94,36 @@ class PersonCrossingTable(DomainCrossingTable):
             "start_date_written",
             "end_date_written",
         )
+
+
+class MostValuableEntityView(TemplateView):
+    """ranks entities by domains"""
+
+    template_name = "apis_entities/most_valuable_entity.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        uris = Uri.objects.exclude(domain="pmb")
+        values_list = ["uri", "domain", "entity__name", "entity"]
+        qs = uris.values_list(*values_list)
+        df = pd.DataFrame(list(qs), columns=values_list)
+        df["entity"] = df["entity"].astype("Int64")
+        df["host"] = df["uri"].str.extract(r"https?://([^/]+)")
+        df = df.drop_duplicates(subset=["host", "domain", "entity"], keep="first")
+        biggest_groups = (
+            df.assign(uri_domain=list(zip(df["uri"], df["domain"])))
+            .groupby(["entity", "entity__name"])
+            .agg(
+                count=("entity", "size"),
+                uris=("uri_domain", list),
+            )
+            .sort_values("count", ascending=False)
+            .reset_index()
+            .query("count >= 14")
+        )
+        context["rows"] = biggest_groups.to_dict(orient="records")
+        context["uri_count"] = uris.count()
+        return context
 
 
 class DomainCrossingView(TemplateView):
