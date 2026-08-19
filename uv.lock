@@ -1447,7 +1447,6 @@ dependencies = [
     { name = "pandas" },
     { name = "psycopg2-binary" },
     { name = "pylobid" },
-    { name = "pyocclient" },
     { name = "recordlinkage" },
 ]
 
@@ -1486,7 +1485,6 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "psycopg2-binary", specifier = ">=2.9.11" },
     { name = "pylobid", specifier = ">=3.0.0" },
-    { name = "pyocclient", specifier = ">=0.6" },
     { name = "recordlinkage", specifier = ">=0.16" },
 ]
 

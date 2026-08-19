@@ -31,7 +31,6 @@ dependencies = [
     "pandas>=2.3.3",
     "psycopg2-binary>=2.9.11",
     "pylobid>=3.0.0",
-    "pyocclient>=0.6",
     "recordlinkage>=0.16",
 ]
 
