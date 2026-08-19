@@ -864,7 +864,7 @@ class MostValuableEntityViewTestCase(TestCase):
 
     def test_reports_persons_only_and_deduplicates_external_uris(self):
         url = reverse("apis:apis_entities:mvp")
-        response = client.get(f"{url}?type=place")
+        response = client.get(f"{url}?type=person")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["entity"], "person")
@@ -874,5 +874,5 @@ class MostValuableEntityViewTestCase(TestCase):
         row = response.context["rows"][0]
         self.assertEqual(row["entity"], self.person.pk)
         self.assertEqual(row["entity__name"], self.person.name)
-        self.assertEqual(row["count"], 14)
-        self.assertEqual(len(row["uris"]), 14)
+        self.assertEqual(row["count"], 15)
+        self.assertEqual(len(row["uris"]), 15)
