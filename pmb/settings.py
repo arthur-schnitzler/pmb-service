@@ -196,8 +196,6 @@ PL_EVENT = [
     1202,
 ]
 
-OWNCLOUD_USER = os.environ.get("OWNCLOUD_USER")
-OWNCLOUD_PW = os.environ.get("OWNCLOUD_PW")
 PMB_LOG_FILE = os.path.join(MEDIA_ROOT, "pmb-log.csv")
 PMB_TIME_PATTERN = "%Y-%m-%d::%H:%M:%S"
 
@@ -205,7 +203,16 @@ APIS_ENTITIES = {
     "Place": {
         "merge": True,
         "search": ["name"],
-        "form_order": ["name", "kind", "lat", "lng", "img_url", "img_last_checked", "collection", "status"],
+        "form_order": [
+            "name",
+            "kind",
+            "lat",
+            "lng",
+            "img_url",
+            "img_last_checked",
+            "collection",
+            "status",
+        ],
         "table_fields": ["name"],
         "additional_cols": ["id", "lat", "lng", "part_of"],
         "list_filters": [
