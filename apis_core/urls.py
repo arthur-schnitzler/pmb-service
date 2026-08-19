@@ -76,8 +76,4 @@ else:
             "metainfo-ac/",
             include("apis_core.apis_metainfo.dal_urls", namespace="apis_metainfo-ac"),
         ),
-        path(
-            "openrefine/",
-            include("apis_core.openrefine.urls", namespace="openrefine"),
-        ),
     ]
