@@ -835,3 +835,44 @@ class DomainCrossingTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "apis_entities/domain_crossing.html")
+
+
+class MostValuableEntityViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.person = Person.objects.create(name="Frequently Referenced Person")
+        cls.place = Place.objects.create(name="Frequently Referenced Place")
+
+        for index in range(14):
+            domain = f"source-{index}"
+            Uri.objects.create(
+                uri=f"https://{domain}.example.org/person/{index}",
+                domain=domain,
+                entity=cls.person,
+            )
+            Uri.objects.create(
+                uri=f"https://{domain}.example.org/place/{index}",
+                domain=domain,
+                entity=cls.place,
+            )
+
+        Uri.objects.create(
+            uri="https://source-0.example.org/person/duplicate",
+            domain="source-0",
+            entity=cls.person,
+        )
+
+    def test_reports_persons_only_and_deduplicates_external_uris(self):
+        url = reverse("apis:apis_entities:mvp")
+        response = client.get(f"{url}?type=place")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["entity"], "person")
+        self.assertEqual(response.context["uri_count"], 1)
+        self.assertEqual(len(response.context["rows"]), 1)
+
+        row = response.context["rows"][0]
+        self.assertEqual(row["entity"], self.person.pk)
+        self.assertEqual(row["entity__name"], self.person.name)
+        self.assertEqual(row["count"], 14)
+        self.assertEqual(len(row["uris"]), 14)

@@ -13,7 +13,6 @@ from apis_core.apis_entities.models import (
     Place,
     Work,
 )
-from apis_core.apis_metainfo.models import Uri
 
 # Entitätstyp -> (Modell, Anzeigename, Icon)
 ENTITY_TYPES = {
@@ -101,13 +100,42 @@ class MostValuableEntityView(TemplateView):
 
     template_name = "apis_entities/most_valuable_entity.html"
 
+    def _querystring(self, **changes):
+        """Aktuellen Querystring übernehmen, einzelne Parameter ändern und
+        die Seitennummer zurücksetzen."""
+        params = self.request.GET.copy()
+        params.pop("page", None)
+        for key, value in changes.items():
+            if value is None or value == []:
+                params.pop(key, None)
+            elif isinstance(value, list):
+                params.setlist(key, value)
+            else:
+                params[key] = value
+        return f"?{params.urlencode()}"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        uris = Uri.objects.exclude(domain="pmb")
-        values_list = ["uri", "domain", "entity__name", "entity"]
-        qs = uris.values_list(*values_list)
+        request = self.request
+        etype = request.GET.get("type", DEFAULT_TYPE)
+        if etype not in ENTITY_TYPES:
+            etype = DEFAULT_TYPE
+        if etype in ["person", "place", "work"]:
+            threshold = 14
+        else:
+            threshold = 2
+        items = ENTITY_TYPES[etype][0].objects.all()
+        values_list = ["uri__uri", "uri__domain", "name", "id"]
+        qs = items.values_list(*values_list)
         df = pd.DataFrame(list(qs), columns=values_list)
-        df["entity"] = df["entity"].astype("Int64")
+        df = df.rename(
+            columns={
+                "uri__uri": "uri",
+                "uri__domain": "domain",
+                "name": "entity__name",
+                "id": "entity",
+            }
+        )
         df["host"] = df["uri"].str.extract(r"https?://([^/]+)")
         df = df.drop_duplicates(subset=["host", "domain", "entity"], keep="first")
         biggest_groups = (
@@ -119,10 +147,24 @@ class MostValuableEntityView(TemplateView):
             )
             .sort_values("count", ascending=False)
             .reset_index()
-            .query("count >= 14")
+            .query(f"count >= {threshold}")
         )
+
+        entity_buttons = []
+        for key, (_m, label, icon) in ENTITY_TYPES.items():
+            entity_buttons.append(
+                {
+                    "key": key,
+                    "label": label,
+                    "icon": icon,
+                    "active": key == etype,
+                    "href": self._querystring(type=key),
+                }
+            )
+        context["entity_buttons"] = entity_buttons
+        context["entity"] = etype
         context["rows"] = biggest_groups.to_dict(orient="records")
-        context["uri_count"] = uris.count()
+        context["uri_count"] = items.count()
         return context
 
 
