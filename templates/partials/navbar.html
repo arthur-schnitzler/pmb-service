@@ -66,6 +66,7 @@
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
+                            {% if user.is_authenticated %}
                             <li>
                                 <a class="dropdown-item" href="{% url 'apis:apis_entities:domain_crossing' %}">
                                     <i class="bi bi-intersect"></i>
@@ -78,6 +79,7 @@
                                     Oft verwendete Entitäten
                                 </a>
                             </li>
+                            {% endif %}
                             <li>
                                 <a class="dropdown-item" href="{% url 'apis:apis_metainfo:uri_browse' %}">
                                     <i class="bi bi-link-45deg apis-uri"></i>URIs
