@@ -693,55 +693,60 @@ class DomainCrossingTestCase(TestCase):
         )
 
     def setUp(self):
+        User.objects.create_user(**USER)
+        self.client = Client()
+        self.client.login(**USER)
         self.url = reverse("apis:apis_entities:domain_crossing")
 
     def _names(self, response):
         return {row.record.name for row in response.context["table"].rows}
 
     def test_intersection(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=intersection&d=gnd&d=wikidata"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"Both"})
 
     def test_union(self):
-        response = client.get(f"{self.url}?type=person&mode=union&d=gnd&d=wikidata")
+        response = self.client.get(
+            f"{self.url}?type=person&mode=union&d=gnd&d=wikidata"
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"Both", "GndOnly", "WikiOnly"})
 
     def test_difference(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=difference&base=gnd&d=wikidata"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"GndOnly"})
 
     def test_entity_type_switch(self):
-        response = client.get(f"{self.url}?type=place&mode=intersection&d=gnd")
+        response = self.client.get(f"{self.url}?type=place&mode=intersection&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"PlaceGnd"})
 
     def test_no_domain_selected_returns_empty(self):
-        response = client.get(f"{self.url}?type=person&mode=intersection")
+        response = self.client.get(f"{self.url}?type=person&mode=intersection")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["total"], 0)
 
     def test_invalid_type_falls_back_to_person(self):
-        response = client.get(f"{self.url}?type=nonsense&mode=union&d=gnd")
+        response = self.client.get(f"{self.url}?type=nonsense&mode=union&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["entity"], "person")
         self.assertEqual(self._names(response), {"Both", "GndOnly"})
 
     def test_gender_female(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=female"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"Both"})
 
     def test_gender_male(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=male"
         )
         self.assertEqual(response.status_code, 200)
@@ -749,14 +754,14 @@ class DomainCrossingTestCase(TestCase):
 
     def test_gender_other(self):
         # "anderes oder nicht ausgezeichnet" umfasst u.a. "third gender"
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&gender=other"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"WikiOnly"})
 
     def test_gender_ignored_for_non_person(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=place&mode=intersection&d=gnd&gender=female"
         )
         self.assertEqual(response.status_code, 200)
@@ -764,27 +769,27 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(response.context["gender_buttons"], [])
 
     def test_first_name_column_for_person(self):
-        response = client.get(f"{self.url}?type=person&mode=union&d=gnd")
+        response = self.client.get(f"{self.url}?type=person&mode=union&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertIn("first_name", response.context["table"].columns.names())
 
     def test_union_without_domains_is_empty(self):
-        response = client.get(f"{self.url}?type=person&mode=union")
+        response = self.client.get(f"{self.url}?type=person&mode=union")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["total"], 0)
 
     def test_difference_without_base_is_empty(self):
-        response = client.get(f"{self.url}?type=person&mode=difference&d=gnd")
+        response = self.client.get(f"{self.url}?type=person&mode=difference&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["total"], 0)
 
     def test_difference_base_only_without_exclusion(self):
-        response = client.get(f"{self.url}?type=person&mode=difference&base=gnd")
+        response = self.client.get(f"{self.url}?type=person&mode=difference&base=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self._names(response), {"Both", "GndOnly"})
 
     def test_invalid_gender_is_ignored(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&gender=nonsense"
         )
         self.assertEqual(response.status_code, 200)
@@ -792,26 +797,28 @@ class DomainCrossingTestCase(TestCase):
         self.assertEqual(self._names(response), {"Both", "GndOnly"})
 
     def test_default_page_without_params(self):
-        response = client.get(self.url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["entity"], "person")
         self.assertEqual(response.context["mode"], "intersection")
         self.assertEqual(response.context["total"], 0)
 
     def test_invalid_mode_falls_back_to_intersection(self):
-        response = client.get(f"{self.url}?type=person&mode=nonsense&d=gnd&d=wikidata")
+        response = self.client.get(
+            f"{self.url}?type=person&mode=nonsense&d=gnd&d=wikidata"
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["mode"], "intersection")
         self.assertEqual(self._names(response), {"Both"})
 
     def test_mode_tooltips_rendered(self):
-        response = client.get(f"{self.url}?type=person&mode=intersection&d=gnd")
+        response = self.client.get(f"{self.url}?type=person&mode=intersection&d=gnd")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'data-bs-toggle="tooltip"')
         self.assertContains(response, "in allen gewählten Domains vorkommen")
 
     def test_export_csv(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&_export=csv"
         )
         self.assertEqual(response.status_code, 200)
@@ -822,7 +829,7 @@ class DomainCrossingTestCase(TestCase):
         self.assertNotIn("<a", content)
 
     def test_export_json(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&d=wikidata&_export=json"
         )
         self.assertEqual(response.status_code, 200)
@@ -830,7 +837,7 @@ class DomainCrossingTestCase(TestCase):
         self.assertIn("Both", response.getvalue().decode("utf-8"))
 
     def test_invalid_export_format_renders_page(self):
-        response = client.get(
+        response = self.client.get(
             f"{self.url}?type=person&mode=union&d=gnd&_export=nonsense"
         )
         self.assertEqual(response.status_code, 200)
@@ -862,9 +869,14 @@ class MostValuableEntityViewTestCase(TestCase):
             entity=cls.person,
         )
 
+    def setUp(self):
+        User.objects.create_user(**USER)
+        self.client = Client()
+        self.client.login(**USER)
+
     def test_reports_persons_only_and_deduplicates_external_uris(self):
         url = reverse("apis:apis_entities:mvp")
-        response = client.get(f"{url}?type=person")
+        response = self.client.get(f"{url}?type=person")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["entity"], "person")

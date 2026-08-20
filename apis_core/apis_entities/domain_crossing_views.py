@@ -1,7 +1,9 @@
 import django_tables2 as tables
 import pandas as pd
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
@@ -129,6 +131,7 @@ class EntityCrossingViewMixin:
         ]
 
 
+@method_decorator(login_required, name="dispatch")
 class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
     """ranks entities by domains"""
 
@@ -174,6 +177,7 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class DomainCrossingView(EntityCrossingViewMixin, TemplateView):
     """Finds overlaps between data domains (intersection, union,
     difference) for a selectable entity type."""
