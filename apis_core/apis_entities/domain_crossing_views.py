@@ -195,6 +195,9 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
         df = df.drop_duplicates(subset=["host", "domain", "entity"], keep="first")
         group_cols = ["entity", "entity__name"]
         if etype == "person":
+            # pandas drops NaN group keys by default, which would silently
+            # exclude persons without a first name
+            df["first_name"] = df["first_name"].fillna("")
             group_cols.append("first_name")
         biggest_groups = (
             df.assign(uri_domain=list(zip(df["uri"], df["domain"])))
