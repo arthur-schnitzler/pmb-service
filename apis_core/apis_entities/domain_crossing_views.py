@@ -156,7 +156,7 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
             if "first_name" in row:
                 entry["first_name"] = row.get("first_name")
             entry["count"] = row["count"]
-            entry["uris"] = "; ".join(uri for uri, _domain in row["uris"])
+            entry["uris"] = "; ".join(uri for uri, _domain, _color in row["uris"])
             export_rows.append(entry)
         df = pd.DataFrame(export_rows)
         filename = f"{self.export_name}.{export_format}"
@@ -208,9 +208,16 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
             .query(f"count >= {threshold}")
         )
 
+        rows = biggest_groups.to_dict(orient="records")
+        for row in rows:
+            row["uris"] = [
+                (uri, domain, DOMAIN_COLORS.get(domain, settings.DEFAULT_COLOR))
+                for uri, domain in row["uris"]
+            ]
+
         context["entity_buttons"] = self._entity_buttons(etype)
         context["entity"] = etype
-        context["rows"] = biggest_groups.to_dict(orient="records")
+        context["rows"] = rows
         context["uri_count"] = items.count()
         return context
 

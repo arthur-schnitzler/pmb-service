@@ -6,7 +6,7 @@
 {% include "partials/entity_styles.html" %}
 <div class="container pt-2">
     <h1 class="display-1 text-center apis-{{ entity }}">
-        <i class="bi bi-intersect"></i> Häufig verwendete Entitäten
+        <i class="bi bi-bar-chart-fill"></i> Häufig verwendete Entitäten
     </h1>
     <p class="text-center text-muted">
         Hier sind jene Entitäten aufgeführt, für die es die meisten URIs (Uniform Resource Identifier, deutsch: einheitlicher Ressourcenbezeichner) in unterschiedlichen Projekten gibt.
@@ -38,20 +38,20 @@
                             <th scope="row" class="text-start fw-normal">
                                 <a href="/entity/{{ row.entity }}">{{ row.entity__name|default:"ohne Name" }}{% if row.first_name %}, {{ row.first_name }}{% endif %}</a>
                             </th>
-                            <td>
+                            <td class="text-start">
                                 <details>
                                     <summary>{{ row.count }}</summary>
 
-                                    <ul class="list-unstyled mb-0">
-
-                                        {% for uri, domain in row.uris %}
-                                        <li>
-                                            <a href="{{ uri }}" target="_blank" rel="noopener noreferrer">{{ domain }}</a>
-                                        </li>
+                                    <div class="d-flex flex-column gap-1 mt-2">
+                                        {% for uri, domain, color in row.uris %}
+                                        <a href="{{ uri }}" target="_blank" rel="noopener noreferrer"
+                                           class="badge text-white text-decoration-none align-self-start"
+                                           style="background-color:{{ color }};">
+                                            {{ domain }}
+                                        </a>
                                         {% endfor %}
-                                    </ul>
-
-                                    </detail>
+                                    </div>
+                                </details>
                             </td>
                         </tr>
                         {% empty %}
