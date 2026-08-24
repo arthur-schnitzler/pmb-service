@@ -3,6 +3,7 @@ import pandas as pd
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
@@ -136,6 +137,38 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
     """ranks entities by domains"""
 
     template_name = "apis_entities/most_valuable_entity.html"
+    export_name = "haeufig_verwendete_entitaeten"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        export_format = request.GET.get("_export")
+        if export_format in ("csv", "json"):
+            return self._export(context["rows"], export_format)
+        return self.render_to_response(context)
+
+    def _export(self, rows, export_format):
+        export_rows = []
+        for row in rows:
+            entry = {
+                "id": row["entity"],
+                "name": row.get("entity__name") or "ohne Name",
+            }
+            if "first_name" in row:
+                entry["first_name"] = row.get("first_name")
+            entry["count"] = row["count"]
+            entry["uris"] = "; ".join(uri for uri, _domain in row["uris"])
+            export_rows.append(entry)
+        df = pd.DataFrame(export_rows)
+        filename = f"{self.export_name}.{export_format}"
+        if export_format == "csv":
+            response = HttpResponse(content_type="text/csv")
+            response["Content-Disposition"] = f'attachment; filename="{filename}"'
+            df.to_csv(response, index=False)
+        else:
+            response = HttpResponse(content_type="application/json")
+            response["Content-Disposition"] = f'attachment; filename="{filename}"'
+            df.to_json(response, orient="records", force_ascii=False)
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -146,6 +179,8 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
             threshold = 2
         items = ENTITY_TYPES[etype][0].objects.all()
         values_list = ["uri__uri", "uri__domain", "name", "id"]
+        if etype == "person":
+            values_list.append("first_name")
         qs = items.values_list(*values_list)
         df = pd.DataFrame(list(qs), columns=values_list)
         df = df.rename(
@@ -158,9 +193,12 @@ class MostValuableEntityView(EntityCrossingViewMixin, TemplateView):
         )
         df["host"] = df["uri"].str.extract(r"https?://([^/]+)")
         df = df.drop_duplicates(subset=["host", "domain", "entity"], keep="first")
+        group_cols = ["entity", "entity__name"]
+        if etype == "person":
+            group_cols.append("first_name")
         biggest_groups = (
             df.assign(uri_domain=list(zip(df["uri"], df["domain"])))
-            .groupby(["entity", "entity__name"])
+            .groupby(group_cols)
             .agg(
                 count=("entity", "size"),
                 uris=("uri_domain", list),
