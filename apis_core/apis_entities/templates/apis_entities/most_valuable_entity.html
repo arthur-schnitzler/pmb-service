@@ -9,7 +9,7 @@
         <i class="bi bi-intersect"></i> Häufig verwendete Entitäten
     </h1>
     <p class="text-center text-muted">
-        Enititäten die in mehreren Projekten verwednet werden finden.
+        Hier sind jene Entitäten aufgeführt, für die es die meisten URIs (Uniform Resource Identifier, deutsch: einheitlicher Ressourcenbezeichner) in unterschiedlichen Projekten gibt.
     </p>
 
     <div class="row pt-2">
@@ -26,15 +26,17 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Entität</th>
-                            <th scope="col">Uris</th>
+                            <th scope="col" class="text-start">#</th>
+                            <th scope="col" class="text-start">Entität</th>
+                            <th scope="col" class="text-start">Uris</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for row in rows %}
                         <tr>
-                            <th scope="row">
-                                <a href="/entity/{{ row.entity }}">{{ row.entity__name|default:"ohne Name" }}</a>
+                            <td class="text-start">{{ forloop.counter }}</td>
+                            <th scope="row" class="text-start fw-normal">
+                                <a href="/entity/{{ row.entity }}">{{ row.entity__name|default:"ohne Name" }}{% if row.first_name %}, {{ row.first_name }}{% endif %}</a>
                             </th>
                             <td>
                                 <details>
@@ -54,12 +56,24 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="3" class="text-muted">Keine Entitäten gefunden.</td>
+                            <td colspan="4" class="text-muted">Keine Entitäten gefunden.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% if rows %}
+            <div class="dropdown float-end mt-2">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-download" title="Tabelle herunterladen"></i>
+                    Download
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% querystring _export="csv" %}">CSV</a></li>
+                    <li><a class="dropdown-item" href="{% querystring _export="json" %}">JSON</a></li>
+                </ul>
+            </div>
+            {% endif %}
         </div>
 
 
