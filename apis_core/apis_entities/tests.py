@@ -1,3 +1,5 @@
+import json
+
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.conf import settings
@@ -888,3 +890,27 @@ class MostValuableEntityViewTestCase(TestCase):
         self.assertEqual(row["entity__name"], self.person.name)
         self.assertEqual(row["count"], 15)
         self.assertEqual(len(row["uris"]), 15)
+
+    def test_export_csv(self):
+        url = reverse("apis:apis_entities:mvp")
+        response = self.client.get(f"{url}?type=person&_export=csv")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/csv")
+        self.assertIn("attachment;", response["Content-Disposition"])
+        content = response.content.decode()
+        self.assertIn(self.person.name, content)
+        self.assertIn("15", content)
+
+    def test_export_json(self):
+        url = reverse("apis:apis_entities:mvp")
+        response = self.client.get(f"{url}?type=person&_export=json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/json")
+        self.assertIn("attachment;", response["Content-Disposition"])
+        data = json.loads(response.content)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["id"], self.person.pk)
+        self.assertEqual(data[0]["name"], self.person.name)
+        self.assertEqual(data[0]["count"], 15)
