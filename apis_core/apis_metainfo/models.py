@@ -525,6 +525,9 @@ class Collection(models.Model):
         help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
     )
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
