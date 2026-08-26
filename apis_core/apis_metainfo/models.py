@@ -7,7 +7,6 @@ from acdh_wikidata_pyutils import fetch_image
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.conf import settings
-from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -508,16 +507,6 @@ class Collection(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="Typ des Projektes",
         help_text="Setze 'Projekt' damit das Projekt unter '/projects' aufscheint",
-    )
-    groups_allowed = models.ManyToManyField(
-        Group, blank=True, verbose_name="bitte ignorieren"
-    )
-    parent_class = models.ForeignKey(
-        "self",
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        verbose_name="bitte ignorieren",
     )
     published = models.BooleanField(
         default=False,
