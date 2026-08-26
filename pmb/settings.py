@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "apis_core.apis_tei",
     "normdata",
     "dumper",
-    "archemd",
     "network",
 ]
 

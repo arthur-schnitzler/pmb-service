@@ -34,9 +34,9 @@ RELATION_MODELS = list(apps.all_models["apis_relations"].values())
 
 
 class EntitiesTestCase(TestCase):
-    fixtures = [
-        "db.json",
-    ]
+    # fixtures = [
+    #     "db.json",
+    # ]
 
     def setUp(self):
         User.objects.create_user(**USER)
