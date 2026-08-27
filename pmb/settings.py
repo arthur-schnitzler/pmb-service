@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "csvexport",
     "tinymce",
     "browsing",
+    "django_jsonform",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_tables2",
