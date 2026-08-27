@@ -20,10 +20,6 @@ TEST_CSV = "hansi.csv"
 
 
 class DumperTestCase(TestCase):
-    fixtures = [
-        "db.json",
-    ]
-
     def test_01_dl_gsheet(self):
         sheet_id = "1QVb62GiWx9MdEGUNTKaFsZ10rfV-s-PJW3QmVKG2EUQ"
         df = gsheet_to_df(sheet_id)

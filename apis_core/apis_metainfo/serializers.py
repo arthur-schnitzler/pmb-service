@@ -17,7 +17,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     class Meta:
-        fields = ["url", "name", "description", "collection_type", "parent_class"]
+        fields = ["url", "name", "description", "collection_type", "related_domain"]
         model = Collection
 
 

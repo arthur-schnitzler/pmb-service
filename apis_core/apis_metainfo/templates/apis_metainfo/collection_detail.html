@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% load django_tables2 %}
 {% block title %} {{ object }} {% endblock %}
 {% block content %}
-{% include "partials/entity_styles.html" %}
 
 
 <div class="container pt-4">
@@ -23,22 +23,6 @@
                     <i class="{{ object.get_icon }}"></i>
                 </a>
                 {{ object }}
-                {% if user.is_authenticated %}
-                <h2 class="text-center">
-                    {% if object.get_edit_url %}
-                    <a href="{{ object.get_edit_url }}" title="URI bearbeiten">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-                {% endif %}
-                {% if object.get_delete_url %}
-                    |
-                        <a href="{{ object.get_delete_url }}" title="URI löschen">
-                            <i class="bi bi-trash3"></i>
-                        </a>
-                {% endif %}
-                </h2>
-                
-                {% endif %}
             </h2>
         </div>
         <div class="col-md-2">
@@ -52,28 +36,19 @@
         </div>
     </div>
     <div class="pt-4">
-        <table class="table table-hover">
-            <tr>
-                <th>
-                    Bechreibung
-                </th>
-                <td>
-                    {{ object.description|safe }}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Anzahl verbundener Entitäten
-                </th>
-                <td>
-                    {{ related_entities }}
-                </td>
-            </tr>
-        </table>
+       <dl>
+        <dt>Bechreibung</dt>
+        <dd class="ps-3">{{ object.description|safe }}</dd>
+
+        <dt>Verbunde Domains</dt>
+        {% for x in object.related_domain %}
+            <dd class="ps-3"><a href="{% url 'apis:apis_metainfo:uri_browse' %}?domain={{ x }}">{{ x }}</a></dd>
+        {% endfor %}
+
+        <dt>Anzahl verbundener Entitäten</dt>
+        <dd class="ps-3">{{ object.get_related_entities_count|intcomma }}</dd>
+       </dl>
     </div>
     
 </div>
 {% endblock content %}
-{% block scripts %}
-    {{ block.super }}
-{% endblock scripts %}

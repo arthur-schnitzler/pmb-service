@@ -19,6 +19,7 @@ dependencies = [
     "django-autocomplete-light>=3.12.1",
     "django-crispy-forms>=2.4",
     "django-extensions>=4.1",
+    "django-jsonform>=2.23.2",
     "django-model-utils>=5.0.0",
     "django-next-prev>=1.1.0",
     "django-tables2>=2.7.5",

@@ -7,12 +7,12 @@ from acdh_wikidata_pyutils import fetch_image
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.conf import settings
-from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django_jsonform.models.fields import ArrayField
 from model_utils.managers import InheritanceManager
 from next_prev import next_in_order, prev_in_order
 from tinymce.models import HTMLField
@@ -488,56 +488,6 @@ class Source(models.Model):
             return f"(ID: {self.id})"
 
 
-class Collection(models.Model):
-    """Allows to group entities and relation."""
-
-    name = models.CharField(
-        verbose_name="Name",
-        help_text="Name des Projektes, der Sammlung",
-        max_length=255,
-    )
-    description = HTMLField(
-        blank=True,
-        verbose_name="Beschreibung",
-        help_text="Kurze Beschreibung des Projektes, der Sammlung",
-    )
-    collection_type = models.ForeignKey(
-        CollectionType,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name="Typ des Projektes",
-        help_text="Setze 'Projekt' damit das Projekt unter '/projects' aufscheint",
-    )
-    groups_allowed = models.ManyToManyField(
-        Group, blank=True, verbose_name="bitte ignorieren"
-    )
-    parent_class = models.ForeignKey(
-        "self",
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        verbose_name="bitte ignorieren",
-    )
-    published = models.BooleanField(
-        default=False,
-        verbose_name="veröffentlicht",
-        help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
-    )
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse(
-            "apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id}
-        )
-
-    @classmethod
-    def get_icon(self):
-        return "bi bi-collection apis-collection"
-
-
 class Text(models.Model):
     """Holds unstructured text associeted with
     one ore many entities/relations."""
@@ -626,3 +576,65 @@ class Uri(models.Model):
     @classmethod
     def get_icon(self):
         return "bi bi-link-45deg apis-uri"
+
+
+class Collection(models.Model):
+    """Allows to group entities and relation."""
+
+    name = models.CharField(
+        verbose_name="Name",
+        help_text="Name des Projektes, der Sammlung",
+        max_length=255,
+    )
+    description = HTMLField(
+        blank=True,
+        verbose_name="Beschreibung",
+        help_text="Kurze Beschreibung des Projektes, der Sammlung",
+    )
+    related_domain = ArrayField(
+        models.CharField(blank=True, max_length=250, null=True),
+        blank=True,
+        default=list,
+        verbose_name="Verknüpfte URI-Domains",
+        help_text="URIs bzw. Domains, die mit diesem Projekt verbunden sind.",
+    )
+    collection_type = models.ForeignKey(
+        CollectionType,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Typ des Projektes",
+        help_text="Setze 'Projekt' damit das Projekt unter '/projects' aufscheint",
+    )
+    published = models.BooleanField(
+        default=False,
+        verbose_name="veröffentlicht",
+        help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+            "apis_core:apis_metainfo:collection_detail", kwargs={"pk": self.id}
+        )
+
+    @classmethod
+    def get_icon(self):
+        return "bi bi-collection apis-collection"
+
+    def get_related_uris(self):
+        uris = Uri.objects.filter(domain__in=self.related_domain)
+        return uris
+
+    def get_related_entities(self):
+        uris = self.get_related_uris()
+        entities = TempEntityClass.objects.filter(uri__in=uris).distinct()
+        return entities
+
+    def get_related_entities_count(self):
+        return self.get_related_entities().count()
