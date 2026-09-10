@@ -373,7 +373,7 @@ DOMAIN_MAPPING = [
     ("schnitzler-zeitungen.", "schnitzler-zeitungen", "#8E8575"),
     ("schnitzler-mikrofilme.", "schnitzler-mikrofilme", "#6e7b8b"),
     ("wienerschnitzler.", "wienerschnitzler", "#6F5106"),
-    ("schnitzler-kultur.", "schnitzler-kultur", "#AC7790"),
+    ("schnitzler-kultur.", "schnitzler-kultur", "#7D4E63"),
     ("briefedition.wedekind.", "wedekind-korrespondenz", "#d4a346"),
     ("https://biblio.ub.uni-freiburg.de/sf/#", "schnitzler-fischer", "#3D4F9F"),
     ("https://www.dla-marbach.de/", "dla-marbach", "#C96E22"),
