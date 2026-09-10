@@ -15,7 +15,6 @@ urlpatterns = [
     path("apis/", include("apis_core.urls", namespace="apis")),
     path("normdata/", include("normdata.urls", namespace="normdata")),
     path("admin/", admin.site.urls),
-    path("arche/", include("archemd.urls", namespace="archemd")),
     path("uri/", resolver_views.uri_resolver, name="uri-resolver"),
     path("entity/<int:pk>/", resolver_views.entity_resolver, name="entity-resolver"),
     path("tinymce/", include("tinymce.urls")),

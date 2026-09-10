@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %} Projekte {% endblock %}
 {% block content %}
 <div class="container">
     <h1 class="display-1 text-center">Projekte</h1>
-    <h2 class="text-center">Übersicht über größere Datenquellen der PMB</h2>
+    <h2 class="text-center p-3">Übersicht über größere Datenquellen der PMB</h2>
     {% for x in objects %}
-    <h3>
-        {{ x.name }}
-    </h3>
-    <p>{{ x.description|safe }}</p>
+    <div class="pt-2 pb-3">
+        <h3>
+            <a href="{{ x.get_absolute_url }}">{{ x.name }}</a>
+        </h3>
+        <p>{{ x.description|safe }}</p>
+        {% if x.get_related_entities_count %}
+        <p>Mit diesem Projekt sind <strong>{{ x.get_related_entities_count|intcomma }} Entitäten</strong> über die Domain(en) {% for y in x.related_domain %} <a href="{% url 'apis:apis_metainfo:uri_browse' %}?domain={{ y }}">{{ y }}</a>{% endfor %} verbunden</p>
+    {% endif %}
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

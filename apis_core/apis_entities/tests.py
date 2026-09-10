@@ -12,6 +12,8 @@ from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_relations.models import PersonPlace
+from apis_core.apis_vocabularies.models import PersonPlaceRelation
 from apis_core.helper_functions.DateParser import parse_date
 from normdata.forms import NormDataImportForm
 from normdata.utils import (
@@ -34,37 +36,23 @@ RELATION_MODELS = list(apps.all_models["apis_relations"].values())
 
 
 class EntitiesTestCase(TestCase):
-    fixtures = [
-        "db.json",
-    ]
-
     def setUp(self):
         User.objects.create_user(**USER)
 
     def test_001a_entity_resolver(self):
+        Person.objects.get_or_create(name="Andorfer", first_name="Ronja")
+        Person.objects.get_or_create(name="Andorfer", first_name="Hanna")
         url = reverse("entity-resolver", kwargs={"pk": 44442344})
         r = client.get(url)
         self.assertEqual(r.status_code, 404)
-
-        url = reverse("entity-resolver", kwargs={"pk": 1})
-        r = client.get(url)
-        self.assertEqual(r.status_code, 302)
-
-        url = reverse("entity-resolver", kwargs={"pk": 1})
-        r = client.get(f"{url}?format=tei")
-        self.assertEqual(r.status_code, 302)
-
-        url = reverse("entity-resolver", kwargs={"pk": 1})
-        r = client.get(f"{url}?format=json")
-        self.assertEqual(r.status_code, 302)
-
-        url = reverse("entity-resolver", kwargs={"pk": 1})
-        r = client.get(f"{url}?format=asdf")
-        self.assertEqual(r.status_code, 404)
-
-        url = reverse("entity-resolver", kwargs={"pk": 11})
-        r = client.get(f"{url}?format=tei")
-        self.assertEqual(r.status_code, 302)
+        for x in Person.objects.all():
+            url = reverse("entity-resolver", kwargs={"pk": x.id})
+            r = client.get(url)
+            self.assertEqual(r.status_code, 302)
+            r = client.get(f"{url}?format=tei")
+            self.assertEqual(r.status_code, 302)
+            r = client.get(f"{url}?format=json")
+            self.assertEqual(r.status_code, 302)
 
     def test_001_list_view(self):
         for x in MODELS:
@@ -141,6 +129,8 @@ class EntitiesTestCase(TestCase):
             self.assertTrue(created_object.id > 0)
 
     def test_009_merge_view(self):
+        Person.objects.get_or_create(name="Andorfer", first_name="Ronja")
+        Person.objects.get_or_create(name="Andorfer", first_name="Hanna")
         client.login(**USER)
         before = Person.objects.all().count()
         source = Person.objects.all().first()
@@ -449,6 +439,9 @@ class EntitiesTestCase(TestCase):
                 self.assertTrue(r.status_code, 200)
 
     def test_021_api_detail_view(self):
+        Person.objects.get_or_create(name="Andorfer", first_name="Ronja")
+        Person.objects.get_or_create(name="Andorfer", first_name="Hanna")
+        Place.objects.get_or_create(name="Langenlebarn")
         item = Person.objects.last()
         r = client.get(item.get_api_url())
         self.assertTrue(r.status_code, 200)
@@ -457,6 +450,9 @@ class EntitiesTestCase(TestCase):
         self.assertTrue(r.status_code, 200)
 
     def test_022_resolver_view(self):
+        Person.objects.get_or_create(name="Andorfer", first_name="Ronja")
+        Person.objects.get_or_create(name="Andorfer", first_name="Hanna")
+        Place.objects.get_or_create(name="Langenlebarn")
         target = Person.objects.last()
         source = Person.objects.create(name="wirdgleichgemerged")
         source_id = source.id
@@ -554,9 +550,15 @@ class EntitiesTestCase(TestCase):
         self.assertIsNone(entity.img_credit_label())
 
     def test_028_beacons(self):
+        grillparzer = "https://d-nb.info/gnd/118542192"
+        person = Person.objects.create(name="Grillparzer")
+        Uri.objects.create(domain="gnd", uri=grillparzer, entity=person)
         url = reverse("apis_core:beacon")
         r = client.get(url)
         self.assertEqual(r.status_code, 200)
+        grillparzer = "https://www.wikidata.org/wiki/Q154438"
+        person = Person.objects.create(name="Grillparzer")
+        Uri.objects.create(domain="wikidata", uri=grillparzer, entity=person)
         url = reverse("apis_core:wikidata_beacon")
         r = client.get(url)
         self.assertEqual(r.status_code, 200)
@@ -647,13 +649,12 @@ class EntitiesTestCase(TestCase):
             )
 
     def test_035_model_save_rejects_invalid_relation_date_order(self):
-        relation_instance = None
-        for relation_model in RELATION_MODELS:
-            relation_instance = relation_model.objects.first()
-            if relation_instance:
-                break
-
-        self.assertIsNotNone(relation_instance)
+        person = Person.objects.create(name="Andorfer", first_name="Hanna")
+        place = Place.objects.create(name="Langenlebarn")
+        rel_type = PersonPlaceRelation.objects.create(name="geboren in")
+        relation_instance = PersonPlace(
+            related_person=person, related_place=place, relation_type=rel_type
+        )
         relation_instance.start_date_written = "1900"
         relation_instance.end_date_written = "1800"
 

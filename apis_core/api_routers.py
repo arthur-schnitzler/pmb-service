@@ -327,6 +327,9 @@ def generic_serializer_creation_factory():
                             allowed_fields_filter[f2.__class__.__name__]
                         )
                 continue
+            elif field.__class__.__name__ == "ArrayField":
+                # ArrayField has no default django-filter lookup support, skip auto-filtering
+                continue
             if field.__class__.__name__ in allowed_fields_filter:
                 filter_fields[field.name] = allowed_fields_filter[
                     field.__class__.__name__

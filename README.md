@@ -46,6 +46,20 @@ python manage.py update_schnitzler_uris --url "https://raw.githubusercontent.com
 
 in order to avoid errors on a new instance you'll need to set an environment variable `PMB_NEW=whatever`. After you run the inital `python manage.py migrate` you should `unset PMB_NEW`
 
+## tests
+
+Run all tests
+
+```bash
+uv run manage test -v 2
+```
+
+Run a single test
+
+```bash
+uv run manage.py test apis_core.apis_entities.tests.EntitiesTestCase.test_009_merge_view -v 2
+```
+
 ## vite
 
 * bundling js-code (used for network-vis) is not part of the docker-setup

@@ -8,9 +8,9 @@ from apis_core.apis_relations.forms2 import (
 
 
 class GenericRelationFormTestCase(TestCase):
-    fixtures = [
-        "db.json",
-    ]
+    # fixtures = [
+    #     "db.json",
+    # ]
 
     def test_autocomplete_off_on_all_fields(self):
         """All form fields disable browser autofill (see #451)."""
