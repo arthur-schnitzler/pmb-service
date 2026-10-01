@@ -378,6 +378,7 @@ DOMAIN_MAPPING = [
     ("https://biblio.ub.uni-freiburg.de/sf/#", "schnitzler-fischer", "#3D4F9F"),
     ("https://www.dla-marbach.de/", "dla-marbach", "#C96E22"),
     ("tillich-briefe", "tillich-briefe", "#9B5F98"),
+    ("semantickraus", "semantickraus", "#9B5F98"),
 ]
 
 
