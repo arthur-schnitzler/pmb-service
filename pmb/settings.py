@@ -377,6 +377,7 @@ DOMAIN_MAPPING = [
     ("briefedition.wedekind.", "wedekind-korrespondenz", "#d4a346"),
     ("https://biblio.ub.uni-freiburg.de/sf/#", "schnitzler-fischer", "#3D4F9F"),
     ("https://www.dla-marbach.de/", "dla-marbach", "#C96E22"),
+    ("tillich-briefe", "tillich-briefe", "#9B5F98"),
 ]
 
 
