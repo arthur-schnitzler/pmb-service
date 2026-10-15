@@ -8,6 +8,8 @@ from crispy_forms.layout import Layout
 from apis_core.apis_metainfo.models import Uri
 from browsing.browsing_utils import GenericListView
 
+ENTITY_CHILDREN = ("person", "place", "institution", "event", "work")
+
 
 class UriTable(tables.Table):
     id = tables.LinkColumn()
@@ -16,11 +18,18 @@ class UriTable(tables.Table):
         orderable=True,
         verbose_name="related Entity",
     )
-    ent_type = tables.TemplateColumn(
-        "{{ record.entity.get_child_class }}",
+    ent_type = tables.Column(
+        empty_values=(),
         orderable=False,
         verbose_name="Entity Type",
     )
+
+    def render_ent_type(self, record):
+        # children are loaded via select_related in UriListView.get_queryset
+        for name in ENTITY_CHILDREN:
+            if getattr(record.entity, name, None) is not None:
+                return name.capitalize()
+        return ""
 
     class Meta:
         model = Uri
@@ -77,3 +86,7 @@ class UriListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Uris"
     help_text = "Uris help text"
+
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs)
+        return qs.select_related("entity", *(f"entity__{c}" for c in ENTITY_CHILDREN))
