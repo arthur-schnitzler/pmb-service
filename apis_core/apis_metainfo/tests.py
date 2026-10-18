@@ -4,7 +4,7 @@ from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
-from apis_core.apis_entities.models import Person
+from apis_core.apis_entities.models import Person, Work
 from apis_core.apis_metainfo.models import Collection, Uri
 
 client = Client()
@@ -45,3 +45,17 @@ class EntitiesTestCase(TestCase):
         print(f"#########################{rel_ents}")
         rel_uris = new_col.get_related_uris().count()
         self.assertEqual(rel_uris, 3)
+
+    def test_002_quotes_in_name_are_converted(self):
+        cases = {
+            'Der "Reigen"': "Der »Reigen«",
+            "Der “Reigen”": "Der »Reigen«",
+            "Der „Reigen“": "Der »Reigen«",
+            'Ein "A" und "B"': "Ein »A« und »B«",
+            'Unbalanced "quote': 'Unbalanced "quote',
+            "Der »Reigen«": "Der »Reigen«",
+        }
+        for raw, expected in cases.items():
+            work = Work.objects.create(name=raw)
+            work.refresh_from_db()
+            self.assertEqual(work.name, expected)
