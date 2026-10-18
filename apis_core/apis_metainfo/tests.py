@@ -54,6 +54,9 @@ class EntitiesTestCase(TestCase):
             'Ein "A" und "B"': "Ein »A« und »B«",
             'Unbalanced "quote': 'Unbalanced "quote',
             "Der »Reigen«": "Der »Reigen«",
+            "Dreher's Welt": "Dreher’s Welt",
+            "Dreher's": "Dreher’s",
+            "Dreher 'Welt'": "Dreher 'Welt'",
         }
         for raw, expected in cases.items():
             work = Work.objects.create(name=raw)
