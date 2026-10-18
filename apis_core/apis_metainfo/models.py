@@ -31,11 +31,16 @@ DATE_ORDER_VALIDATION_MESSAGE = (
 QUOTES_PATTERN = re.compile(r'"([^"]+)"|“([^“”]+)”|„([^„“”]+)“')
 
 
+APOSTROPHE_PATTERN = re.compile(r"'(?=s(?:\s|$))")
+
+
 def convert_quotes(value):
-    """Replaces quoted passages ("…", “…”, „…“) with »…«"""
-    return QUOTES_PATTERN.sub(
+    """Replaces quoted passages ("…", “…”, „…“) with »…« and
+    the apostrophe in "Dreher's " with ’"""
+    value = QUOTES_PATTERN.sub(
         lambda m: f"»{m.group(1) or m.group(2) or m.group(3)}«", value
     )
+    return APOSTROPHE_PATTERN.sub("’", value)
 
 
 tz = ZoneInfo("Europe/Vienna")
