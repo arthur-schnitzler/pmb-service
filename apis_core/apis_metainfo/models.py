@@ -28,6 +28,21 @@ DATE_ORDER_VALIDATION_MESSAGE = (
     "Das End-Datum muss gleich oder später als das Start-Datum sein."
 )
 
+QUOTES_PATTERN = re.compile(r'"([^"]+)"|“([^“”]+)”|„([^„“”]+)“')
+
+
+APOSTROPHE_PATTERN = re.compile(r"'(?=s(?:\s|$))")
+
+
+def convert_quotes(value):
+    """Replaces quoted passages ("…", “…”, „…“) with »…« and
+    the apostrophe in "Dreher's " with ’"""
+    value = QUOTES_PATTERN.sub(
+        lambda m: f"»{m.group(1) or m.group(2) or m.group(3)}«", value
+    )
+    return APOSTROPHE_PATTERN.sub("’", value)
+
+
 tz = ZoneInfo("Europe/Vienna")
 
 
@@ -173,7 +188,7 @@ class TempEntityClass(models.Model):
             raise StartDateAfterEndDateError(DATE_ORDER_VALIDATION_MESSAGE)
 
         if self.name:
-            self.name = unicodedata.normalize("NFC", self.name)
+            self.name = convert_quotes(unicodedata.normalize("NFC", self.name))
 
         if self.img_url and not self.img_last_checked:
             self.img_last_checked = datetime.now(tz=tz)
