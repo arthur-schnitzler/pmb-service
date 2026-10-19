@@ -1,8 +1,8 @@
+# PMB-SERVICE
+
 [![flake8 Lint](https://github.com/arthur-schnitzler/pmb-service/actions/workflows/lint.yml/badge.svg)](https://github.com/arthur-schnitzler/pmb-service/actions/workflows/lint.yml)
 [![Test](https://github.com/arthur-schnitzler/pmb-service/actions/workflows/test.yml/badge.svg)](https://github.com/arthur-schnitzler/pmb-service/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/arthur-schnitzler/pmb-service/graph/badge.svg?token=P98WIT0K84)](https://codecov.io/gh/arthur-schnitzler/pmb-service)
-
-# PMB-SERVICE
 
 lightweight APIS-PMB instance to generate TEI/XML dumps
 
@@ -87,4 +87,12 @@ To run the image you should provide an `.env` file to pass in needed environment
 
 ```bash
 docker run -it --network="host" --rm --env-file .env pmb:latest
+```
+
+## Refresh Collation
+
+```shell
+psql -U postgres -d pmb
+REINDEX DATABASE pmb;
+ALTER DATABASE pmb REFRESH COLLATION VERSION;
 ```
