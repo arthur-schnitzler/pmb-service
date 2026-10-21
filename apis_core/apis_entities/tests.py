@@ -12,6 +12,10 @@ from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_metainfo.tables import (
+    written_order_end_date_written,
+    written_order_start_date_written,
+)
 from apis_core.apis_relations.models import PersonPlace
 from apis_core.apis_vocabularies.models import PersonPlaceRelation
 from apis_core.helper_functions.DateParser import parse_date
@@ -584,6 +588,31 @@ class EntitiesTestCase(TestCase):
         self.assertFalse("<" in item.clean_end_date_written())
         self.assertTrue("<" in item.start_date_written)
         self.assertFalse("<" in item.end_date_written)
+
+    def test_030b_order_by_written_date(self):
+        # bracket content wins over the plain text; fields without brackets sort by themselves
+        names = {
+            "1900-02-01": Person.objects.create(
+                name="a", start_date_written="1900-02-01", end_date_written="1950"
+            ),
+            "um 1800<1900-01-15>": Person.objects.create(
+                name="b",
+                start_date_written="um 1800<1900-01-15>",
+                end_date_written="vor 1900<1960-05-05>",
+            ),
+            "1899": Person.objects.create(
+                name="c", start_date_written="1899", end_date_written="1940"
+            ),
+            None: Person.objects.create(name="d"),
+        }
+        qs = Person.objects.filter(pk__in=[p.pk for p in names.values()])
+
+        asc, _ = written_order_start_date_written(None, qs, False)
+        self.assertEqual([p.name for p in asc], ["c", "b", "a", "d"])
+        desc, _ = written_order_start_date_written(None, qs, True)
+        self.assertEqual([p.name for p in desc], ["a", "b", "c", "d"])
+        asc, _ = written_order_end_date_written(None, qs, False)
+        self.assertEqual([p.name for p in asc], ["c", "a", "b", "d"])
 
     def test_031_get_colo(self):
         DEFAULT_COLOR = settings.DEFAULT_COLOR

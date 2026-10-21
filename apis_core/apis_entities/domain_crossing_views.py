@@ -16,6 +16,10 @@ from apis_core.apis_entities.models import (
     Place,
     Work,
 )
+from apis_core.apis_metainfo.tables import (
+    written_order_end_date_written,
+    written_order_start_date_written,
+)
 
 # Entity type -> (model, display name, icon)
 ENTITY_TYPES = {
@@ -77,6 +81,8 @@ class DomainCrossingTable(tables.Table):
     )
     start_date_written = tables.Column(verbose_name="von", orderable=True)
     end_date_written = tables.Column(verbose_name="bis", orderable=True)
+    order_start_date_written = written_order_start_date_written
+    order_end_date_written = written_order_end_date_written
 
     class Meta:
         attrs = {"class": "table table-responsive table-hover"}
