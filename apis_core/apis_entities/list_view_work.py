@@ -9,6 +9,7 @@ from dal import autocomplete
 from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_entities.models import Work
 from apis_core.apis_metainfo.models import Collection
+from apis_core.apis_metainfo.tables import written_order_start_date_written
 from apis_core.apis_vocabularies.models import (
     InstitutionWorkRelation,
     PersonWorkRelation,
@@ -144,6 +145,7 @@ class WorkTable(tables.Table):
         "<abbr title='{{ record.start_date_written }}'>{{ record.start_date|date:'Y' }}</a>",
         verbose_name="Erscheinungsjahr",
     )
+    order_start_date_written = written_order_start_date_written
     label_set = tables.ManyToManyColumn(verbose_name="Labels")
     personwork_set = tables.ManyToManyColumn(
         verbose_name="AutorIn",

@@ -15,6 +15,10 @@ from django_filters import (
     RangeFilter,
 )
 
+from apis_core.apis_metainfo.tables import (
+    written_order_end_date_written,
+    written_order_start_date_written,
+)
 from apis_core.apis_relations.config import FIELDS_TO_EXCLUDE
 
 
@@ -52,10 +56,12 @@ def generate_relation_table(MyModelClass):
             "{% if record.start_date_written %} {{ record.start_date_written }} {% endif %}",
             verbose_name="Start",
         )
+        order_start_date_written = written_order_start_date_written
         end_date_written = tables.TemplateColumn(
             "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
             verbose_name="End",
         )
+        order_end_date_written = written_order_end_date_written
         crud = tables.TemplateColumn(
             """
                 <a href="{{ record.get_edit_url }}">

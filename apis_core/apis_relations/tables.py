@@ -5,10 +5,10 @@ from django_tables2.utils import A
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_metainfo.tables import (
-    generic_order_end_date_written,
-    generic_order_start_date_written,
     generic_render_end_date_written,
     generic_render_start_date_written,
+    written_order_end_date_written,
+    written_order_start_date_written,
 )
 
 empty_text_default = "There are currently no relations"
@@ -60,8 +60,11 @@ def get_generic_relations_table(
         The base table from which detail or edit tables will inherit from in order to avoid redundant definitions
         """
 
-        # reuse the logic for ordering and rendering *_date_written
+        # reuse the logic for ordering *_date_written
         # Important: The names of these class variables must correspond to the column field name,
+        order_start_date_written = written_order_start_date_written
+        order_end_date_written = written_order_end_date_written
+
         if disable_sort:
             orderable = disable_sort
 
@@ -268,8 +271,8 @@ class LabelTableBase(tables.Table):
     # reuse the logic for ordering and rendering *_date_written
     # Important: The names of these class variables must correspond to the column field name,
     # e.g. for start_date_written, the methods must be named order_start_date_written and render_start_date_written
-    order_start_date_written = generic_order_start_date_written
-    order_end_date_written = generic_order_end_date_written
+    order_start_date_written = written_order_start_date_written
+    order_end_date_written = written_order_end_date_written
     render_start_date_written = generic_render_start_date_written
     render_end_date_written = generic_render_end_date_written
 
