@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from datetime import date, datetime
+from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 from acdh_wikidata_pyutils import fetch_image
@@ -41,6 +42,42 @@ def convert_quotes(value):
         lambda m: f"»{m.group(1) or m.group(2) or m.group(3)}«", value
     )
     return APOSTROPHE_PATTERN.sub("’", value)
+
+
+WIKIMEDIA_ORIGINAL_PATTERN = re.compile(
+    r"^/wikipedia/(?P<project>commons|[a-z-]+)/(?P<hash>[0-9a-f]/[0-9a-f]{2})/(?P<name>[^/]+)$"
+)
+WIKIMEDIA_THUMB_WIDTH = 250
+
+
+def normalize_wikimedia_img_url(url):
+    """Turns the URL of an original Wikimedia file
+    (https://upload.wikimedia.org/wikipedia/commons/d/da/Otto_Brahm.jpg?utm_source=…)
+    into the URL of a 250px thumbnail
+    (https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Otto_Brahm.jpg/250px-Otto_Brahm.jpg).
+    Other URLs and URLs that already point to a thumbnail are returned (without
+    query string for Wikimedia URLs) as they are."""
+    if not url:
+        return url
+    parts = urlsplit(url.strip())
+    if parts.netloc != "upload.wikimedia.org":
+        return url
+    base = f"{parts.scheme}://{parts.netloc}{parts.path}"
+    match = WIKIMEDIA_ORIGINAL_PATTERN.match(parts.path)
+    if not match:
+        return base
+    name = match.group("name")
+    extension = name.rsplit(".", 1)[-1].lower() if "." in name else ""
+    if extension == "svg":
+        thumb_name = f"{WIKIMEDIA_THUMB_WIDTH}px-{name}.png"
+    elif extension in ("jpg", "jpeg", "png", "gif", "webp"):
+        thumb_name = f"{WIKIMEDIA_THUMB_WIDTH}px-{name}"
+    else:
+        return base
+    return (
+        f"{parts.scheme}://{parts.netloc}/wikipedia/{match.group('project')}/thumb/"
+        f"{match.group('hash')}/{name}/{thumb_name}"
+    )
 
 
 tz = ZoneInfo("Europe/Vienna")
@@ -190,6 +227,8 @@ class TempEntityClass(models.Model):
         if self.name:
             self.name = convert_quotes(unicodedata.normalize("NFC", self.name))
 
+        if self.img_url:
+            self.img_url = normalize_wikimedia_img_url(self.img_url)
         if self.img_url and not self.img_last_checked:
             self.img_last_checked = datetime.now(tz=tz)
         if self.img_url is None:
