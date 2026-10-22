@@ -165,7 +165,7 @@
                                     <i class="bi bi-trash3"></i>
                                 </a>{% endif %}<br />
                             {% else %}
-                            {% if x.domain != "pmb" %}
+                            {% if x.domain != "pmb" and x.domain != "tmp-burgtheater" %}
                             <a class="m2 fs-5" href="{{ x }}" style="color:{{ x.get_color }}"><span class="badge" style="background-color:{{ x.get_color }}">{{ x.domain }}</span></a>
                             {% endif %}
                             {% endif %}
