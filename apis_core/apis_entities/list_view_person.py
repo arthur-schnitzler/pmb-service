@@ -10,6 +10,10 @@ from django.conf import settings
 from apis_core.apis_entities.base_filter import MyBaseFilter
 from apis_core.apis_entities.models import Person
 from apis_core.apis_metainfo.models import Collection
+from apis_core.apis_metainfo.tables import (
+    written_order_end_date_written,
+    written_order_start_date_written,
+)
 from apis_core.apis_vocabularies.models import (
     PersonInstitutionRelation,
     PersonPersonRelation,
@@ -191,10 +195,12 @@ class PersonTable(tables.Table):
         "{% if record.start_date_written %} {{ record.start_date_written }} {% endif %}",
         verbose_name="geboren",
     )
+    order_start_date_written = written_order_start_date_written
     end_date_written = tables.TemplateColumn(
         "{% if record.end_date_written %} {{ record.end_date_written }} {% endif %}",
         verbose_name="gestorben",
     )
+    order_end_date_written = written_order_end_date_written
     personplace_set = tables.ManyToManyColumn(
         verbose_name="Geburtsort",
         transform=lambda x: x.related_place,

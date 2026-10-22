@@ -1,45 +1,43 @@
-from django.db.models import F
+from django.db.models import CharField, F, Func, Value
+from django.db.models.functions import Coalesce
 from django.utils.html import format_html
 
-# generic order_FOO methods for start_date_written and end_date_written to be used in all kinds of tables where a queryset is loaded
-# whose model has start_date_written and end_date_written. These methods order the *_date_written by their corresponding
-# parsed date objects.
-#
-# In order to use them in a table using django-tables2, the table class must be assigned *_date_written columns
-# (either through fields in Meta inner class or through custom Column() definitions).
-# Important however is that the names between the columns and the order methods are correlated to each other.
+# order_FOO methods for start_date_written and end_date_written to be used in all kinds of tables where a queryset is loaded
+# whose model has start_date_written and end_date_written. These methods order the *_date_written by the content of the
+# angle brackets if there is any (e.g. 'um 1900<1900-03-03>'), otherwise by the field itself.
 #
 # The django-tables2 plugin searches for each column through the table class for corresponding order_* and render_* methods
-# E.g. to define custom ordering and rendering for a field column 'name' the table class must have
-# 'order_name' and 'render_name' methods. This approach is called order_FOO and render_FOO by django-tables2.
-#
-# So in order to use these functions here, define within the table class
-# 1.) the respective column
-# 2.) a correspondingly named method for each column
-# 3.) assign to this method one of the two functions below
-#
-# In the case of e.g. start_date_written,
-# the table class thus must have a method / class variable 'order_start_date_written = generic_order_start_date_written'
+# E.g. to define custom ordering for a column 'start_date_written' the table class must have an 'order_start_date_written'
+# method. In order to use the functions here, assign them to a correspondingly named class variable of the table, e.g.
+# 'order_start_date_written = written_order_start_date_written'
 
 
-def generic_order_start_date_written(self, queryset, is_descending):
-    if is_descending:
-        queryset = queryset.order_by(
-            F("start_date").desc(nulls_last=True)
-        )  # nulls_last=True puts null values behind non-null values
-    else:
-        queryset = queryset.order_by(F("start_date").asc(nulls_last=True))
+def written_date_sort_key(field_name):
+    """
+    Sort key for a *_date_written field: if the field contains a normalized date in angle brackets
+    (e.g. 'um 1900<1900-03-03>'), the content of the brackets is used; otherwise the field itself.
+    """
+    bracket_content = Func(
+        F(field_name),
+        Value("<([^>]*)>"),
+        function="substring",
+        output_field=CharField(),
+    )
+    return Coalesce(bracket_content, F(field_name), output_field=CharField())
 
-    return (queryset, True)
+
+def _order_by_written_date(queryset, field_name, is_descending):
+    key = written_date_sort_key(field_name)
+    key = key.desc(nulls_last=True) if is_descending else key.asc(nulls_last=True)
+    return (queryset.order_by(key), True)
 
 
-def generic_order_end_date_written(self, queryset, is_descending):
-    if is_descending:
-        queryset = queryset.order_by(F("end_date").desc(nulls_last=True))
-    else:
-        queryset = queryset.order_by(F("end_date").asc(nulls_last=True))
+def written_order_start_date_written(self, queryset, is_descending):
+    return _order_by_written_date(queryset, "start_date_written", is_descending)
 
-    return (queryset, True)
+
+def written_order_end_date_written(self, queryset, is_descending):
+    return _order_by_written_date(queryset, "end_date_written", is_descending)
 
 
 def helper_render_date(value, var_date, var_start_date, var_end_date):
@@ -68,7 +66,7 @@ def helper_render_date(value, var_date, var_start_date, var_end_date):
     else:
         return "—"
 
-    return format_html("<abbr title='" + overlay_help_text + "'>" + value + "</b>")
+    return format_html("<abbr title='{}'>{}</abbr>", overlay_help_text, value)
 
 
 # Again this function serves a generic purpose and must be assigned as class method to django-tables2 tables.Table class
