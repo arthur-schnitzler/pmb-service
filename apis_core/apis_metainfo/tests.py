@@ -92,3 +92,20 @@ class WikimediaImgUrlTestCase(TestCase):
         url = "https://example.com/bild.jpg?x=1"
         self.assertEqual(normalize_wikimedia_img_url(url), url)
         self.assertIsNone(normalize_wikimedia_img_url(None))
+
+    def test_wikimedia_url_without_thumb_support(self):
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/a/ab/Scan.tif?utm_source=x"),
+            f"{self.base}/a/ab/Scan.tif",
+        )
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/Scan.jpg?utm_source=x"),
+            f"{self.base}/Scan.jpg",
+        )
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/a/ab/Scan?utm_source=x"),
+            f"{self.base}/a/ab/Scan",
+        )
+
+    def test_empty_url(self):
+        self.assertEqual(normalize_wikimedia_img_url(""), "")
