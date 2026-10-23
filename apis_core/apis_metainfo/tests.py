@@ -5,7 +5,11 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
 from apis_core.apis_entities.models import Person, Work
-from apis_core.apis_metainfo.models import Collection, Uri
+from apis_core.apis_metainfo.models import (
+    Collection,
+    Uri,
+    normalize_wikimedia_img_url,
+)
 
 client = Client()
 USER = {"username": "testuser", "password": "somepassword"}
@@ -62,3 +66,46 @@ class EntitiesTestCase(TestCase):
             work = Work.objects.create(name=raw)
             work.refresh_from_db()
             self.assertEqual(work.name, expected)
+
+
+class WikimediaImgUrlTestCase(TestCase):
+    base = "https://upload.wikimedia.org/wikipedia/commons"
+
+    def test_original_becomes_thumb(self):
+        url = f"{self.base}/d/da/Otto_Brahm.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+        self.assertEqual(
+            normalize_wikimedia_img_url(url),
+            f"{self.base}/thumb/d/da/Otto_Brahm.jpg/250px-Otto_Brahm.jpg",
+        )
+
+    def test_thumb_stays(self):
+        url = f"{self.base}/thumb/4/40/Hermann_Bahr_1891.jpg/250px-Hermann_Bahr_1891.jpg"
+        self.assertEqual(normalize_wikimedia_img_url(url), url)
+
+    def test_svg_gets_png_suffix(self):
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/a/ab/Wappen.svg"),
+            f"{self.base}/thumb/a/ab/Wappen.svg/250px-Wappen.svg.png",
+        )
+
+    def test_other_urls_untouched(self):
+        url = "https://example.com/bild.jpg?x=1"
+        self.assertEqual(normalize_wikimedia_img_url(url), url)
+        self.assertIsNone(normalize_wikimedia_img_url(None))
+
+    def test_wikimedia_url_without_thumb_support(self):
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/a/ab/Scan.tif?utm_source=x"),
+            f"{self.base}/a/ab/Scan.tif",
+        )
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/Scan.jpg?utm_source=x"),
+            f"{self.base}/Scan.jpg",
+        )
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{self.base}/a/ab/Scan?utm_source=x"),
+            f"{self.base}/a/ab/Scan",
+        )
+
+    def test_empty_url(self):
+        self.assertEqual(normalize_wikimedia_img_url(""), "")
