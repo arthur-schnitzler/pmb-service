@@ -35,7 +35,10 @@ class Command(BaseCommand):
                 print(f"{x.id}: {x.img_url} -> {new_url}")
             else:
                 x.img_url = new_url
-                x.save()
+                try:
+                    x.save()
+                except Exception as e:
+                    print(x.id, e)
         print(
             f"{changed} image URLs {'would be ' if options['dry_run'] else ''}changed"
         )

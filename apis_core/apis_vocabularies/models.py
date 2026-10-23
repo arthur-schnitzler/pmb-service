@@ -12,7 +12,7 @@ class VocabNames(models.Model):
     """List of Vocabulary names to allow the easy retrieval\
     of Vovcabulary names and classes from the VocabsBaseClass"""
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=500)
 
     def get_vocab_label(self):
         return re.sub(r"([A-Z])", r" \1", self.name).strip()
@@ -29,7 +29,7 @@ class VocabsBaseClass(models.Model):
         ("can", "candidate"),
         ("del", "deleted"),
     )
-    name = models.CharField(max_length=255, verbose_name="Name")
+    name = models.CharField(max_length=500, verbose_name="Name")
     description = models.TextField(
         blank=True, help_text="Brief description of the used term."
     )
@@ -74,7 +74,7 @@ class RelationBaseClass(VocabsBaseClass):
     entities ('db_')"""
 
     name_reverse = models.CharField(
-        max_length=255,
+        max_length=500,
         verbose_name="Name reverse",
         help_text='Inverse relation like: "is sub-class of" vs. "is super-class of".',
         blank=True,
@@ -104,7 +104,7 @@ class VocabsUri(models.Model):
     """
 
     uri = models.URLField()
-    domain = models.CharField(max_length=255, blank=True)
+    domain = models.CharField(max_length=500, blank=True)
     rdf_link = models.URLField(blank=True)
     vocab = models.ForeignKey(
         VocabsBaseClass, blank=True, null=True, on_delete=models.CASCADE
@@ -176,7 +176,7 @@ class CollectionType(VocabsBaseClass):
 class TextType(VocabsBaseClass):
     """used to store the Text types for the forms"""
 
-    entity = models.CharField(max_length=255)
+    entity = models.CharField(max_length=500)
     collections = models.ManyToManyField("apis_metainfo.Collection", blank=True)
     lang = models.CharField(
         max_length=3,
