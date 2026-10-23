@@ -496,7 +496,7 @@ class Person(AbstractEntity):
         ("third gender", "third gender"),
     )
     first_name = models.CharField(
-        max_length=255,
+        max_length=500,
         help_text="The persons´s forename. In case of more then one name...",
         blank=True,
         null=True,
