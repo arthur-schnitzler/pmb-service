@@ -128,7 +128,7 @@ class TempEntityClass(models.Model):
     A review boolean field to mark an object as reviewed
     """
 
-    name = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=500, blank=True)
     review = models.BooleanField(
         default=False,
         help_text="Should be set to True, if the data record holds up quality standards.",
@@ -140,13 +140,13 @@ class TempEntityClass(models.Model):
     end_start_date = models.DateField(blank=True, null=True)
     end_end_date = models.DateField(blank=True, null=True)
     start_date_written = models.CharField(
-        max_length=255,
+        max_length=500,
         blank=True,
         null=True,
         verbose_name="Start",
     )
     end_date_written = models.CharField(
-        max_length=255,
+        max_length=500,
         blank=True,
         null=True,
         verbose_name="End",
@@ -529,10 +529,10 @@ class TempEntityClass(models.Model):
 class Source(models.Model):
     """Holds information about entities and their relations"""
 
-    orig_filename = models.CharField(max_length=255, blank=True)
+    orig_filename = models.CharField(max_length=500, blank=True)
     indexed = models.BooleanField(default=False)
     pubinfo = models.CharField(max_length=400, blank=True)
-    author = models.CharField(max_length=255, blank=True)
+    author = models.CharField(max_length=500, blank=True)
     orig_id = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -562,12 +562,12 @@ class Uri(models.Model):
         blank=True,
         null=True,
         unique=True,
-        max_length=255,
+        max_length=500,
         verbose_name="URI",
         help_text="Eindeutiger Identifier",
     )
     domain = models.CharField(
-        max_length=255,
+        max_length=500,
         blank=True,
         verbose_name="Domain",
         help_text="Domain der Normdatenquelle, z.B. gnd, wikidata, geonames, ...",
@@ -638,7 +638,7 @@ class Collection(models.Model):
     name = models.CharField(
         verbose_name="Name",
         help_text="Name des Projektes, der Sammlung",
-        max_length=255,
+        max_length=500,
     )
     description = HTMLField(
         blank=True,

@@ -10,7 +10,7 @@ from apis_core.helper_functions import DateParser
 
 class Label(models.Model):
     label = models.CharField(
-        max_length=255, blank=True, help_text="The entities label or name."
+        max_length=500, blank=True, help_text="The entities label or name."
     )
     isocode_639_3 = models.CharField(
         max_length=3,
@@ -31,13 +31,13 @@ class Label(models.Model):
     end_start_date = models.DateField(blank=True, null=True)
     end_end_date = models.DateField(blank=True, null=True)
     start_date_written = models.CharField(
-        max_length=255,
+        max_length=500,
         blank=True,
         null=True,
         verbose_name="Start",
     )
     end_date_written = models.CharField(
-        max_length=255,
+        max_length=500,
         blank=True,
         null=True,
         verbose_name="End",
