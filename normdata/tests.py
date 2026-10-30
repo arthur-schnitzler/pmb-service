@@ -5,7 +5,7 @@ from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.test import TestCase
 from pylobid.pylobid import PyLobidPerson
 
-from apis_core.apis_entities.models import Place
+from apis_core.apis_entities.models import Institution, Person, Place
 from apis_core.apis_metainfo.models import Uri
 from normdata.utils import (
     fetch_image_safely,
@@ -103,6 +103,39 @@ class NormdataTestCase(TestCase):
         self.assertFalse(Uri.objects.filter(uri=wiengeschichte_uri))
         import_from_normdata(test_uri, "person")
         self.assertTrue(Uri.objects.get(uri=wiengeschichte_uri))
+
+
+THUMB = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Rilke.jpg/250px-Rilke.jpg"
+WIKIDATA_IMPORTS = {
+    "person": ("https://www.wikidata.org/wiki/Q76483", Person),
+    "place": ("https://www.wikidata.org/wiki/Q1741", Place),
+    "institution": ("https://www.wikidata.org/wiki/Q49108", Institution),
+}
+
+
+class ImportFetchesImageTestCase(TestCase):
+    def test_import_stores_image(self):
+        for entity_type, (url, model) in WIKIDATA_IMPORTS.items():
+            with self.subTest(entity_type):
+                with mock.patch(
+                    "apis_core.apis_metainfo.models.fetch_image", return_value=THUMB
+                ):
+                    entity = import_from_normdata(url, entity_type)
+                entity = model.objects.get(id=entity.id)
+                self.assertEqual(entity.img_url, THUMB)
+                self.assertIsNotNone(entity.img_last_checked)
+
+    def test_failing_image_request_does_not_break_import(self):
+        for entity_type, (url, model) in WIKIDATA_IMPORTS.items():
+            with self.subTest(entity_type):
+                with mock.patch(
+                    "apis_core.apis_metainfo.models.fetch_image",
+                    side_effect=ConnectionError("commons down"),
+                ):
+                    entity = import_from_normdata(url, entity_type)
+                entity = model.objects.get(id=entity.id)
+                self.assertIsNone(entity.img_url)
+                self.assertIsNone(entity.img_last_checked)
 
 
 class FetchImageSafelyTestCase(TestCase):

@@ -2,6 +2,7 @@
 
 from unittest import mock
 
+import requests
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import Client, SimpleTestCase, TestCase
@@ -167,3 +168,26 @@ class WikidataImageRankTestCase(SimpleTestCase):
         self.assertEqual(fetch_image("Q1"), "")
         self.assertEqual(get.call_count, 2)
         sleep.assert_called_once_with(1)
+
+    @mock.patch("apis_core.apis_metainfo.models.time.sleep")
+    @mock.patch("apis_core.apis_metainfo.models.requests.get")
+    def test_fetch_image_raises_if_rate_limit_persists(self, get, sleep):
+        limited = mock.Mock(status_code=429, headers={})
+        limited.raise_for_status.side_effect = requests.HTTPError("429")
+        get.return_value = limited
+        with self.assertRaises(requests.HTTPError):
+            fetch_image("Q1")
+        self.assertEqual(get.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+
+    @mock.patch("apis_core.apis_metainfo.models.requests.get")
+    def test_fetch_image_without_thumbnail_info(self, get):
+        claims = {"claims": {"P18": [_statement("b b.jpg")]}}
+        get.side_effect = [
+            mock.Mock(status_code=200, json=lambda: claims),
+            mock.Mock(status_code=200, json=lambda: {"query": {"pages": {"-1": {"missing": ""}}}}),
+        ]
+        self.assertEqual(
+            fetch_image("Q1"),
+            "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/b%20b.jpg",
+        )
