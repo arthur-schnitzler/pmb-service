@@ -1,14 +1,18 @@
 # Create your tests here.
 
+from unittest import mock
+
 from django.apps import apps
 from django.contrib.auth.models import User
-from django.test import Client, TestCase
+from django.test import Client, SimpleTestCase, TestCase
 
 from apis_core.apis_entities.models import Person, Work
 from apis_core.apis_metainfo.models import (
     Collection,
     Uri,
+    fetch_image,
     normalize_wikimedia_img_url,
+    pick_wikidata_image_name,
 )
 
 client = Client()
@@ -109,3 +113,47 @@ class WikimediaImgUrlTestCase(TestCase):
 
     def test_empty_url(self):
         self.assertEqual(normalize_wikimedia_img_url(""), "")
+
+
+def _statement(name, rank="normal"):
+    return {"rank": rank, "mainsnak": {"datavalue": {"value": name}}}
+
+
+class WikidataImageRankTestCase(SimpleTestCase):
+    def test_preferred_wins(self):
+        claims = [_statement("a.jpg"), _statement("b.jpg", "preferred")]
+        self.assertEqual(pick_wikidata_image_name(claims), "b.jpg")
+
+    def test_first_of_normal_rank(self):
+        claims = [_statement("a.jpg"), _statement("b.jpg")]
+        self.assertEqual(pick_wikidata_image_name(claims), "a.jpg")
+
+    def test_deprecated_is_ignored(self):
+        claims = [_statement("a.jpg", "deprecated"), _statement("b.jpg")]
+        self.assertEqual(pick_wikidata_image_name(claims), "b.jpg")
+
+    def test_no_usable_statement(self):
+        self.assertIsNone(pick_wikidata_image_name([]))
+        self.assertIsNone(pick_wikidata_image_name([_statement("a.jpg", "deprecated")]))
+        self.assertIsNone(
+            pick_wikidata_image_name([{"rank": "normal", "mainsnak": {}}])
+        )
+
+    @mock.patch("apis_core.apis_metainfo.models.requests.get")
+    def test_fetch_image_uses_preferred_image(self, get):
+        claims = {
+            "claims": {"P18": [_statement("a.jpg"), _statement("b.jpg", "preferred")]}
+        }
+        thumb = "https://upload.wikimedia.org/wikipedia/commons/thumb/x/xy/b.jpg/250px-b.jpg"
+        pages = {"query": {"pages": {"1": {"imageinfo": [{"thumburl": thumb}]}}}}
+        get.side_effect = [
+            mock.Mock(json=lambda: claims),
+            mock.Mock(json=lambda: pages),
+        ]
+        self.assertEqual(fetch_image("http://www.wikidata.org/entity/Q1"), thumb)
+        self.assertIn("titles=File:b.jpg", get.call_args_list[1].args[0])
+
+    @mock.patch("apis_core.apis_metainfo.models.requests.get")
+    def test_fetch_image_without_image(self, get):
+        get.return_value = mock.Mock(json=lambda: {"claims": {}})
+        self.assertEqual(fetch_image("Q1"), "")

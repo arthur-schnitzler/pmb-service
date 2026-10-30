@@ -1,3 +1,5 @@
+from unittest import mock
+
 from acdh_wikidata_pyutils import WikiDataPlace
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.test import TestCase
@@ -6,6 +8,7 @@ from pylobid.pylobid import PyLobidPerson
 from apis_core.apis_entities.models import Place
 from apis_core.apis_metainfo.models import Uri
 from normdata.utils import (
+    fetch_image_safely,
     get_gender_from_pylobid,
     get_or_create_org_from_wikidata,
     get_or_create_person_from_gnd,
@@ -100,3 +103,15 @@ class NormdataTestCase(TestCase):
         self.assertFalse(Uri.objects.filter(uri=wiengeschichte_uri))
         import_from_normdata(test_uri, "person")
         self.assertTrue(Uri.objects.get(uri=wiengeschichte_uri))
+
+
+class FetchImageSafelyTestCase(TestCase):
+    def test_fetches_image(self):
+        entity = mock.Mock()
+        fetch_image_safely(entity)
+        entity.fetch_image.assert_called_once_with()
+
+    def test_failing_request_does_not_break_import(self):
+        entity = mock.Mock()
+        entity.fetch_image.side_effect = ConnectionError("commons down")
+        fetch_image_safely(entity)
