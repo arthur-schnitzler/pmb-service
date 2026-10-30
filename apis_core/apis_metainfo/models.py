@@ -1,4 +1,5 @@
 import re
+import time
 import unicodedata
 from datetime import date, datetime
 from urllib.parse import quote, urlsplit
@@ -74,19 +75,29 @@ def pick_wikidata_image_name(claims):
     return min(candidates, key=lambda x: x[0])[1]
 
 
+def get_json_with_retry(url, attempts=3):
+    """GETs a JSON document, waits and retries if Wikidata/Commons answer with
+    "too many requests" or a server error, raises for any other bad status."""
+    for attempt in range(attempts):
+        r = requests.get(url, headers=DEFAULT_REQUEST_HEADERS, timeout=30)
+        if r.status_code in (429, 500, 502, 503, 504) and attempt < attempts - 1:
+            time.sleep(min(int(r.headers.get("Retry-After", 2 ** (attempt + 1))), 30))
+            continue
+        r.raise_for_status()
+        return r.json()
+
+
 def fetch_image(wikidata_uri, thumb_width=WIKIMEDIA_THUMB_WIDTH):
     """Returns the URL of a thumbnail of the image (P18) of a wikidata item,
     respecting the rank of the statements, or an empty string."""
     wikidata_id = get_norm_id(wikidata_uri) if "/" in wikidata_uri else wikidata_uri
-    r = requests.get(
-        IMG_EP.format(wikidata_id), headers=DEFAULT_REQUEST_HEADERS, timeout=30
-    )
-    img_name = pick_wikidata_image_name(r.json().get("claims", {}).get("P18", []))
+    claims = get_json_with_retry(IMG_EP.format(wikidata_id))
+    img_name = pick_wikidata_image_name(claims.get("claims", {}).get("P18", []))
     if img_name is None:
         return ""
     img = URL_STUB.format(quote(img_name))
     api_url = JSON_API_STUB.format(img.split("file/")[-1], thumb_width)
-    data = requests.get(api_url, headers=DEFAULT_REQUEST_HEADERS, timeout=30).json()
+    data = get_json_with_retry(api_url)
     try:
         return next(iter(data["query"]["pages"].values()))["imageinfo"][0]["thumburl"]
     except KeyError, IndexError:

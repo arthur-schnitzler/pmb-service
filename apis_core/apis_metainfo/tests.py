@@ -147,13 +147,23 @@ class WikidataImageRankTestCase(SimpleTestCase):
         thumb = "https://upload.wikimedia.org/wikipedia/commons/thumb/x/xy/b.jpg/250px-b.jpg"
         pages = {"query": {"pages": {"1": {"imageinfo": [{"thumburl": thumb}]}}}}
         get.side_effect = [
-            mock.Mock(json=lambda: claims),
-            mock.Mock(json=lambda: pages),
+            mock.Mock(status_code=200, json=lambda: claims),
+            mock.Mock(status_code=200, json=lambda: pages),
         ]
         self.assertEqual(fetch_image("http://www.wikidata.org/entity/Q1"), thumb)
         self.assertIn("titles=File:b.jpg", get.call_args_list[1].args[0])
 
     @mock.patch("apis_core.apis_metainfo.models.requests.get")
     def test_fetch_image_without_image(self, get):
-        get.return_value = mock.Mock(json=lambda: {"claims": {}})
+        get.return_value = mock.Mock(status_code=200, json=lambda: {"claims": {}})
         self.assertEqual(fetch_image("Q1"), "")
+
+    @mock.patch("apis_core.apis_metainfo.models.time.sleep")
+    @mock.patch("apis_core.apis_metainfo.models.requests.get")
+    def test_fetch_image_retries_on_too_many_requests(self, get, sleep):
+        limited = mock.Mock(status_code=429, headers={"Retry-After": "1"})
+        ok = mock.Mock(status_code=200, json=lambda: {"claims": {}})
+        get.side_effect = [limited, ok]
+        self.assertEqual(fetch_image("Q1"), "")
+        self.assertEqual(get.call_count, 2)
+        sleep.assert_called_once_with(1)
