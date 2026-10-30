@@ -54,6 +54,15 @@ def add_uri_to_entity(entity, uri, domain):
         pass
 
 
+def fetch_image_safely(entity):
+    """Fetches the wikidata image of a newly imported entity. A failing request
+    must not break the import, the daily fetch_images command tries again."""
+    try:
+        entity.fetch_image()
+    except Exception as e:
+        ic(e)
+
+
 def get_gender_from_pylobid(fetched_item):
     ent_dict = fetched_item.get_entity_json()
     try:
@@ -174,6 +183,7 @@ def get_or_create_place_from_wikidata(uri):
                         )
                 except IntegrityError:
                     pass
+        fetch_image_safely(entity)
         return entity
 
 
@@ -295,6 +305,7 @@ def get_or_create_person_from_wikidata(uri):
                     relation_type=relation_type,
                     start_date_written=apis_entity["end_date_written"],
                 )
+        fetch_image_safely(entity)
         return entity
 
 
@@ -371,6 +382,7 @@ def get_or_create_work_from_wikidata(uri):
                     domain="wikidata",
                     entity=entity,
                 )
+                fetch_image_safely(entity)
                 return entity
         else:
             apis_entity = wd_entity.get_apis_entity()
@@ -380,6 +392,7 @@ def get_or_create_work_from_wikidata(uri):
                 domain="wikidata",
                 entity=entity,
             )
+            fetch_image_safely(entity)
             return entity
 
 
@@ -437,6 +450,7 @@ def get_or_create_org_from_wikidata(uri):
                     relation_type=relation_type,
                     start_date_written=apis_entity["start_date_written"],
                 )
+        fetch_image_safely(entity)
         return entity
 
 

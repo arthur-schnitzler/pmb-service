@@ -1,4 +1,5 @@
 import json
+from unittest import mock
 
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
@@ -548,7 +549,8 @@ class EntitiesTestCase(TestCase):
         self.assertTrue("Wikimedia Commons" in entity.img_credit_label())
         self.assertTrue("File:" in entity.img_credit())
 
-    def test_027_img_credit(self):
+    @mock.patch("apis_core.apis_metainfo.models.fetch_image", return_value="")
+    def test_027_img_credit(self, _fetch_image):
         entity = import_from_normdata("https://www.wikidata.org/wiki/Q76483", "person")
         self.assertIsNone(entity.img_credit())
         self.assertIsNone(entity.img_credit_label())
