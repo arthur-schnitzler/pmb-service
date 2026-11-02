@@ -84,7 +84,9 @@ class WikimediaImgUrlTestCase(TestCase):
         )
 
     def test_thumb_stays(self):
-        url = f"{self.base}/thumb/4/40/Hermann_Bahr_1891.jpg/250px-Hermann_Bahr_1891.jpg"
+        url = (
+            f"{self.base}/thumb/4/40/Hermann_Bahr_1891.jpg/250px-Hermann_Bahr_1891.jpg"
+        )
         self.assertEqual(normalize_wikimedia_img_url(url), url)
 
     def test_svg_gets_png_suffix(self):
@@ -192,9 +194,61 @@ class WikidataImageRankTestCase(SimpleTestCase):
         claims = {"claims": {"P18": [_statement("b b.jpg")]}}
         get.side_effect = [
             mock.Mock(status_code=200, json=lambda: claims),
-            mock.Mock(status_code=200, json=lambda: {"query": {"pages": {"-1": {"missing": ""}}}}),
+            mock.Mock(
+                status_code=200,
+                json=lambda: {"query": {"pages": {"-1": {"missing": ""}}}},
+            ),
         ]
         self.assertEqual(
             fetch_image("Q1"),
             "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/b%20b.jpg",
         )
+
+
+class FetchImagesCommandTestCase(TestCase):
+    def _entity(self, model, name, wikidata_id, **kwargs):
+        entity = model.objects.create(name=name, **kwargs)
+        Uri.objects.create(
+            uri=f"http://www.wikidata.org/entity/{wikidata_id}",
+            domain="wikidata",
+            entity=entity,
+        )
+        return entity
+
+    @mock.patch("apis_core.apis_entities.management.commands.fetch_images.write_report")
+    @mock.patch("apis_core.apis_entities.management.commands.fetch_images.time.sleep")
+    @mock.patch("apis_core.apis_metainfo.models.fetch_image")
+    def test_queue(self, fetch, sleep, report):
+        from datetime import timedelta
+
+        from django.core.management import call_command
+        from django.utils import timezone
+
+        thumb = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/x.jpg/250px-x.jpg"
+        fetch.side_effect = lambda uri: thumb if uri.endswith("Q3") else ""
+        no_image = self._entity(Person, "ohne Bild", "Q1")
+        no_image.refresh_from_db()
+        work = self._entity(Work, "Werk", "Q3")
+        # checked recently without result: skipped
+        recent = self._entity(Person, "kürzlich", "Q2")
+        Person.objects.filter(pk=recent.pk).update(img_last_checked=timezone.now())
+        # checked long ago without result: checked again
+        old = self._entity(Person, "alt", "Q4")
+        Person.objects.filter(pk=old.pk).update(
+            img_last_checked=timezone.now() - timedelta(days=60)
+        )
+
+        call_command("fetch_images")
+
+        self.assertEqual(
+            sorted(c.args[0][-2:] for c in fetch.call_args_list), ["Q1", "Q3", "Q4"]
+        )
+        work.refresh_from_db()
+        self.assertEqual(work.img_url, thumb)
+        # an entity without image keeps its check date, so it leaves the queue
+        no_image.refresh_from_db()
+        self.assertIsNone(no_image.img_url)
+        self.assertIsNotNone(no_image.img_last_checked)
+        fetch.reset_mock()
+        call_command("fetch_images")
+        fetch.assert_not_called()

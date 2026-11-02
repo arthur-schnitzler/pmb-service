@@ -320,13 +320,19 @@ class TempEntityClass(models.Model):
                     self.img_url = img_url
                     print(self.id, img_url)
             self.save()
-        if wikidata_uri and self.img_url is None and not self.img_last_checked:
-            self.img_last_checked = datetime.now(tz=tz)
+        if wikidata_uri and self.img_url is None:
+            checked = datetime.now(tz=tz)
+            self.img_last_checked = checked
             img_url = fetch_image(wikidata_uri.uri)
             if img_url:  # noqa: SIM102
                 if len(img_url) < 601:
                     self.img_url = img_url
             self.save()
+            if not self.img_url:
+                # save() resets img_last_checked if there is no image; keep the
+                # check date so that the entity moves to the end of the queue
+                # of the fetch_images command
+                type(self).objects.filter(pk=self.pk).update(img_last_checked=checked)
         return self
 
     def img_credit(self):
