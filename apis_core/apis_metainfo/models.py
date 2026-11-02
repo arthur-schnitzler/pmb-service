@@ -221,7 +221,7 @@ class TempEntityClass(models.Model):
     img_url = models.URLField(
         blank=True,
         null=True,
-        max_length=300,
+        max_length=600,
         verbose_name="Bild URL",
         help_text="URL zu einem Bild der Entität",
     )
@@ -309,7 +309,7 @@ class TempEntityClass(models.Model):
             img_url = fetch_image(wikidata_uri.uri)
             self.img_last_checked = datetime.now(tz=tz)
             if img_url:  # noqa: SIM102
-                if len(img_url) < 301:
+                if len(img_url) < 601:
                     self.img_url = img_url
                     print(self.id, img_url)
             self.save()
@@ -317,7 +317,7 @@ class TempEntityClass(models.Model):
             self.img_last_checked = datetime.now(tz=tz)
             img_url = fetch_image(wikidata_uri.uri)
             if img_url:  # noqa: SIM102
-                if len(img_url) < 301:
+                if len(img_url) < 601:
                     self.img_url = img_url
             self.save()
         return self
