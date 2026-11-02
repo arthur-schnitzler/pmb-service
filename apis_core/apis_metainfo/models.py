@@ -114,6 +114,13 @@ def normalize_wikimedia_img_url(url):
     if not url:
         return url
     parts = urlsplit(url.strip())
+    if parts.netloc == "commons.wikimedia.org" and parts.path.startswith(
+        "/wiki/Special:FilePath/"
+    ):
+        # FilePath redirects to the file; width makes it redirect to a thumbnail
+        return (
+            f"{parts.scheme}://{parts.netloc}{parts.path}?width={WIKIMEDIA_THUMB_WIDTH}"
+        )
     if parts.netloc != "upload.wikimedia.org":
         return url
     base = f"{parts.scheme}://{parts.netloc}{parts.path}"

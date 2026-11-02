@@ -93,6 +93,13 @@ class WikimediaImgUrlTestCase(TestCase):
             f"{self.base}/thumb/a/ab/Wappen.svg/250px-Wappen.svg.png",
         )
 
+    def test_special_filepath_gets_width(self):
+        url = "https://commons.wikimedia.org/wiki/Special:FilePath/Mathilde%20Sussin%20%28Isabella%29%20by%20Becker%20%26%20Maass.jpg"
+        self.assertEqual(normalize_wikimedia_img_url(url), f"{url}?width=250")
+        self.assertEqual(
+            normalize_wikimedia_img_url(f"{url}?width=250"), f"{url}?width=250"
+        )
+
     def test_other_urls_untouched(self):
         url = "https://example.com/bild.jpg?x=1"
         self.assertEqual(normalize_wikimedia_img_url(url), url)
