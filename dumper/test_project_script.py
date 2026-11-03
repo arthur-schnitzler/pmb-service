@@ -114,7 +114,37 @@ class ProcessListXmlTestCase(SimpleTestCase):
         with self.assertRaises(SystemExit):
             self.collect({"lista.xml": "<TEI"})
 
-    def test_07_main_writes_the_contract_and_refuses_an_empty_csv(self):
+    def test_07_lists_wrapped_in_div_or_p_are_found(self):
+        rows, out = self.collect(
+            {
+                "listperson.xml": list_xml(
+                    '<div type="index_persons"><listPerson xml:id="listperson">'
+                    '<person xml:id="pmb1"/></listPerson></div>'
+                ),
+                "listwork.xml": list_xml(
+                    '<p><listBibl xml:id="listwork"><bibl xml:id="pmb2"/></listBibl></p>'
+                ),
+            }
+        )
+        self.assertEqual([r[:2] for r in rows], [[2, "bibl"], [1, "person"]])
+        self.assertEqual(out, "")
+
+    def test_08_lists_inside_entries_are_not_searched(self):
+        rows, out = self.collect(
+            {
+                "listperson.xml": list_xml(
+                    '<listPerson><person xml:id="pmb1">'
+                    '<listEvent><event xml:id="pmb50"/></listEvent>'
+                    '<listBibl><bibl xml:id="pmb60"/></listBibl>'
+                    '<affiliation><orgName xml:id="pmb70"/></affiliation>'
+                    "</person></listPerson>"
+                )
+            }
+        )
+        self.assertEqual([r[:2] for r in rows], [[1, "person"]])
+        self.assertEqual(out, "")
+
+    def test_09_main_writes_the_contract_and_refuses_an_empty_csv(self):
         with tempfile.TemporaryDirectory() as tmp:
             (Path(tmp) / "listperson.xml").write_text(
                 list_xml('<listPerson><person xml:id="pmb1"/></listPerson>'),

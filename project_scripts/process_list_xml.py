@@ -19,11 +19,12 @@ config (default: ./pmb-uris.json):
 Output columns: pmb_id, entity_type, uri, domain
 Rows are sorted by (entity_type, pmb_id) so that git diffs stay small.
 
-The entity type is taken from the entry itself (person, place, org, bibl,
-event), not from the list around it. Entries of any other kind (e.g. personGrp)
-are skipped, and so is a second entry for the same entity, also if its xml:id
-only differs in leading zeros (pmb7, pmb007): PMB expects one row per
-(entity_type, pmb_id). Everything skipped is reported.
+The lists may sit anywhere in the body (body/listPerson, body/div/listPerson,
+body/p/listBibl, ...). The entity type is taken from the entry itself (person,
+place, org, bibl, event), not from the list around it. Entries of any other kind
+(e.g. personGrp) are skipped, and so is a second entry for the same entity, also
+if its xml:id only differs in leading zeros (pmb7, pmb007): PMB expects one row
+per (entity_type, pmb_id). Everything skipped is reported.
 
 Usage: process_list_xml.py [config.json]
 """
@@ -43,6 +44,18 @@ XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
 ENTITY_TYPES = ['person', 'place', 'org', 'bibl', 'event']
 
 
+def entries(element, in_list=False):
+    """Yield the children of every list* element below element, however deeply
+    the lists are wrapped in div or p. Entries are not searched themselves, they
+    may contain lists of their own (listEvent, listBibl, ...)."""
+    for child in element:
+        is_list = child.tag.startswith(f'{TEI}list')
+        if in_list and not is_list:
+            yield child
+        else:
+            yield from entries(child, is_list)
+
+
 def collect(config):
     id_re = re.compile(config['id_pattern'])
     excluded = set(config.get('exclude', []))
@@ -60,28 +73,25 @@ def collect(config):
         body = root.find(f'.//{TEI}text/{TEI}body')
         if body is None:
             continue
-        for lst in body:
-            if not lst.tag.startswith(f'{TEI}list'):
+        for entry in entries(body):
+            xml_id = entry.get(XML_ID)
+            if not xml_id:
                 continue
-            for entry in lst:
-                xml_id = entry.get(XML_ID)
-                if not xml_id:
-                    continue
-                entity_type = entry.tag.removeprefix(TEI)
-                if entity_type not in ENTITY_TYPES:
-                    print(f'Skipping {xml_id} in {path}: <{entity_type}> is not a PMB entity type')
-                    continue
-                m = id_re.match(xml_id)
-                if not m:
-                    print(f'Skipping {xml_id} in {path}: does not match id_pattern')
-                    continue
-                pmb_id = int(m.group(1))
-                if (entity_type, pmb_id) in rows:
-                    print(f'Skipping {xml_id} in {path}: duplicate {entity_type} {pmb_id}')
-                    continue
-                uri = config['uri_template'].format(xml_id=xml_id, pmb_id=pmb_id)
-                rows[(entity_type, pmb_id)] = [
-                    pmb_id, entity_type, uri, config['domain']]
+            entity_type = entry.tag.removeprefix(TEI)
+            if entity_type not in ENTITY_TYPES:
+                print(f'Skipping {xml_id} in {path}: <{entity_type}> is not a PMB entity type')
+                continue
+            m = id_re.match(xml_id)
+            if not m:
+                print(f'Skipping {xml_id} in {path}: does not match id_pattern')
+                continue
+            pmb_id = int(m.group(1))
+            if (entity_type, pmb_id) in rows:
+                print(f'Skipping {xml_id} in {path}: duplicate {entity_type} {pmb_id}')
+                continue
+            uri = config['uri_template'].format(xml_id=xml_id, pmb_id=pmb_id)
+            rows[(entity_type, pmb_id)] = [
+                pmb_id, entity_type, uri, config['domain']]
     return files, [rows[k] for k in sorted(rows)]
 
 
