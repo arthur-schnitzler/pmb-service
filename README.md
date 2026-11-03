@@ -60,7 +60,11 @@ python manage.py sync_uris_in_use --max-delete-ratio 0.1              # allow de
 * rows pointing to an entity that doesn't exist (or has another type) are skipped and listed
 * entities merged in the PMB already carry the uris of the merged entity, those rows are left as they are
 
-To connect a new project add it to `PMB_URI_SOURCES` and check it with `--dry-run` first.
+To connect a new project:
+
+1. copy [project_scripts/process_list_xml.py](project_scripts/process_list_xml.py) (python standard library only) and a `pmb-uris.json` based on [project_scripts/pmb-uris.example.json](project_scripts/pmb-uris.example.json) into the project's repo
+2. run `python3 process_list_xml.py` after the data was fetched (it writes the CSV from the project's `list*.xml`, the diff is done by the PMB) and commit the CSV
+3. add the project to `PMB_URI_SOURCES` and check it with `--dry-run` first
 
 ## set up new instance
 

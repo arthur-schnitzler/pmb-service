@@ -1,0 +1,8 @@
+{
+  "domain": "mein-projekt",
+  "uri_template": "https://mein-projekt.example/{xml_id}.html",
+  "index_glob": "data/indices/list*.xml",
+  "exclude": [],
+  "id_pattern": "^pmb(\\d+)$",
+  "output": "csv/pmb_uris-in-use.csv"
+}
