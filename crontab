@@ -13,5 +13,5 @@
 5 23 * * * root cd /opt/app && /usr/local/bin/uv run manage.py edges >> /var/log/cron.log 2>&1
 5 1 * * * root cd /opt/app && /usr/local/bin/uv run manage.py tei_relations >> /var/log/cron.log 2>&1
 
-5 4 * * 6 root cd /opt/app && /usr/local/bin/uv run manage.py update_schnitzler_uris >> /var/log/cron.log 2>&1
+5 4 * * * root cd /opt/app && /usr/local/bin/uv run manage.py sync_uris_in_use >> /var/log/cron.log 2>&1
 #
