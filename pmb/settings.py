@@ -385,6 +385,8 @@ DOMAIN_MAPPING = [
 # the key has to match the `domain` column of the csv and of the PMB's uris
 PMB_URI_SOURCES = {
     "schnitzler-briefe": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-briefe-data/main/csv/pmb_uris-in-use.csv",
+    "schnitzler-kultur": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-kultur/refs/heads/main/csv/pmb_uris-in-use.csv",
+    "schnitzler-tagebuch": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-tagebuch-data/refs/heads/master/csv/pmb_uris-in-use.csv",
 }
 
 
