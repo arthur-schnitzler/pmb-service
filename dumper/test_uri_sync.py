@@ -197,6 +197,35 @@ class SyncUrisInUseTestCase(TestCase):
             [project_uri(target.pk)],
         )
 
+    def test_12b_project_still_uses_the_id_of_a_merged_entity(self):
+        target = Person.objects.create(name="target")
+        source = Person.objects.create(name="source")
+        source_pk = source.pk
+        target.merge_with(source)  # the project uri of source was never registered
+        rows = csv_rows(self.entities() + [("person", target)])
+        rows.append((source_pk, "person", project_uri(source_pk), DOMAIN))
+        out = self.sync(csv_text(rows))
+        self.assertIn("1 already merged", out)
+        self.assertIn("0 skipped", out)
+        self.assertEqual(
+            sorted(
+                self.project_uris().filter(entity=target).values_list("uri", flat=True)
+            ),
+            sorted([project_uri(target.pk), project_uri(source_pk)]),
+        )
+        out = self.sync(csv_text(rows))
+        self.assertIn("0 added, 0 changed, 0 deleted", out)
+
+    def test_12c_merged_into_an_entity_of_another_type_is_not_followed(self):
+        place = Place.objects.create(name="somewhere")
+        pk = place.pk + 1000000
+        Uri.objects.create(
+            uri=f"https://pmb.acdh.oeaw.ac.at/entity/{pk}/", domain="pmb", entity=place
+        )
+        rows = csv_rows(self.entities()) + [(pk, "person", project_uri(pk), DOMAIN)]
+        out = self.sync(csv_text(rows))
+        self.assertIn("1 skipped", out)
+
     def test_13_uri_held_by_another_domain_is_a_conflict(self):
         Uri.objects.create(
             uri=project_uri(self.place.pk), domain="anders", entity=self.org

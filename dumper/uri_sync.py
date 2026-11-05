@@ -8,7 +8,14 @@ import requests
 from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.db import transaction
 
-from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
+from apis_core.apis_entities.models import (
+    BASE_URI,
+    Event,
+    Institution,
+    Person,
+    Place,
+    Work,
+)
 from apis_core.apis_metainfo.models import TempEntityClass, Uri
 
 CSV_COLUMNS = ["pmb_id", "entity_type", "uri", "domain"]
@@ -126,6 +133,26 @@ def _uris_by_value(uris):
     return found
 
 
+def _merge_targets(missing):
+    """Maps `(entity_type, pmb_id)` of entities that don't exist (anymore) to the entity
+    they were merged into. The PMB doesn't remember merges, but `merge_with` moves
+    all uris of the merged entity to the target, among them the default uri
+    `<base>/entity/<pmb_id>/`, which is how the target is found."""
+    base = BASE_URI.rstrip("/")
+    default_uris = {f"{base}/entity/{pmb_id}/": (t, pmb_id) for t, pmb_id in missing}
+    holders = _uris_by_value(default_uris)
+    candidates = {
+        default_uris[uri]: holder.entity_id
+        for uri, holder in holders.items()
+        if holder.entity_id
+    }
+    # a merge only ever happens between entities of the same type
+    valid = _live_keys([(t, target, None) for (t, _), target in candidates.items()])
+    return {
+        key: target for key, target in candidates.items() if (key[0], target) in valid
+    }
+
+
 def build_plan(domain, rows):
     """Compares the rows of the csv (soll) with the PMB's uris of `domain` (ist)."""
     plan = Plan(domain=domain)
@@ -138,6 +165,13 @@ def build_plan(domain, rows):
     live = _live_keys(rows)
     not_live_ids = [pmb_id for t, pmb_id, _ in rows if (t, pmb_id) not in live]
     exists_with_other_type = _existing_ids(not_live_ids)
+    merge_targets = _merge_targets(
+        [
+            (t, pmb_id)
+            for t, pmb_id, _ in rows
+            if (t, pmb_id) not in live and pmb_id not in exists_with_other_type
+        ]
+    )
 
     soll = defaultdict(set)
     for entity_type, pmb_id, uri in rows:
@@ -147,9 +181,13 @@ def build_plan(domain, rows):
         known = by_value.get(uri)
         if pmb_id in exists_with_other_type:
             plan.skipped.append((entity_type, pmb_id, uri, "entity has another type"))
+        elif (entity_type, pmb_id) in merge_targets:
+            # the project still uses the id of a merged entity, its page belongs to the target
+            target = merge_targets[(entity_type, pmb_id)]
+            soll[target].add(uri)
+            plan.merged.append((pmb_id, uri, target))
         elif known and known.domain == domain and known.entity_id:
-            # PMB doesn't remember merge targets, but merging moves the uris of the
-            # merged entity to the target, so the uri is already where it belongs
+            # the uri is already registered for the entity it was moved to by a merge
             soll[known.entity_id].add(uri)
             plan.merged.append((pmb_id, uri, known.entity_id))
         else:
