@@ -381,6 +381,15 @@ DOMAIN_MAPPING = [
     ("semantickraus", "semantickraus", "#9B5F98"),
 ]
 
+# projects delivering a pmb_uris-in-use.csv, see `manage.py sync_uris_in_use`;
+# the key has to match the `domain` column of the csv and of the PMB's uris
+PMB_URI_SOURCES = {
+    "schnitzler-briefe": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-briefe-data/main/csv/pmb_uris-in-use.csv",
+    "schnitzler-kultur": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-kultur/refs/heads/main/csv/pmb_uris-in-use.csv",
+    "schnitzler-tagebuch": "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-tagebuch-data/refs/heads/master/csv/pmb_uris-in-use.csv",
+    "wienerschnitzler": "https://raw.githubusercontent.com/wiener-moderne-verein/wienerschnitzler-data/refs/heads/main/csv/pmb_uris-in-use.csv",
+}
+
 
 CSV_EXPORT_REFERENCE_DEPTH = 1
 CSV_EXPORT_DELIMITER = ","

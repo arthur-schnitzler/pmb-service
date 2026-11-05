@@ -35,12 +35,36 @@ maybe in future also with PMB CRUD included
 
 `python manage.py process_beacon --beacon=https://raw.githubusercontent.com/Hanslick-Online/hsl-entities/main/out/beacon.txt --domain=Hanslick`
 
-### update schnitzler-briefe uris
+### sync project uris
+
+Projects tell the PMB where an entity is used by publishing a `pmb_uris-in-use.csv`:
+
+```csv
+pmb_id,entity_type,uri,domain
+29819,bibl,https://schnitzler-briefe.acdh.oeaw.ac.at/pmb29819.html,schnitzler-briefe
+```
+
+* `entity_type` is one of `person`, `place`, `org`, `bibl`, `event`
+* `domain` is constant per project and has to match its key in `PMB_URI_SOURCES` (`pmb/settings.py`)
+* at most one row per `(entity_type, pmb_id)`
+
+`sync_uris_in_use` compares each CSV with the PMB's uris **of that domain** and adds, updates or deletes them (uris of other domains are never touched):
 
 ```shell
-python manage.py update_schnitzler_uris
-python manage.py update_schnitzler_uris --url "https://raw.githubusercontent.com/arthur-schnitzler/schnitzler-kultur/refs/heads/main/csv/uris-in-use.csv"
+python manage.py sync_uris_in_use --dry-run                           # all projects, writes nothing
+python manage.py sync_uris_in_use --domain schnitzler-briefe          # a single project
+python manage.py sync_uris_in_use --max-delete-ratio 0.1              # allow deleting up to 10% (default 5%)
 ```
+
+* a project is skipped (and the command exits with an error) if the CSV can't be loaded or is invalid, or if more than `--max-delete-ratio` of its uris would be deleted
+* rows pointing to an entity that doesn't exist (or has another type) are skipped and listed
+* entities merged in the PMB already carry the uris of the merged entity, those rows are left as they are
+
+To connect a new project:
+
+1. copy [project_scripts/process_list_xml.py](project_scripts/process_list_xml.py) (python standard library only) and a `pmb-uris.json` based on [project_scripts/pmb-uris.example.json](project_scripts/pmb-uris.example.json) into the project's repo
+2. run `python3 process_list_xml.py` after the data was fetched (it writes the CSV from the project's `list*.xml`, the diff is done by the PMB) and commit the CSV
+3. add the project to `PMB_URI_SOURCES` and check it with `--dry-run` first
 
 ## set up new instance
 
