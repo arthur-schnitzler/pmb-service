@@ -1,0 +1,11 @@
+<div class="relation-section-header">
+    <div class="relation-section-header__title">
+        <h4>{{ obj.0 }}</h4>
+        {% if obj.6 %}<span class="relation-section-header__count">{{ relations_preview_limit }} von {{ obj.7 }}</span>{% endif %}
+    </div>
+    {% if obj.6 %}
+        <a class="relation-section-header__button" title="Gehe zu {{ current_entity }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><span>Alle {{ obj.7 }} Beziehungen anzeigen</span><span aria-hidden="true">↗</span></a>
+    {% elif obj.5 and obj.7 %}
+        <a class="relation-section-header__link" title="Gehe zu {{ current_entity }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><span>{% if obj.7 == 1 %}1 Beziehung anzeigen{% else %}Alle {{ obj.7 }} Beziehungen anzeigen{% endif %}</span><span aria-hidden="true">↗</span></a>
+    {% endif %}
+</div>

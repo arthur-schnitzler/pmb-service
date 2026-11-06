@@ -5,12 +5,12 @@ from AcdhArcheAssets.uri_norm_rules import get_normalized_uri
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.test import Client, TestCase
+from django.test import Client, SimpleTestCase, TestCase
 from django.urls import reverse
 from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
-from apis_core.apis_entities.models import Person, Place
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_metainfo.models import Uri
@@ -18,7 +18,11 @@ from apis_core.apis_metainfo.tables import (
     written_order_end_date_written,
     written_order_start_date_written,
 )
-from apis_core.apis_relations.models import PersonPerson, PersonPlace
+from apis_core.apis_relations.models import (
+    AbstractRelation,
+    PersonPerson,
+    PersonPlace,
+)
 from apis_core.apis_vocabularies.models import (
     LabelType,
     PersonPersonRelation,
@@ -973,6 +977,103 @@ class RelationSectionHeaderTestCase(TestCase):
         self.assertContains(response, "<h4>Label</h4>")
         self.assertNotContains(response, "relation-section-header__link")
         self.assertNotContains(response, "Beziehungen anzeigen")
+
+    def _get_edit_page(self, params=""):
+        self.client.force_login(User.objects.create_user(**USER))
+        url = reverse(
+            "apis:apis_entities:generic_entities_edit_view",
+            kwargs={"pk": self.person.pk, "entity": "person"},
+        )
+        return self.client.get(f"{url}{params}")
+
+    def test_edit_view_shows_newest_relations_first(self):
+        years = [1905, 1900, 1912, 1903, 1908, 1901, 1911, 1904, 1909, 1902, 1910, 1906]
+        self._create_relations(str(year) for year in years)
+
+        response = self._get_edit_page()
+
+        rows = self._get_section(response, "Place")[1].rows
+        self.assertEqual(
+            [row.record.start_date.year for row in rows],
+            years[:1:-1],
+        )
+        self.assertContains(response, "10 von 12")
+        self.assertContains(response, "Alle 12 Beziehungen anzeigen")
+        self.assertContains(response, "relation-section-header__button")
+        self.assertNotContains(response, "maximal 10 Beziehungen")
+
+    def test_table_after_saving_lists_new_relation_first(self):
+        self._create_relations(["1901", "1902"])
+        self.client.force_login(User.objects.create_user(**USER))
+
+        response = self.client.post(
+            f"/apis/relations/ajax/save/person/PersonPlaceForm/{self.person.pk}/",
+            {
+                "relation_type": self.rel_type.pk,
+                "target": self.place.pk,
+                "start_date_written": "1950",
+            },
+        )
+
+        content = response.content.decode()
+        self.assertEqual(response.status_code, 200)
+        self.assertLess(content.index("1950"), content.index("1902"))
+        self.assertLess(content.index("1902"), content.index("1901"))
+
+    def test_edit_view_section_within_limit_shows_link_without_frame(self):
+        self._create_relations(str(year) for year in range(1900, 1910))
+
+        response = self._get_edit_page()
+
+        self.assertContains(response, "Alle 10 Beziehungen anzeigen")
+        self.assertContains(response, "relation-section-header__link")
+        self.assertNotContains(response, "relation-section-header__button")
+        self.assertNotContains(response, "10 von 10")
+
+    def test_edit_view_empty_section_keeps_heading_without_link(self):
+        response = self._get_edit_page()
+
+        self.assertContains(response, "<h4>Place</h4>")
+        self.assertNotContains(response, "relation-section-header__link")
+        self.assertNotContains(response, "Beziehungen anzeigen")
+
+    def test_edit_view_ignores_sort_parameter(self):
+        self._create_relations(str(year) for year in range(1900, 1913))
+
+        response = self._get_edit_page("?PePl-sort=start_date_written")
+
+        self.assertEqual(response.status_code, 200)
+        rows = self._get_section(response, "Place")[1].rows
+        self.assertEqual(rows[0].record.start_date.year, 1912)
+
+
+class EntityColorsTestCase(SimpleTestCase):
+    ENTITY_MODELS = {
+        "person": Person,
+        "place": Place,
+        "work": Work,
+        "event": Event,
+        "institution": Institution,
+    }
+
+    def _read_static_file(self, path):
+        return (settings.BASE_DIR / path).read_text(encoding="utf-8").lower()
+
+    def test_relation_colors_match_their_source_entity(self):
+        for relation in AbstractRelation.get_all_relation_classes():
+            with self.subTest(relation=relation.__name__):
+                self.assertEqual(
+                    relation.get_color(),
+                    relation.get_related_entity_classa().get_color(),
+                )
+
+    def test_entity_colors_match_css_and_network_graph(self):
+        css = self._read_static_file("static/css/style.css")
+        network_js = self._read_static_file("static/src/js/lib.js")
+        for name, model in self.ENTITY_MODELS.items():
+            with self.subTest(entity=name):
+                self.assertIn(f"--{name}: {model.get_color()};", css)
+                self.assertIn(f'{name}: "{model.get_color()}"', network_js)
 
 
 class MostValuableEntityViewTestCase(TestCase):

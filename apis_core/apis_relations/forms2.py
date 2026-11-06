@@ -133,6 +133,7 @@ class GenericRelationForm(forms.ModelForm):
             relation_class=self.relation_form,
             entity_instance=site_instance,
             detail=False,
+            disable_sort=True,
         )
         prefix = re.match(
             r"([A-Z][a-z])[^A-Z]*([A-Z][a-z])", self.relation_form.__name__
@@ -143,13 +144,13 @@ class GenericRelationForm(forms.ModelForm):
             dic_b = {"related_" + entity_type.lower() + "b": site_instance}
             objects = self.relation_form.objects.filter(
                 Q(**dic_a) | Q(**dic_b)
-            ).order_by("-updated")[:10]
+            ).order_by("-created", "-id")[:10]
             table_html = table(data=objects, prefix=prefix)
         else:
             tab_query = {"related_" + entity_type.lower(): site_instance}
-            ttab = self.relation_form.objects.filter(**tab_query).order_by("-updated")[
-                :10
-            ]
+            ttab = self.relation_form.objects.filter(**tab_query).order_by(
+                "-created", "-id"
+            )[:10]
             table_html = table(data=ttab, prefix=prefix)
         return table_html
 
