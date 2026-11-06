@@ -12,6 +12,8 @@ from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import LabelTableBase, get_generic_relations_table
 from apis_core.utils import get_object_from_pk_or_uri
 
+RELATIONS_PREVIEW_LIMIT = 10
+
 
 class GenericEntitiesDetailView(View):
     # login_url = '/accounts/login/'
@@ -64,9 +66,9 @@ class GenericEntitiesDetailView(View):
                     if callable(getattr(objects, "filter_for_user", None)):
                         objects = objects.filter_for_user()
             object_count = objects.count()
-            objects = objects[:10]
+            objects = objects[:RELATIONS_PREVIEW_LIMIT]
             disable_sort = True
-            show_more = True
+            show_more = object_count > RELATIONS_PREVIEW_LIMIT
             table = get_generic_relations_table(
                 relation_class=rel,
                 entity_instance=instance,
@@ -75,7 +77,9 @@ class GenericEntitiesDetailView(View):
             )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
-            RequestConfig(request, paginate={"per_page": 10}).configure(tb_object)
+            RequestConfig(
+                request, paginate={"per_page": RELATIONS_PREVIEW_LIMIT}
+            ).configure(tb_object)
             side_bar.append(
                 (
                     title_card,
@@ -110,6 +114,7 @@ class GenericEntitiesDetailView(View):
             "entity_type": entity,
             "object": instance,
             "right_card": side_bar,
+            "relations_preview_limit": RELATIONS_PREVIEW_LIMIT,
             "no_merge_labels": no_merge_labels,
             "object_lables": object_labels,
             "object_lod": object_lod,

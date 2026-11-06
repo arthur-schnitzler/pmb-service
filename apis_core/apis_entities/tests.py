@@ -11,14 +11,19 @@ from icecream import ic
 
 from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Person, Place
+from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
 from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_metainfo.tables import (
     written_order_end_date_written,
     written_order_start_date_written,
 )
-from apis_core.apis_relations.models import PersonPlace
-from apis_core.apis_vocabularies.models import PersonPlaceRelation
+from apis_core.apis_relations.models import PersonPerson, PersonPlace
+from apis_core.apis_vocabularies.models import (
+    LabelType,
+    PersonPersonRelation,
+    PersonPlaceRelation,
+)
 from apis_core.helper_functions.DateParser import parse_date
 from normdata.forms import NormDataImportForm
 from normdata.utils import (
@@ -876,6 +881,98 @@ class DomainCrossingTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "apis_entities/domain_crossing.html")
+
+
+class RelationSectionHeaderTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.person = Person.objects.create(name="Bahr", first_name="Hermann")
+        cls.place = Place.objects.create(name="Linz")
+        cls.rel_type = PersonPlaceRelation.objects.create(name="wohnt in")
+
+    def _create_relations(self, years):
+        for year in years:
+            PersonPlace.objects.create(
+                related_person=self.person,
+                related_place=self.place,
+                relation_type=self.rel_type,
+                start_date_written=year,
+            )
+
+    def _get_detail_page(self, person=None):
+        return self.client.get((person or self.person).get_absolute_url())
+
+    def _get_section(self, response, title):
+        return next(x for x in response.context["right_card"] if x[0] == title)
+
+    def test_more_relations_than_limit_show_count_and_button(self):
+        self._create_relations(str(year) for year in range(1900, 1913))
+
+        response = self._get_detail_page()
+
+        list_url = f"{PersonPlace.get_listview_url()}?source_target={self.person.pk}"
+        self.assertContains(response, "10 von 13")
+        self.assertContains(response, "Alle 13 Beziehungen anzeigen")
+        self.assertContains(response, f'href="{list_url}"')
+        self.assertContains(response, "--relation-action: var(--person)")
+        self.assertContains(response, "relation-section-header__button")
+        self.assertNotContains(response, "relation-section-header__link")
+        self.assertNotContains(response, "maximal 10 Beziehungen")
+
+    def test_relations_within_limit_show_link_without_frame(self):
+        self._create_relations(str(year) for year in range(1900, 1910))
+
+        response = self._get_detail_page()
+
+        self.assertContains(response, "Alle 10 Beziehungen anzeigen")
+        self.assertContains(response, "relation-section-header__link")
+        self.assertNotContains(response, "relation-section-header__button")
+        self.assertNotContains(response, "10 von 10")
+
+    def test_single_relation_uses_singular(self):
+        self._create_relations(["1900"])
+
+        response = self._get_detail_page()
+
+        self.assertContains(response, "1 Beziehung anzeigen")
+        self.assertNotContains(response, "Alle 1 Beziehung")
+
+    def test_preview_lists_chronologically_first_relations(self):
+        self._create_relations(["", *(str(year) for year in range(1911, 1899, -1))])
+
+        response = self._get_detail_page()
+
+        rows = self._get_section(response, "Place")[1].rows
+        self.assertEqual(
+            [row.record.start_date.year for row in rows],
+            list(range(1900, 1910)),
+        )
+
+    def test_self_relation_counts_both_directions(self):
+        other = Person.objects.create(name="Schnitzler", first_name="Arthur")
+        rel_type = PersonPersonRelation.objects.create(name="kennt")
+        for index in range(11):
+            first, second = (self.person, other) if index % 2 else (other, self.person)
+            PersonPerson.objects.create(
+                related_persona=first, related_personb=second, relation_type=rel_type
+            )
+
+        response = self._get_detail_page()
+
+        self.assertContains(response, "10 von 11")
+        self.assertContains(response, "Alle 11 Beziehungen anzeigen")
+
+    def test_label_section_has_neither_count_nor_link(self):
+        label_type = LabelType.objects.create(name="Pseudonym")
+        Label.objects.create(
+            label="Mörder", label_type=label_type, temp_entity=self.person
+        )
+
+        response = self._get_detail_page()
+
+        self.assertContains(response, "<h4>Label</h4>")
+        self.assertNotContains(response, "relation-section-header__link")
+        self.assertNotContains(response, "Beziehungen anzeigen")
 
 
 class MostValuableEntityViewTestCase(TestCase):

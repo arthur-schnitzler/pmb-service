@@ -223,8 +223,17 @@
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}
-                        <h4>{{ obj.0 }} {% if obj.5 %}<a class="apis-{{ obj.5 }}" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ object }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">An dieser Stelle werden nur maximal 10 Beziehungen angezeigt. Alle Beziehungen <a title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><strong>hier</strong></a></span> {% endif %}{% endif %}</h4>
-                   
+                        <div class="relation-section-header">
+                            <div class="relation-section-header__title">
+                                <h4>{{ obj.0 }}</h4>
+                                {% if obj.6 %}<span class="relation-section-header__count">{{ relations_preview_limit }} von {{ obj.7 }}</span>{% endif %}
+                            </div>
+                            {% if obj.6 %}
+                                <a class="relation-section-header__button" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><span>Alle {{ obj.7 }} Beziehungen anzeigen</span><span aria-hidden="true">↗</span></a>
+                            {% elif obj.5 %}
+                                <a class="relation-section-header__link" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><span>{% if obj.7 == 1 %}1 Beziehung anzeigen{% else %}Alle {{ obj.7 }} Beziehungen anzeigen{% endif %}</span><span aria-hidden="true">↗</span></a>
+                            {% endif %}
+                        </div>
                         <div id="tab_{{ obj.2 }}" class="mb-5">
                             {% render_table obj.1 %}
                         </div>
