@@ -1,6 +1,6 @@
 {
-  "_browser-BGn5R0Jx.js": {
-    "file": "browser-BGn5R0Jx.js",
+  "_browser-1675c9f9.js": {
+    "file": "browser-1675c9f9.js",
     "name": "browser",
     "isDynamicEntry": true,
     "imports": [
@@ -8,12 +8,12 @@
     ]
   },
   "js/main.js": {
-    "file": "main-CoZdyr1w.js",
+    "file": "main-1675c9f9.js",
     "name": "main",
     "src": "js/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "_browser-BGn5R0Jx.js"
+      "_browser-1675c9f9.js"
     ]
   }
 }

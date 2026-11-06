@@ -760,7 +760,7 @@ class PlacePlace(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#5bc0eb"
+        return "#147ba7"
 
     @classmethod
     def get_listview_url(self):
@@ -805,7 +805,7 @@ class PlaceEvent(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#5bc0eb"
+        return "#147ba7"
 
     @classmethod
     def get_listview_url(self):
@@ -850,7 +850,7 @@ class PlaceWork(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#5bc0eb"
+        return "#147ba7"
 
     @classmethod
     def get_listview_url(self):
@@ -902,7 +902,7 @@ class EventEvent(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#9bc53d"
+        return "#617c25"
 
     @classmethod
     def get_listview_url(self):
@@ -947,7 +947,7 @@ class EventWork(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#9bc53d"
+        return "#617c25"
 
     @classmethod
     def get_listview_url(self):
@@ -999,7 +999,7 @@ class WorkWork(AbstractRelation):
 
     @classmethod
     def get_color(self):
-        return "#ff8600"
+        return "#b05d00"
 
     @classmethod
     def get_listview_url(self):

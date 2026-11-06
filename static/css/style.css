@@ -1,11 +1,11 @@
 :root {
     --pmb: #874A84;
     --edge: #874A84;
-    --pmb-hover: #9b5f98c2;
+    --pmb-hover: #633561;
     --person: #720e07;
-    --place: #5bc0eb;
-    --work: #ff8600;
-    --event: #9bc53d;
+    --place: #147ba7;
+    --work: #b05d00;
+    --event: #617c25;
     --institution: #1d3461;
     --uri: #e80d0d;
 }

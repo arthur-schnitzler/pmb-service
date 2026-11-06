@@ -27,8 +27,8 @@ export function getSpaceSize(nodeCount) {
 }
 export const COLORS = {
   person: "#720e07",
-  place: "#5bc0eb",
-  work: "#ff8600",
-  event: "#9bc53d",
-  institution: "#ffdd1b",
+  place: "#147ba7",
+  work: "#b05d00",
+  event: "#617c25",
+  institution: "#1d3461",
 };
