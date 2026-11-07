@@ -1037,6 +1037,30 @@ class RelationSectionHeaderTestCase(TestCase):
         self.assertNotContains(response, "relation-section-header__link")
         self.assertNotContains(response, "Beziehungen anzeigen")
 
+    def test_related_entity_links_use_target_color(self):
+        self._create_relations(["1900"])
+
+        self.assertContains(self._get_detail_page(), 'class="apis-place"')
+        self.assertContains(
+            self.client.get(self.place.get_absolute_url()), 'class="apis-person"'
+        )
+        self.assertContains(self._get_edit_page(), 'class="apis-place"')
+
+    def test_sections_follow_fixed_order_on_all_entity_types(self):
+        self.client.force_login(User.objects.create_user(**USER))
+        expected = ["Person", "Work", "Place", "Event", "Institution", "Label"]
+        for model in (Person, Work, Place, Event, Institution):
+            entity = model.objects.create(name=f"{model.__name__} Testname")
+            edit_url = reverse(
+                "apis:apis_entities:generic_entities_edit_view",
+                kwargs={"pk": entity.pk, "entity": model.__name__.lower()},
+            )
+            for url in (entity.get_absolute_url(), edit_url):
+                with self.subTest(entity=model.__name__, url=url):
+                    response = self.client.get(url)
+                    titles = [section[0] for section in response.context["right_card"]]
+                    self.assertEqual(titles, expected)
+
     def test_edit_view_ignores_sort_parameter(self):
         self._create_relations(str(year) for year in range(1900, 1913))
 

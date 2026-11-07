@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 
 from apis_core.apis_metainfo.models import TempEntityClass
 
+RELATED_ENTITY_ORDER = ("person", "work", "place", "event", "institution")
+
 #######################################################################
 #
 # AbstractRelation
@@ -194,13 +196,26 @@ class AbstractRelation(TempEntityClass):
     def get_relation_classes_of_entity_name(cls, entity_name):
         """
         :param entity_name : class name of an entity for which the related relations should be returned
-        :return: a list of relation classes that are related to the entity class
+        :return: a list of relation classes that are related to the entity class,
+            sorted by the entity type on the other side of the relation
 
         E.g. AbstractRelation.get_relation_classes_of_entity_class( 'person' )
-        -> [ PersonEvent, PersonInstitution, PersonPerson, PersonPlace, PersonWork ]
+        -> [ PersonPerson, PersonWork, PersonPlace, PersonEvent, PersonInstitution ]
         """
+        entity_name = entity_name.lower()
 
-        return cls._relation_classes_of_entity_name[entity_name.lower()]
+        def get_related_entity_position(relation_class):
+            names = [
+                relation_class.get_related_entity_classa().__name__.lower(),
+                relation_class.get_related_entity_classb().__name__.lower(),
+            ]
+            related_entity = names[1] if names[0] == entity_name else names[0]
+            return RELATED_ENTITY_ORDER.index(related_entity)
+
+        return sorted(
+            cls._relation_classes_of_entity_name[entity_name],
+            key=get_related_entity_position,
+        )
 
     @classmethod
     def add_relation_class_of_entity_class(cls, entity_class):
