@@ -13,6 +13,7 @@ from django.views import View
 from django.views.generic import DeleteView
 from django_tables2 import RequestConfig
 
+from apis_core.apis_entities.detail_views import RELATIONS_PREVIEW_LIMIT
 from apis_core.apis_entities.models import AbstractEntity, TempEntityClass
 from apis_core.apis_labels.models import Label
 from apis_core.apis_relations.models import AbstractRelation
@@ -39,6 +40,7 @@ class GenericEntitiesEditView(View):
             ]
             prefix = f"{match[0].title()[:2]}{match[1].title()[:2]}-"
             title_card = ""
+            rel_type = match[1] if match[0] == entity.lower() else match[0]
             if match[0] == match[1]:
                 title_card = entity.title()
                 dict_1 = {"related_" + entity.lower() + "a": instance}
@@ -54,19 +56,19 @@ class GenericEntitiesEditView(View):
                 dict_1 = {"related_" + entity.lower(): instance}
                 objects = rel.objects.filter(**dict_1)
             object_count = objects.count()
-            disable_sort = False
-            if object_count > 20:
-                objects = objects[:20]
-                disable_sort = True
+            objects = objects.order_by("-created", "-id")[:RELATIONS_PREVIEW_LIMIT]
+            show_more = object_count > RELATIONS_PREVIEW_LIMIT
             table = get_generic_relations_table(
                 relation_class=rel,
                 entity_instance=instance,
                 detail=False,
-                disable_sort=disable_sort,
+                disable_sort=True,
             )
             tb_object = table(data=objects, prefix=prefix)
             tb_object_open = request.GET.get(prefix + "page", None)
-            RequestConfig(request, paginate={"per_page": 10}).configure(tb_object)
+            RequestConfig(
+                request, paginate={"per_page": RELATIONS_PREVIEW_LIMIT}
+            ).configure(tb_object)
             side_bar.append(
                 (
                     title_card,
@@ -74,7 +76,8 @@ class GenericEntitiesEditView(View):
                     "".join([x.title() for x in match]),
                     tb_object_open,
                     link_to_relations,
-                    disable_sort,
+                    rel_type,
+                    show_more,
                     object_count,
                 )
             )
@@ -97,6 +100,7 @@ class GenericEntitiesEditView(View):
             "form_merge_with": form_merge_with,
             "instance": instance,
             "right_card": side_bar,
+            "relations_preview_limit": RELATIONS_PREVIEW_LIMIT,
         }
         return HttpResponse(template.render(request=request, context=context))
 

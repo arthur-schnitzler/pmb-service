@@ -1,11 +1,11 @@
 :root {
     --pmb: #874A84;
     --edge: #874A84;
-    --pmb-hover: #9b5f98c2;
+    --pmb-hover: #633561;
     --person: #720e07;
-    --place: #5bc0eb;
-    --work: #ff8600;
-    --event: #9bc53d;
+    --place: #147ba7;
+    --work: #b05d00;
+    --event: #617c25;
     --institution: #1d3461;
     --uri: #e80d0d;
 }
@@ -134,4 +134,60 @@ main {
 	text-decoration: none;
 	opacity: 0;
 	transition: color 0.15s ease-in-out,opacity 0.15s ease-in-out;
+}
+
+/* RELATION SECTION HEADER */
+.relation-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.relation-section-header__title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.relation-section-header__title h4 {
+    margin: 0;
+}
+
+.relation-section-header__count {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--bs-secondary-color);
+}
+
+.relation-section-header__button,
+.relation-section-header__link {
+    display: inline-flex;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--relation-action);
+}
+
+.relation-section-header__button {
+    padding: 8px 14px;
+    border: 1.5px solid var(--relation-action);
+    border-radius: 4px;
+}
+
+.relation-section-header__button:hover,
+.relation-section-header__button:focus {
+    color: #fff;
+    background-color: var(--relation-action);
+    text-decoration: none;
+}
+
+.relation-section-header__button:focus-visible,
+.relation-section-header__link:focus-visible {
+    outline: 2px solid var(--relation-action);
+    outline-offset: 2px;
 }

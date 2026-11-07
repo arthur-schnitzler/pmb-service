@@ -217,14 +217,13 @@
         <div class="col-md-7">
             <h3 class="text-center mt-5">
                 Beziehungen
-                <a href="{% url 'network:edges_browse' %}?node_id={{ object.id }}" title="Alle Relationen von {{ object }}"><i class="ps-2 bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }}</span></i></a>
-                <a href="{% url 'network:network' %}?node_id={{ object.id }}&format=cosmograph" title="Alle Relationen von {{ object }} als Netzwerk"><i class="ps-2 bi bi-share" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }} als Netzwerk</span></i></a>
+                <a href="{% url 'network:edges_browse' %}?node_id={{ object.id }}" title="Alle Relationen von {{ object }}"><i class="ps-2 fs-6 bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }}</span></i></a>
+                <a href="{% url 'network:network' %}?node_id={{ object.id }}&format=cosmograph" title="Alle Relationen von {{ object }} als Netzwerk"><i class="ps-2 fs-6 bi bi-share" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ object }} als Netzwerk</span></i></a>
             </h3>
             {% block relations %}
                 {% for obj in right_card %}
                     {% if obj.1.data|length > 0 %}
-                        <h4>{{ obj.0 }} {% if obj.5 %}<a class="apis-{{ obj.5 }}" title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ object }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">An dieser Stelle werden nur maximal 10 Beziehungen angezeigt. Alle Beziehungen <a title="Gehe zu {{ object }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><strong>hier</strong></a></span> {% endif %}{% endif %}</h4>
-                   
+                        {% include "partials/relation_section_header.html" with current_entity=object %}
                         <div id="tab_{{ obj.2 }}" class="mb-5">
                             {% render_table obj.1 %}
                         </div>

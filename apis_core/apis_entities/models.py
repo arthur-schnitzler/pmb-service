@@ -580,7 +580,7 @@ class Place(AbstractEntity):
 
     @classmethod
     def get_color(self):
-        return "#5bc0eb"
+        return "#147ba7"
 
 
 class Institution(AbstractEntity):
@@ -634,7 +634,7 @@ class Event(AbstractEntity):
 
     @classmethod
     def get_color(self):
-        return "#9bc53d"
+        return "#617c25"
 
 
 class Work(AbstractEntity):
@@ -659,7 +659,7 @@ class Work(AbstractEntity):
 
     @classmethod
     def get_color(self):
-        return "#ff8600"
+        return "#b05d00"
 
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
