@@ -1,4 +1,4 @@
-<div class="relation-section-header">
+<div class="relation-section-header"{% if obj.5 %} style="--relation-action: var(--{{ obj.5 }})"{% endif %}>
     <div class="relation-section-header__title">
         <h4>{{ obj.0 }}</h4>
         {% if obj.6 %}<span class="relation-section-header__count">{{ relations_preview_limit }} von {{ obj.7 }}</span>{% endif %}

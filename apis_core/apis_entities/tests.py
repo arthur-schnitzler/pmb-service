@@ -918,7 +918,7 @@ class RelationSectionHeaderTestCase(TestCase):
         self.assertContains(response, "10 von 13")
         self.assertContains(response, "Alle 13 Beziehungen anzeigen")
         self.assertContains(response, f'href="{list_url}"')
-        self.assertContains(response, "--relation-action: var(--person)")
+        self.assertContains(response, "--relation-action: var(--place)")
         self.assertContains(response, "relation-section-header__button")
         self.assertNotContains(response, "relation-section-header__link")
         self.assertNotContains(response, "maximal 10 Beziehungen")
