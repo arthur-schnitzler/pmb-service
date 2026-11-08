@@ -18,6 +18,7 @@ from apis_core.apis_metainfo.tables import (
     written_order_end_date_written,
     written_order_start_date_written,
 )
+from apis_core.apis_relations.forms import PersonLabelForm
 from apis_core.apis_relations.models import (
     AbstractRelation,
     PersonPerson,
@@ -1069,6 +1070,36 @@ class RelationSectionHeaderTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         rows = self._get_section(response, "Place")[1].rows
         self.assertEqual(rows[0].record.start_date.year, 1912)
+
+
+class LabelFormTestCase(TestCase):
+    def test_label_types_are_sorted_alphabetically(self):
+        for name in ["Zuname", "alias", "Beiname", "Ärztename", "Spitzname"]:
+            LabelType.objects.create(name=name)
+
+        choices = PersonLabelForm().fields["label_type"].choices
+        names = [label for _value, label in choices][1:]
+
+        self.assertEqual(
+            names, ["alias", "Ärztename", "Beiname", "Spitzname", "Zuname"]
+        )
+        rendered = str(PersonLabelForm()["label_type"])
+        self.assertLess(rendered.index("Ärztename"), rendered.index("Beiname"))
+
+    def test_sorted_label_type_is_still_saved(self):
+        person = Person.objects.create(name="Bahr", first_name="Hermann")
+        label_type = LabelType.objects.create(name="Pseudonym")
+        form = PersonLabelForm(
+            data={
+                "label": "Anatol",
+                "isocode_639_3": "deu",
+                "label_type": label_type.pk,
+            }
+        )
+
+        self.assertTrue(form.is_valid(), form.errors)
+        label = form.save(site_instance=person)
+        self.assertEqual(label.label_type, label_type)
 
 
 class EntityColorsTestCase(SimpleTestCase):
