@@ -975,7 +975,7 @@ class RelationSectionHeaderTestCase(TestCase):
 
         response = self._get_detail_page()
 
-        self.assertContains(response, "<h4>Label</h4>")
+        self.assertContains(response, "<h3>Label</h3>")
         self.assertNotContains(response, "relation-section-header__link")
         self.assertNotContains(response, "Beziehungen anzeigen")
 
@@ -1034,7 +1034,7 @@ class RelationSectionHeaderTestCase(TestCase):
     def test_edit_view_empty_section_keeps_heading_without_link(self):
         response = self._get_edit_page()
 
-        self.assertContains(response, "<h4>Place</h4>")
+        self.assertContains(response, "<h3>Place</h3>")
         self.assertNotContains(response, "relation-section-header__link")
         self.assertNotContains(response, "Beziehungen anzeigen")
 
