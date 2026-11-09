@@ -1,10 +1,20 @@
 #!/usr/bin/python
 
+import unicodedata
+
 from crispy_forms.helper import FormHelper
 from django import forms
 
 from apis_core.apis_labels.models import Label
+from apis_core.apis_vocabularies.models import LabelType
 from apis_core.helper_functions import DateParser
+
+
+def get_alphabetical_sort_key(obj):
+    """Sorts case-insensitively and treats umlauts like their base letter."""
+    decomposed = unicodedata.normalize("NFKD", str(obj))
+    return "".join(c for c in decomposed if not unicodedata.combining(c)).casefold()
+
 
 ##############################################
 # Generic
@@ -43,6 +53,10 @@ class EntityLabelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["label"].required = True
         self.fields["label_type"].required = True
+        label_types = sorted(LabelType.objects.all(), key=get_alphabetical_sort_key)
+        self.fields["label_type"].choices = [("", "---------")] + [
+            (x.pk, str(x)) for x in label_types
+        ]
         self.helper = FormHelper()
         self.helper.form_class = "EntityLabelForm"
         self.helper.form_tag = False

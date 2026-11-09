@@ -193,6 +193,7 @@ def get_generic_relations_table(
                     "apis:apis_entities:generic_entities_detail_view",
                     args=[other_related_entity_class_name, A("other_related_entity")],
                     verbose_name="Related " + other_related_entity_class_name.title(),
+                    attrs={"a": {"class": f"apis-{other_related_entity_class_name}"}},
                 )
 
                 super().__init__(data=data, *args, **kwargs)  # noqa: B026
@@ -223,6 +224,7 @@ def get_generic_relations_table(
                     "apis:apis_entities:generic_entities_edit_view",
                     args=[other_related_entity_class_name, A("other_related_entity")],
                     verbose_name="Related " + other_related_entity_class_name.title(),
+                    attrs={"a": {"class": f"apis-{other_related_entity_class_name}"}},
                 )
 
                 # delete button

@@ -53,14 +53,24 @@
             </div>
             <hr>
             <h4>Entitäten zusammenführen</h4>
-            <p>Die aktuelle Entität <strong>{{ instance }}</strong> wird gelöscht, deren Eigenschaften/Verbindungen aber auf die ausgewählten Entität übertragen.</p>
+            <p>Die aktuelle Entität <strong>{{ instance }}</strong> wird gelöscht, deren Eigenschaften/Beziehungen aber auf die ausgewählten Entität übertragen.</p>
             {% crispy form_merge_with  form_merge_with.helper %}
         </div>
         <div class="col-md-7">
-            <h3 class="text-center">Bearbeiten der Verbindungen</h3>
+            <h3 class="text-center">
+                Beziehungen bearbeiten
+                <a href="{% url 'network:edges_browse' %}?node_id={{ instance.id }}" title="Alle Relationen von {{ instance }}"><i class="ps-2 fs-6 bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ instance }}</span></i></a>
+                <a href="{% url 'network:network' %}?node_id={{ instance.id }}&format=cosmograph" title="Alle Relationen von {{ instance }} als Netzwerk"><i class="ps-2 fs-6 bi bi-share" aria-hidden="true"><span class="visually-hidden">Alle Relationen von {{ instance }} als Netzwerk</span></i></a>
+            </h3>
             {% for obj in right_card %}
-                <div class="pt-2">
-                    <h4>{{ obj.0 }} <a class="apis-{{ obj.5 }}" title="Gehe zu {{ entity_type }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><i class="bi bi-box-arrow-up-right" aria-hidden="true"><span class="visually-hidden">Gehe zu {{ entity_type }} - {{ obj.5 }} Relationen</span></i></a> {% if obj.6 %} <span class="fs-6 fw-light">An dieser Stelle werden nur maximal 10 Beziehungen angezeigt. Alle Beziehungen <a title="Gehe zu {{ entity_type }}–{{ obj.0 }} Relationen" href="{{ obj.4 }}"><strong>hier</strong></a></span> {% endif %}</h4>
+                <div class="relation-section mb-5">
+                    <div id="relationHeader_{{ obj.2 }}"
+                        hx-get="{{ request.path }}"
+                        hx-select="#relationHeader_{{ obj.2 }}"
+                        hx-swap="outerHTML"
+                        hx-trigger="htmx:afterRequest[detail.successful && (detail.pathInfo.requestPath.includes('/ajax/save/') || detail.pathInfo.requestPath.includes('/delete/'))] from:closest .relation-section">
+                        {% include "partials/relation_section_header.html" with current_entity=instance %}
+                    </div>
                     <div id="tableDiv__{{ obj.2 }}">
                         {% render_table obj.1 %}
                     </div>
@@ -76,7 +86,7 @@
                             "ButtonText": "speichern",
                             "entity_type": "{{ entity_type }}"
                         }'>
-                        <i class="bi bi-plus-lg" title="neue Verbindung anlegen"></i>
+                        <i class="bi bi-plus-lg" title="neue Beziehung anlegen"></i>
                     </button>
                 </div>
             {% endfor %}
