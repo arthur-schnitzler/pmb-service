@@ -3,7 +3,9 @@
     {% block info-table %}
     {% if object.img_url and object.img_credit_label != 'AKON' %}
         <tr>
-            <th class="w-25"></th>
+            <th class="w-25">
+                <span class="visually-hidden">Bild</span>
+            </th>
             <td>
                 <div class="text">
                     <img src="{{ object.img_url }}" class="img-fluid d-block" alt="Bild von {{ object }}">
