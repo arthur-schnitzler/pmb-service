@@ -79,6 +79,20 @@ class RelationBaseClass(VocabsBaseClass):
         help_text='Inverse relation like: "is sub-class of" vs. "is super-class of".',
         blank=True,
     )
+    canonical_inverse = models.ForeignKey(
+        "self",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="deprecated_inverses",
+        verbose_name="Ersetzt durch Umkehrung von",
+        help_text=(
+            "Nur für Beziehungen zwischen gleichartigen Entitäten (z. B. Person–Person). "
+            "Ist hier ein Typ angegeben, gilt dieser Typ als veraltet: Beziehungen werden "
+            "mit vertauschtem Start- und Zielknoten unter dem angegebenen Typ gespeichert "
+            "(z. B. „A ist Kind von B“ → „B ist Elternteil von A“)."
+        ),
+    )
 
     def __str__(self):
         return self.name
@@ -86,6 +100,42 @@ class RelationBaseClass(VocabsBaseClass):
     @cached_property
     def label_reverse(self):
         return f"{self.name_reverse}"
+
+    def clean(self):
+        super().clean()
+        target = self.canonical_inverse
+        if target is None:
+            return
+        if target.pk == self.pk:
+            raise ValidationError(
+                {"canonical_inverse": "Ein Typ kann nicht seine eigene Umkehrung ersetzen."}
+            )
+        if not type(self).objects.filter(pk=target.pk).exists():
+            raise ValidationError(
+                {"canonical_inverse": "Der Zieltyp muss aus demselben Vokabular stammen."}
+            )
+        if target.canonical_inverse_id is not None:
+            raise ValidationError(
+                {"canonical_inverse": "Der Zieltyp ist selbst als veraltet markiert."}
+            )
+        if self.pk and self.deprecated_inverses.exists():
+            raise ValidationError(
+                {
+                    "canonical_inverse": (
+                        "Andere Typen verweisen auf diesen Typ als kanonische Umkehrung; "
+                        "er kann daher nicht selbst als veraltet markiert werden."
+                    )
+                }
+            )
+        names = re.findall("[A-Z][^A-Z]*", type(self).__name__)
+        if len(names) == 3 and names[0] != names[1]:
+            raise ValidationError(
+                {
+                    "canonical_inverse": (
+                        "Nur möglich bei Beziehungen zwischen gleichartigen Entitäten."
+                    )
+                }
+            )
 
     def save(self, *args, **kwargs):
         if self.name_reverse != unicodedata.normalize("NFC", self.name_reverse):
