@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 
+from apis_core.apis_vocabularies.direction import directed_relation_type_value
 from apis_core.apis_vocabularies.models import VocabsBaseClass
 
 from .models import AbstractEntity
@@ -183,8 +184,14 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
         vocab_model = ContentType.objects.get(
             app_label="apis_vocabularies", model=vocab
         ).model_class()
+        is_relation_vocab = vocab_model.__bases__[0] != VocabsBaseClass
+        if is_relation_vocab:
+            # types replaced by their canonical inverse are not offered anymore
+            relation_types = vocab_model.objects.filter(
+                canonical_inverse__isnull=True
+            ).filter(Q(name__icontains=q) | Q(name_reverse__icontains=q))
         if direct == "normal":
-            if vocab_model.__bases__[0] == VocabsBaseClass:
+            if not is_relation_vocab:
                 choices = [
                     {"id": x.pk, "text": x.label}
                     for x in vocab_model.objects.filter(name__icontains=q).order_by(
@@ -194,19 +201,37 @@ class GenericVocabulariesAutocomplete(autocomplete.Select2ListView):
             else:
                 choices = [
                     {"id": x.pk, "text": x.label}
-                    for x in vocab_model.objects.filter(
-                        Q(name__icontains=q) | Q(name_reverse__icontains=q)
-                    ).order_by("parent_class__name", "name")[
+                    for x in relation_types.order_by("parent_class__name", "name")[
                         offset : offset + page_size
                     ]
                 ]
         elif direct == "reverse":
             choices = [
                 {"id": x.pk, "text": x.label_reverse}
-                for x in vocab_model.objects.filter(
-                    Q(name__icontains=q) | Q(name_reverse__icontains=q)
-                ).order_by("parent_class__name", "name")[offset : offset + page_size]
+                for x in relation_types.order_by("parent_class__name", "name")[
+                    offset : offset + page_size
+                ]
             ]
+        elif direct == "both":
+            # relations between entities of the same class: offer both readings
+            needle = q.casefold()
+            options = []
+            for x in relation_types:
+                if needle in x.name.casefold():
+                    options.append(
+                        {"id": directed_relation_type_value(x.pk), "text": x.label}
+                    )
+                if x.name_reverse != x.name and needle in x.name_reverse.casefold():
+                    options.append(
+                        {
+                            "id": directed_relation_type_value(x.pk, reverse=True),
+                            "text": x.label_reverse,
+                        }
+                    )
+            options.sort(key=lambda option: option["text"].casefold())
+            choices = options[offset : offset + page_size]
+        else:
+            raise http.Http404
         if len(choices) == page_size:
             more = True
         return http.HttpResponse(

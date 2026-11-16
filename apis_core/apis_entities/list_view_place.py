@@ -33,10 +33,10 @@ excluded_cols = [
 
 PLACE_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
-    for x in PersonPlaceRelation.objects.all()
+    for x in PersonPlaceRelation.objects.only("id", "name")
 ]
 PLACE_WORK_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PlaceWorkRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PlaceWorkRelation.objects.only("id", "name")
 ]
 
 

@@ -37,20 +37,20 @@ excluded_cols = [
 
 INSTITUTION_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
-    for x in PersonInstitutionRelation.objects.all()
+    for x in PersonInstitutionRelation.objects.only("id", "name")
 ]
 INSTITUTION_PLACE_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionPlaceRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionPlaceRelation.objects.only("id", "name")
 ]
 INSTITUTION_WORK_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionWorkRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionWorkRelation.objects.only("id", "name")
 ]
 INSTITUTION_INSTITUTION_RELATION_CHOICES = [
     (f"{x.id}", f"{x} (ID: {x.id})")
-    for x in InstitutionInstitutionRelation.objects.all()
+    for x in InstitutionInstitutionRelation.objects.only("id", "name")
 ]
 INSTITUTION_EVENT_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.only("id", "name")
 ]
 
 

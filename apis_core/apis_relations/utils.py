@@ -233,6 +233,12 @@ def generate_relation_form(MyModelClass):
                 self.current_model.get_related_entity_field_namea()
             ].required = True
             self.fields["relation_type"].required = True
+            # types replaced by their canonical inverse are not offered anymore
+            relation_type_field = self.fields["relation_type"]
+            current_type_id = getattr(self.instance, "relation_type_id", None)
+            relation_type_field.queryset = relation_type_field.queryset.filter(
+                Q(canonical_inverse__isnull=True) | Q(pk=current_type_id)
+            )
             self.fields[
                 self.current_model.get_related_entity_field_nameb()
             ].required = True

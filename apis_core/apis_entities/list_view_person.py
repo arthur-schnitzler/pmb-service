@@ -37,16 +37,16 @@ excluded_cols = [
 ]
 
 PERSON_PERSON_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPersonRelation.objects.only("id", "name")
 ]
 PERSON_PLACE_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPlaceRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonPlaceRelation.objects.only("id", "name")
 ]
 PERSON_WORK_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonWorkRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonWorkRelation.objects.only("id", "name")
 ]
 PERSON_INSTITUTION_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonInstitutionRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in PersonInstitutionRelation.objects.only("id", "name")
 ]
 
 

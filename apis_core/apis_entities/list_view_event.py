@@ -36,20 +36,20 @@ excluded_cols = [
 
 EVENT_PERSON_RELATION_CHOICES = [
     (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
-    for x in PersonEventRelation.objects.all()
+    for x in PersonEventRelation.objects.only("id", "name")
 ]
 EVENT_PLACE_RELATION_CHOICES = [
     (f"{x.id}", f"{x.label_reverse} (ID: {x.id})")
-    for x in PlaceEventRelation.objects.all()
+    for x in PlaceEventRelation.objects.only("id", "name")
 ]
 EVENT_EVENT_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in EventEventRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in EventEventRelation.objects.only("id", "name")
 ]
 EVENT_INSTITUTION_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in InstitutionEventRelation.objects.only("id", "name")
 ]
 EVENT_WORK_RELATION_CHOICES = [
-    (f"{x.id}", f"{x} (ID: {x.id})") for x in EventWorkRelation.objects.all()
+    (f"{x.id}", f"{x} (ID: {x.id})") for x in EventWorkRelation.objects.only("id", "name")
 ]
 
 

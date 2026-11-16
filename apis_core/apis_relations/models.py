@@ -34,8 +34,30 @@ class AbstractRelation(TempEntityClass):
             or self.relation_type is None
         ):
             raise Exception("One or more of the necessary related models are None")
-
+        self.normalize_inverse_relation_type()
         super().save(*args, **kwargs)
+
+    def normalize_inverse_relation_type(self):
+        """Stores relations with a deprecated relation type under its canonical inverse.
+
+        Only applies to relations between entities of the same class (e.g. PersonPerson):
+        "A ist Kind von B" becomes "B ist Elternteil von A" if "ist Kind von" has
+        `canonical_inverse` set to "ist Elternteil von".
+
+        :return: True if source and target were swapped
+        """
+        if self.get_related_entity_classa() != self.get_related_entity_classb():
+            return False
+        canonical_id = getattr(self.relation_type, "canonical_inverse_id", None)
+        if not canonical_id:
+            return False
+        field_a = self.get_related_entity_field_namea()
+        field_b = self.get_related_entity_field_nameb()
+        entity_a = getattr(self, field_a)
+        setattr(self, field_a, getattr(self, field_b))
+        setattr(self, field_b, entity_a)
+        self.relation_type_id = canonical_id
+        return True
 
     # Methods dealing with individual data retrievals of instances
     ####################################################################################################################

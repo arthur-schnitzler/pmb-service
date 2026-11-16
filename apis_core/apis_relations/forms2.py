@@ -20,6 +20,10 @@ from apis_core.apis_metainfo.models import (
     to_iso_like,
 )
 from apis_core.apis_relations.models import AbstractRelation
+from apis_core.apis_vocabularies.direction import (
+    directed_relation_type_value,
+    split_directed_relation_type,
+)
 from apis_core.helper_functions import DateParser
 
 from .tables import get_generic_relations_table
@@ -67,6 +71,14 @@ class GenericRelationForm(forms.ModelForm):
         value = self.cleaned_data.get("target")
         return normalize_target_autocomplete_value(value)
 
+    def clean_relation_type(self):
+        value = self.cleaned_data.get("relation_type")
+        type_id, reverse = split_directed_relation_type(value)
+        if reverse and not self.same_entity_class:
+            raise ValidationError("Ungültige Art der Beziehung.", code="invalid")
+        self.reverse_direction = reverse
+        return type_id
+
     def clean(self):
         cleaned_data = super().clean()
         start_date_written = cleaned_data.get("start_date_written")
@@ -102,13 +114,22 @@ class GenericRelationForm(forms.ModelForm):
         x.end_date_written = cd["end_date_written"]
         x.notes = cd["notes"]
         x.references = cd["references"]
-        setattr(x, self.rel_accessor[3], site_instance)
+        site_field, target_field = self.rel_accessor[3], self.rel_accessor[2]
+        if self.same_entity_class:
+            # the chosen reading decides whether the current entity is source or target
+            field_a = self.relation_form.get_related_entity_field_namea()
+            field_b = self.relation_form.get_related_entity_field_nameb()
+            if self.reverse_direction:
+                site_field, target_field = field_b, field_a
+            else:
+                site_field, target_field = field_a, field_b
+        setattr(x, site_field, site_instance)
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd["target"])
-        setattr(x, self.rel_accessor[2], t1)
+        setattr(x, target_field, t1)
         params = {
-            self.rel_accessor[3]: site_instance,
-            self.rel_accessor[2]: t1,
+            site_field: site_instance,
+            target_field: t1,
             "start_date_written": cd["start_date_written"],
             "end_date_written": cd["end_date_written"],
             "relation_type_id": cd["relation_type"],
@@ -197,7 +218,9 @@ class GenericRelationForm(forms.ModelForm):
         self.helper.form_class = f"{self.relation_form!s}Form"
         self.helper.form_tag = False
         lst_src_target = re.findall("[A-Z][^A-Z]*", self.relation_form.__name__)
-        if lst_src_target[0] == lst_src_target[1]:
+        self.same_entity_class = lst_src_target[0] == lst_src_target[1]
+        self.reverse_direction = False
+        if self.same_entity_class:
             if instance and instance.id:
                 if getattr(
                     instance, f"related_{lst_src_target[0].lower()}a_id"
@@ -235,7 +258,7 @@ class GenericRelationForm(forms.ModelForm):
                                     "relation",
                                 ]
                             ),
-                            "normal",
+                            "both",
                         ],
                     ),
                     attrs=attrs,
@@ -360,11 +383,15 @@ class GenericRelationForm(forms.ModelForm):
                     instance.relation_type.label,
                 )
             else:
+                # same entity class: the current entity is the target, mark the reading as reversed
+                value = directed_relation_type_value(
+                    instance.relation_type.id, reverse=self.same_entity_class
+                )
                 self.fields["relation_type"].choices = [
-                    (instance.relation_type.id, instance.relation_type.label_reverse)
+                    (value, instance.relation_type.label_reverse)
                 ]
                 self.fields["relation_type"].initial = (
-                    instance.relation_type.id,
+                    value,
                     instance.relation_type.label_reverse,
                 )
 
