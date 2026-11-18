@@ -179,6 +179,81 @@ def to_iso_like(value: str) -> str:
     return value
 
 
+def _written_date_q(field, value):
+    """Matches a written date; an empty string and NULL count as the same date."""
+    if value:
+        return models.Q(**{field: value})
+    return models.Q(**{f"{field}__isnull": True}) | models.Q(**{field: ""})
+
+
+def find_duplicate_relation(relation):
+    """Returns another relation which is identical to `relation`: same relation
+    class, same entities on the same sides, same relation type and same written
+    start and end date. Returns None if there is no such relation."""
+    field_a = relation.get_related_entity_field_namea()
+    field_b = relation.get_related_entity_field_nameb()
+    return (
+        type(relation)
+        .objects.filter(
+            _written_date_q("start_date_written", relation.start_date_written),
+            _written_date_q("end_date_written", relation.end_date_written),
+            **{
+                f"{field_a}_id": getattr(relation, f"{field_a}_id"),
+                f"{field_b}_id": getattr(relation, f"{field_b}_id"),
+                "relation_type_id": relation.relation_type_id,
+            },
+        )
+        .exclude(pk=relation.pk)
+        .order_by("pk")
+        .first()
+    )
+
+
+def _append_text(kept, dropped):
+    """Appends `dropped` to `kept` unless it is empty or already contained."""
+    kept = kept or ""
+    dropped = (dropped or "").strip()
+    if not dropped or dropped in kept:
+        return kept
+    return f"{kept} {dropped}".strip()
+
+
+def absorb_relation(kept, dropped):
+    """Copies what `dropped` holds beyond `kept` (collections, texts, uris,
+    labels, notes and references) onto `kept`, so `dropped` can be deleted
+    without losing information."""
+    kept_collections = set(kept.collection.all())
+    for col in dropped.collection.all():
+        if col not in kept_collections:
+            kept.collection.add(col)
+    kept_texts = set(kept.text.all())
+    for text in dropped.text.all():
+        if text not in kept_texts:
+            kept.text.add(text)
+    Uri.objects.filter(entity_id=dropped.pk).update(entity_id=kept.pk)
+    Label.objects.filter(temp_entity_id=dropped.pk).update(temp_entity_id=kept.pk)
+    notes = _append_text(kept.notes, dropped.notes)
+    references = _append_text(kept.references, dropped.references)
+    if notes != (kept.notes or "") or references != (kept.references or ""):
+        kept.notes = notes
+        kept.references = references
+        kept.save(parse_dates=False)
+
+
+def move_relation(relation, field, entity):
+    """Points `field` of `relation` to `entity` (used when merging entities).
+    If this turns the relation into an exact duplicate of an existing one, the
+    existing relation absorbs it and the duplicate is deleted. Relations which
+    differ e.g. in their dates are kept as separate relations."""
+    setattr(relation, field, entity)
+    duplicate = find_duplicate_relation(relation)
+    if duplicate is None:
+        relation.save()
+    else:
+        absorb_relation(duplicate, relation)
+        relation.delete()
+
+
 class TempEntityClass(models.Model):
     """Base class to bind common attributes to many classes.
 
@@ -535,19 +610,16 @@ class TempEntityClass(models.Model):
                     q_d = {f"related_{e_b.lower()}a": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, f"related_{e_a.lower()}a", self)
-                        t.save()
+                        move_relation(t, f"related_{e_a.lower()}a", self)
                     q_d = {f"related_{e_b.lower()}b": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, f"related_{e_a.lower()}b", self)
-                        t.save()
+                        move_relation(t, f"related_{e_a.lower()}b", self)
                 else:
                     q_d = {f"related_{e_b.lower()}": ent}
                     k = r.model_class().objects.filter(**q_d)
                     for t in k:
-                        setattr(t, f"related_{e_a.lower()}", self)
-                        t.save()
+                        move_relation(t, f"related_{e_a.lower()}", self)
             ent.delete()
             if self_gender:
                 pass

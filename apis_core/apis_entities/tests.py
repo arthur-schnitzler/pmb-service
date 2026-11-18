@@ -13,7 +13,7 @@ from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
-from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_metainfo.models import Collection, Uri
 from apis_core.apis_metainfo.tables import (
     written_order_end_date_written,
     written_order_start_date_written,
@@ -256,6 +256,87 @@ class EntitiesTestCase(TestCase):
         target_with_coords.merge_with(source_other_coords.id)
         self.assertEqual(47.07, target_with_coords.lat)
         self.assertEqual(15.44, target_with_coords.lng)
+
+    def test_009d_merge_duplicate_relations(self):
+        target = Person.objects.create(name="Person which will be kept")
+        source = Person.objects.create(name="Person which will be merged")
+        friend = Person.objects.create(name="Friend")
+        vienna = Place.objects.create(name="Wien")
+        knows = PersonPersonRelation.objects.create(name="kennt")
+        lives_in = PersonPlaceRelation.objects.create(name="wohnt in")
+        collection = Collection.objects.create(name="merge test collection")
+
+        # identical relation (same type, other entity and dates) -> no duplicate
+        kept = PersonPlace.objects.create(
+            related_person=target,
+            related_place=vienna,
+            relation_type=lives_in,
+            start_date_written="1900",
+            end_date_written="1910",
+            notes="target note",
+        )
+        dropped = PersonPlace.objects.create(
+            related_person=source,
+            related_place=vienna,
+            relation_type=lives_in,
+            start_date_written="1900",
+            end_date_written="1910",
+            notes="source note",
+            references="source reference",
+        )
+        dropped.collection.add(collection)
+        # same entities and type but other dates -> both relations survive
+        PersonPlace.objects.create(
+            related_person=source,
+            related_place=vienna,
+            relation_type=lives_in,
+            start_date_written="1920",
+        )
+        # empty and missing dates count as the same date
+        PersonPerson.objects.create(
+            related_persona=target,
+            related_personb=friend,
+            relation_type=knows,
+            start_date_written="",
+        )
+        PersonPerson.objects.create(
+            related_persona=source,
+            related_personb=friend,
+            relation_type=knows,
+            start_date_written=None,
+        )
+        # same entities and type, but the other direction -> no duplicate
+        PersonPerson.objects.create(
+            related_persona=friend, related_personb=source, relation_type=knows
+        )
+
+        target.merge_with(source.id)
+
+        place_rels = PersonPlace.objects.filter(related_person=target)
+        self.assertEqual(2, place_rels.count())
+        self.assertFalse(PersonPlace.objects.filter(pk=dropped.pk).exists())
+        kept.refresh_from_db()
+        self.assertIn("target note", kept.notes)
+        self.assertIn("source note", kept.notes)
+        self.assertEqual("source reference", kept.references)
+        self.assertIn(collection, kept.collection.all())
+        self.assertEqual(
+            {"1900", "1920"},
+            set(place_rels.values_list("start_date_written", flat=True)),
+        )
+
+        self.assertEqual(
+            1,
+            PersonPerson.objects.filter(
+                related_persona=target, related_personb=friend
+            ).count(),
+        )
+        self.assertEqual(
+            1,
+            PersonPerson.objects.filter(
+                related_persona=friend, related_personb=target
+            ).count(),
+        )
 
     def test_010_delete_views(self):
         client.login(**USER)
