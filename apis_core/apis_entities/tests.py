@@ -13,7 +13,7 @@ from apis_core.apis_entities.forms import get_entities_form
 from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.errors import StartDateAfterEndDateError
-from apis_core.apis_metainfo.models import Collection, Uri
+from apis_core.apis_metainfo.models import Collection, Text, Uri, absorb_relation
 from apis_core.apis_metainfo.tables import (
     written_order_end_date_written,
     written_order_start_date_written,
@@ -337,6 +337,30 @@ class EntitiesTestCase(TestCase):
                 related_persona=friend, related_personb=target
             ).count(),
         )
+
+    def test_009e_absorb_relation_keeps_shared_and_adds_new_m2m(self):
+        person = Person.objects.create(name="Absorb")
+        vienna = Place.objects.create(name="Wien")
+        lives_in = PersonPlaceRelation.objects.create(name="wohnt in")
+        kept = PersonPlace.objects.create(
+            related_person=person, related_place=vienna, relation_type=lives_in
+        )
+        dropped = PersonPlace.objects.create(
+            related_person=person, related_place=vienna, relation_type=lives_in
+        )
+        shared_col = Collection.objects.create(name="shared collection")
+        new_col = Collection.objects.create(name="new collection")
+        shared_text = Text.objects.create(text="shared text")
+        new_text = Text.objects.create(text="new text")
+        kept.collection.add(shared_col)
+        kept.text.add(shared_text)
+        dropped.collection.add(shared_col, new_col)
+        dropped.text.add(shared_text, new_text)
+
+        absorb_relation(kept, dropped)
+
+        self.assertEqual({shared_col, new_col}, set(kept.collection.all()))
+        self.assertEqual({shared_text, new_text}, set(kept.text.all()))
 
     def test_010_delete_views(self):
         client.login(**USER)
