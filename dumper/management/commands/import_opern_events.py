@@ -36,7 +36,7 @@ class Command(BaseCommand):
             start_row = 0
 
         col = Collection.objects.get(id=122)
-        domain = "spielplan-oper_1869–1945"
+        domain = "spielplan-oper"
         df = gsheet_to_df("1S-bCy8M4a6_GKg3DQ6lw9C95zbKsW7_GgOmSZB-0BVU")
         event_kinds = {}
 
