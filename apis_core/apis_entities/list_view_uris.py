@@ -4,6 +4,7 @@ from crispy_bootstrap5.bootstrap5 import BS5Accordion
 from crispy_forms.bootstrap import AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
+from django.utils.html import format_html
 
 from apis_core.apis_metainfo.models import Uri
 from browsing.browsing_utils import GenericListView
@@ -11,10 +12,22 @@ from browsing.browsing_utils import GenericListView
 ENTITY_CHILDREN = ("person", "place", "institution", "event", "work")
 
 
+def get_loaded_child(entity):
+    """Return the Person, Place, … behind a TempEntityClass.
+
+    The children are loaded via select_related in UriListView.get_queryset,
+    so unlike TempEntityClass.get_child_entity() this needs no queries.
+    """
+    for name in ENTITY_CHILDREN:
+        child = getattr(entity, name, None)
+        if child is not None:
+            return child
+    return None
+
+
 class UriTable(tables.Table):
     id = tables.LinkColumn()
-    entity = tables.TemplateColumn(
-        "<a href='{{ record.entity.get_absolute_url }}'>{{ record.entity }}</a>",
+    entity = tables.Column(
         orderable=True,
         verbose_name="related Entity",
     )
@@ -24,12 +37,19 @@ class UriTable(tables.Table):
         verbose_name="Entity Type",
     )
 
+    def render_entity(self, value):
+        child = get_loaded_child(value)
+        if child is None:
+            return str(value)
+        return format_html("<a href='{}'>{}</a>", child.get_absolute_url(), value)
+
+    def value_entity(self, value):
+        # plain text for the CSV/JSON export
+        return str(value)
+
     def render_ent_type(self, record):
-        # children are loaded via select_related in UriListView.get_queryset
-        for name in ENTITY_CHILDREN:
-            if getattr(record.entity, name, None) is not None:
-                return name.capitalize()
-        return ""
+        child = get_loaded_child(record.entity)
+        return type(child).__name__ if child is not None else ""
 
     class Meta:
         model = Uri
@@ -86,6 +106,11 @@ class UriListView(GenericListView):
     template_name = "apis_entities/list_view.html"
     verbose_name = "Uris"
     help_text = "Uris help text"
+    # the filters only use Uri fields and the forward FK `entity`, so no URI
+    # can show up twice
+    use_distinct = False
+    # paging needs a stable order
+    ordering = ["id"]
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)

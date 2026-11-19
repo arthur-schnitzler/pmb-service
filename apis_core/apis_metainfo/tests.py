@@ -5,11 +5,16 @@ from unittest import mock
 import requests
 from django.apps import apps
 from django.contrib.auth.models import User
+from django.db import connection
 from django.test import Client, SimpleTestCase, TestCase
+from django.test.utils import CaptureQueriesContext
+from django.urls import reverse
 
-from apis_core.apis_entities.models import Person, Work
+from apis_core.apis_entities.list_view_uris import UriTable
+from apis_core.apis_entities.models import Event, Institution, Person, Place, Work
 from apis_core.apis_metainfo.models import (
     Collection,
+    TempEntityClass,
     Uri,
     fetch_image,
     normalize_wikimedia_img_url,
@@ -252,3 +257,73 @@ class FetchImagesCommandTestCase(TestCase):
         fetch.reset_mock()
         call_command("fetch_images")
         fetch.assert_not_called()
+
+
+class UriListViewTestCase(TestCase):
+    """The URI list has more than 600,000 rows in production (#558)."""
+
+    @classmethod
+    def setUpTestData(cls):
+        # post_save gives every entity its default PMB URI (domain "pmb")
+        cls.entities = [
+            Person.objects.create(name="Schnitzler", first_name="Arthur"),
+            Place.objects.create(name="Wien"),
+            Institution.objects.create(name="Burgtheater"),
+            Event.objects.create(name="Premiere"),
+            Work.objects.create(name="Reigen"),
+        ]
+        Uri.objects.bulk_create(
+            Uri(uri=f"https://example.org/{i}", domain="example") for i in range(300)
+        )
+        cls.url = reverse("apis_core:apis_metainfo:uri_browse")
+
+    def test_counts_once_and_needs_no_queries_per_row(self):
+        with CaptureQueriesContext(connection) as ctx:
+            response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        sqls = [q["sql"] for q in ctx.captured_queries]
+        # one COUNT for the paginator and one query for the page itself
+        self.assertEqual(len(sqls), 2, sqls)
+        self.assertEqual(sum("COUNT(" in sql for sql in sqls), 1, sqls)
+        self.assertFalse(any("DISTINCT" in sql for sql in sqls), sqls)
+
+    def test_links_to_entity_detail_views(self):
+        response = self.client.get(self.url, {"domain": "pmb"})
+        for entity in self.entities:
+            self.assertContains(response, f"href='{entity.get_absolute_url()}'")
+
+    def test_export_has_plain_entity_names(self):
+        response = self.client.get(self.url, {"domain": "pmb", "_export": "csv"})
+        content = response.content.decode()
+        self.assertIn(f"Reigen (ID: {self.entities[-1].id})", content)
+        self.assertNotIn("<a ", content)
+
+    def test_goto_page_is_a_number_field(self):
+        # 300 URIs in domain "example" make 12 pages
+        response = self.client.get(self.url, {"domain": "example", "page": 2})
+        self.assertContains(response, 'type="number"')
+        self.assertContains(response, 'max="12"')
+        self.assertContains(
+            response, '<input type="hidden" name="domain" value="example">'
+        )
+        self.assertNotContains(response, '<input type="hidden" name="page"')
+        self.assertNotContains(response, '<option value="?')
+
+    def test_shows_entity_type_column(self):
+        response = self.client.get(self.url, {"domain": "pmb", "columns": "ent_type"})
+        self.assertEqual(response.status_code, 200)
+        ent_types = {
+            row.get_cell("ent_type") for row in response.context["table"].rows
+        }
+        self.assertEqual(
+            ent_types, {"Person", "Place", "Institution", "Event", "Work"}
+        )
+
+    def test_entity_without_child_is_plain_text(self):
+        # a bare TempEntityClass has no Person/Place/… behind it
+        orphan = TempEntityClass.objects.create(name="Waise")
+        uri = Uri.objects.create(uri="https://example.org/orphan", entity=orphan)
+        table = UriTable([uri])
+        self.assertEqual(table.render_entity(orphan), str(orphan))
+        self.assertEqual(table.render_ent_type(uri), "")
+

@@ -65,12 +65,15 @@
 </nav>
 
 {% if table.paginator.num_pages > 10 %}
-<div class="d-flex align-items-center gap-2 mb-3">
+{% comment %}A number field instead of a list of all pages, which got huge for big tables{% endcomment %}
+<form method="get" class="d-flex align-items-center gap-2 mb-3">
+    {% for key, values in request.GET.lists %}{% if key != table.prefixed_page_field %}{% for value in values %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}{% endif %}{% endfor %}
     <label for="goto" class="mb-0 text-nowrap">Seite {{ table.page.number }} von {{ table.paginator.num_pages }} &mdash; Gehe zu:</label>
-    <select class="form-control form-control-sm w-auto" id="goto" onchange="javascript:location.href = this.value;">
-        {% for p in table.paginator.page_range %}
-            <option value="{% querystring table.prefixed_page_field=p %}"{% if p == table.page.number %} selected{% endif %}>{{ p }}</option>
-        {% endfor %}
-    </select>
-</div>
+    <input type="number" class="form-control form-control-sm w-auto" id="goto"
+           name="{{ table.prefixed_page_field }}" min="1" max="{{ table.paginator.num_pages }}"
+           value="{{ table.page.number }}" required>
+    <button type="submit" class="btn btn-sm btn-outline-primary">Los</button>
+</form>
 {% endif %}
