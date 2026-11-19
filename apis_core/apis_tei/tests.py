@@ -86,6 +86,8 @@ class TeiTestCase(TestCase):
             (f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 500}/", "pmb"),
             (f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 20}/", "pmb"),
             (f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 3}/", "pmb"),
+            # PMB-Domain, aber ohne Nummer -> landet hinten bei den übrigen URIs
+            ("https://pmb.acdh.oeaw.ac.at/apis/legacy/schnitzler", "pmb"),
         ]:
             Uri.objects.create(uri=uri, domain=domain, entity=person)
         node = get_node_from_template("apis_tei/person.xml", person)
@@ -99,6 +101,7 @@ class TeiTestCase(TestCase):
                 f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 3}/",
                 f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 20}/",
                 f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 500}/",
+                "https://pmb.acdh.oeaw.ac.at/apis/legacy/schnitzler",
             ],
         )
         first_idno = node.xpath("./*[local-name() = 'idno'][1]/text()")
