@@ -160,6 +160,14 @@ class EntitiesTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         after = Person.objects.all().count()
         self.assertTrue(before > after)
+        # nach dem Merge landet man auf der Edit-Seite des verbleibenden Eintrags
+        self.assertEqual(
+            response.url,
+            reverse(
+                "apis:apis_entities:generic_entities_edit_view",
+                kwargs={"entity": "person", "pk": min(source.id, target.id)},
+            ),
+        )
 
     def test_009a_merge_notesandreferences_andgedner(self):
         target = Person.objects.create(
