@@ -156,7 +156,7 @@
                         Verknüpfte Datensätze
                     </th>
                     <td>
-                        {% for x in object.uri_set.all %}
+                        {% for x in object.get_sorted_uris %}
                             {% if user.is_authenticated %}
                         
                                 <a href="{{ x }}" style="color:{{ x.get_color }}">{{ x }}</a> {% if user.is_authenticated %} <a href="{{ x.get_edit_url }}" title="URI bearbeiten">

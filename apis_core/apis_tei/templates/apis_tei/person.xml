@@ -15,7 +15,7 @@
 {% for x in object.profession.all %}
   <occupation key="{{ x.id|slugify }}">{{ x }}</occupation>
 {% endfor %}
-{% for x in object.uri_set.all %}
+{% for x in object.get_sorted_uris %}
   <idno type="URL" {% if x.domain %} subtype="{{ x.domain|slugify }}" {% endif %}>{{ x }}</idno>
 {% endfor %}
 {% include 'apis_tei/affiliation.xml' %}

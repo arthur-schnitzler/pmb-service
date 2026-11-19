@@ -50,7 +50,7 @@ class TeiCompleterAc(autocomplete.Select2ListView):
         for r in res[offset : offset + page_size]:
             dates = f"time: {r.start_date} - {r.end_date}"
             f = {}
-            f["tc:value"] = f"{r.uri_set.all()[0]}"
+            f["tc:value"] = f"{r.get_sorted_uris()[0]}"
             if ac_type == "institution":
                 ent_type = "org"
             else:

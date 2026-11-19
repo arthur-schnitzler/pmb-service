@@ -39,7 +39,7 @@
             <div class="p-3">
                 <h4>URIS</h4>
                 <ul>
-                    {% for x in instance.uri_set.all %}
+                    {% for x in instance.get_sorted_uris %}
                     <li>
                         <a href="{{ x }}">{{ x }}</a>
                         <a href="{{ x.get_edit_url }}" title="URI bearbeiten">

@@ -13,13 +13,13 @@
 <pubPlace >
   <placeName key="place__{{ x.related_place.id }}" type="{{ x.relation_type|slugify }}" >{{ x.related_place.name }}</placeName>
   {% if x.related_place.lat %}<geo>{{ x.related_place.lat }} {{ x.related_place.lng }}</geo>{% endif %}
-  {% for y in x.related_place.uri_set.all %}
+  {% for y in x.related_place.get_sorted_uris %}
   <note type="IDNO" {% if y.domain %} subtype="{{ y.domain|slugify }}" {% endif %}>{{ y }}</note>
   {% endfor %}
 </pubPlace>
 {% endfor %}
 {% include 'apis_tei/date.xml' %}
-{% for x in object.uri_set.all %}
+{% for x in object.get_sorted_uris %}
   <idno type="URL" {% if x.domain %} subtype="{{ x.domain|slugify }}" {% endif %}>{{ x }}</idno>
 {% endfor %}
 {% if object.collection.all %}

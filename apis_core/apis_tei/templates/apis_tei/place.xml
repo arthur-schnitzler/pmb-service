@@ -17,7 +17,7 @@
   {% if x.lat %}<geo>{{ x.lat }} {{ x.lng }}</geo>{% endif %}
 </location>
 {% endfor %}
-{% for x in object.uri_set.all %}
+{% for x in object.get_sorted_uris %}
   <idno type="URL" {% if x.domain %} subtype="{{ x.domain|slugify }}" {% endif %}>{{ x }}</idno>
 {% endfor %}
 {% if object.collection.all %}

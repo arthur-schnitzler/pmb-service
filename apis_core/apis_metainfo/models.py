@@ -32,6 +32,7 @@ from apis_core.helper_functions import DateParser
 
 DOMAIN_MAPPING = settings.DOMAIN_MAPPING
 DEFAULT_COLOR = settings.DEFAULT_COLOR
+PMB_URI_NUMBER_RE = re.compile(r"/entity/(\d+)/?$")
 DATE_ORDER_VALIDATION_MESSAGE = (
     "Das End-Datum muss gleich oder später als das Start-Datum sein."
 )
@@ -248,6 +249,29 @@ class TempEntityClass(models.Model):
             return f"{self.name} (ID: {self.id})"
         else:
             return f"(ID: {self.id})"
+
+    def get_sorted_uris(self):
+        """URIs in stabiler Reihenfolge für Exporte (TEI).
+
+        1. die PMB-URI, die der aktuellen ID entspricht,
+        2. weitere PMB-URIs (z.B. aus Merges) aufsteigend nach Nummer,
+        3. alle übrigen URIs in Anlage-Reihenfolge (pk).
+        """
+        own, other_pmb, rest = [], [], []
+        for uri in sorted(self.uri_set.all(), key=lambda u: u.pk):
+            number = None
+            if uri.domain == "pmb" and uri.uri:
+                match = PMB_URI_NUMBER_RE.search(uri.uri)
+                if match:
+                    number = int(match.group(1))
+            if number is None:
+                rest.append(uri)
+            elif number == self.pk:
+                own.append(uri)
+            else:
+                other_pmb.append((number, uri))
+        other_pmb.sort(key=lambda x: x[0])
+        return own + [u for _, u in other_pmb] + rest
 
     def save(self, parse_dates=True, *args, **kwargs):
         """Adaption of the save() method of the class to automatically parse string-dates into date objects"""
