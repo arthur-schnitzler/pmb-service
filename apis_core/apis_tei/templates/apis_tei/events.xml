@@ -11,7 +11,7 @@
     >
         <desc n="{{ x.relation_type.id }}">{{ x.relation_type }}</desc>
         <label>{{ x.related_event.name }}</label>
-        {% for uri in x.related_event.uri_set.all %}
+        {% for uri in x.related_event.get_sorted_uris %}
         <idno type="URL" {% if uri.domain %} subtype="{{ uri.domain|slugify }}" {% endif %}>{{ uri }}</idno>
         {% endfor %}    
     </event>

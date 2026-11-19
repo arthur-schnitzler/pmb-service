@@ -219,7 +219,7 @@ class MergeEntitiesView(View):
                 target_obj.merge_with(int(ent_merge_pk))
                 return redirect(
                     reverse(
-                        "apis:apis_entities:generic_entities_detail_view",
+                        "apis:apis_entities:generic_entities_edit_view",
                         kwargs={"pk": target.pk, "entity": entity},
                     )
                 )

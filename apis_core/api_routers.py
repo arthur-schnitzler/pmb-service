@@ -98,7 +98,7 @@ class EntitySerializer(ApisBaseSerializer):
 
     def add_sameas(self, instance):
         res = []
-        for uri in instance.uri_set.all():
+        for uri in instance.get_sorted_uris():
             res.append(uri.uri)
         return res
 
@@ -210,7 +210,7 @@ def generic_serializer_creation_factory():
 
             def add_sameas(self, instance):
                 res = []
-                for uri in instance.uri_set.all():
+                for uri in instance.get_sorted_uris():
                     res.append(uri.uri)
                 return res
 

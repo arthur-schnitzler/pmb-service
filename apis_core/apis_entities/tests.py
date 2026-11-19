@@ -160,6 +160,14 @@ class EntitiesTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         after = Person.objects.all().count()
         self.assertTrue(before > after)
+        # nach dem Merge landet man auf der Edit-Seite des verbleibenden Eintrags
+        self.assertEqual(
+            response.url,
+            reverse(
+                "apis:apis_entities:generic_entities_edit_view",
+                kwargs={"entity": "person", "pk": min(source.id, target.id)},
+            ),
+        )
 
     def test_009a_merge_notesandreferences_andgedner(self):
         target = Person.objects.create(
@@ -463,6 +471,23 @@ class EntitiesTestCase(TestCase):
         item = Place.objects.last()
         r = client.get(item.get_api_url())
         self.assertTrue(r.status_code, 200)
+
+    def test_021a_entity_serializer_sameas_sorted(self):
+        from apis_core.api_routers import EntitySerializer
+
+        person = Person.objects.create(name="Sortierung", first_name="Sam")
+        own = f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk}/"
+        Uri.objects.get_or_create(
+            uri=own, defaults={"domain": "pmb", "entity": person}
+        )
+        merged = f"https://pmb.acdh.oeaw.ac.at/entity/{person.pk + 7}/"
+        Uri.objects.create(
+            uri="https://d-nb.info/gnd/118609807", domain="gnd", entity=person
+        )
+        Uri.objects.create(uri=merged, domain="pmb", entity=person)
+        same_as = EntitySerializer().add_sameas(person)
+        self.assertEqual(same_as[:2], [own, merged])
+        self.assertIn("https://d-nb.info/gnd/118609807", same_as[2:])
 
     def test_022_resolver_view(self):
         Person.objects.get_or_create(name="Andorfer", first_name="Ronja")

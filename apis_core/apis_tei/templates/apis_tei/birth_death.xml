@@ -21,7 +21,7 @@
     {% if x.related_place.lat %}
       <location><geo>{{ x.related_place.lat }} {{ x.related_place.lng }}</geo></location>
     {% endif %}
-    {% for uri in x.related_place.uri_set.all %}
+    {% for uri in x.related_place.get_sorted_uris %}
       <idno type="URL" {% if uri.domain %} subtype="{{ uri.domain|slugify }}" {% endif %}>{{ uri }}</idno>
       {% endfor %}
     </settlement>
@@ -53,7 +53,7 @@
       {% if FULL %}
       <settlement key="{{ x.related_place.id }}">
         <placeName type="pref">{{ x.related_place.name }}</placeName>
-        {% for uri in x.related_place.uri_set.all %}
+        {% for uri in x.related_place.get_sorted_uris %}
         <idno type="URL" {% if uri.domain %} subtype="{{ uri.domain|slugify }}" {% endif %}>{{ uri }}</idno>
         {% endfor %}
       {% if x.related_place.lat %}
