@@ -1,5 +1,6 @@
 import importlib
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -16,6 +17,8 @@ from django_tables2 import RequestConfig
 from apis_core.apis_entities.detail_views import RELATIONS_PREVIEW_LIMIT
 from apis_core.apis_entities.models import AbstractEntity, TempEntityClass
 from apis_core.apis_labels.models import Label
+from apis_core.apis_metainfo.errors import MergeUndoError
+from apis_core.apis_metainfo.models import MergeLog, get_merge_undo_days
 from apis_core.apis_relations.models import AbstractRelation
 from apis_core.apis_relations.tables import LabelTableEdit, get_generic_relations_table
 
@@ -98,6 +101,14 @@ class GenericEntitiesEditView(View):
             "entity_type": entity,
             "form": form,
             "form_merge_with": form_merge_with,
+            "merge_undo_days": get_merge_undo_days(),
+            "undoable_merges": [
+                x
+                for x in MergeLog.objects.filter(
+                    target_pk=instance.pk, undone_at__isnull=True
+                ).select_related("user")
+                if x.can_undo
+            ],
             "instance": instance,
             "right_card": side_bar,
             "relations_preview_limit": RELATIONS_PREVIEW_LIMIT,
@@ -216,7 +227,7 @@ class MergeEntitiesView(View):
                     app_label="apis_entities", model__iexact=entity
                 ).model_class()
                 target_obj = entity_model_class.objects.get(id=target.id)
-                target_obj.merge_with(int(ent_merge_pk))
+                target_obj.merge_with(int(ent_merge_pk), user=request.user)
                 return redirect(
                     reverse(
                         "apis:apis_entities:generic_entities_detail_view",
@@ -237,3 +248,34 @@ class MergeEntitiesView(View):
                     kwargs={"pk": ent_merge_pk, "entity": entity},
                 )
             )
+
+
+@method_decorator(login_required, name="dispatch")
+class UndoMergeView(View):
+    """Undo a merge recorded in a ``MergeLog`` (POST only)."""
+
+    def post(self, request, *args, **kwargs):
+        log = get_object_or_404(MergeLog, pk=kwargs["pk"])
+        try:
+            warnings = log.undo(user=request.user)
+        except MergeUndoError as e:
+            messages.error(request, str(e))
+            return redirect(
+                reverse(
+                    "apis:apis_entities:generic_entities_edit_view",
+                    kwargs={"pk": log.target_pk, "entity": log.source_model},
+                )
+            )
+        messages.success(
+            request,
+            f"Die Zusammenführung wurde rückgängig gemacht: {log.source_name} "
+            f"hat wieder die ID {log.source_pk}.",
+        )
+        for warning in warnings:
+            messages.warning(request, warning)
+        return redirect(
+            reverse(
+                "apis:apis_entities:generic_entities_edit_view",
+                kwargs={"pk": log.source_pk, "entity": log.source_model},
+            )
+        )

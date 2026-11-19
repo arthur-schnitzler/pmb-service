@@ -7,3 +7,7 @@ class StartDateAfterEndDateError(ValidationError):
     def __init__(self, message=None):
         final_message = message or self.default_message
         super().__init__({"end_date_written": [final_message]})
+
+
+class MergeUndoError(Exception):
+    """Raised when a recorded merge can not be undone."""

@@ -161,6 +161,9 @@ USE_L10N = True
 USE_TZ = True
 USE_THOUSAND_SEPARATOR = False
 
+# Number of days during which a merge of two entities can be undone
+MERGE_UNDO_DAYS = int(os.environ.get("MERGE_UNDO_DAYS", "14"))
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

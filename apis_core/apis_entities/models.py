@@ -685,6 +685,7 @@ ents_cls_list = []
 def create_default_uri(sender, instance, **kwargs):
     if (
         kwargs["created"]
+        and not kwargs.get("raw")
         and sender in [Person, Institution, Place, Work, Event] + ents_cls_list
     ):
         if BASE_URI.endswith("/"):

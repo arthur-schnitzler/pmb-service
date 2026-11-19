@@ -9,6 +9,9 @@
 {% include "partials/entity_styles.html" %}
 
 <div class="container-fluid pt-2">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
     <h1 class="display-4 text-center">
         <a href="{{ instance.get_listview_url }}">
             <i class="{{ instance.get_icon }}" title="{{ entity_type|title }}"></i>
@@ -54,7 +57,33 @@
             <hr>
             <h4>Entitäten zusammenführen</h4>
             <p>Die aktuelle Entität <strong>{{ instance }}</strong> wird gelöscht, deren Eigenschaften/Beziehungen aber auf die ausgewählten Entität übertragen.</p>
+            <p class="text-muted small">
+                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                Eine Zusammenführung kann {{ merge_undo_days }} Tage lang rückgängig gemacht werden. Die Entität erhält dabei ihre alte ID zurück.
+            </p>
             {% crispy form_merge_with  form_merge_with.helper %}
+            {% if undoable_merges %}
+            <h5 class="mt-4">
+                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                Zusammenführungen rückgängig machen
+            </h5>
+            <ul class="list-unstyled">
+                {% for log in undoable_merges %}
+                <li class="mb-2">
+                    <form method="post" action="{% url 'apis:apis_entities:undo_merge_view' pk=log.pk %}" class="d-inline"
+                        onsubmit="return confirm('Zusammenführung mit {{ log.source_name|escapejs }} ({{ log.source_pk }}) rückgängig machen?');">
+                        {% csrf_token %}
+                        <strong>{{ log.source_name }}</strong> (ID {{ log.source_pk }}),
+                        gemergt am {{ log.created|date:"d.m.Y H:i" }}{% if log.user %} von {{ log.user }}{% endif %},
+                        möglich bis {{ log.undo_deadline|date:"d.m.Y" }}
+                        <button type="submit" class="btn btn-sm btn-outline-secondary ms-1" title="Zusammenführung rückgängig machen">
+                            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> rückgängig
+                        </button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
         <div class="col-md-7">
             <h3 class="text-center">

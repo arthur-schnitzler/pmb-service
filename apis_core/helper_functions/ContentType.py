@@ -68,6 +68,7 @@ class GetContentTypes:
             "relationbaseclass",
             "baserelationmanager",
             "relationpublishedqueryset",
+            "mergelog",
         ]
         apis_modules = [
             "apis_core.apis_metainfo.models",

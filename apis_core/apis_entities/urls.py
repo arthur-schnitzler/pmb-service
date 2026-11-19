@@ -79,6 +79,11 @@ urlpatterns = [
         name="event_list_view",
     ),
     path(
+        "merge/undo/<int:pk>/",
+        views.UndoMergeView.as_view(),
+        name="undo_merge_view",
+    ),
+    path(
         "merge/<entity>/<int:ent_merge_pk>/",
         views.MergeEntitiesView.as_view(),
         name="merge_view",
