@@ -60,8 +60,11 @@ DEFAULT_TYPE = "person"
 DEFAULT_MODE = "intersection"
 
 # Order & colors of the domains from the project settings
-DOMAIN_LABELS = [entry[1] for entry in settings.DOMAIN_MAPPING]
-DOMAIN_COLORS = {entry[1]: entry[2] for entry in settings.DOMAIN_MAPPING}
+# dict.fromkeys: one label may have several url patterns (e.g. anno-theaterzettel)
+DOMAIN_LABELS = list(dict.fromkeys(entry[1] for entry in settings.DOMAIN_MAPPING))
+DOMAIN_COLORS = {}
+for entry in settings.DOMAIN_MAPPING:
+    DOMAIN_COLORS.setdefault(entry[1], entry[2])
 
 
 # Gender filter: value -> display name (persons only)
