@@ -47,6 +47,16 @@
 
         <dt>Anzahl verbundener Entitäten</dt>
         <dd class="ps-3">{{ object.get_related_entities_count|intcomma }}</dd>
+
+        <dt>Anzahl der Sammlung zugeordneter Entitäten</dt>
+        <dd class="ps-3">{{ related_entities|intcomma }}</dd>
+
+        <dt>Aktualisierung</dt>
+        {% if object.live %}
+            <dd class="ps-3">live: wird bei jedem automatischen URI-Abgleich der verbundenen Domains aktualisiert</dd>
+        {% else %}
+            <dd class="ps-3">statisch: wird nur durch Importe oder manuell gepflegt</dd>
+        {% endif %}
        </dl>
     </div>
     

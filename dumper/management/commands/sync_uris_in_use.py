@@ -14,6 +14,7 @@ EXAMPLES = 10
 
 class Command(BaseCommand):
     help = """syncs the uris of the projects listed in settings.PMB_URI_SOURCES with their pmb_uris-in-use.csv\
+        and the members of live collections linked to these domains\
         e.g. python manage.py sync_uris_in_use --domain schnitzler-briefe --dry-run"""
 
     def add_arguments(self, parser):
@@ -91,3 +92,16 @@ class Command(BaseCommand):
                 self.stdout.write(f"  {name}: {item}")
             if len(items) > EXAMPLES:
                 self.stdout.write(f"  {name}: ... and {len(items) - EXAMPLES} more")
+        for col, to_add, to_remove in plan.collections:
+            self.stdout.write(
+                f"{plan.domain}{dry}: live collection {col.name!r} (id {col.pk}): "
+                f"{len(to_add)} added, {len(to_remove)} removed"
+            )
+            for name, ids in (("added", to_add), ("removed", to_remove)):
+                ids = sorted(ids)
+                for e in ids[:EXAMPLES]:
+                    self.stdout.write(f"  collection {name}: {e}")
+                if len(ids) > EXAMPLES:
+                    self.stdout.write(
+                        f"  collection {name}: ... and {len(ids) - EXAMPLES} more"
+                    )

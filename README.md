@@ -60,6 +60,8 @@ python manage.py sync_uris_in_use --max-delete-ratio 0.1              # allow de
 * rows pointing to an entity that doesn't exist (or has another type) are skipped and listed
 * entities merged in the PMB already carry the uris of the merged entity, those rows are left as they are
 
+Collections are static by default: their members come from imports or manual curation and may differ from the uris of their `related_domain`. Set a collection to `live` (admin) to keep it in line with the uris: whenever `sync_uris_in_use` syncs one of its domains, the collection is updated in the same transaction and then contains exactly the entities holding a uri of one of its `related_domain` (members without such a uri are removed, other collections of an entity are never touched). `--dry-run` reports these changes too, an aborted project leaves its collections as they are.
+
 To connect a new project:
 
 1. copy [project_scripts/process_list_xml.py](project_scripts/process_list_xml.py) (python standard library only) and a `pmb-uris.json` based on [project_scripts/pmb-uris.example.json](project_scripts/pmb-uris.example.json) into the project's repo

@@ -732,6 +732,17 @@ class Collection(models.Model):
         verbose_name="veröffentlicht",
         help_text="Auf 'True' setzen damit das Projekt unter 'projects' aufscheint.",
     )
+    live = models.BooleanField(
+        default=False,
+        verbose_name="live",
+        help_text=(
+            "Auf 'True' setzen, damit die Sammlung bei jedem automatischen "
+            "URI-Abgleich (sync_uris_in_use) einer der verknüpften Domains "
+            "aktualisiert wird: Sie enthält dann genau die Entitäten mit einer URI "
+            "dieser Domains. Manuell zugeordnete Entitäten ohne passende URI werden "
+            "dabei entfernt."
+        ),
+    )
 
     class Meta:
         ordering = ["name"]
@@ -759,3 +770,27 @@ class Collection(models.Model):
 
     def get_related_entities_count(self):
         return self.get_related_entities().count()
+
+    def get_member_ids(self):
+        """Ids of the entities assigned to this collection (not derived from uris)."""
+        through = TempEntityClass.collection.through
+        return set(
+            through.objects.filter(collection_id=self.pk).values_list(
+                "tempentityclass_id", flat=True
+            )
+        )
+
+    def sync_members(self, to_add, to_remove, batch_size=5000):
+        """Adds and removes entities (ids) without touching other collections."""
+        through = TempEntityClass.collection.through
+        to_remove = list(to_remove)
+        for i in range(0, len(to_remove), batch_size):
+            through.objects.filter(
+                collection_id=self.pk,
+                tempentityclass_id__in=to_remove[i : i + batch_size],
+            ).delete()
+        through.objects.bulk_create(
+            [through(collection_id=self.pk, tempentityclass_id=e) for e in to_add],
+            batch_size=batch_size,
+            ignore_conflicts=True,
+        )

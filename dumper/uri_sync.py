@@ -16,7 +16,7 @@ from apis_core.apis_entities.models import (
     Place,
     Work,
 )
-from apis_core.apis_metainfo.models import TempEntityClass, Uri
+from apis_core.apis_metainfo.models import Collection, TempEntityClass, Uri
 
 CSV_COLUMNS = ["pmb_id", "entity_type", "uri", "domain"]
 ENTITY_MODELS = {
@@ -43,10 +43,17 @@ class Plan:
     merged: list = field(default_factory=list)  # (pmb_id, uri, entity_id)
     skipped: list = field(default_factory=list)  # (entity_type, pmb_id, uri, reason)
     conflicts: list = field(default_factory=list)  # (entity_id, uri, holder)
+    # live collections linked to the domain: (Collection, ids to add, ids to remove)
+    collections: list = field(default_factory=list)
 
     @property
     def has_changes(self):
-        return bool(self.to_add or self.to_change or self.to_delete)
+        return bool(
+            self.to_add
+            or self.to_change
+            or self.to_delete
+            or any(add or remove for _, add, remove in self.collections)
+        )
 
 
 def chunked(items, size=CHUNK_SIZE):
@@ -219,7 +226,38 @@ def build_plan(domain, rows):
     blocked = {u for _, u, _ in plan.conflicts}
     plan.to_add = [(e, u) for e, u in plan.to_add if u not in blocked]
     plan.to_change = [(o, u) for o, u in plan.to_change if u not in blocked]
+
+    remaining = {e: len(uris) for e, uris in ist.items()}
+    for u in plan.to_delete:
+        remaining[u.entity_id] -= 1
+    for e, _ in plan.to_add:
+        remaining[e] = remaining.get(e, 0) + 1
+    plan.collections = plan_collections(
+        domain, {e for e, count in remaining.items() if count > 0}
+    )
     return plan
+
+
+def plan_collections(domain, entity_ids):
+    """Plans the members of all live collections linked to `domain`.
+
+    `entity_ids` are the entities holding a uri of `domain` once the plan is applied.
+    A live collection contains exactly the entities with a uri of one of its
+    `related_domain`, uris of its other domains are taken as they are.
+    """
+    result = []
+    for col in Collection.objects.filter(live=True, related_domain__contains=[domain]):
+        wanted = set(entity_ids)
+        others = [d for d in col.related_domain if d and d != domain]
+        if others:
+            wanted.update(
+                Uri.objects.filter(domain__in=others, entity__isnull=False).values_list(
+                    "entity_id", flat=True
+                )
+            )
+        members = col.get_member_ids()
+        result.append((col, wanted - members, members - wanted))
+    return result
 
 
 def check_delete_ratio(plan, max_delete_ratio):
@@ -246,3 +284,5 @@ def apply_plan(plan):
             [Uri(uri=u, domain=plan.domain, entity_id=e) for e, u in plan.to_add],
             batch_size=CHUNK_SIZE,
         )
+        for col, to_add, to_remove in plan.collections:
+            col.sync_members(to_add, to_remove, batch_size=CHUNK_SIZE)
