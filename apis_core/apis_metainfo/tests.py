@@ -252,3 +252,26 @@ class FetchImagesCommandTestCase(TestCase):
         fetch.reset_mock()
         call_command("fetch_images")
         fetch.assert_not_called()
+
+
+class UriLinkUrlTestCase(SimpleTestCase):
+    def test_anno_fragment_is_cut_off(self):
+        uri = Uri(
+            uri="https://anno.onb.ac.at/cgi-content/anno?aid=bth&datum=19000127&seite=1#burgtheater-die-damen-lebardieu"
+        )
+        self.assertEqual(
+            uri.get_link_url(),
+            "https://anno.onb.ac.at/cgi-content/anno?aid=bth&datum=19000127&seite=1",
+        )
+        self.assertIn("#burgtheater-die-damen-lebardieu", str(uri))
+
+    def test_other_uris_are_unchanged(self):
+        for value in [
+            "https://anno.onb.ac.at/cgi-content/anno?aid=bth&datum=19000127&seite=1",
+            "https://example.org/entity#fragment",
+            "https://d-nb.info/gnd/118609807",
+        ]:
+            self.assertEqual(Uri(uri=value).get_link_url(), value)
+
+    def test_empty_uri(self):
+        self.assertEqual(Uri(uri=None).get_link_url(), "")

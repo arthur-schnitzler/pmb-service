@@ -662,6 +662,17 @@ class Uri(models.Model):
                 break
         return color
 
+    def get_link_url(self):
+        """URL used for links in the web interface.
+
+        ANNO (anno.onb.ac.at) blocks URIs with a fragment, so for ANNO URIs
+        everything from "#" on is cut off (the stored URI stays unchanged).
+        """
+        uri = str(self.uri or "")
+        if "#" in uri and urlsplit(uri).hostname == "anno.onb.ac.at":
+            return uri.split("#", 1)[0]
+        return uri
+
     def get_web_object(self):
         result = {
             "relation_pk": self.pk,

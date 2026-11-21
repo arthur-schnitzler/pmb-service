@@ -41,7 +41,7 @@
                 <ul>
                     {% for x in instance.uri_set.all %}
                     <li>
-                        <a href="{{ x }}">{{ x }}</a>
+                        <a href="{{ x.get_link_url }}">{{ x }}</a>
                         <a href="{{ x.get_edit_url }}" title="URI bearbeiten">
                             <i class="bi bi-pencil-square"></i>
                         </a> | <a href="{{ x.get_delete_url }}" title="URI löschen">
