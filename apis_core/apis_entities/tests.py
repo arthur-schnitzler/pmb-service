@@ -1102,6 +1102,48 @@ class LabelFormTestCase(TestCase):
         self.assertEqual(label.label_type, label_type)
 
 
+class PersonFirstNameLabelFilterTestCase(TestCase):
+    def setUp(self):
+        self.vorname_type = LabelType.objects.create(name="Vorname, verheiratet")
+        self.other_type = LabelType.objects.create(name="Pseudonym")
+        self.by_first_name = Person.objects.create(name="Bahr", first_name="Hermann")
+        self.by_label = Person.objects.create(name="Mildenburg", first_name="Anna")
+        Label.objects.create(
+            temp_entity=self.by_label, label="Hermine", label_type=self.vorname_type
+        )
+        self.by_other_label = Person.objects.create(name="Kraus", first_name="Karl")
+        Label.objects.create(
+            temp_entity=self.by_other_label,
+            label="Hermes",
+            label_type=self.other_type,
+        )
+
+    def _filter(self, value):
+        from apis_core.apis_entities.list_view_person import PersonListFilter
+
+        return set(
+            PersonListFilter(
+                data={"first_name": value}, queryset=Person.objects.all()
+            ).qs
+        )
+
+    def test_first_name_matches_first_name_and_vorname_labels(self):
+        result = self._filter("Herm")
+        self.assertIn(self.by_first_name, result)
+        self.assertIn(self.by_label, result)
+        self.assertNotIn(self.by_other_label, result)
+
+    def test_first_name_supports_wildcards(self):
+        result = self._filter('"Hermine"')
+        self.assertEqual(result, {self.by_label})
+
+    def test_vorname_label_type_and_value_must_match_same_label(self):
+        Label.objects.create(
+            temp_entity=self.by_other_label, label="Karla", label_type=self.vorname_type
+        )
+        self.assertNotIn(self.by_other_label, self._filter("Hermes"))
+
+
 class EntityColorsTestCase(SimpleTestCase):
     ENTITY_MODELS = {
         "person": Person,
