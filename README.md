@@ -84,6 +84,15 @@ Run a single test
 uv run manage.py test apis_core.apis_entities.tests.EntitiesTestCase.test_009_merge_view -v 2
 ```
 
+## network edges
+
+Saving or deleting a relation updates its network edge. Run `uv run manage.py edges`
+once after deployment to rebuild existing edges, and again if a full refresh is needed.
+The rebuild deletes and recreates all edges, so run it while relation writes are stopped.
+Changes to entity names, place coordinates, or relation type names do not refresh edges
+until the relation is saved or the rebuild is run. Bulk updates, bulk creates, raw SQL,
+and fixture loading bypass relation saves and also require a rebuild.
+
 ## vite
 
 * bundling js-code (used for network-vis) is not part of the docker-setup

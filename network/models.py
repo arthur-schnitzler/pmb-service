@@ -98,6 +98,37 @@ class Edge(models.Model):
         verbose_name = "Kante"
         verbose_name_plural = "Kanten"
         ordering = ["-id"]
+        indexes = [models.Index(fields=["edge_kind", "edge_id"], name="edge_relation_idx")]
+
+    @classmethod
+    def values_from_relation(cls, relation):
+        source = relation.get_related_entity_instancea()
+        target = relation.get_related_entity_instanceb()
+        source_kind = relation.get_related_entity_classa().__name__.lower()
+        target_kind = relation.get_related_entity_classb().__name__.lower()
+        return {
+            "source_label": str(source)[:249],
+            "source_kind": source_kind,
+            "source_id": source.id,
+            "source_lat": source.lat if source_kind == "place" else None,
+            "source_lng": source.lng if source_kind == "place" else None,
+            "edge_label": str(relation.relation_type),
+            "target_label": str(target)[:249],
+            "target_kind": target_kind,
+            "target_id": target.id,
+            "target_lat": target.lat if target_kind == "place" else None,
+            "target_lng": target.lng if target_kind == "place" else None,
+            "start_date": relation.start_date,
+            "end_date": relation.end_date,
+        }
+
+    @classmethod
+    def sync_from_relation(cls, relation):
+        return cls.objects.update_or_create(
+            edge_id=relation.pk,
+            edge_kind=relation.__class__.__name__.lower(),
+            defaults=cls.values_from_relation(relation),
+        )
 
     def __str__(self):
         return f"{self.source_label}, {self.edge_label}, {self.target_label}"

@@ -1,6 +1,7 @@
 import inspect
 import sys
 
+from django.db import transaction
 from django.urls import reverse_lazy
 
 from apis_core.apis_metainfo.models import TempEntityClass
@@ -35,7 +36,16 @@ class AbstractRelation(TempEntityClass):
         ):
             raise Exception("One or more of the necessary related models are None")
 
-        super().save(*args, **kwargs)
+        from network.models import Edge
+
+        if kwargs.get("update_fields") is not None and not kwargs["update_fields"]:
+            super().save(*args, **kwargs)
+            return
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+            relation = type(self).objects.get(pk=self.pk)
+            Edge.sync_from_relation(relation)
 
     # Methods dealing with individual data retrievals of instances
     ####################################################################################################################
