@@ -10,7 +10,7 @@
 >
     <term key="{{ x.relation_type.id }}">{{ x.relation_type }}</term>
     <orgName key="{{ x.related_institution.id }}">{{ x.related_institution.name }}</orgName>
-    {% for uri in x.related_institution.uri_set.all %}
+    {% for uri in x.related_institution.get_sorted_uris %}
     <idno type="URL" {% if uri.domain %} subtype="{{ uri.domain|slugify }}" {% endif %}>{{ uri }}</idno>
     {% endfor %}
 </affiliation>

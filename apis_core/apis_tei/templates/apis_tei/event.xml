@@ -7,7 +7,7 @@
                     <orgName key="pmb{{ x.related_institution.id }}" >{{ x.related_institution }}</orgName>
                 </org>{% endfor %}
             </listOrg>
-        </note>{% endif %}{% for x in object.uri_set.all %}
+        </note>{% endif %}{% for x in object.get_sorted_uris %}
     <idno type="URL" {% if x.domain %} subtype="{{ x.domain|slugify }}" {% endif %}>{{ x }}</idno>{% endfor %}{% if object.collection.all %}
     {% include 'apis_tei/collections.xml' %}
     {% endif %}{% if object.note %}

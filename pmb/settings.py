@@ -172,6 +172,8 @@ PROJECT_NAME = "pmb"
 APIS_BASE_URI = "https://pmb.acdh.oeaw.ac.at/"
 
 REDMINE_ID = "20586"
+ACDH_IMPRINT_URL = "https://imprint.acdh.oeaw.ac.at/"
+
 APIS_RELATIONS_FILTER_EXCLUDE = []
 CSRF_TRUSTED_ORIGINS = ["https://pmb.acdh.oeaw.ac.at"]
 BIRTH_REL = [
@@ -363,6 +365,11 @@ DOMAIN_MAPPING = [
     ("kraus.wienbibliothek.at", "legalkraus", "#c85545"),
     ("kraus1933", "dritte-walpurgisnacht", "#a21a17"),
     ("pmb.acdh.oeaw.ac.at", "pmb", "#9B5F98"),
+    # ANNO-Theaterzettel (Burgtheater, Oper, Wiener Theaterzettel) must come
+    # before the generic "anno" entry, the first matching pattern wins
+    ("aid=bth", "anno-theaterzettel", "#b7422f"),
+    ("aid=ope", "anno-theaterzettel", "#b7422f"),
+    ("aid=wtz", "anno-theaterzettel", "#b7422f"),
     ("anno", "anno", "#b7422f"),
     ("geschichtewiki.wien", "wiengeschichtewiki", "#6F6938"),
     ("thun-korrespondenz.acdh.oeaw.ac.at", "thun-korrespondenz", "#01589C"),
@@ -377,8 +384,11 @@ DOMAIN_MAPPING = [
     ("briefedition.wedekind.", "wedekind-korrespondenz", "#d4a346"),
     ("https://biblio.ub.uni-freiburg.de/sf/#", "schnitzler-fischer", "#3D4F9F"),
     ("https://www.dla-marbach.de/", "dla-marbach", "#C96E22"),
-    ("tillich-briefe", "tillich-briefe", "#9B5F98"),
-    ("semantickraus", "semantickraus", "#9B5F98"),
+    ("tillich-briefe", "tillich-briefe", "#017fa1"),
+    ("semantickraus", "semantickraus", "#386A60"),
+    ("burgtheater", "burgtheater", "#02305c"),
+    ("operapolitics/spielplan-wiener-oper", "spielplan-oper", "#337ab7"),
+    ("wien-wo-es-war", "wien-wo-es-war", "#734E25"),
 ]
 
 # projects delivering a pmb_uris-in-use.csv, see `manage.py sync_uris_in_use`;

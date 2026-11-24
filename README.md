@@ -27,6 +27,13 @@ maybe in future also with PMB CRUD included
 
 ## cheat-sheet
 
+### rebuild network edges
+
+`python manage.py edges` rebuilds the network edges in bounded batches. The
+previous edges remain available until the rebuild commits; an error rolls the
+rebuild back. This is a long-running database transaction, and regenerated edge
+IDs (and their default ordering) may change.
+
 ### process gnd-beacon
 
 `python manage.py process_beacon --beacon=https://thun-korrespondenz.acdh.oeaw.ac.at/beacon.txt --domain=thun-korrespondenz`

@@ -31,12 +31,18 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
     filter_class = None
     formhelper_class = None
     context_filter_name = "filter"
-    paginate_by = 25
+    # Only django-tables2 paginates. Setting `paginate_by` would make Django's
+    # ListView paginate (and count all results) a second time.
+    table_pagination = {"per_page": 25}
     template_name = "browsing/generic_list.html"
     init_columns = []
     excluded_cols = []
     verbose_name = "Personen"
     help_text = "Personen help text"
+    # SELECT DISTINCT is only needed when a filter spans a multi-valued
+    # relation and could return a row twice. It makes counting and paging much
+    # more expensive, so views whose filters can't do that should disable it.
+    use_distinct = True
 
     def get_table_class(self):
         if self.table_class:
@@ -45,8 +51,11 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
             return get_entities_table(self.model)
 
     def get_all_cols(self):
+        # read the columns from the table class: building a table here would
+        # paginate it and thereby count all results once more
         all_cols = {
-            key: value.header for key, value in self.get_table().base_columns.items()
+            key: value.header
+            for key, value in self.get_table_class().base_columns.items()
         }
         return all_cols
 
@@ -54,7 +63,8 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
         qs = super().get_queryset()
         self.filter = self.filter_class(self.request.GET, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
-        return self.filter.qs.distinct()
+        qs = self.filter.qs
+        return qs.distinct() if self.use_distinct else qs
 
     def get_table(self, **kwargs):
         table = super().get_table()
@@ -105,10 +115,9 @@ class GenericListView(ExportMixin, django_tables2.SingleTableView):
             context["second_icon"] = self.model.get_second_icon()
         except AttributeError:
             context["second_icon"] = "bi bi-infinity"
-        if self.get_queryset().count() < 1001:
-            context["download"] = True
-        else:
-            context["download"] = False
+        # the table's paginator has already counted the results
+        table = context[self.context_table_name]
+        context["download"] = table.paginator.count < 1001
         return context
 
 
